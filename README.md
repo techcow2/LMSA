@@ -25,19 +25,12 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 
 ## 🔒 Project Status
 
-This project has transitioned to **closed source** development. The repository now contains only historical versions that remain available through forks.
-
+This project has transitioned to **closed source** development.
 ### Development Information
 
 The open-source versions are no longer actively maintained. Development efforts are now focused on the official Google Play release, which receives regular updates and improvements.
 
 ## 📱 Version Comparison
-
-### Open Source Versions
-- Represent earlier development stages of the application
-- No longer receiving updates or maintenance
-- May lack features and optimizations found in current releases
-- Users should be aware these versions may contain known issues
 
 ### Official Release
 
@@ -124,9 +117,6 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 **Publisher:** TechRay Apps LLC<br>
 **Updates:** Regular feature and maintenance updates<br>
 [**Download Now →**](https://play.google.com/store/apps/details?id=com.lmsa.app)
-
-### Historical Versions
-The open-source versions represent earlier development stages and are available through repository forks. While functional, they lack recent improvements and are no longer supported.
 
 ## ⚠️ Disclaimer
 
