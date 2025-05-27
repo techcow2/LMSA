@@ -1,8 +1,8 @@
 # 📱 LMSA - LM Studio Android 
 
-![Status: Closed Source](https://img.shields.io/badge/Status-Closed%20Source-red)
+![Status: Open Source](https://img.shields.io/badge/Status-Open%20Source-brightgreen)
 ![Version: Current](https://img.shields.io/badge/Version-Current-green)
-![Release: Official](https://img.shields.io/badge/Release-Official%20Only-blue)
+![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
 
 ## 📸 Screenshots
 
@@ -23,26 +23,27 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 - Upload and analyze documents using AI
 - Customize AI behavior with system prompts and temperature settings
 
-## 🔒 Project Status
+## 🔓 Project Status
 
-This project has transitioned to **closed source** development.
+This project has transitioned to **open source** development.
+
 ### Development Information
 
-The open-source versions are no longer actively maintained. Development efforts are now focused on the official Google Play release, which receives regular updates and improvements.
+The project is now community-driven and open source. Development efforts are focused on collaborative community contributions, with regular updates and improvements available through GitHub releases.
 
 ## 📱 Version Comparison
 
-### Official Release
+### Community Release
 
-The current version is available through Google Play and includes:
+The current version is available through GitHub and includes:
 
-| <a href="https://play.google.com/store/apps/details?id=com.lmsa.app"><img src="https://i.ibb.co/qH7rhGz/google-play-icon-transparent-5.png" alt="Get it on Google Play" width="160"></a> | **Official LMSA App**<br>-  Regular updates and maintenance<br>-  Complete feature set<br>-  Technical support<br>-  Optimized performance |
+| <a href="https://github.com/yourusername/lmsa-android/releases"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" width="160"></a> | **Open Source LMSA App**<br>-  Community-driven updates and maintenance<br>-  Complete feature set<br>-  Community support<br>-  Fully customizable |
 |:---|:---|
 
 ## 🌟 Features Overview
 
 ### Privacy & Security
-- **Regular updates** improving app security and stability
+- **Community updates** improving app security and stability
 - **Privacy-focused design** with no unnecessary tracking
 - **Secure connections** to your LM Studio instance
 - **Privacy First** - Your conversations never leave your personal network as models run locally
@@ -112,11 +113,11 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 
 ## 📥 Download Information
 
-### Recommended: Official Release
-**LMSA - Google Play Version**<br>
-**Publisher:** TechRay Apps LLC<br>
-**Updates:** Regular feature and maintenance updates<br>
-[**Download Now →**](https://play.google.com/store/apps/details?id=com.lmsa.app)
+### Recommended: Community Release
+**LMSA - GitHub Version**<br>
+**Publisher:** LMSA Community<br>
+**Updates:** Regular community-driven feature and maintenance updates<br>
+[**Download Now →**](https://github.com/yourusername/lmsa-android/releases)
 
 ## ⚠️ Disclaimer
 
@@ -124,4 +125,4 @@ LMSA is a third-party application and is not affiliated with LM Studio or its de
 
 ---
 
-© 2025 LMSA. All rights reserved
+© 2025 TechRay Apps LLC. All rights reserved
