@@ -37,7 +37,7 @@ The project is now community-driven and open source. Development efforts are foc
 
 The current version is available through GitHub and includes:
 
-| <a href="https://github.com/techcow2/lmsa/releases"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" width="160"></a> | **Open Source LMSA App**<br>-  Community-driven updates and maintenance<br>-  Complete feature set<br>-  Community support<br>-  Fully customizable |
+| <a href="https://play.google.com/store/apps/details?id=com.lmsa.app"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" width="160"></a> | **Open Source LMSA App**<br>-  Community-driven updates and maintenance<br>-  Complete feature set<br>-  Community support<br>-  Fully customizable |
 |:---|:---|
 
 ## 🌟 Features Overview
@@ -117,7 +117,7 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 **LMSA - GitHub Version**<br>
 **Publisher:** LMSA Community<br>
 **Updates:** Regular community-driven feature and maintenance updates<br>
-[**Download Now →**](https://github.com/techcow2/lmsa/releases)
+[**Download Now →**](https://play.google.com/store/apps/details?id=com.lmsa.app)
 
 ## ⚠️ Disclaimer
 
