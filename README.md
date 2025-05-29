@@ -117,7 +117,7 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 **LMSA - GitHub Version**<br>
 **Publisher:** LMSA Community<br>
 **Updates:** Regular community-driven feature and maintenance updates<br>
-[**Download Now →**](https://github.com/yourusername/lmsa-android/releases)
+[**Download Now →**](https://github.com/techcow2/lmsa/releases)
 
 ## ⚠️ Disclaimer
 
