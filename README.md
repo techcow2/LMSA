@@ -37,7 +37,7 @@ The project is now community-driven and open source. Development efforts are foc
 
 The current version is available through GitHub and includes:
 
-| <a href="https://github.com/yourusername/lmsa-android/releases"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" width="160"></a> | **Open Source LMSA App**<br>-  Community-driven updates and maintenance<br>-  Complete feature set<br>-  Community support<br>-  Fully customizable |
+| <a href="https://github.com/techcow2/lmsa/releases"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" width="160"></a> | **Open Source LMSA App**<br>-  Community-driven updates and maintenance<br>-  Complete feature set<br>-  Community support<br>-  Fully customizable |
 |:---|:---|
 
 ## 🌟 Features Overview
