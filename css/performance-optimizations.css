@@ -1,6 +1,6 @@
-/* Performance optimizations for the app */
+/* Enhanced performance optimizations for the app with adaptive settings */
 
-/* Apply hardware acceleration to key elements */
+/* Base hardware acceleration for all devices */
 .hardware-accelerated,
 #messages,
 #chat-history,
@@ -13,16 +13,69 @@
     transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
-    will-change: transform, opacity;
 }
 
-/* Optimize animations */
+/* Adaptive hardware acceleration based on device capabilities */
+/* High-end devices get full optimization */
+@media (min-width: 1024px) and (min-height: 768px) {
+    .hardware-accelerated,
+    #messages,
+    #chat-history,
+    #sidebar,
+    .character-gallery-container,
+    .monaco-container,
+    .modal-content,
+    .welcome-container,
+    .character-card {
+        will-change: transform, opacity;
+    }
+}
+
+/* Medium devices get moderate optimization */
+@media (max-width: 1023px) and (min-width: 768px) {
+    .hardware-accelerated,
+    #messages,
+    #chat-history,
+    #sidebar,
+    .character-gallery-container,
+    .monaco-container,
+    .modal-content,
+    .welcome-container,
+    .character-card {
+        will-change: transform;
+    }
+}
+
+/* Low-end devices get minimal optimization to avoid performance issues */
+@media (max-width: 767px) {
+    .hardware-accelerated,
+    #messages,
+    #chat-history,
+    #sidebar,
+    .character-gallery-container,
+    .monaco-container,
+    .modal-content,
+    .welcome-container,
+    .character-card {
+        will-change: auto;
+    }
+
+    /* Reduce complex effects on low-end devices */
+    .character-card {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .modal-content {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+    }
+}
+
+/* Adaptive animations based on device performance */
+/* Base animation settings */
 .animate-fade-in {
-    animation-duration: 0.25s;
     animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
 }
 
-/* Optimize transitions */
 .transition-optimized,
 .character-card,
 .character-gallery-container,
@@ -33,25 +86,133 @@
     transition-timing-function: cubic-bezier(0.2, 0, 0.2, 1) !important;
 }
 
-/* Optimize scrolling */
+/* High-end devices - full animation quality */
+@media (min-width: 1024px) and (min-height: 768px) {
+    .animate-fade-in {
+        animation-duration: 0.3s;
+    }
+
+    .transition-optimized,
+    .character-card,
+    .character-gallery-container,
+    .modal-content,
+    #scroll-to-bottom,
+    .menu-item,
+    .chat-item {
+        transition-duration: 0.3s !important;
+    }
+}
+
+/* Medium devices - balanced animations */
+@media (max-width: 1023px) and (min-width: 768px) {
+    .animate-fade-in {
+        animation-duration: 0.25s;
+    }
+
+    .transition-optimized,
+    .character-card,
+    .character-gallery-container,
+    .modal-content,
+    #scroll-to-bottom,
+    .menu-item,
+    .chat-item {
+        transition-duration: 0.25s !important;
+    }
+}
+
+/* Low-end devices - faster, simpler animations */
+@media (max-width: 767px) {
+    .animate-fade-in {
+        animation-duration: 0.2s;
+    }
+
+    .transition-optimized,
+    .character-card,
+    .character-gallery-container,
+    .modal-content,
+    #scroll-to-bottom,
+    .menu-item,
+    .chat-item {
+        transition-duration: 0.2s !important;
+    }
+
+    /* Disable complex animations on very slow devices */
+    @media (max-width: 480px) {
+        .character-card:hover {
+            transform: none !important;
+        }
+
+        .character-card-image img {
+            transition: none !important;
+        }
+
+        .character-card:hover .character-card-image img {
+            transform: none !important;
+        }
+
+        /* Simplify shimmer effects */
+        .img-placeholder {
+            animation: none !important;
+            background: #ececec !important;
+        }
+    }
+}
+
+/* Adaptive scrolling optimizations based on device performance */
 .scroll-optimized,
 #chat-history,
 #sidebar,
 .character-gallery-content,
 .settings-content-wrapper,
-.modal-content {
-    -webkit-overflow-scrolling: touch !important;
-    touch-action: pan-y !important;
-    overscroll-behavior: contain !important;
-    scroll-behavior: auto !important; /* Use JS for smooth scrolling instead */
-}
-
-/* Special handling for messages container to allow smooth scrolling */
+.modal-content,
 #messages {
     -webkit-overflow-scrolling: touch !important;
     touch-action: pan-y !important;
     overscroll-behavior: contain !important;
-    /* Allow smooth scrolling for this container */
+}
+
+/* High-end devices - allow smooth scrolling */
+@media (min-width: 1024px) and (min-height: 768px) {
+    .scroll-optimized,
+    #chat-history,
+    #sidebar,
+    .character-gallery-content,
+    .settings-content-wrapper,
+    .modal-content,
+    #messages {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Medium and low-end devices - use auto scrolling for better performance */
+@media (max-width: 1023px) {
+    .scroll-optimized,
+    #chat-history,
+    #sidebar,
+    .character-gallery-content,
+    .settings-content-wrapper,
+    .modal-content,
+    #messages {
+        scroll-behavior: auto !important; /* Use JS for smooth scrolling instead */
+    }
+}
+
+/* Very low-end devices - minimal scroll optimizations */
+@media (max-width: 480px) {
+    .scroll-optimized,
+    #chat-history,
+    #sidebar,
+    .character-gallery-content,
+    .settings-content-wrapper,
+    .modal-content,
+    #messages {
+        /* Reduce GPU usage for scrolling */
+        will-change: auto !important;
+        /* Simplify scroll behavior */
+        scroll-behavior: auto !important;
+        /* Optimize for memory usage */
+        contain: layout !important;
+    }
 }
 
 /* Optimize touch targets for mobile */

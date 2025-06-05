@@ -845,6 +845,12 @@
                         <i class="fas fa-info-circle"></i>
                         About
                     </button>
+                    
+                    <!-- Feedback Survey -->
+                    <button id="feedback-survey-btn" class="menu-item w-full text-left">
+                        <i class="fas fa-comment-dots"></i>
+                        Feedback
+                    </button>
                 </div>
             </div>
 
@@ -1575,6 +1581,69 @@
         </button>
     </div>
 
+    <!-- Feedback Survey Modal -->
+    <div id="feedback-survey-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden modal-container z-50" aria-labelledby="feedback-title" role="dialog" aria-modal="true">
+        <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-white/10 overflow-hidden animate-modal-in" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
+            <!-- Header with title -->
+            <div class="relative flex items-center justify-between mb-6 border-b border-gray-700/60 pb-4">
+                <h2 id="feedback-title" class="text-xl font-bold flex items-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">
+                    <div class="mr-3 p-2 bg-blue-500/10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-comment-dots text-blue-400"></i>
+                    </div>
+                    How can we improve?
+                </h2>
+                <button id="close-feedback-modal" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Feedback Form -->
+            <form id="feedback-form" action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+                <input type="hidden" name="access_key" value="2abee2af-7350-45de-aaea-74628f94db55">
+                <input type="hidden" name="subject" value="New Feedback from LMSA">
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                
+                <div>
+                    <textarea 
+                        name="message" 
+                        id="feedback-message" 
+                        rows="5" 
+                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800/50 text-white border-gray-700" 
+                        placeholder="Your feedback helps us improve. Please share your thoughts..."
+                        required
+                    ></textarea>
+                </div>
+                
+                <div class="flex justify-end">
+                    <button 
+                        type="submit" 
+                        class="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300"
+                    >
+                        <span class="flex items-center">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Send Feedback
+                        </span>
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Success and Error Messages -->
+            <div id="feedback-success" class="hidden mt-4 p-3 bg-green-900/50 text-green-300 rounded-lg border border-green-700">
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span>Thank you for your feedback! We appreciate your input.</span>
+                </div>
+            </div>
+            
+            <div id="feedback-error" class="hidden mt-4 p-3 bg-red-900/50 text-red-300 rounded-lg border border-red-700">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    <span>Something went wrong. Please try again later.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- About modal -->
     <div id="about-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden modal-container z-50" aria-labelledby="about-title" role="dialog" aria-modal="true">
         <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] p-0 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-white/10 overflow-hidden animate-modal-in" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
@@ -1590,7 +1659,7 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="version-badge bg-white/10 px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300">Version 4.8</p>
+                    <p class="text-sm font-medium text-blue-300">Version 4.9</p>
                 </div>
             </div>
 
@@ -1804,7 +1873,7 @@
 
     <!-- What's New modal -->
     <div id="whats-new-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center hidden modal-container" aria-labelledby="whats-new-title" role="dialog" aria-modal="true" style="padding: 1.5rem;">
-        <div class="bg-gradient-to-b from-[#0a192f]/95 via-[#0c1e36]/95 to-[#0a192f]/95 p-4 rounded-2xl shadow-2xl modal-content flex flex-col drag-scrollable border border-white/10 overflow-hidden" style="box-shadow: 0 20px 60px -15px rgba(0,0,0,0.7), 0 0 30px rgba(31, 66, 135, 0.2), 0 0 0 1px rgba(255,255,255,0.1) inset;">
+        <div class="bg-gradient-to-b from-[#0a192f]/95 via-[#0c1e36]/95 to-[#0a192f]/95 p-4 rounded-2xl shadow-2xl modal-content flex flex-col border border-white/10 overflow-hidden" style="box-shadow: 0 20px 60px -15px rgba(0,0,0,0.7), 0 0 30px rgba(31, 66, 135, 0.2), 0 0 0 1px rgba(255,255,255,0.1) inset;">
             <div class="flex justify-between items-center mb-3 pb-3 border-b border-white/15">
                 <h2 id="whats-new-title" class="text-xl font-bold flex items-center">
                     <div class="icon-wrapper mr-3 flex items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 w-9 h-9 text-darkBg shadow-lg animate-pulse-subtle">
@@ -2113,6 +2182,166 @@
     <script>
         // Add preview mode toggle functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Feedback Survey Modal Functionality
+            const feedbackBtn = document.getElementById('feedback-survey-btn');
+            const feedbackModal = document.getElementById('feedback-survey-modal');
+            const closeFeedbackModal = document.getElementById('close-feedback-modal');
+            const feedbackForm = document.getElementById('feedback-form');
+            const feedbackSuccess = document.getElementById('feedback-success');
+            const feedbackError = document.getElementById('feedback-error');
+            
+            // Open feedback modal with animation
+            if (feedbackBtn) {
+                feedbackBtn.addEventListener('click', function() {
+                    // Ensure animation classes are properly set before showing the modal
+                    const modalContent = feedbackModal.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.classList.remove('animate-modal-out');
+                        modalContent.classList.add('animate-modal-in');
+                    }
+                    feedbackModal.classList.remove('hidden');
+                    
+                    // Close sidebar when opening modal (regardless of screen size)
+                    const sidebar = document.getElementById('sidebar');
+                    const sidebarOverlay = document.getElementById('sidebar-overlay');
+                    
+                    if (sidebar) {
+                        // Use the same pattern as in toggleSidebar function
+                        sidebar.classList.add('animate-slide-out');
+                        sidebar.classList.remove('animate-slide-in');
+                        document.body.classList.remove('sidebar-open');
+                        
+                        // Hide the sidebar after animation completes
+                        setTimeout(() => {
+                            sidebar.classList.remove('active');
+                            sidebar.classList.add('hidden');
+                            sidebar.classList.remove('animate-slide-out');
+                        }, 300);
+                    }
+                    
+                    // Handle the overlay
+                    if (sidebarOverlay) {
+                        sidebarOverlay.classList.remove('active');
+                        setTimeout(() => {
+                            sidebarOverlay.classList.add('hidden');
+                        }, 300);
+                    }
+                });
+            }
+            
+            // Close feedback modal with animation
+            if (closeFeedbackModal) {
+                closeFeedbackModal.addEventListener('click', function() {
+                    // Add the closing animation class
+                    const modalContent = feedbackModal.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.classList.remove('animate-modal-in');
+                        modalContent.classList.add('animate-modal-out');
+                        
+                        // Wait for animation to complete before hiding the modal
+                        setTimeout(() => {
+                            feedbackModal.classList.add('hidden');
+                            // Reset form and hide messages
+                            if (feedbackForm) feedbackForm.reset();
+                            if (feedbackSuccess) feedbackSuccess.classList.add('hidden');
+                            if (feedbackError) feedbackError.classList.add('hidden');
+                            // Reset animation classes for next opening
+                            modalContent.classList.remove('animate-modal-out');
+                        }, 300); // Match the animation duration (0.3s)
+                    } else {
+                        // Fallback if modal content element not found
+                        feedbackModal.classList.add('hidden');
+                        // Reset form and hide messages
+                        if (feedbackForm) feedbackForm.reset();
+                        if (feedbackSuccess) feedbackSuccess.classList.add('hidden');
+                        if (feedbackError) feedbackError.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // Close modal when clicking outside with animation
+            if (feedbackModal) {
+                feedbackModal.addEventListener('click', function(e) {
+                    if (e.target === feedbackModal) {
+                        // Add the closing animation class
+                        const modalContent = feedbackModal.querySelector('.modal-content');
+                        if (modalContent) {
+                            modalContent.classList.remove('animate-modal-in');
+                            modalContent.classList.add('animate-modal-out');
+                            
+                            // Wait for animation to complete before hiding the modal
+                            setTimeout(() => {
+                                feedbackModal.classList.add('hidden');
+                                // Reset form and hide messages
+                                if (feedbackForm) feedbackForm.reset();
+                                if (feedbackSuccess) feedbackSuccess.classList.add('hidden');
+                                if (feedbackError) feedbackError.classList.add('hidden');
+                                // Reset animation classes for next opening
+                                modalContent.classList.remove('animate-modal-out');
+                            }, 300); // Match the animation duration (0.3s)
+                        } else {
+                            // Fallback if modal content element not found
+                            feedbackModal.classList.add('hidden');
+                            // Reset form and hide messages
+                            if (feedbackForm) feedbackForm.reset();
+                            if (feedbackSuccess) feedbackSuccess.classList.add('hidden');
+                            if (feedbackError) feedbackError.classList.add('hidden');
+                        }
+                    }
+                });
+            }
+            
+            // Handle form submission
+            if (feedbackForm) {
+                feedbackForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(feedbackForm);
+                    
+                    fetch(feedbackForm.action, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            feedbackForm.reset();
+                            feedbackForm.style.display = 'none';
+                            feedbackSuccess.classList.remove('hidden');
+                            
+                            // Close modal after 3 seconds with animation
+                            setTimeout(() => {
+                                // Add the closing animation class
+                                const modalContent = feedbackModal.querySelector('.modal-content');
+                                if (modalContent) {
+                                    modalContent.classList.remove('animate-modal-in');
+                                    modalContent.classList.add('animate-modal-out');
+                                    
+                                    // Wait for animation to complete before hiding the modal
+                                    setTimeout(() => {
+                                        feedbackModal.classList.add('hidden');
+                                        feedbackForm.style.display = 'block';
+                                        feedbackSuccess.classList.add('hidden');
+                                        // Reset animation classes for next opening
+                                        modalContent.classList.remove('animate-modal-out');
+                                    }, 300); // Match the animation duration (0.3s)
+                                } else {
+                                    // Fallback if modal content element not found
+                                    feedbackModal.classList.add('hidden');
+                                    feedbackForm.style.display = 'block';
+                                    feedbackSuccess.classList.add('hidden');
+                                }
+                            }, 3000);
+                        } else {
+                            feedbackError.classList.remove('hidden');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        feedbackError.classList.remove('hidden');
+                    });
+                });
+            }
             const previewToggle = document.getElementById('preview-toggle');
 
             // We'll control button visibility through the updateViewMode function
@@ -2120,15 +2349,27 @@
 
             // Function to detect if device is a tablet
             function isTablet() {
-                // Simplified tablet detection that prioritizes screen size
-                // For our purposes, any device with width >= 768px can be considered a tablet
-                // This works better for the app's UI needs
+                // Enhanced tablet detection that handles edge cases better
+                // Lowered threshold to 601px to match CSS breakpoint and handle more tablet sizes
 
                 // First check for explicit tablet indicators in user agent
                 const isExplicitTablet = /iPad|Tablet/i.test(navigator.userAgent);
 
-                // Then check screen dimensions - this is the most reliable for our UI needs
-                const hasTabletDimensions = window.innerWidth >= 768;
+                // Check screen dimensions - use 601px to match CSS breakpoint
+                // This ensures consistency between CSS and JS logic
+                const hasTabletDimensions = window.innerWidth >= 601;
+
+                // Additional check for common tablet aspect ratios and sizes
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                const aspectRatio = Math.max(screenWidth, screenHeight) / Math.min(screenWidth, screenHeight);
+                
+                // Common tablet sizes that might fall in edge cases
+                const isCommonTabletSize = (
+                    (screenWidth >= 768 && screenWidth <= 1024) || // Standard tablet range
+                    (screenWidth >= 600 && screenWidth <= 900 && aspectRatio <= 1.8) || // Wider tablets
+                    (screenWidth >= 820 && screenWidth <= 834) // iPad Air/Pro sizes
+                );
 
                 // For testing purposes - force tablet mode when URL has ?tablet=true
                 const forceTablet = window.location.search.includes('tablet=true');
@@ -2136,8 +2377,9 @@
                 // Consider it a tablet if:
                 // 1. It's explicitly a tablet, OR
                 // 2. It has tablet-like dimensions, OR
-                // 3. Testing mode is enabled
-                return isExplicitTablet || hasTabletDimensions || forceTablet;
+                // 3. It matches common tablet sizes, OR
+                // 4. Testing mode is enabled
+                return isExplicitTablet || hasTabletDimensions || isCommonTabletSize || forceTablet;
             }
 
             // Function to update view mode based on device and user preference
@@ -2232,9 +2474,37 @@
                 // Initialize view mode
                 updateViewMode();
 
+                // Add resize event listener to handle orientation changes and window resizing
+                let resizeTimeout;
+                window.addEventListener('resize', function() {
+                    // Debounce resize events to avoid excessive calls
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(function() {
+                        console.log('Window resized, updating view mode...');
+                        updateViewMode();
+                    }, 250);
+                });
+
+                // Also listen for orientation change events on mobile devices
+                window.addEventListener('orientationchange', function() {
+                    // Small delay to ensure dimensions are updated after orientation change
+                    setTimeout(function() {
+                        console.log('Orientation changed, updating view mode...');
+                        updateViewMode();
+                    }, 300);
+                });
+
                 // Log device detection info for debugging
                 const isExplicitTablet = /iPad|Tablet/i.test(navigator.userAgent);
-                const hasTabletDimensions = window.innerWidth >= 768;
+                const hasTabletDimensions = window.innerWidth >= 601;
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                const aspectRatio = Math.max(screenWidth, screenHeight) / Math.min(screenWidth, screenHeight);
+                const isCommonTabletSize = (
+                    (screenWidth >= 768 && screenWidth <= 1024) || // Standard tablet range
+                    (screenWidth >= 600 && screenWidth <= 900 && aspectRatio <= 1.8) || // Wider tablets
+                    (screenWidth >= 820 && screenWidth <= 834) // iPad Air/Pro sizes
+                );
                 const forceTablet = window.location.search.includes('tablet=true');
                 const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
@@ -2246,11 +2516,13 @@
                     'DEVICE INFO': {
                         'isTablet (function result)': isTablet(),
                         'isExplicitTablet (UA)': isExplicitTablet,
-                        'hasTabletDimensions': hasTabletDimensions,
+                        'hasTabletDimensions (>= 601px)': hasTabletDimensions,
+                        'isCommonTabletSize': isCommonTabletSize,
                         'forceTablet (URL param)': forceTablet,
                         'userAgent': navigator.userAgent,
-                        'screenWidth': window.innerWidth,
-                        'screenHeight': window.innerHeight,
+                        'screenWidth': screenWidth,
+                        'screenHeight': screenHeight,
+                        'aspectRatio': aspectRatio.toFixed(2),
                         'hasTouch': hasTouch
                     },
                     'VIEW MODE': {
@@ -2304,8 +2576,8 @@
                 }, { passive: true });
             }
 
-            // Enable drag to scroll functionality for other modal content
-            const scrollableElements = document.querySelectorAll('.drag-scrollable:not(#help-modal .help-modal-content), .touch-scroll');
+            // Enable drag to scroll functionality for other modal content (excluding whats new modal)
+            const scrollableElements = document.querySelectorAll('.drag-scrollable:not(#help-modal .help-modal-content):not(#whats-new-modal .modal-content):not(#whats-new-modal .features-container), .touch-scroll:not(#whats-new-modal .features-container)');
 
             scrollableElements.forEach(scrollable => {
                 let isDown = false;
@@ -2413,11 +2685,11 @@
     <script type="module" src="js/main.js"></script>
 
     <script>
-        // Apply touch event handlers to all modal content containers
+        // Apply touch event handlers to all modal content containers (except whats new modal)
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.modal-content, .overflow-y-auto').forEach(container => {
-                // Make sure the container has touch scrolling enabled
-                if (container) {
+                // Skip whats new modal as it has its own specialized handling
+                if (container && !container.closest('#whats-new-modal')) {
                     // Force enable touch scrolling with inline styles
                     container.style.webkitOverflowScrolling = 'touch';
                     container.style.overflowY = 'auto';
@@ -2468,9 +2740,9 @@
                 }, { passive: true });
             }
 
-            // Apply the same fixes to all modal content
+            // Apply the same fixes to all modal content (except whats new modal which has its own handling)
             document.querySelectorAll('.modal-content').forEach(modal => {
-                if (modal !== helpModalContent) {
+                if (modal !== helpModalContent && !modal.closest('#whats-new-modal')) {
                     // Force browser-native scrolling behavior
                     modal.style.webkitOverflowScrolling = 'touch';
                     modal.style.overflowY = 'auto';

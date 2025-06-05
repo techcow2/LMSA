@@ -10,7 +10,7 @@ const dontShowAgainToggle = document.getElementById('dont-show-again');
 const versionElement = document.getElementById('whats-new-version');
 
 // Local storage keys
-const WHATS_NEW_VERSION = '4.8'; // Updated for Characters feature
+const WHATS_NEW_VERSION = '4.9'; // Updated for Characters feature
 const WHATS_NEW_SEEN_KEY = 'whatsNewSeen';
 const WHATS_NEW_DONT_SHOW_KEY = 'whatsNewDontShow';
 
@@ -72,7 +72,8 @@ export function showWhatsNewModal(forceShow = false) {
             versionElement.textContent = WHATS_NEW_VERSION;
         }
 
-
+        // Fix touch scrolling for the modal
+        setupTouchScrolling();
 
         // Prepare the modal for a smooth entrance
         // First remove hidden class to make the modal visible but transparent
@@ -264,6 +265,31 @@ function adjustModalHeight() {
             featuresContainer.classList.add('overflow-y-auto');
             featuresContainer.classList.remove('overflow-y-hidden');
         }
+    }
+}
+
+/**
+ * Sets up proper touch scrolling for the What's New modal
+ */
+function setupTouchScrolling() {
+    const featuresContainer = document.querySelector('#whats-new-modal .features-container');
+    const modalContent = document.querySelector('#whats-new-modal .modal-content');
+    
+    if (featuresContainer) {
+        // Remove any conflicting classes that might interfere with native scrolling
+        featuresContainer.classList.remove('drag-scrollable');
+        modalContent?.classList.remove('drag-scrollable');
+        
+        // Ensure proper CSS properties for smooth native touch scrolling
+        featuresContainer.style.webkitOverflowScrolling = 'touch';
+        featuresContainer.style.overflowY = 'auto';
+        featuresContainer.style.touchAction = 'pan-y';
+        featuresContainer.style.overscrollBehavior = 'contain';
+        featuresContainer.style.msOverflowStyle = '-ms-autohiding-scrollbar';
+        
+        // Remove any existing touch event listeners that might conflict
+        const newFeaturesContainer = featuresContainer.cloneNode(true);
+        featuresContainer.parentNode.replaceChild(newFeaturesContainer, featuresContainer);
     }
 }
 

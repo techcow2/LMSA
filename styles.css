@@ -1124,13 +1124,20 @@ body.light-theme #loaded-model {
     }
 }
 
-/* Ensure tablet view toggle button is visible on tablets */
-@media (min-width: 768px) {
+/* Ensure tablet view toggle button is visible on tablets and larger screens */
+@media (min-width: 601px) {
     #preview-toggle {
-        display: block !important;
+        display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
         pointer-events: auto !important;
+        position: relative !important;
+        width: auto !important;
+        height: auto !important;
+        overflow: visible !important;
+        clip: auto !important;
+        white-space: normal !important;
+        border: initial !important;
     }
 }
 
@@ -1365,7 +1372,7 @@ header {
     align-items: center;
     min-height: 60px;
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to visible to prevent icon clipping */
 }
 
 /* Logo/title container with guaranteed minimum space */
@@ -1387,7 +1394,7 @@ header .header-controls {
     min-width: 0; /* Allow shrinking */
     max-width: 60%; /* Increased from 70% for better balance */
     gap: 0.125rem; /* Tighter default gap */
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to visible to prevent button clipping */
     flex-wrap: nowrap;
 }
 
@@ -1501,7 +1508,7 @@ header .header-controls {
 }
 
 /* Extra small screens (very small phones) */
-@media (max-width: 400px) {
+@media (max-width: 350px) {
     header {
         padding: 0.375rem 0.25rem;
         min-height: 52px;
@@ -1509,7 +1516,7 @@ header .header-controls {
 
     header .flex-shrink-0 {
         min-width: 80px;
-        max-width: 50%;
+        max-width: 45%; /* Reduced to give more space for controls */
     }
 
     header .flex-shrink-0 h1 {
@@ -1518,7 +1525,7 @@ header .header-controls {
     }
 
     header .header-controls {
-        max-width: 50%;
+        max-width: 55%; /* Increased to accommodate more buttons */
         gap: 0;
     }
 
@@ -1542,22 +1549,22 @@ header .header-controls {
         height: 18px !important;
     }
 
-    /* Hide preview toggle on small screens */
+    /* Only hide preview toggle on very small screens - let JS handle other buttons */
     .header-btn[data-priority="6"] {
         display: none !important;
     }
 }
 
 /* Ultra small screens (very old phones, narrow viewports) */
-@media (max-width: 360px) {
+@media (max-width: 320px) {
     header {
         padding: 0.25rem 0.125rem;
         min-height: 48px;
     }
 
     header .flex-shrink-0 {
-        min-width: 70px;
-        max-width: 55%;
+        min-width: 60px; /* Reduced to give more space for controls */
+        max-width: 40%; /* Reduced to give more space for controls */
     }
 
     header .flex-shrink-0 h1 {
@@ -1566,7 +1573,7 @@ header .header-controls {
     }
 
     header .header-controls {
-        max-width: 45%;
+        max-width: 60%; /* Increased to accommodate essential buttons */
     }
 
     .header-btn {
@@ -1589,7 +1596,7 @@ header .header-controls {
         height: 16px !important;
     }
 
-    /* Hide less important buttons */
+    /* Only hide refresh and preview toggle - let JS handle settings and help */
     .header-btn[data-priority="5"],
     .header-btn[data-priority="6"] {
         display: none !important;
@@ -1597,15 +1604,15 @@ header .header-controls {
 }
 
 /* Extreme small screens (very narrow viewports) */
-@media (max-width: 320px) {
+@media (max-width: 280px) {
     header {
         padding: 0.125rem;
         min-height: 44px;
     }
 
     header .flex-shrink-0 {
-        min-width: 60px;
-        max-width: 60%;
+        min-width: 50px; /* Further reduced to prioritize controls */
+        max-width: 35%; /* Further reduced to prioritize controls */
     }
 
     header .flex-shrink-0 h1 {
@@ -1614,7 +1621,7 @@ header .header-controls {
     }
 
     header .header-controls {
-        max-width: 40%;
+        max-width: 65%; /* Increased to ensure settings button has space */
     }
 
     .header-btn {
@@ -1637,7 +1644,7 @@ header .header-controls {
         height: 14px !important;
     }
 
-    /* Hide even more buttons on extreme small screens */
+    /* Only hide help, refresh and preview toggle - keep settings visible */
     .header-btn[data-priority="4"],
     .header-btn[data-priority="5"],
     .header-btn[data-priority="6"] {
@@ -1838,6 +1845,11 @@ h1.header-title::after {
     height: 24px;
     position: relative;
     z-index: 2;
+}
+
+/* Smooth transition for hamburger icon transformation */
+#sidebar-toggle svg path {
+    transition: all 0.3s ease;
 }
 
 /* Scrollbar styles for webkit browsers - hide by default except for specific elements */
@@ -5616,14 +5628,23 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
 }
 
 #help-btn {
-    background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
-    color: white;
+    /* Removed gradient background to make it flat like other menu items */
+    background: transparent !important;
+    color: var(--sidebar-text);
 }
 
 #help-btn:hover {
-    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(241, 196, 15, 0.3);
+    /* Use the standard menu-item hover style */
+    background: var(--sidebar-item-hover);
+    transform: translateX(4px);
+}
+
+#help-btn:focus,
+#help-btn:focus-visible,
+#help-btn.active {
+    /* Prevent blue highlight on focus or active state */
+    background: transparent !important;
+    outline: none;
 }
 
 #about-btn {

@@ -2380,6 +2380,28 @@ export async function regenerateLastResponse(isRetry = false) {
         // Clear any AI messages after the last user message
         const filteredMessages = messages.slice(0, lastUserMessageIndex + 1);
 
+        // Remove existing AI messages from the DOM after the last user message
+        const messageElements = Array.from(messagesContainer.children);
+        let lastUserMessageElementIndex = -1;
+
+        // Find the last user message element in the DOM
+        for (let i = messageElements.length - 1; i >= 0; i--) {
+            if (messageElements[i].classList.contains('user')) {
+                lastUserMessageElementIndex = i;
+                break;
+            }
+        }
+
+        // Remove all AI messages after the last user message
+        if (lastUserMessageElementIndex !== -1) {
+            for (let i = messageElements.length - 1; i > lastUserMessageElementIndex; i--) {
+                if (messageElements[i].classList.contains('ai')) {
+                    debugLog('Removing existing AI message during regeneration');
+                    messageElements[i].remove();
+                }
+            }
+        }
+
         // Show loading indicator and toggle to stop button
         showLoadingIndicator();
         toggleSendStopButton();
@@ -2398,7 +2420,6 @@ export async function regenerateLastResponse(isRetry = false) {
 
         let aiMessage = '';
         let hasCodeBlock = false; // Track if we detected a code block
-        let hasThinkTags = false; // Track if we detected thinking tags
 
         // Declare timeout variables outside try block to ensure they're accessible in finally block
         let streamingTimeoutId;
@@ -2527,6 +2548,11 @@ export async function regenerateLastResponse(isRetry = false) {
 
             resetChunkTimeout();
 
+            // Track streaming progress for reasoning models (same as initial generation)
+            let lastChunkTime = Date.now();
+            let isInThinkingProcess = false;
+            let thinkingStartTime = null;
+
             // Process the streaming response
             while (true) {
                 const { done, value } = await reader.read();
@@ -2583,13 +2609,26 @@ export async function regenerateLastResponse(isRetry = false) {
                                     if (delta.content) {
                                         aiMessage += delta.content;
 
-                                        // Check if this contains thinking tags
-                                        if (!hasThinkTags && (delta.content.includes('<think>') ||
-                                                            delta.content.includes('</think>') ||
-                                                            aiMessage.includes('<think>') ||
-                                                            aiMessage.includes('</think>'))) {
-                                            hasThinkTags = true;
+                                        // Track thinking process for progress indication (same as initial generation)
+                                        const hasThinkTagsNow = aiMessage.includes('<think>') || aiMessage.includes('</think>');
+                                        const currentlyInThinking = hasThinkTagsNow && aiMessage.lastIndexOf('</think>') < aiMessage.lastIndexOf('<think>');
+
+                                        // Detect start of thinking process
+                                        if (!isInThinkingProcess && currentlyInThinking) {
+                                            isInThinkingProcess = true;
+                                            thinkingStartTime = Date.now();
+                                            debugLog('Reasoning model started thinking process during regeneration');
                                         }
+
+                                        // Detect end of thinking process
+                                        if (isInThinkingProcess && !currentlyInThinking && aiMessage.includes('</think>')) {
+                                            isInThinkingProcess = false;
+                                            const thinkingDuration = Date.now() - thinkingStartTime;
+                                            debugLog(`Reasoning model completed thinking process in ${thinkingDuration}ms during regeneration`);
+                                        }
+
+                                        // Track thinking tags (recalculate each time like in regular function)
+                                        const hasThinkTags = aiMessage.includes('<think>') || aiMessage.includes('</think>');
 
                                         // Check if this is a code block outside of think tags
                                         if (!hasCodeBlock &&
@@ -2667,12 +2706,22 @@ export async function regenerateLastResponse(isRetry = false) {
                                                     if (!thinkingIndicator) {
                                                         thinkingIndicator = document.createElement('div');
                                                         thinkingIndicator.className = 'thinking-indicator';
-                                                        thinkingIndicator.innerHTML = '<i class="fas fa-brain"></i>';
+
+                                                        // Enhanced thinking indicator with progress (same as initial generation)
+                                                        const thinkingDuration = thinkingStartTime ? Date.now() - thinkingStartTime : 0;
+                                                        const durationText = thinkingDuration > 1000 ? ` (${Math.round(thinkingDuration / 1000)}s)` : '';
+
+                                                        thinkingIndicator.innerHTML = `<i class="fas fa-brain"></i>${durationText}`;
                                                         thinkingIndicator.setAttribute('data-thinking-content', '');
 
                                                         // Clear the container and add the indicator
                                                         contentContainer.innerHTML = '';
                                                         contentContainer.appendChild(thinkingIndicator);
+                                                    } else {
+                                                        // Update existing indicator with duration (same as initial generation)
+                                                        const thinkingDuration = thinkingStartTime ? Date.now() - thinkingStartTime : 0;
+                                                        const durationText = thinkingDuration > 1000 ? ` (${Math.round(thinkingDuration / 1000)}s)` : '';
+                                                        thinkingIndicator.innerHTML = `<i class="fas fa-brain"></i>${durationText}`;
                                                     }
 
                                                     // Update the data attribute with current thinking content

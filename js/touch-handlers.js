@@ -1,13 +1,21 @@
-// Touch event handlers for mobile devices
+// Touch event handlers for mobile devices with performance optimizations
 import { messagesContainer, userInput } from './dom-elements.js';
 import { ensureCursorVisible } from './utils.js';
+import { getDevicePerformanceLevel, throttle } from './performance-utils.js';
 
 /**
- * Initializes touch event handlers
+ * Initializes touch event handlers with adaptive performance optimizations
  */
 export async function initializeTouchHandlers() {
-    // Prevent default touch behavior except for scrollable containers
-    document.body.addEventListener('touchmove', function(e) {
+    const performanceLevel = getDevicePerformanceLevel();
+    console.log(`Initializing touch handlers for ${performanceLevel} performance device`);
+
+    // Create throttled touch handler for low-end devices
+    const touchMoveHandler = performanceLevel === 'low'
+        ? throttle(handleTouchMove, 16) // ~60fps for low-end devices
+        : handleTouchMove;
+
+    function handleTouchMove(e) {
         // Check if the touch is within a Monaco editor component
         const isMonacoElement = e.target.closest('.monaco-container') !== null ||
                                e.target.closest('.monaco-editor') !== null ||
@@ -29,7 +37,10 @@ export async function initializeTouchHandlers() {
         if (!isMonacoElement && !isScrollableContainer) {
             e.preventDefault();
         }
-    }, { passive: false });
+    }
+
+    // Prevent default touch behavior except for scrollable containers
+    document.body.addEventListener('touchmove', touchMoveHandler, { passive: false });
 
     // Allow scrolling within the messages container
     if (messagesContainer) {
@@ -66,19 +77,32 @@ export async function initializeTouchHandlers() {
         // Import scrollToBottom function directly to avoid dynamic imports
         const { scrollToBottom } = await import('./utils.js');
 
-        // Consolidated function to handle all input field interactions
-        const handleInputInteraction = function(e) {
-            e.stopPropagation();
+        // Consolidated function to handle all input field interactions with performance optimization
+        const handleInputInteraction = performanceLevel === 'low'
+            ? throttle(function(e) {
+                e.stopPropagation();
 
-            // Ensure messagesContainer exists
-            if (!messagesContainer) return;
+                // Ensure messagesContainer exists
+                if (!messagesContainer) return;
 
-            // Use requestAnimationFrame for smoother scrolling
-            requestAnimationFrame(() => {
-                // Force scroll to bottom when user interacts with input field
-                scrollToBottom(messagesContainer, true);
-            });
-        };
+                // Use requestAnimationFrame for smoother scrolling
+                requestAnimationFrame(() => {
+                    // Force scroll to bottom when user interacts with input field
+                    scrollToBottom(messagesContainer, true);
+                });
+            }, 100) // Throttle to 10fps for low-end devices
+            : function(e) {
+                e.stopPropagation();
+
+                // Ensure messagesContainer exists
+                if (!messagesContainer) return;
+
+                // Use requestAnimationFrame for smoother scrolling
+                requestAnimationFrame(() => {
+                    // Force scroll to bottom when user interacts with input field
+                    scrollToBottom(messagesContainer, true);
+                });
+            };
 
         // Add event listeners for all interaction types
         userInput.addEventListener('focus', handleInputInteraction);

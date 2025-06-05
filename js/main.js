@@ -16,18 +16,38 @@ import { initializeWhatsNew } from './whats-new.js';
 import { initializeSettingsModal } from './settings-modal-manager.js';
 import { initializeCharacterManager } from './character-manager.js';
 import { initializeCharacterGallery } from './character-gallery.js';
-import { setupLazyLoading, addHardwareAcceleration } from './performance-utils.js';
+import {
+    setupLazyLoading,
+    addHardwareAcceleration,
+    getDevicePerformanceLevel,
+    startMemoryMonitoring,
+    progressiveComponentLoading
+} from './performance-utils.js';
 
 import { updateConfirmationModalTheme, updateExportImportModalsTheme } from '../confirmation-modal-fix.js';
 
 /**
- * Initializes the application with performance optimizations
+ * Initializes the application with enhanced performance optimizations
  */
 function initializeApp() {
     // Disable debug logging by default
     setDebugEnabled(false);
 
-    console.log('Starting LMSA with performance optimizations...');
+    console.log('Starting LMSA with enhanced performance optimizations...');
+
+    // Detect device performance level first
+    const performanceLevel = getDevicePerformanceLevel();
+    console.log(`Detected device performance level: ${performanceLevel}`);
+
+    // Start memory monitoring for automatic cleanup
+    startMemoryMonitoring();
+
+    // Initialize Monaco editor cleanup for memory management
+    import('./monaco-performance.js').then(module => {
+        module.setupMonacoCleanup();
+    }).catch(error => {
+        console.error('Error setting up Monaco cleanup:', error);
+    });
 
     // Apply performance optimizations to key UI elements
     applyPerformanceOptimizations();
@@ -82,7 +102,7 @@ function initializeApp() {
         console.log('Performance optimizations applied');
     }
 
-    // Load settings and initialize components
+    // Load critical settings first
     loadServerSettings(); // This will also fetch available models
     loadSettings();
     loadChatHistory();
@@ -129,29 +149,39 @@ function initializeApp() {
     hideLoadingIndicatorOnLoad();
     ensureWelcomeMessagePosition();
 
-    // Initialize event handlers
+    // Initialize critical components first
     initializeEventHandlers();
 
-    // Initialize touch handlers
-    initializeTouchHandlers();
+    // Use progressive loading for non-critical components based on device performance
+    // (performanceLevel already declared above)
 
-    // Initialize chat history touch handler for improved mobile scrolling
-    initializeChatHistoryTouchHandler();
+    // Define component initialization functions in order of priority
+    const componentInitializers = [
+        // High priority - touch and interaction
+        () => initializeTouchHandlers(),
+        () => initializeChatHistoryTouchHandler(),
+        () => initializeSettingsModalTouchHandler(),
+        () => initializeSidebarTouchHandler(),
 
-    // Initialize settings modal touch handler for improved touch scrolling
-    initializeSettingsModalTouchHandler();
+        // Medium priority - core functionality
+        () => initializeFileUpload(),
+        () => initializeModelManager(),
+        () => initializeCollapsibleSections(),
+        () => initializeSettingsModal(),
 
-    // Initialize sidebar touch handler for improved touch scrolling
-    initializeSidebarTouchHandler();
+        // Lower priority - additional features
+        () => initializeExportImport(),
+        () => initializeWhatsNew(),
+        () => initializeCharacterManager(),
+        () => initializeCharacterGallery(),
 
-    // Initialize export/import functionality
-    initializeExportImport();
+        // Lowest priority - theme and visual enhancements
+        () => updateConfirmationModalTheme(),
+        () => updateExportImportModalsTheme()
+    ];
 
-    // Initialize model manager
-    initializeModelManager();
-
-    // Initialize What's New modal
-    initializeWhatsNew();
+    // Use progressive loading for better performance on slower devices
+    progressiveComponentLoading(componentInitializers);
 
     // Initialize scroll button state - ensure it's hidden on startup
     const messagesContainer = document.getElementById('messages');
@@ -255,24 +285,6 @@ function initializeApp() {
 
     // Add event listener to hide loading indicator when the page loads
     window.addEventListener('load', hideLoadingIndicatorOnLoad);
-
-    // Initialize collapsible sections
-    initializeCollapsibleSections();
-
-    // Initialize settings modal
-    initializeSettingsModal();
-
-    // Initialize confirmation modal theme
-    updateConfirmationModalTheme();
-
-    // Initialize export/import modals theme
-    updateExportImportModalsTheme();
-
-    // Initialize character manager
-    initializeCharacterManager();
-
-    // Initialize character gallery
-    initializeCharacterGallery();
 }
 
 /**

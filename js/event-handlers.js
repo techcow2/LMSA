@@ -1,4 +1,5 @@
-// Event Handlers for the application
+    // Only proceed if sidebar exists and is currently active/visible
+  // Event Handlers for the application
 import {
     chatForm, userInput, clearChatButton, newChatButton, settingsButton,
     closeSettingsButton, closeSettingsXButton, settingsModal, welcomeMessage, messagesContainer,
@@ -11,7 +12,7 @@ import {
 } from './dom-elements.js';
 import { showSettingsModal, hideSettingsModal } from './settings-modal-manager.js';
 import {
-    showWelcomeMessage, hideWelcomeMessage, toggleSidebar, showLoadingIndicator,
+    showWelcomeMessage, hideWelcomeMessage, toggleSidebar, closeSidebar, showLoadingIndicator,
     hideLoadingIndicator, toggleSendStopButton, hideConfirmationModal, showConfirmationModal,
     getSelectedText, getSelectedMessageElement, appendMessage, updateActiveCharacterDisplay
 } from './ui-manager.js';
@@ -71,7 +72,6 @@ export function initializeEventHandlers() {
                 welcomeMessage.style.opacity = '0';
                 welcomeMessage.style.visibility = 'hidden';
             }
-
             // Use the centralized settings modal manager
             try {
                 showSettingsModal();
@@ -114,13 +114,11 @@ export function initializeEventHandlers() {
         // Function to open character gallery
         const openCharacterGallery = () => {
             debugLog('Character Gallery button clicked, opening character gallery');
-
             // Ensure the welcome message is hidden when character gallery is shown
             if (welcomeMessage && welcomeMessage.style.display !== 'none') {
                 welcomeMessage.style.opacity = '0';
                 welcomeMessage.style.visibility = 'hidden';
             }
-
             // Show the character gallery
             try {
                 showCharacterGallery();
@@ -515,40 +513,13 @@ export function initializeEventHandlers() {
     if (helpButton) {
         helpButton.addEventListener('click', () => {
             // Close the sidebar first
-            if (sidebar) {
-                sidebar.classList.add('hidden');
-                sidebar.classList.remove('active');
-                document.body.classList.remove('sidebar-open');
-
-                // Also close the options container
-                const optionsContainer = document.getElementById('options-container');
-                if (optionsContainer) {
-                    optionsContainer.classList.add('hidden');
-                    optionsContainer.classList.remove('animate-fade-in');
-                }
-
-                // Remove the sidebar overlay
-                const sidebarOverlay = document.getElementById('sidebar-overlay');
-                if (sidebarOverlay) {
-                    sidebarOverlay.classList.remove('active');
-                    sidebarOverlay.classList.add('hidden');
-                }
-
-                // Collapse all sections when sidebar is closed
-                const sectionHeaders = sidebar.querySelectorAll('.section-header');
-                const chatHistorySection = sidebar.querySelector('.sidebar-section:last-child');
-                sectionHeaders.forEach(header => {
-                    header.classList.remove('active');
-                    const content = header.nextElementSibling;
-                    if (content && content.classList.contains('collapsible-content')) {
-                        content.classList.remove('show');
-                    }
-                });
-
-                // Ensure chat history is visible when sidebar is closed
-                if (chatHistorySection) {
-                    chatHistorySection.classList.remove('chat-history-hidden');
-                }
+            closeSidebar();
+            
+            // Also close the options container
+            const optionsContainer = document.getElementById('options-container');
+            if (optionsContainer) {
+                optionsContainer.classList.add('hidden');
+                optionsContainer.classList.remove('animate-fade-in');
             }
 
             // Then open the Help modal
@@ -615,18 +586,14 @@ export function initializeEventHandlers() {
                     }, 300);
                 }
 
-                // Wait for the sidebar animation to complete before hiding it
+                // Close the sidebar and show the What's New modal
+                closeSidebar();
+                
+                // Show the What's New modal after sidebar is closed
                 setTimeout(() => {
-                    sidebar.classList.add('hidden');
-                    sidebar.classList.remove('active');
-                    document.body.classList.remove('sidebar-open');
-
-                    // Show the What's New modal after sidebar is closed
-                    setTimeout(() => {
-                        // Show the What's New modal, forcing it to show even if already seen
-                        showWhatsNewModal(true);
-                    }, 100); // Small delay for a smoother transition
-                }, 300); // Match this with the CSS transition duration
+                    // Show the What's New modal, forcing it to show even if already seen
+                    showWhatsNewModal(true);
+                }, 100); // Small delay for a smoother transition
             } else {
                 // If sidebar doesn't exist, just show the modal
                 showWhatsNewModal(true);
@@ -691,40 +658,13 @@ export function initializeEventHandlers() {
         newAboutButton.addEventListener('click', () => {
             debugLog('About button clicked');
             // Close the sidebar first
-            if (sidebar) {
-                sidebar.classList.add('hidden');
-                sidebar.classList.remove('active');
-                document.body.classList.remove('sidebar-open');
-
-                // Also close the options container
-                const optionsContainer = document.getElementById('options-container');
-                if (optionsContainer) {
-                    optionsContainer.classList.add('hidden');
-                    optionsContainer.classList.remove('animate-fade-in');
-                }
-
-                // Remove the sidebar overlay
-                const sidebarOverlay = document.getElementById('sidebar-overlay');
-                if (sidebarOverlay) {
-                    sidebarOverlay.classList.remove('active');
-                    sidebarOverlay.classList.add('hidden');
-                }
-
-                // Collapse all sections when sidebar is closed
-                const sectionHeaders = sidebar.querySelectorAll('.section-header');
-                const chatHistorySection = sidebar.querySelector('.sidebar-section:last-child');
-                sectionHeaders.forEach(header => {
-                    header.classList.remove('active');
-                    const content = header.nextElementSibling;
-                    if (content && content.classList.contains('collapsible-content')) {
-                        content.classList.remove('show');
-                    }
-                });
-
-                // Ensure chat history is visible when sidebar is closed
-                if (chatHistorySection) {
-                    chatHistorySection.classList.remove('chat-history-hidden');
-                }
+            closeSidebar();
+            
+            // Also close the options container
+            const optionsContainer = document.getElementById('options-container');
+            if (optionsContainer) {
+                optionsContainer.classList.add('hidden');
+                optionsContainer.classList.remove('animate-fade-in');
             }
 
             // Then open the About modal
@@ -905,40 +845,13 @@ export function initializeEventHandlers() {
         newModelButton.addEventListener('click', () => {
             debugLog('Model button clicked');
             // Close the sidebar first
-            if (sidebar) {
-                sidebar.classList.add('hidden');
-                sidebar.classList.remove('active');
-                document.body.classList.remove('sidebar-open');
-
-                // Also close the options container
-                const optionsContainer = document.getElementById('options-container');
-                if (optionsContainer) {
-                    optionsContainer.classList.add('hidden');
-                    optionsContainer.classList.remove('animate-fade-in');
-                }
-
-                // Remove the sidebar overlay
-                const sidebarOverlay = document.getElementById('sidebar-overlay');
-                if (sidebarOverlay) {
-                    sidebarOverlay.classList.remove('active');
-                    sidebarOverlay.classList.add('hidden');
-                }
-
-                // Collapse all sections when sidebar is closed
-                const sectionHeaders = sidebar.querySelectorAll('.section-header');
-                const chatHistorySection = sidebar.querySelector('.sidebar-section:last-child');
-                sectionHeaders.forEach(header => {
-                    header.classList.remove('active');
-                    const content = header.nextElementSibling;
-                    if (content && content.classList.contains('collapsible-content')) {
-                        content.classList.remove('show');
-                    }
-                });
-
-                // Ensure chat history is visible when sidebar is closed
-                if (chatHistorySection) {
-                    chatHistorySection.classList.remove('chat-history-hidden');
-                }
+            closeSidebar();
+            
+            // Also close the options container
+            const optionsContainer = document.getElementById('options-container');
+            if (optionsContainer) {
+                optionsContainer.classList.add('hidden');
+                optionsContainer.classList.remove('animate-fade-in');
             }
 
             // Then open the Model modal
@@ -959,50 +872,39 @@ export function initializeEventHandlers() {
             console.log('Characters button clicked, showing character gallery');
 
             // Close the sidebar first
-            if (sidebar) {
-                sidebar.classList.add('hidden');
-                sidebar.classList.remove('active');
-                document.body.classList.remove('sidebar-open');
-
-                // Also close the options container
-                const optionsContainer = document.getElementById('options-container');
-                if (optionsContainer) {
-                    optionsContainer.classList.add('hidden');
-                    optionsContainer.classList.remove('animate-fade-in');
-                }
-
-                // Remove the sidebar overlay
-                const sidebarOverlay = document.getElementById('sidebar-overlay');
-                if (sidebarOverlay) {
-                    sidebarOverlay.classList.remove('active');
-                    sidebarOverlay.classList.add('hidden');
-                }
-
-                // Collapse all sections when sidebar is closed
-                const sectionHeaders = sidebar.querySelectorAll('.section-header');
-                const chatHistorySection = sidebar.querySelector('.sidebar-section:last-child');
-                sectionHeaders.forEach(header => {
-                    header.classList.remove('active');
-                    const content = header.nextElementSibling;
-                    if (content && content.classList.contains('collapsible-content')) {
-                        content.classList.remove('show');
-                    }
-                });
-
-                // Ensure chat history is visible when sidebar is closed
-                if (chatHistorySection) {
-                    chatHistorySection.classList.remove('chat-history-hidden');
-                }
-
-                // Get the latest character data
-                import('./character-manager.js').then(module => {
-                    const charactersData = module.getCharactersData();
-                    console.log('Characters data from character-manager:', Object.keys(charactersData));
-
-                    // Show the character gallery with the latest data
-                    showCharacterGallery(charactersData);
-                });
+            closeSidebar();
+            
+            // Also close the options container
+            const optionsContainer = document.getElementById('options-container');
+            if (optionsContainer) {
+                optionsContainer.classList.add('hidden');
+                optionsContainer.classList.remove('animate-fade-in');
             }
+            
+            // Collapse all sections when sidebar is closed
+            const sectionHeaders = sidebar.querySelectorAll('.section-header');
+            const chatHistorySection = sidebar.querySelector('.sidebar-section:last-child');
+            sectionHeaders.forEach(header => {
+                header.classList.remove('active');
+                const content = header.nextElementSibling;
+                if (content && content.classList.contains('collapsible-content')) {
+                    content.classList.remove('show');
+                }
+            });
+
+            // Ensure chat history is visible when sidebar is closed
+            if (chatHistorySection) {
+                chatHistorySection.classList.remove('chat-history-hidden');
+            }
+            
+            // Get the latest character data
+            import('./character-manager.js').then(module => {
+                const charactersData = module.getCharactersData();
+                console.log('Characters data from character-manager:', Object.keys(charactersData));
+
+                // Show the character gallery with the latest data
+                showCharacterGallery(charactersData);
+            });
         });
         debugLog('Characters button event handler attached during initialization');
     }
@@ -1081,6 +983,7 @@ export function initializeEventHandlers() {
                     debugLog('No messages in chat, topic boundary not added');
                 }
             }
+
             // Always hide the context menu after clicking, even if no action was taken
             hideSendContextMenu();
         });
@@ -1638,40 +1541,29 @@ function handleSettingsButtonClick() {
     document.body.removeEventListener('click', handleSidebarOutsideClick);
 
     // Close the sidebar regardless of screen size
-    if (sidebar) {
-        sidebar.classList.add('hidden');
-        sidebar.classList.remove('active');
-        document.body.classList.remove('sidebar-open');
-
-        // Also close the options container
-        const optionsContainer = document.getElementById('options-container');
-        if (optionsContainer) {
-            optionsContainer.classList.add('hidden');
-            optionsContainer.classList.remove('animate-fade-in');
+    closeSidebar();
+    
+    // Also close the options container
+    const optionsContainer = document.getElementById('options-container');
+    if (optionsContainer) {
+        optionsContainer.classList.add('hidden');
+        optionsContainer.classList.remove('animate-fade-in');
+    }
+    
+    // Collapse all sections when sidebar is closed
+    const sectionHeaders = sidebar.querySelectorAll('.section-header');
+    const chatHistorySection = sidebar.querySelector('.sidebar-section:last-child');
+    sectionHeaders.forEach(header => {
+        header.classList.remove('active');
+        const content = header.nextElementSibling;
+        if (content && content.classList.contains('collapsible-content')) {
+            content.classList.remove('show');
         }
+    });
 
-        // Remove the sidebar overlay
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
-        if (sidebarOverlay) {
-            sidebarOverlay.classList.remove('active');
-            sidebarOverlay.classList.add('hidden');
-        }
-
-        // Collapse all sections when sidebar is closed
-        const sectionHeaders = sidebar.querySelectorAll('.section-header');
-        const chatHistorySection = sidebar.querySelector('.sidebar-section:last-child');
-        sectionHeaders.forEach(header => {
-            header.classList.remove('active');
-            const content = header.nextElementSibling;
-            if (content && content.classList.contains('collapsible-content')) {
-                content.classList.remove('show');
-            }
-        });
-
-        // Ensure chat history is visible when sidebar is closed
-        if (chatHistorySection) {
-            chatHistorySection.classList.remove('chat-history-hidden');
-        }
+    // Ensure chat history is visible when sidebar is closed
+    if (chatHistorySection) {
+        chatHistorySection.classList.remove('chat-history-hidden');
     }
 
     // Ensure the welcome message is hidden when settings modal is shown
@@ -1679,7 +1571,7 @@ function handleSettingsButtonClick() {
         welcomeMessage.style.opacity = '0';
         welcomeMessage.style.visibility = 'hidden';
     }
-
+    
     // Use the centralized settings modal manager
     showSettingsModal();
 
@@ -1866,42 +1758,30 @@ function handleOptionsButtonClick() {
                 // Add the event listener to the new button
                 newAboutButton.addEventListener('click', () => {
                     // Close the sidebar first
-                    const sidebar = document.getElementById('sidebar');
-                    if (sidebar) {
-                        sidebar.classList.add('hidden');
-                        sidebar.classList.remove('active');
-                        document.body.classList.remove('sidebar-open');
-
-                        // Also close the options container
-                        const optionsContainer = document.getElementById('options-container');
-                        if (optionsContainer) {
-                            optionsContainer.classList.add('hidden');
-                            optionsContainer.classList.remove('animate-fade-in');
-                            optionsButton.classList.remove('active');
+                    closeSidebar();
+                    
+                    // Also close the options container
+                    const optionsContainer = document.getElementById('options-container');
+                    if (optionsContainer) {
+                        optionsContainer.classList.add('hidden');
+                        optionsContainer.classList.remove('animate-fade-in');
+                        optionsButton.classList.remove('active');
+                    }
+                    
+                    // Collapse all sections when sidebar is closed
+                    const sectionHeaders = sidebar.querySelectorAll('.section-header');
+                    const chatHistorySection = sidebar.querySelector('.sidebar-section:last-child');
+                    sectionHeaders.forEach(header => {
+                        header.classList.remove('active');
+                        const content = header.nextElementSibling;
+                        if (content && content.classList.contains('collapsible-content')) {
+                            content.classList.remove('show');
                         }
+                    });
 
-                        // Remove the sidebar overlay
-                        const sidebarOverlay = document.getElementById('sidebar-overlay');
-                        if (sidebarOverlay) {
-                            sidebarOverlay.classList.remove('active');
-                            sidebarOverlay.classList.add('hidden');
-                        }
-
-                        // Collapse all sections when sidebar is closed
-                        const sectionHeaders = sidebar.querySelectorAll('.section-header');
-                        const chatHistorySection = sidebar.querySelector('.sidebar-section:last-child');
-                        sectionHeaders.forEach(header => {
-                            header.classList.remove('active');
-                            const content = header.nextElementSibling;
-                            if (content && content.classList.contains('collapsible-content')) {
-                                content.classList.remove('show');
-                            }
-                        });
-
-                        // Ensure chat history is visible when sidebar is closed
-                        if (chatHistorySection) {
-                            chatHistorySection.classList.remove('chat-history-hidden');
-                        }
+                    // Ensure chat history is visible when sidebar is closed
+                    if (chatHistorySection) {
+                        chatHistorySection.classList.remove('chat-history-hidden');
                     }
 
                     // Then open the About modal

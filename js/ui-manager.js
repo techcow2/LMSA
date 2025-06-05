@@ -120,6 +120,9 @@ export function toggleSidebar() {
 
     const sidebarOverlay = document.getElementById('sidebar-overlay');
     const isOpen = sidebar.classList.contains('active');
+    
+    // Update hamburger icon based on sidebar state
+    updateHamburgerIcon(!isOpen);
 
     // Toggle the overlay in mobile and tablet view first
     // Increased width threshold to 1024px to include tablets
@@ -216,6 +219,54 @@ export function toggleSidebar() {
             sidebar.classList.remove('animate-slide-out');
         }, 300);
     }
+}
+
+/**
+ * Updates the hamburger icon to show hamburger or X based on sidebar state
+ * @param {boolean} isOpen - Whether the sidebar is open
+ */
+export function updateHamburgerIcon(isOpen) {
+    const sidebarToggleBtn = document.getElementById('sidebar-toggle');
+    if (!sidebarToggleBtn) return;
+    
+    const svg = sidebarToggleBtn.querySelector('svg');
+    if (!svg) return;
+    
+    const path = svg.querySelector('path');
+    if (!path) return;
+    
+    if (isOpen) {
+        // Change to X icon
+        path.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+        svg.setAttribute('aria-label', 'Close sidebar');
+    } else {
+        // Change back to hamburger icon
+        path.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+        svg.setAttribute('aria-label', 'Open sidebar');
+    }
+}
+
+/**
+ * Helper function to close sidebar and update hamburger icon
+ */
+export function closeSidebar() {
+    if (!sidebar) return;
+    
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    
+    // Close sidebar
+    sidebar.classList.add('hidden');
+    sidebar.classList.remove('active');
+    document.body.classList.remove('sidebar-open');
+    
+    // Close overlay if it exists
+    if (sidebarOverlay) {
+        sidebarOverlay.classList.remove('active');
+        sidebarOverlay.classList.add('hidden');
+    }
+    
+    // Update hamburger icon to show hamburger
+    updateHamburgerIcon(false);
 }
 
 /**
@@ -1791,7 +1842,8 @@ class HeaderManager {
         const spaceNeeded = controlsWidth;
 
         // If controls don't fit, start hiding buttons by priority
-        if (spaceNeeded > availableSpace) {
+        // But be more conservative - only hide if we're really tight on space
+        if (spaceNeeded > availableSpace + 20) { // Add 20px buffer
             this.hideButtonsByPriority(availableSpace);
         } else {
             this.showAllButtons();
@@ -1813,12 +1865,24 @@ class HeaderManager {
         buttonData.sort((a, b) => a.priority - b.priority);
 
         let currentWidth = 0;
+        const gap = 2; // Account for gap between buttons
 
-        // First, show all buttons that fit, starting with highest priority
+        // Always try to keep sidebar toggle (priority 1) and settings (priority 2) visible
+        // Keep preview toggle (priority 6) visible on tablet+ screens
         buttonData.forEach(data => {
-            if (currentWidth + data.width <= availableSpace) {
-                data.element.style.display = 'flex';
-                currentWidth += data.width;
+            const isEssential = data.priority <= 2; // Sidebar toggle and settings
+            const isPreviewToggle = data.priority === 6;
+            const isTabletOrLarger = window.innerWidth >= 768;
+            const shouldKeepVisible = isEssential || (isPreviewToggle && isTabletOrLarger);
+            const spaceWithGap = currentWidth + data.width + (currentWidth > 0 ? gap : 0);
+            
+            if (spaceWithGap <= availableSpace || shouldKeepVisible) {
+                // Check if CSS media query is hiding this button
+                const computedStyle = window.getComputedStyle(data.element);
+                if (computedStyle.display !== 'none') {
+                    data.element.style.display = 'flex';
+                    currentWidth = spaceWithGap;
+                }
             } else {
                 data.element.style.display = 'none';
             }

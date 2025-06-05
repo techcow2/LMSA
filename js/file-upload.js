@@ -22,11 +22,18 @@ export function initializeFileUpload() {
     }
     
     console.log('Found file upload input element:', localFileInput.id);
-    
+
     // Remove any existing event listeners to prevent duplicates
-    const newFileInput = localFileInput.cloneNode(true);
-    localFileInput.parentNode.replaceChild(newFileInput, localFileInput);
-    localFileInput = newFileInput;
+    // Only replace if the element has a parent node
+    if (localFileInput.parentNode) {
+        const newFileInput = localFileInput.cloneNode(true);
+        localFileInput.parentNode.replaceChild(newFileInput, localFileInput);
+        localFileInput = newFileInput;
+    } else {
+        // If no parent node, just remove existing event listeners directly
+        console.log('File input has no parent node, removing event listeners directly');
+        localFileInput.removeEventListener('change', handleFileSelection);
+    }
     
     // Add event listener for file selection
     localFileInput.addEventListener('change', (event) => {
@@ -37,20 +44,30 @@ export function initializeFileUpload() {
     // Reset the uploaded files state
     resetUploadedFiles();
     
-    // Add event listener to the paperclip button 
+    // Add event listener to the paperclip button
     const paperclipButton = document.getElementById('paperclip-button');
     if (paperclipButton) {
         console.log('Found paperclip button, adding click listener');
-        
+
         // Remove any existing event listeners to prevent duplicates
-        const newPaperclipButton = paperclipButton.cloneNode(true);
-        paperclipButton.parentNode.replaceChild(newPaperclipButton, paperclipButton);
-        
-        // Add click event to open file dialog
-        newPaperclipButton.addEventListener('click', () => {
-            console.log('Paperclip button clicked, triggering file input');
-            localFileInput.click();
-        });
+        // Only replace if the element has a parent node
+        if (paperclipButton.parentNode) {
+            const newPaperclipButton = paperclipButton.cloneNode(true);
+            paperclipButton.parentNode.replaceChild(newPaperclipButton, paperclipButton);
+
+            // Add click event to open file dialog
+            newPaperclipButton.addEventListener('click', () => {
+                console.log('Paperclip button clicked, triggering file input');
+                localFileInput.click();
+            });
+        } else {
+            // If no parent node, add event listener directly
+            console.log('Paperclip button has no parent node, adding event listener directly');
+            paperclipButton.addEventListener('click', () => {
+                console.log('Paperclip button clicked, triggering file input');
+                localFileInput.click();
+            });
+        }
     }
     
     console.log('File upload initialization complete');

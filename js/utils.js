@@ -297,7 +297,7 @@ export function escapeHtml(unsafe) {
 }
 
 /**
- * Initializes Monaco Editor for code blocks
+ * Initializes Monaco Editor for code blocks with performance optimizations
  * @param {HTMLElement} element - The element containing code blocks
  */
 export function initializeCodeMirror(element) {
@@ -587,26 +587,16 @@ export function initializeCodeMirror(element) {
                     // This code is separated from the main processing flow to avoid blocking
                     if (window.monaco) {
                         // Use a minimal delay to avoid blocking the connection closure
-                        queueMicrotask(() => {
+                        queueMicrotask(async () => {
                             try {
                                 // Remove the fallback first
                                 if (fallbackText && fallbackText.parentNode === monacoContainer) {
                                     monacoContainer.removeChild(fallbackText);
                                 }
 
-                                // Create Monaco editor with minimal options for performance
-                                const editor = window.monaco.editor.create(editorContainer, {
-                                    value: codeContent,
-                                    language: monacoLanguage,
-                                    readOnly: true,
-                                    theme: 'vs-dark',
-                                    minimap: { enabled: false },
-                                    scrollBeyondLastLine: false,
-                                    wordWrap: 'on',
-                                    automaticLayout: true,
-                                    lineNumbers: 'on',
-                                    contextmenu: true,
-                                });
+                                // Import and use optimized Monaco editor creation
+                                const { createOptimizedMonacoEditor } = await import('./monaco-performance.js');
+                                const editor = await createOptimizedMonacoEditor(editorContainer, monacoLanguage, codeContent);
 
                                 // Add copy action
                                 editor.addAction({
