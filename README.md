@@ -7,10 +7,10 @@
 ## 📸 Screenshots
 
 <p align="left">
-  <img src="https://play-lh.googleusercontent.com/-3_QQ5AG8Q8zdxoYos9Q64f4EFd04bBrC7-uiMGnAD_ipO941PHy-lFtv1blp4SlRpY=w5120-h2880" width="150" style="display:inline-block" />
-  <img src="https://play-lh.googleusercontent.com/OFXuuaaJv5rV9QwLm7F44cWX2p45zzKvM1eW5afqqRemnWAJENf8-P4lc4sX3NQXcuw=w5120-h2880" width="150" style="display:inline-block" />
-  <img src="https://play-lh.googleusercontent.com/5-g2QuedgbiVDfofbHuvbQe4EQRS3sF3Ev-6-7f_GwFaTirVlgPy57GNezV9WLKrzA=w5120-h2880" width="150" style="display:inline-block" />
-  <img src="https://play-lh.googleusercontent.com/kStTvysrvYXJzdT3zmTdBOnAWW_pFDs2tgVGr_cDY2DWELtpKlDreolBKikRtN2EFYs=w5120-h2880" width="150" style="display:inline-block" />
+  <img src="https://github.com/user-attachments/assets/ba437aee-6bc4-4442-948b-777cb34adea8" width="150" style="display:inline-block" />
+  <img src="https://github.com/user-attachments/assets/67f86d21-dccb-4f1c-b4c9-ebe22551cac3" width="150" style="display:inline-block" />
+  <img src="https://github.com/user-attachments/assets/673fad48-bd93-42df-91e2-8a7927002c86" width="150" style="display:inline-block" />
+  <img src="https://github.com/user-attachments/assets/0eec29a7-35d2-474a-af63-ba05522adac8" width="150" style="display:inline-block" />
 </p>
 
 ## 📋 What is LMSA?
