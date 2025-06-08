@@ -31,15 +31,15 @@ This project has transitioned to **open source** development.
 
 ### Development Information
 
-The project is now community-driven and open source. Development efforts are focused on collaborative community contributions, with regular updates and improvements available through GitHub releases.
+The project is now community-driven and open source. Development efforts are focused on collaborative community contributions, with regular updates and improvements available through the Google Play Store.
 
 ## 📱 Version Comparison
 
 ### Community Release
 
-The current version is available through GitHub and includes:
+The current version is available through Google Play Store:
 
-| <a href="https://play.google.com/store/apps/details?id=com.lmsa.app"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" width="160"></a> | **Open Source LMSA App**<br>-  Community-driven updates and maintenance<br>-  Complete feature set<br>-  Community support<br>-  Fully customizable |
+| <a href="https://play.google.com/store/apps/details?id=com.lmsa.app"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="120"></a> | **Google Play Store**<br>- Official distribution<br>- Automatic updates<br>- Easy installation<br>- Verified security<br>- Community-driven updates |
 |:---|:---|
 
 ## 🌟 Features Overview
@@ -107,7 +107,7 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 
 ## 🚀 Get Started Today
 
-1. Download and install the app
+1. Download and install the app from Google Play Store
 2. Start LM Studio and load a model on your computer
 3. Start the LM Studio server
 4. Open the app and enter the server IP and port in Settings
@@ -115,8 +115,15 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 
 ## 📥 Download Information
 
-### Recommended: Community Release
-**LMSA - GitHub Version**<br>
+### Available on Google Play Store
+
+<p align="left">
+  <a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
+    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="50">
+  </a>
+</p>
+
+**LMSA - LM Studio Android**<br>
 **Publisher:** LMSA Community<br>
 **Updates:** Regular community-driven feature and maintenance updates<br>
 [**Download Now →**](https://play.google.com/store/apps/details?id=com.lmsa.app)
