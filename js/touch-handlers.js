@@ -84,11 +84,6 @@ export async function initializeTouchHandlers() {
 
                 // Ensure messagesContainer exists
                 if (!messagesContainer) return;
-                
-                // Check if auto-scroll is disabled
-                if (localStorage.getItem('disableAutoScroll') === 'true') {
-                    return; // Don't scroll if auto-scroll is disabled
-                }
 
                 // Use requestAnimationFrame for smoother scrolling
                 requestAnimationFrame(() => {
@@ -101,11 +96,6 @@ export async function initializeTouchHandlers() {
 
                 // Ensure messagesContainer exists
                 if (!messagesContainer) return;
-                
-                // Check if auto-scroll is disabled
-                if (localStorage.getItem('disableAutoScroll') === 'true') {
-                    return; // Don't scroll if auto-scroll is disabled
-                }
 
                 // Use requestAnimationFrame for smoother scrolling
                 requestAnimationFrame(() => {

@@ -1,4 +1,4 @@
-// Only proceed if sidebar exists and is currently active/visible
+    // Only proceed if sidebar exists and is currently active/visible
   // Event Handlers for the application
 import {
     chatForm, userInput, clearChatButton, newChatButton, settingsButton,
@@ -589,14 +589,14 @@ export function initializeEventHandlers() {
                 // Close the sidebar and show the What's New modal
                 closeSidebar();
                 
-                // Show the Ad Notice modal after sidebar is closed
+                // Show the What's New modal after sidebar is closed
                 setTimeout(() => {
-                    // Show the Ad Notice modal, forcing it to show and indicating manual open
-                    showWhatsNewModal(true, true);
+                    // Show the What's New modal, forcing it to show even if already seen
+                    showWhatsNewModal(true);
                 }, 100); // Small delay for a smoother transition
             } else {
                 // If sidebar doesn't exist, just show the modal
-                showWhatsNewModal(true, true);
+                showWhatsNewModal(true);
             }
         });
     }
@@ -1333,7 +1333,7 @@ export function initializeEventHandlers() {
                 userInput.blur();
 
                 // Scroll to bottom when user clicks on the send button
-                if (messagesContainer && localStorage.getItem('disableAutoScroll') !== 'true') {
+                if (messagesContainer) {
                     scrollToBottom(messagesContainer);
                 }
 

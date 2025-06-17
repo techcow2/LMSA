@@ -7,11 +7,10 @@
 ## 📸 Screenshots
 
 <p align="left">
+  <img src="https://github.com/user-attachments/assets/ba437aee-6bc4-4442-948b-777cb34adea8" width="150" style="display:inline-block" />
   <img src="https://github.com/user-attachments/assets/67f86d21-dccb-4f1c-b4c9-ebe22551cac3" width="150" style="display:inline-block" />
   <img src="https://github.com/user-attachments/assets/673fad48-bd93-42df-91e2-8a7927002c86" width="150" style="display:inline-block" />
   <img src="https://github.com/user-attachments/assets/0eec29a7-35d2-474a-af63-ba05522adac8" width="150" style="display:inline-block" />
-  <img src="https://github.com/user-attachments/assets/d71d566a-161c-4f9e-869c-8f26e6947ea5" width="150" style="display:inline-block" />
-  <img src="https://github.com/user-attachments/assets/8bb7e7a3-e367-4c30-9506-03847c42a8a2" width="150" style="display:inline-block" />
 </p>
 
 ## 📋 What is LMSA?
@@ -30,15 +29,15 @@ This project has transitioned to **open source** development.
 
 ### Development Information
 
-The project is now community-driven and open source. Development efforts are focused on collaborative community contributions, with regular updates and improvements available through the Google Play Store.
+The project is now community-driven and open source. Development efforts are focused on collaborative community contributions, with regular updates and improvements available through GitHub releases.
 
 ## 📱 Version Comparison
 
 ### Community Release
 
-The current version is available through Google Play Store:
+The current version is available through GitHub and includes:
 
-| <a href="https://play.google.com/store/apps/details?id=com.lmsa.app"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="120"></a> | **Google Play Store**<br>- Official distribution<br>- Automatic updates<br>- Easy installation<br>- Verified security<br>- Community-driven updates |
+| <a href="https://play.google.com/store/apps/details?id=com.lmsa.app"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" width="160"></a> | **Open Source LMSA App**<br>-  Community-driven updates and maintenance<br>-  Complete feature set<br>-  Community support<br>-  Fully customizable |
 |:---|:---|
 
 ## 🌟 Features Overview
@@ -100,13 +99,13 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 
 ## 🔧 Technical Requirements
 
-- Android 6.0 or higher
+- Android 8.0 or higher
 - LM Studio installed and running on a computer with a suitable language model
 - Both devices connected to the same network
 
 ## 🚀 Get Started Today
 
-1. Download and install the app from Google Play Store
+1. Download and install the app
 2. Start LM Studio and load a model on your computer
 3. Start the LM Studio server
 4. Open the app and enter the server IP and port in Settings
@@ -114,15 +113,8 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 
 ## 📥 Download Information
 
-### Available on Google Play Store
-
-<p align="left">
-  <a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
-    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="50">
-  </a>
-</p>
-
-**LMSA - LM Studio Android**<br>
+### Recommended: Community Release
+**LMSA - GitHub Version**<br>
 **Publisher:** LMSA Community<br>
 **Updates:** Regular community-driven feature and maintenance updates<br>
 [**Download Now →**](https://play.google.com/store/apps/details?id=com.lmsa.app)
