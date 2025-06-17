@@ -191,9 +191,13 @@
     #sidebar,
     .character-gallery-content,
     .settings-content-wrapper,
-    .modal-content,
-    #messages {
+    .modal-content {
         scroll-behavior: auto !important; /* Use JS for smooth scrolling instead */
+    }
+    
+    /* Allow smooth scrolling for messages container when explicitly triggered by JS */
+    #messages {
+        scroll-behavior: smooth !important;
     }
 }
 
@@ -204,13 +208,21 @@
     #sidebar,
     .character-gallery-content,
     .settings-content-wrapper,
-    .modal-content,
-    #messages {
+    .modal-content {
         /* Reduce GPU usage for scrolling */
         will-change: auto !important;
         /* Simplify scroll behavior */
         scroll-behavior: auto !important;
         /* Optimize for memory usage */
+        contain: layout !important;
+    }
+    
+    /* Allow smooth scrolling for messages container even on very low-end devices */
+    #messages {
+        /* Keep smooth scrolling for better UX when touching input field */
+        scroll-behavior: smooth !important;
+        /* But still optimize other properties */
+        will-change: auto !important;
         contain: layout !important;
     }
 }

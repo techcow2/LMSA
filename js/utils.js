@@ -896,6 +896,11 @@ export function processCodeBlocks(content, encode = false) {
 export function scrollToBottom(messagesContainer, force = false) {
     if (!messagesContainer) return;
 
+    // Check if auto-scroll is disabled by reading from localStorage directly
+    if (!force && localStorage.getItem('disableAutoScroll') === 'true') {
+        return; // Don't auto-scroll if disabled, unless forced
+    }
+
     // Use a more generous threshold (50px) to determine if we're already at the bottom
     // This helps with inconsistent detection across devices
     const bottomThreshold = 50;

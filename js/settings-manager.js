@@ -1,5 +1,5 @@
 // Settings Manager for handling application settings
-import { systemPromptInput, hideThinkingCheckbox, autoGenerateTitlesCheckbox, themeToggleCheckbox } from './dom-elements.js';
+import { systemPromptInput, hideThinkingCheckbox, autoGenerateTitlesCheckbox, themeToggleCheckbox, disableAutoScrollCheckbox } from './dom-elements.js';
 import { applyThinkingVisibility, refreshAllMessages } from './ui-manager.js';
 
 // Default system prompt is empty unless user explicitly sets one
@@ -11,6 +11,7 @@ let temperature = 0.3;
 let hideThinking = false;
 let autoGenerateTitles = false;
 let lightThemeEnabled = false;
+let disableAutoScroll = false;
 let reasoningTimeout = 300; // Default 5 minutes for reasoning models (in seconds)
 
 /**
@@ -319,6 +320,35 @@ export function saveAutoGenerateTitlesSetting() {
 }
 
 /**
+ * Loads the disable auto-scroll setting from localStorage
+ */
+export function loadDisableAutoScrollSetting() {
+    if (disableAutoScrollCheckbox) {
+        const savedDisableAutoScroll = localStorage.getItem('disableAutoScroll');
+        if (savedDisableAutoScroll === 'true') {
+            disableAutoScrollCheckbox.checked = true;
+            disableAutoScroll = true;
+        } else {
+            disableAutoScrollCheckbox.checked = false;
+            disableAutoScroll = false;
+        }
+
+        // Add event listener for the checkbox
+        disableAutoScrollCheckbox.addEventListener('change', saveDisableAutoScrollSetting);
+    }
+}
+
+/**
+ * Saves the disable auto-scroll setting to localStorage
+ */
+export function saveDisableAutoScrollSetting() {
+    if (disableAutoScrollCheckbox) {
+        disableAutoScroll = disableAutoScrollCheckbox.checked;
+        localStorage.setItem('disableAutoScroll', disableAutoScroll);
+    }
+}
+
+/**
  * Loads the theme setting from localStorage
  */
 export function loadThemeSetting() {
@@ -462,6 +492,7 @@ export function loadSettings() {
     initializeTemperature();
     loadHideThinkingSetting();
     loadAutoGenerateTitlesSetting();
+    loadDisableAutoScrollSetting();
     loadThemeSetting();
     loadReasoningTimeoutSetting();
 
@@ -693,6 +724,14 @@ export function getHideThinking() {
  */
 export function getAutoGenerateTitles() {
     return autoGenerateTitles;
+}
+
+/**
+ * Gets the current disable auto-scroll setting
+ * @returns {boolean} - The current disable auto-scroll value
+ */
+export function getDisableAutoScroll() {
+    return disableAutoScroll;
 }
 
 /**

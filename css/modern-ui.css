@@ -3,6 +3,9 @@
  * A comprehensive CSS framework to transform the UI into a professional, modern and creative interface
  */
 
+/* Font and loader for modern UI */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 :root {
   /* Modern Color Palette - Dark Theme */
   --modern-bg-primary: #0f172a;
@@ -1377,7 +1380,6 @@ body.light-theme #welcome-message {
   #loaded-model-wrapper:not(.hidden) ~ #chat-container #welcome-message {
     padding-top: var(--loaded-model-height, 35px) !important; /* Remove additional padding */
   }
-}
 
 /* Extra small screens including iPhone SE in portrait mode */
 @media (max-height: 580px) and (max-width: 380px) {
@@ -1470,7 +1472,6 @@ body.light-theme #welcome-message {
   .welcome-content p {
     font-size: 0.85rem !important;
   }
-}
 
 /* Small screen optimizations for welcome screen */
 @media (max-width: 400px) {
@@ -1757,8 +1758,9 @@ body.light-theme #welcome-message {
     height: 0.7rem !important;
     line-height: 0.7rem !important;
   }
-}
 
+/* Additional welcome content adjustments for very small screens */
+@media (max-width: 320px) {
   .welcome-content h1 {
     font-size: 1.15rem !important;
     margin-bottom: 0.35rem !important;
@@ -1772,10 +1774,7 @@ body.light-theme #welcome-message {
   .welcome-content .mb-8 {
     margin-bottom: 0.75rem !important;
   }
-}
 
-/* Additional welcome content margin adjustments */
-@media (max-width: 320px) {
   .welcome-content .mb-6 {
     margin-bottom: 0.5rem !important;
   }
@@ -2353,6 +2352,3 @@ body.light-theme .glass-card {
   /* Add a subtle inner shadow to create depth */
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
-
-/* Font and loader for modern UI */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');

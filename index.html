@@ -35,6 +35,7 @@
     <link rel="stylesheet" href="css/character-gallery.css">
     <link rel="stylesheet" href="css/continue-with-character.css">
     <link rel="stylesheet" href="css/performance-optimizations.css">
+    <link rel="stylesheet" href="css/notice-modal-touch.css">
     <!-- Font Awesome with optimized loading -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript>
@@ -586,13 +587,17 @@
 
         /* Button animations */
         #rate-app-link.active-scale,
-        #official-website-link.active-scale {
+        #official-website-link.active-scale,
+        #github-link.active-scale,
+        #license-link.active-scale {
             transform: scale(0.95);
             opacity: 0.9;
         }
 
         #rate-app-link,
-        #official-website-link {
+        #official-website-link,
+        #github-link,
+        #license-link {
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
@@ -838,12 +843,18 @@
                         Help
                     </button>
                     <button id="whats-new-btn" class="menu-item w-full text-left">
-                        <i class="fas fa-wand-magic-sparkles"></i>
-                        What's New
+                        <i class="fas fa-bell"></i>
+                        Notice
                     </button>
                     <button id="about-btn" class="menu-item w-full text-left">
                         <i class="fas fa-info-circle"></i>
                         About
+                    </button>
+                    
+                    <!-- Privacy Policy -->
+                    <button id="privacy-btn" class="menu-item w-full text-left">
+                        <i class="fas fa-shield-alt"></i>
+                        Privacy
                     </button>
                     
                     <!-- Feedback Survey -->
@@ -1115,6 +1126,19 @@
                             </div>
                         </div>
                         <p class="text-xs text-gray-400 mt-1">When enabled, switches the app to light theme. When disabled, uses the default dark theme.</p>
+                    </div>
+
+                    <div class="mb-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="disable-auto-scroll" class="text-sm font-medium">
+                                <i class="fas fa-scroll mr-2 text-blue-400"></i>Disable Auto-Scroll</label>
+                            <div class="toggle-container">
+                                <input type="checkbox" id="disable-auto-scroll">
+                                <div class="toggle-switch"></div>
+                                <div class="toggle-dot"></div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">When enabled, disables all automatic scrolling features (input field touch, new message generation, etc.)</p>
                     </div>
 
 
@@ -1585,16 +1609,33 @@
     <div id="feedback-survey-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden modal-container z-50" aria-labelledby="feedback-title" role="dialog" aria-modal="true">
         <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-white/10 overflow-hidden animate-modal-in" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
             <!-- Header with title -->
-            <div class="relative flex items-center justify-between mb-6 border-b border-gray-700/60 pb-4">
+            <div class="relative flex items-center justify-between mb-4 border-b border-gray-700/60 pb-4">
                 <h2 id="feedback-title" class="text-xl font-bold flex items-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">
                     <div class="mr-3 p-2 bg-blue-500/10 rounded-full flex items-center justify-center">
                         <i class="fas fa-comment-dots text-blue-400"></i>
                     </div>
-                    How can we improve?
+                    Suggestions & Feedback
                 </h2>
                 <button id="close-feedback-modal" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center">
                     <i class="fas fa-times"></i>
                 </button>
+            </div>
+            
+            <!-- Important Notice -->
+            <div class="mb-6 p-4 bg-amber-900/30 border border-amber-700/50 rounded-lg">
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-amber-400 mt-0.5"></i>
+                    </div>
+                    <div class="text-sm text-amber-200">
+                        <p class="font-medium mb-2">Please note:</p>
+                        <ul class="space-y-1 text-amber-300/90">
+                            <li>• This form is for <strong>suggestions and feedback only</strong></li>
+                            <li>• <strong>Not for technical support</strong> - we cannot respond to individual submissions</li>
+                            <li>• For help or support, please use the <strong>Help menu</strong> in the sidebar</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             
             <!-- Feedback Form -->
@@ -1607,9 +1648,9 @@
                     <textarea 
                         name="message" 
                         id="feedback-message" 
-                        rows="5" 
+                        rows="4" 
                         class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800/50 text-white border-gray-700" 
-                        placeholder="Your feedback helps us improve. Please share your thoughts..."
+                        placeholder="Share your suggestions for improving LMSA..."
                         required
                     ></textarea>
                 </div>
@@ -1659,7 +1700,7 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="version-badge bg-white/10 px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300">Version 4.9</p>
+                    <p class="text-sm font-medium text-blue-300">Version 5.0</p>
                 </div>
             </div>
 
@@ -1689,12 +1730,63 @@
                         </a>
                     </div>
 
+                    <!-- Open Source Notice -->
+                    <div class="mt-5 pt-4 border-t border-white/10 w-full">
+                        <div class="text-center text-gray-400 mb-4">
+                            <p class="flex items-center justify-center mb-2">
+                                <i class="fas fa-code text-green-400 mr-2"></i>
+                                <span>LMSA is open source software</span>
+                            </p>
+                            <div class="flex items-center justify-center space-x-4 text-sm">
+                                <a href="#" id="github-link" class="inline-flex items-center text-gray-300 hover:text-white transition-colors duration-200">
+                                    <i class="fab fa-github mr-1.5"></i>
+                                    <span>View on GitHub</span>
+                                </a>
+                                <a href="#" id="license-link" class="inline-flex items-center text-gray-300 hover:text-white transition-colors duration-200">
+                                    <i class="fas fa-balance-scale mr-1.5"></i>
+                                    <span>MIT License</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Help link with improved styling -->
                     <div class="mt-5 pt-4 border-t border-white/10 w-full">
                         <p class="text-center text-gray-400 flex items-center justify-center">
                             <i class="fas fa-question-circle text-blue-400 mr-2"></i>
                             Need help? <a href="#" id="open-help-link" class="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200 ml-1.5 underline decoration-dotted underline-offset-2">Open Help Menu</a>
                         </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy modal -->
+    <div id="privacy-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden modal-container z-50" aria-labelledby="privacy-title" role="dialog" aria-modal="true">
+        <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] p-0 rounded-xl w-[500px] max-w-[90%] max-h-[80vh] shadow-2xl modal-content border border-white/10 overflow-hidden animate-modal-in" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
+            <!-- Header with title -->
+            <div class="relative p-6 pb-4 bg-gradient-to-r from-[#0c1d36] to-[#102240]">
+                <h2 id="privacy-title" class="text-2xl font-bold text-center flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400 mb-1">
+                    <div class="mr-3 p-2 bg-blue-500/10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-blue-400"></i>
+                    </div>
+                    Privacy Policy
+                </h2>
+                <button id="close-privacy" class="absolute right-3 top-3 text-gray-400 hover:text-white focus:outline-none transition-all duration-300 hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Main content with scrollable privacy policy -->
+            <div class="p-6 pt-4 overflow-y-auto max-h-[60vh]" style="scrollbar-width: thin; scrollbar-color: rgba(59, 130, 246, 0.5) transparent;">
+                <div class="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent mb-5"></div>
+                
+                <div id="privacy-content" class="text-gray-300 leading-relaxed space-y-4 text-sm">
+                    <!-- Privacy policy content will be loaded here -->
+                    <div class="flex items-center justify-center py-8">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
+                        <span class="ml-3 text-gray-400">Loading privacy policy...</span>
                     </div>
                 </div>
             </div>
@@ -1871,118 +1963,115 @@
         </div>
     </div>
 
-    <!-- What's New modal -->
-    <div id="whats-new-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center hidden modal-container" aria-labelledby="whats-new-title" role="dialog" aria-modal="true" style="padding: 1.5rem;">
+    <!-- Ad Support Notice modal -->
+    <div id="whats-new-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center hidden modal-container" aria-labelledby="ad-notice-title" role="dialog" aria-modal="true" style="padding: 1.5rem;">
         <div class="bg-gradient-to-b from-[#0a192f]/95 via-[#0c1e36]/95 to-[#0a192f]/95 p-4 rounded-2xl shadow-2xl modal-content flex flex-col border border-white/10 overflow-hidden" style="box-shadow: 0 20px 60px -15px rgba(0,0,0,0.7), 0 0 30px rgba(31, 66, 135, 0.2), 0 0 0 1px rgba(255,255,255,0.1) inset;">
             <div class="flex justify-between items-center mb-3 pb-3 border-b border-white/15">
-                <h2 id="whats-new-title" class="text-xl font-bold flex items-center">
-                    <div class="icon-wrapper mr-3 flex items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 w-9 h-9 text-darkBg shadow-lg animate-pulse-subtle">
-                        <i class="fas fa-wand-magic-sparkles text-sm"></i>
+                <h2 id="ad-notice-title" class="text-xl font-bold flex items-center">
+                    <div class="icon-wrapper mr-3 flex items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-red-500 w-9 h-9 text-darkBg shadow-lg animate-pulse-subtle">
+                        <i class="fas fa-bullhorn text-sm"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-blue-400 font-extrabold">What's New</span>
-                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">3.5</span></span>
+                        <span class="text-orange-400 font-extrabold">Important Notice</span>
+                        <span class="text-xs text-orange-300/80 font-medium">Ad Support Coming Soon</span>
                     </div>
                 </h2>
-                <button id="close-whats-new" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:rotate-90 transform">
-                    <i class="fas fa-times"></i>
-                </button>
             </div>
 
-            <div class="features-container overflow-y-auto flex-grow touch-scroll px-1 py-2">
-                <div class="space-y-3">
-
-
-                    <div class="feature-item">
-                        <div class="relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-indigo-500/10 to-indigo-700/5 rounded-full blur-xl"></div>
+            <div class="notice-content overflow-y-auto flex-grow touch-scroll px-1 py-2">
+                <div class="space-y-4">
+                    <div class="notice-section">
+                        <div class="relative overflow-hidden p-4 rounded-lg bg-gradient-to-br from-orange-500/10 to-red-500/5 border border-orange-500/20">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-orange-500/10 to-red-500/5 rounded-full blur-xl"></div>
                             <div class="flex items-start relative z-10">
-                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-indigo-500/20 w-10 h-10 shadow-sm">
-                                    <i class="fas fa-exchange-alt text-indigo-400"></i>
+                                <div class="notice-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-orange-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-ad text-orange-400"></i>
                                 </div>
                                 <div class="flex-1">
-                                    <div class="flex items-center">
-                                        <h3 class="feature-title">Model Switching</h3>
-                                        <span class="ml-2 px-1.5 py-0.5 bg-indigo-500/20 rounded-full text-[10px] font-medium text-indigo-300">NEW</span>
-                                    </div>
-                                    <p class="feature-description">Switch between different AI models directly from the Models modal. Simply click the "Load" button next to any available model to switch to it instantly without leaving the app.</p>
+                                    <h3 class="text-lg font-semibold text-orange-300 mb-2">Ad Support Coming</h3>
+                                    <p class="text-gray-300 text-sm leading-relaxed">This app will soon be ad-supported to help cover development and hosting costs. We're committed to keeping LMSA free and accessible while ensuring we can continue improving the app for everyone.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="feature-item">
-                        <div class="relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-blue-500/10 to-blue-700/5 rounded-full blur-xl"></div>
+                    <div class="notice-section">
+                        <div class="relative overflow-hidden p-4 rounded-lg bg-gradient-to-br from-blue-500/10 to-purple-500/5 border border-blue-500/20">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-blue-500/10 to-purple-500/5 rounded-full blur-xl"></div>
                             <div class="flex items-start relative z-10">
-                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-blue-500/20 w-10 h-10 shadow-sm">
-                                    <i class="fas fa-user-circle text-blue-400"></i>
+                                <div class="notice-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-blue-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-crown text-blue-400"></i>
                                 </div>
                                 <div class="flex-1">
-                                    <div class="flex items-center">
-                                        <h3 class="feature-title">Characters</h3>
-                                        <span class="ml-2 px-1.5 py-0.5 bg-blue-500/20 rounded-full text-[10px] font-medium text-blue-300">NEW</span>
-                                    </div>
-                                    <p class="feature-description">Create and manage AI characters with custom personalities. Upload character cards, set custom images, and continue conversations with your favorite characters in new chat sessions.</p>
+                                    <h3 class="text-lg font-semibold text-blue-300 mb-2">LMSA Premium Available <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full font-medium">Coming Soon</span></h3>
+                                    <p class="text-gray-300 text-sm leading-relaxed mb-3">If you prefer an ad-free experience, you can purchase <strong class="text-blue-300">LMSA Premium</strong> from the Google Play Store. This is the premium, ad-free version of this app with all the same great features.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="feature-item">
-                        <div class="relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-purple-500/10 to-purple-700/5 rounded-full blur-xl"></div>
+                    <div class="notice-section">
+                        <div class="relative overflow-hidden p-4 rounded-lg bg-gradient-to-br from-purple-500/10 to-indigo-500/5 border border-purple-500/20">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-purple-500/10 to-indigo-500/5 rounded-full blur-xl"></div>
                             <div class="flex items-start relative z-10">
-                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-purple-500/20 w-10 h-10 shadow-sm">
-                                    <i class="fas fa-magic text-purple-400"></i>
+                                <div class="notice-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-purple-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-shield-alt text-purple-400"></i>
                                 </div>
                                 <div class="flex-1">
-                                    <div class="flex items-center">
-                                        <h3 class="feature-title">Auto-Generated Chat Titles</h3>
-                                    </div>
-                                    <p class="feature-description">New option in settings to automatically generate titles for your saved chats. This feature creates concise titles that describe what each chat is about, making it easier to find your conversations later.</p>
+                                    <h3 class="text-lg font-semibold text-purple-300 mb-2">Your Privacy Remains Protected</h3>
+                                    <p class="text-gray-300 text-sm leading-relaxed mb-3"><strong>Your chats will remain completely private</strong> even after the app becomes ad-supported. All conversations stay on your device and are never sent to our servers.</p>
+                                    <p class="text-gray-300 text-sm leading-relaxed">We are committed to protecting your privacy and ensuring your data remains under your control at all times.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="feature-item">
-                        <div class="relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-green-500/10 to-green-700/5 rounded-full blur-xl"></div>
+                    <div class="notice-section">
+                        <div class="relative overflow-hidden p-4 rounded-lg bg-gradient-to-br from-green-500/10 to-emerald-500/5 border border-green-500/20">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-green-500/10 to-emerald-500/5 rounded-full blur-xl"></div>
                             <div class="flex items-start relative z-10">
-                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-green-500/20 w-10 h-10 shadow-sm">
-                                    <i class="fas fa-plus-circle text-green-400"></i>
+                                <div class="notice-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-green-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-gift text-green-400"></i>
                                 </div>
                                 <div class="flex-1">
-                                    <div class="flex items-center">
-                                        <h3 class="feature-title">New Topic Button</h3>
+                                    <h3 class="text-lg font-semibold text-green-300 mb-2">Already Purchased? Get Premium Free!</h3>
+                                    <p class="text-gray-300 text-sm leading-relaxed mb-3">If you purchased this app between <strong class="text-green-300">April 1st, 2025</strong> and <strong class="text-green-300">June 1st, 2025</strong>, you're eligible to download LMSA Premium at no additional cost since you already paid for it.</p>
+                                    <p class="text-gray-300 text-sm leading-relaxed mb-3">Simply fill out the form below and you'll receive a promotion code to download LMSA Premium without being charged. <strong class="text-green-300">It will take up to 24 hours to receive your promotion code.</strong></p>
+                                    <p class="text-gray-300 text-sm leading-relaxed mb-3">Once LMSA Premium becomes available in the Play Store, you can use that code at the time of payment to receive 100% off the total price.</p>
+                                    <div class="flex flex-col sm:flex-row gap-3 items-start">
+                                        <a href="#" id="premium-form-link" class="inline-flex items-center px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white text-sm font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
+                                            <i class="fas fa-external-link-alt mr-2"></i>
+                                            Get Your Free Premium Code
+                                        </a>
+                                        <a href="mailto:support@lmsa.app" class="inline-flex items-center px-3 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
+                                            <i class="fas fa-question-circle mr-2"></i>
+                                            Questions?
+                                        </a>
                                     </div>
-                                    <p class="feature-description">Press and hold the Send button to access the new topic feature, allowing you to start a new topic within the same chat while maintaining context.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
             <div class="relative">
                 <!-- Decorative divider with glow effect -->
-                <div class="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
-                <div class="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent blur-sm"></div>
+                <div class="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent"></div>
+                <div class="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-500/20 to-transparent blur-sm"></div>
 
                 <!-- Footer content -->
                 <div class="flex justify-between items-center pt-3 pb-2 mt-auto bg-gradient-to-b from-[#0a192f]/95 to-[#0c1e36]/95 sticky bottom-0 px-2">
                     <label class="flex items-center space-x-2 cursor-pointer text-sm text-gray-300 hover:text-white transition-colors duration-300 group">
-                        <div class="toggle-container relative w-11 h-6 rounded-full bg-gray-700/50 border border-gray-600/50 flex items-center transition-all duration-300 group-hover:border-blue-400/30 group-hover:bg-gray-700/70">
-                            <input type="checkbox" id="dont-show-again" class="sr-only">
+                        <div class="toggle-container relative w-11 h-6 rounded-full bg-gray-700/50 border border-gray-600/50 flex items-center transition-all duration-300 group-hover:border-orange-400/30 group-hover:bg-gray-700/70 opacity-50 cursor-not-allowed" id="understand-toggle-container">
+                            <input type="checkbox" id="understand-checkbox" class="sr-only" required disabled>
                             <div class="toggle-switch absolute inset-0 rounded-full"></div>
                             <div class="toggle-dot absolute left-0.5 top-0.5 bg-gray-400 w-5 h-5 rounded-full transition-all duration-300 group-hover:bg-gray-300"></div>
-                            <div class="toggle-dot-active absolute left-0.5 top-0.5 bg-gradient-to-r from-blue-400 to-blue-500 w-5 h-5 rounded-full opacity-0 transition-all duration-300 shadow-md"></div>
+                            <div class="toggle-dot-active absolute left-0.5 top-0.5 bg-gradient-to-r from-orange-400 to-red-500 w-5 h-5 rounded-full opacity-0 transition-all duration-300 shadow-md"></div>
                         </div>
-                        <span class="text-xs sm:text-sm">Don't show again</span>
+                        <span class="text-xs sm:text-sm">I understand</span>
                     </label>
-                    <button id="got-it-whats-new" class="relative overflow-hidden text-white rounded-lg focus:outline-none transition-all duration-300 ease-in-out text-sm px-4 py-2" style="background: linear-gradient(135deg, #1e40af, #3b82f6); box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15); border: none; font-weight: 600; letter-spacing: 0.02em; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px -1px rgba(37, 99, 235, 0.3), 0 4px 8px -1px rgba(37, 99, 235, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)'; this.style.background='linear-gradient(135deg, #2563eb, #60a5fa)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15)'; this.style.background='linear-gradient(135deg, #1e40af, #3b82f6)';">
+                    <button id="got-it-whats-new" class="relative overflow-hidden text-white rounded-lg focus:outline-none transition-all duration-300 ease-in-out text-sm px-4 py-2 opacity-50 cursor-not-allowed" disabled style="background: linear-gradient(135deg, #6b7280, #9ca3af); box-shadow: 0 4px 6px -1px rgba(107, 114, 128, 0.2), 0 2px 4px -1px rgba(107, 114, 128, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15); border: none; font-weight: 600; letter-spacing: 0.02em; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);">
                         <span class="relative z-10 flex items-center">
                             <i class="fas fa-check-circle mr-2"></i>
                             <span>Got it!</span>
@@ -2184,11 +2273,17 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Feedback Survey Modal Functionality
             const feedbackBtn = document.getElementById('feedback-survey-btn');
-            const feedbackModal = document.getElementById('feedback-survey-modal');
-            const closeFeedbackModal = document.getElementById('close-feedback-modal');
-            const feedbackForm = document.getElementById('feedback-form');
-            const feedbackSuccess = document.getElementById('feedback-success');
-            const feedbackError = document.getElementById('feedback-error');
+        const feedbackModal = document.getElementById('feedback-survey-modal');
+        const closeFeedbackModal = document.getElementById('close-feedback-modal');
+        const feedbackForm = document.getElementById('feedback-form');
+        const feedbackSuccess = document.getElementById('feedback-success');
+        const feedbackError = document.getElementById('feedback-error');
+        
+        // Privacy modal elements
+        const privacyBtn = document.getElementById('privacy-btn');
+        const privacyModal = document.getElementById('privacy-modal');
+        const closePrivacyModal = document.getElementById('close-privacy');
+        const privacyContent = document.getElementById('privacy-content');
             
             // Open feedback modal with animation
             if (feedbackBtn) {
@@ -2342,6 +2437,122 @@
                     });
                 });
             }
+            
+            // Privacy Modal Functionality
+            // Open privacy modal with animation
+            if (privacyBtn) {
+                privacyBtn.addEventListener('click', function() {
+                    // Load privacy content from file
+                    fetch('/privacy.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (privacyContent) {
+                                privacyContent.textContent = text;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error loading privacy policy:', error);
+                            if (privacyContent) {
+                                privacyContent.textContent = 'Error loading privacy policy. Please try again later.';
+                            }
+                        });
+                    
+                    // Ensure animation classes are properly set before showing the modal
+                    const modalContent = privacyModal.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.classList.remove('animate-modal-out');
+                        modalContent.classList.add('animate-modal-in');
+                    }
+                    privacyModal.classList.remove('hidden');
+                    
+                    // Close sidebar when opening modal (regardless of screen size)
+                    const sidebar = document.getElementById('sidebar');
+                    const sidebarOverlay = document.getElementById('sidebar-overlay');
+                    
+                    if (sidebar) {
+                        // Use the same pattern as in toggleSidebar function
+                        sidebar.classList.add('animate-slide-out');
+                        sidebar.classList.remove('animate-slide-in');
+                        document.body.classList.remove('sidebar-open');
+                        
+                        // Hide the sidebar after animation completes
+                        setTimeout(() => {
+                            sidebar.classList.remove('active');
+                            sidebar.classList.add('hidden');
+                            sidebar.classList.remove('animate-slide-out');
+                        }, 300);
+                    }
+                    
+                    // Handle the overlay
+                    if (sidebarOverlay) {
+                        sidebarOverlay.classList.remove('active');
+                        setTimeout(() => {
+                            sidebarOverlay.classList.add('hidden');
+                        }, 300);
+                    }
+                });
+            }
+            
+            // Close privacy modal with animation
+            if (closePrivacyModal) {
+                closePrivacyModal.addEventListener('click', function() {
+                    // Add the closing animation class
+                    const modalContent = privacyModal.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.classList.remove('animate-modal-in');
+                        modalContent.classList.add('animate-modal-out');
+                        
+                        // Wait for animation to complete before hiding the modal
+                        setTimeout(() => {
+                            privacyModal.classList.add('hidden');
+                            // Reset animation classes for next opening
+                            modalContent.classList.remove('animate-modal-out');
+                        }, 300); // Match the animation duration (0.3s)
+                    } else {
+                        // Fallback if modal content element not found
+                        privacyModal.classList.add('hidden');
+                    }
+                    
+                    // Reset hamburger icon to hamburger state
+                    import('./js/ui-manager.js').then(module => {
+                        module.updateHamburgerIcon(false);
+                    }).catch(error => {
+                        console.error('Error importing updateHamburgerIcon:', error);
+                    });
+                });
+            }
+            
+            // Close privacy modal when clicking outside with animation
+            if (privacyModal) {
+                privacyModal.addEventListener('click', function(e) {
+                    if (e.target === privacyModal) {
+                        // Add the closing animation class
+                        const modalContent = privacyModal.querySelector('.modal-content');
+                        if (modalContent) {
+                            modalContent.classList.remove('animate-modal-in');
+                            modalContent.classList.add('animate-modal-out');
+                            
+                            // Wait for animation to complete before hiding the modal
+                            setTimeout(() => {
+                                privacyModal.classList.add('hidden');
+                                // Reset animation classes for next opening
+                                modalContent.classList.remove('animate-modal-out');
+                            }, 300); // Match the animation duration (0.3s)
+                        } else {
+                            // Fallback if modal content element not found
+                            privacyModal.classList.add('hidden');
+                        }
+                        
+                        // Reset hamburger icon to hamburger state
+                        import('./js/ui-manager.js').then(module => {
+                            module.updateHamburgerIcon(false);
+                        }).catch(error => {
+                            console.error('Error importing updateHamburgerIcon:', error);
+                        });
+                    }
+                });
+            }
+            
             const previewToggle = document.getElementById('preview-toggle');
 
             // We'll control button visibility through the updateViewMode function
@@ -2577,7 +2788,7 @@
             }
 
             // Enable drag to scroll functionality for other modal content (excluding whats new modal)
-            const scrollableElements = document.querySelectorAll('.drag-scrollable:not(#help-modal .help-modal-content):not(#whats-new-modal .modal-content):not(#whats-new-modal .features-container), .touch-scroll:not(#whats-new-modal .features-container)');
+            const scrollableElements = document.querySelectorAll('.drag-scrollable:not(#help-modal .help-modal-content):not(#whats-new-modal .modal-content):not(#whats-new-modal .features-container), .touch-scroll:not(#whats-new-modal .notice-content):not(#whats-new-modal .features-container)');
 
             scrollableElements.forEach(scrollable => {
                 let isDown = false;

@@ -582,7 +582,10 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
                                         // The Monaco code initialization is deferred until after we close the connection
                                         hasInitializedCodeBlocks = true;
                                     }
-                                    scrollToBottom(messagesContainer, true);
+                                    // Check if auto-scroll is disabled before scrolling during streaming
+                                     if (localStorage.getItem('disableAutoScroll') !== 'true') {
+                                         scrollToBottom(messagesContainer, true);
+                                     }
                                 }
                             }
                         } catch (error) {
@@ -704,11 +707,17 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
                 return;
             } else {
                 debugLog('Reload already scheduled for code block - skipping duplicate reload');
-                scrollToBottom(messagesContainer, true);
+                // Check if auto-scroll is disabled before scrolling
+                if (localStorage.getItem('disableAutoScroll') !== 'true') {
+                    scrollToBottom(messagesContainer, true);
+                }
                 return;
             }
         } else {
-            scrollToBottom(messagesContainer, true);
+            // Check if auto-scroll is disabled before scrolling
+            if (localStorage.getItem('disableAutoScroll') !== 'true') {
+                scrollToBottom(messagesContainer, true);
+            }
         }
     } catch (error) {
         // Clean up timeouts on error
@@ -1411,7 +1420,10 @@ export function loadChat(id, isFirstMessageReload = false) {
         // Scroll messages container to bottom after code blocks are refreshed
         // Use requestAnimationFrame for better timing
         requestAnimationFrame(() => {
-            scrollToBottom(messagesContainer, true);
+            // Check if auto-scroll is disabled before scrolling
+            if (localStorage.getItem('disableAutoScroll') !== 'true') {
+                scrollToBottom(messagesContainer, true);
+            }
         });
     }, 350); // Wait slightly longer than the welcome message transition (300ms)
 }
@@ -1478,8 +1490,11 @@ export function lazyLoadMessages(messages, startIndex, chunkSize = 10) {
         // Scroll to bottom after all messages are loaded
         // Use requestAnimationFrame for better timing
         requestAnimationFrame(() => {
-            // Force scroll to bottom to ensure messages are visible
-            scrollToBottom(messagesContainer, true);
+            // Check if auto-scroll is disabled before scrolling
+            if (localStorage.getItem('disableAutoScroll') !== 'true') {
+                // Force scroll to bottom to ensure messages are visible
+                scrollToBottom(messagesContainer, true);
+            }
         });
     }
 }

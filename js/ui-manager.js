@@ -554,7 +554,9 @@ export function appendMessage(sender, message, files = null, isStreaming = false
                 }
 
                 initializeCodeMirror(lastMessage);
-                scrollToBottom(messagesContainer, isStreaming);
+                if (localStorage.getItem('disableAutoScroll') !== 'true') {
+                    scrollToBottom(messagesContainer, isStreaming);
+                }
             }
             return lastMessage;
         }
@@ -790,7 +792,9 @@ export function appendMessage(sender, message, files = null, isStreaming = false
     initializeCodeMirror(messageElement);
 
     // Scroll to the bottom of the chat
-    scrollToBottom(messagesContainer, isStreaming);
+    if (localStorage.getItem('disableAutoScroll') !== 'true') {
+        scrollToBottom(messagesContainer, isStreaming);
+    }
 
     return messageElement;
 }

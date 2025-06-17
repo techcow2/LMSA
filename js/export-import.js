@@ -8,7 +8,7 @@ import {
     exportConfirmationModal, confirmExportButton, cancelExportButton
 } from './dom-elements.js';
 import { isAndroidWebView, isMobileDevice } from './utils.js';
-import { showExportConfirmationModal, hideExportConfirmationModal, checkAndShowWelcomeMessage } from './ui-manager.js';
+import { showExportConfirmationModal, hideExportConfirmationModal, checkAndShowWelcomeMessage, updateHamburgerIcon } from './ui-manager.js';
 import { setActionToPerform, getActionToPerform } from './shared-state.js';
 
 // Variable to store the selected file for import
@@ -639,6 +639,9 @@ export function initializeExportImport() {
             if (chatHistorySection) {
                 chatHistorySection.classList.remove('chat-history-hidden');
             }
+
+            // Update hamburger icon to show hamburger
+            updateHamburgerIcon(false);
         }
     }
 
@@ -892,5 +895,8 @@ export function closeSidebarExport() {
         if (chatHistorySection) {
             chatHistorySection.classList.remove('chat-history-hidden');
         }
+
+        // Update hamburger icon to show hamburger
+        updateHamburgerIcon(false);
     }
 }

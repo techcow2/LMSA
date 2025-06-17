@@ -1,0 +1,291 @@
+/* Touch scrolling optimizations for the notice modal */
+.notice-content.touch-scroll {
+    /* Enable hardware acceleration for smooth scrolling */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    
+    /* Optimize touch scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    
+    /* Allow only vertical touch scrolling */
+    touch-action: pan-y;
+    
+    /* Prevent overscroll bounce */
+    overscroll-behavior: contain;
+    
+    /* Smooth scrolling behavior */
+    scroll-behavior: smooth;
+    
+    /* Ensure proper overflow handling */
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+    /* Add scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    
+    /* Optimize for mobile scrollbars */
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    
+    /* Ensure proper dimensions */
+    min-height: 0;
+    max-height: 100%;
+    
+    /* Prevent text selection during scrolling */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Webkit scrollbar styling */
+.notice-content.touch-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notice-content.touch-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.notice-content.touch-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.notice-content.touch-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Re-enable text selection for content inside */
+.notice-content.touch-scroll * {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Optimize scrolling performance on mobile devices */
+@media (max-width: 768px) {
+    .notice-content.touch-scroll {
+        /* Force GPU acceleration */
+        will-change: scroll-position;
+        
+        /* Optimize rendering */
+        contain: layout style paint;
+        
+        /* Reduce repaints during scrolling */
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+    
+    /* Fix modal content cutoff on small mobile screens */
+    #whats-new-modal .modal-content {
+        width: 95% !important;
+        max-width: none !important;
+        margin: 0.75rem !important;
+        padding: 0.75rem !important;
+    }
+    
+    /* Reduce padding in notice sections on mobile */
+    #whats-new-modal .notice-section .relative {
+        padding: 0.75rem !important;
+    }
+    
+    /* Ensure proper spacing for content */
+    #whats-new-modal .notice-content {
+        padding-left: 0.25rem !important;
+        padding-right: 0.25rem !important;
+    }
+    
+    /* Adjust icon wrapper size on mobile */
+    #whats-new-modal .notice-icon-wrapper {
+        width: 2rem !important;
+        height: 2rem !important;
+        margin-right: 0.5rem !important;
+    }
+    
+    /* Adjust text sizes for better mobile readability */
+    #whats-new-modal .notice-section h3 {
+        font-size: 1rem !important;
+        line-height: 1.4 !important;
+    }
+    
+    #whats-new-modal .notice-section p {
+        font-size: 0.875rem !important;
+        line-height: 1.5 !important;
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+    #whats-new-modal .modal-content {
+        width: 98% !important;
+        margin: 0.5rem !important;
+        padding: 0.5rem !important;
+    }
+    
+    /* Further reduce padding on very small screens */
+    #whats-new-modal .notice-section .relative {
+        padding: 0.5rem !important;
+    }
+    
+    /* Adjust header on very small screens */
+    #whats-new-modal #ad-notice-title {
+        font-size: 1.125rem !important;
+    }
+    
+    #whats-new-modal .icon-wrapper {
+        width: 2rem !important;
+        height: 2rem !important;
+    }
+}
+
+/* Ensure smooth momentum scrolling on iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+    .notice-content.touch-scroll {
+        -webkit-overflow-scrolling: touch;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* Light theme optimizations for notice modal */
+body.light-theme #whats-new-modal {
+    /* Override modal background for light theme */
+    background: rgba(100, 116, 139, 0.4) !important;
+    backdrop-filter: blur(8px);
+}
+
+body.light-theme #whats-new-modal .modal-content {
+    background: linear-gradient(135deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.98)) !important;
+    border: 1px solid rgba(100, 116, 139, 0.2) !important;
+    box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.15),
+        0 10px 30px -10px rgba(59, 130, 246, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset !important;
+}
+
+/* Light theme styles for notice modal header */
+body.light-theme #whats-new-modal #ad-notice-title {
+    color: #1e293b !important;
+}
+
+body.light-theme #whats-new-modal #ad-notice-title .text-orange-400 {
+    color: #ea580c !important; /* Orange-600 for better contrast */
+}
+
+body.light-theme #whats-new-modal #ad-notice-title .text-orange-300\/80 {
+    color: #c2410c !important; /* Orange-700 for subtitle */
+}
+
+/* Light theme styles for notice sections */
+body.light-theme #whats-new-modal .notice-section .bg-gradient-to-br.from-orange-500\/10.to-red-500\/5 {
+    background: linear-gradient(to bottom right, rgba(251, 146, 60, 0.15), rgba(239, 68, 68, 0.08)) !important;
+    border-color: rgba(251, 146, 60, 0.3) !important;
+}
+
+body.light-theme #whats-new-modal .notice-section .bg-gradient-to-br.from-blue-500\/10.to-purple-500\/5 {
+    background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.15), rgba(168, 85, 247, 0.08)) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+body.light-theme #whats-new-modal .notice-section .bg-gradient-to-br.from-green-500\/10.to-emerald-500\/5 {
+    background: linear-gradient(to bottom right, rgba(34, 197, 94, 0.15), rgba(16, 185, 129, 0.08)) !important;
+    border-color: rgba(34, 197, 94, 0.3) !important;
+}
+
+/* Light theme text colors for notice content */
+body.light-theme #whats-new-modal .notice-section .text-orange-300 {
+    color: #c2410c !important; /* Orange-700 */
+}
+
+body.light-theme #whats-new-modal .notice-section .text-blue-300 {
+    color: #1d4ed8 !important; /* Blue-700 */
+}
+
+body.light-theme #whats-new-modal .notice-section .text-green-300 {
+    color: #15803d !important; /* Green-700 */
+}
+
+body.light-theme #whats-new-modal .notice-section .text-gray-300 {
+    color: #334155 !important; /* Slate-700 */
+}
+
+/* Light theme icon wrapper backgrounds */
+body.light-theme #whats-new-modal .notice-section .bg-orange-500\/20 {
+    background-color: rgba(251, 146, 60, 0.25) !important;
+}
+
+body.light-theme #whats-new-modal .notice-section .bg-blue-500\/20 {
+    background-color: rgba(59, 130, 246, 0.25) !important;
+}
+
+body.light-theme #whats-new-modal .notice-section .bg-green-500\/20 {
+    background-color: rgba(34, 197, 94, 0.25) !important;
+}
+
+/* Light theme icon colors */
+body.light-theme #whats-new-modal .notice-section .text-orange-400 {
+    color: #ea580c !important; /* Orange-600 */
+}
+
+body.light-theme #whats-new-modal .notice-section .text-blue-400 {
+    color: #2563eb !important; /* Blue-600 */
+}
+
+body.light-theme #whats-new-modal .notice-section .text-green-400 {
+    color: #16a34a !important; /* Green-600 */
+}
+
+/* Light theme badge styling */
+body.light-theme #whats-new-modal .notice-section .bg-blue-500\/20.text-blue-300 {
+    background-color: rgba(59, 130, 246, 0.2) !important;
+    color: #1d4ed8 !important; /* Blue-700 */
+}
+
+/* Light theme decorative blur elements */
+body.light-theme #whats-new-modal .notice-section .absolute.bg-gradient-to-br {
+    opacity: 0.6 !important;
+}
+
+/* Light theme footer styling */
+body.light-theme #whats-new-modal .bg-gradient-to-b.from-\[\#0a192f\]\/95.to-\[\#0c1e36\]\/95 {
+    background: linear-gradient(to bottom, rgba(241, 245, 249, 0.98), rgba(226, 232, 240, 0.98)) !important;
+    border-top: 1px solid rgba(100, 116, 139, 0.2) !important;
+}
+
+/* Light theme divider styling */
+body.light-theme #whats-new-modal .bg-gradient-to-r.from-transparent.via-orange-500\/50.to-transparent {
+    background: linear-gradient(to right, transparent, rgba(251, 146, 60, 0.4), transparent) !important;
+}
+
+body.light-theme #whats-new-modal .bg-gradient-to-r.from-transparent.via-orange-500\/20.to-transparent {
+    background: linear-gradient(to right, transparent, rgba(251, 146, 60, 0.2), transparent) !important;
+}
+
+/* Light theme scrollbar styling */
+body.light-theme #whats-new-modal .notice-content.touch-scroll {
+    scrollbar-color: rgba(100, 116, 139, 0.4) transparent;
+}
+
+body.light-theme #whats-new-modal .notice-content.touch-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.4);
+}
+
+body.light-theme #whats-new-modal .notice-content.touch-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(100, 116, 139, 0.6);
+}
+
+/* Fallback for browsers that don't support smooth scrolling */
+@supports not (scroll-behavior: smooth) {
+    .notice-content.touch-scroll {
+        /* Use CSS transitions for smooth scrolling effect */
+        transition: scroll-top 0.3s ease-out;
+    }
+}
+
+/* Fix for premium code button to prevent text wrapping on small screens */
+#premium-form-link {
+    white-space: nowrap;
+    min-width: fit-content;
+}
