@@ -1025,9 +1025,12 @@ export function initializeEventHandlers() {
             fileUploadInput.click();
             debugLog('Paperclip button clicked, opening file selector');
 
-            // Scroll to bottom when user clicks on the paperclip button
+            // Scroll to bottom when user clicks on the paperclip button (only if auto-scroll is not disabled)
             if (messagesContainer) {
-                scrollToBottom(messagesContainer);
+                const disableAutoScroll = localStorage.getItem('disableAutoScroll') === 'true';
+                if (!disableAutoScroll) {
+                    scrollToBottom(messagesContainer);
+                }
             }
         });
 
@@ -1036,9 +1039,12 @@ export function initializeEventHandlers() {
             // Add a visual indicator that the button is being pressed
             paperclipButton.classList.add('active');
 
-            // Scroll to bottom when user taps on the paperclip button
+            // Scroll to bottom when user taps on the paperclip button (only if auto-scroll is not disabled)
             if (messagesContainer) {
-                scrollToBottom(messagesContainer);
+                const disableAutoScroll = localStorage.getItem('disableAutoScroll') === 'true';
+                if (!disableAutoScroll) {
+                    scrollToBottom(messagesContainer);
+                }
             }
         }, { passive: true });
 
@@ -1332,9 +1338,12 @@ export function initializeEventHandlers() {
                 // Remove focus from the input field
                 userInput.blur();
 
-                // Scroll to bottom when user clicks on the send button
+                // Scroll to bottom when user clicks on the send button (only if auto-scroll is not disabled)
                 if (messagesContainer) {
-                    scrollToBottom(messagesContainer);
+                    const disableAutoScroll = localStorage.getItem('disableAutoScroll') === 'true';
+                    if (!disableAutoScroll) {
+                        scrollToBottom(messagesContainer);
+                    }
                 }
 
                 // Let the form submit naturally by not preventing default

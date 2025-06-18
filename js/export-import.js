@@ -752,11 +752,25 @@ export function initializeExportImport() {
                     exportSuccessModal.classList.add('hidden');
                     modalContent.classList.remove('animate-modal-out');
 
+                    // Update hamburger icon to show hamburger (in case sidebar was closed)
+                    import('./ui-manager.js').then(module => {
+                        module.updateHamburgerIcon(false);
+                    }).catch(error => {
+                        console.error('Error updating hamburger icon:', error);
+                    });
+
                     // Check if welcome message should be shown
                     checkAndShowWelcomeMessage();
                 }, 300);
             } else {
                 exportSuccessModal.classList.add('hidden');
+
+                // Update hamburger icon to show hamburger (in case sidebar was closed)
+                import('./ui-manager.js').then(module => {
+                    module.updateHamburgerIcon(false);
+                }).catch(error => {
+                    console.error('Error updating hamburger icon:', error);
+                });
 
                 // Check if welcome message should be shown
                 checkAndShowWelcomeMessage();
@@ -876,6 +890,13 @@ export function closeSidebarExport() {
             sidebarOverlay.classList.remove('active');
             sidebarOverlay.classList.add('hidden');
         }
+
+        // Update hamburger icon to show hamburger
+        import('./ui-manager.js').then(module => {
+            module.updateHamburgerIcon(false);
+        }).catch(error => {
+            console.error('Error updating hamburger icon:', error);
+        });
 
         // Collapse all sections when sidebar is closed
         const sectionHeaders = sidebar.querySelectorAll('.section-header');

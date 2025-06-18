@@ -31,7 +31,8 @@ export async function initializeTouchHandlers() {
                                      e.target.closest('#chat-form') !== null ||
                                      e.target.closest('#chat-history') !== null ||
                                      e.target.closest('#settings-content-wrapper') !== null ||
-                                     e.target.closest('.settings-step.active') !== null;
+                                     e.target.closest('.settings-step.active') !== null ||
+                                     e.target.closest('#whats-new-modal') !== null;
 
         // If not in any scrollable container, prevent default behavior
         if (!isMonacoElement && !isScrollableContainer) {
@@ -72,6 +73,17 @@ export async function initializeTouchHandlers() {
         }, { passive: true });
     }
 
+    // Allow scrolling within the What's New modal
+    const whatsNewModal = document.getElementById('whats-new-modal');
+    if (whatsNewModal) {
+        whatsNewModal.addEventListener('touchmove', function(e) {
+            // Check if the touch is within the features container (scrollable area)
+            if (e.target.closest('.features-container')) {
+                e.stopPropagation();
+            }
+        }, { passive: true });
+    }
+
     // Prevent sidebar toggle when interacting with chat input
     if (userInput) {
         // Import scrollToBottom function directly to avoid dynamic imports
@@ -87,8 +99,11 @@ export async function initializeTouchHandlers() {
 
                 // Use requestAnimationFrame for smoother scrolling
                 requestAnimationFrame(() => {
-                    // Force scroll to bottom when user interacts with input field
-                    scrollToBottom(messagesContainer, true);
+                    // Scroll to bottom when user interacts with input field (only if auto-scroll is not disabled)
+                    const disableAutoScroll = localStorage.getItem('disableAutoScroll') === 'true';
+                    if (!disableAutoScroll) {
+                        scrollToBottom(messagesContainer, true);
+                    }
                 });
             }, 100) // Throttle to 10fps for low-end devices
             : function(e) {
@@ -99,8 +114,11 @@ export async function initializeTouchHandlers() {
 
                 // Use requestAnimationFrame for smoother scrolling
                 requestAnimationFrame(() => {
-                    // Force scroll to bottom when user interacts with input field
-                    scrollToBottom(messagesContainer, true);
+                    // Scroll to bottom when user interacts with input field (only if auto-scroll is not disabled)
+                    const disableAutoScroll = localStorage.getItem('disableAutoScroll') === 'true';
+                    if (!disableAutoScroll) {
+                        scrollToBottom(messagesContainer, true);
+                    }
                 });
             };
 

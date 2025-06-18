@@ -272,27 +272,15 @@ function adjustModalHeight() {
         // Apply the calculated height
         featuresContainer.style.height = finalHeight + 'px';
 
-        // If content fits without scrolling, disable scrolling
-        if (contentHeight <= finalHeight) {
-            featuresContainer.classList.remove('overflow-y-auto');
-            featuresContainer.classList.add('overflow-y-hidden');
-            // Disable touch scrolling properties when content fits
-            featuresContainer.style.webkitOverflowScrolling = 'auto';
-            featuresContainer.style.touchAction = 'auto';
-            featuresContainer.style.overscrollBehavior = 'auto';
-            // Force disable overflow to prevent any dragging
-            featuresContainer.style.overflow = 'hidden';
-        } else {
-            // Content needs scrolling, ensure scrolling is enabled
-            featuresContainer.classList.add('overflow-y-auto');
-            featuresContainer.classList.remove('overflow-y-hidden');
-            // Enable touch scrolling properties when content needs to scroll
-            featuresContainer.style.webkitOverflowScrolling = 'touch';
-            featuresContainer.style.touchAction = 'pan-y';
-            featuresContainer.style.overscrollBehavior = 'contain';
-            // Ensure overflow is set for scrolling
-            featuresContainer.style.overflow = '';
-        }
+        // Always allow scrolling to ensure users can access all content
+        featuresContainer.classList.add('overflow-y-auto');
+        featuresContainer.classList.remove('overflow-y-hidden');
+        // Enable touch scrolling properties
+        featuresContainer.style.webkitOverflowScrolling = 'touch';
+        featuresContainer.style.touchAction = 'pan-y';
+        featuresContainer.style.overscrollBehavior = 'contain';
+        // Ensure overflow is set for scrolling
+        featuresContainer.style.overflow = 'auto';
     }
 }
 

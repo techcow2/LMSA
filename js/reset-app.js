@@ -26,8 +26,9 @@ export function resetApp() {
         localStorage.removeItem('systemPrompt');
         localStorage.removeItem('isUserCreatedSystemPrompt');
         localStorage.removeItem('temperature');
-        localStorage.removeItem('hideThinking');
-        localStorage.removeItem('autoGenerateTitles');
+            localStorage.removeItem('hideThinking');
+    localStorage.removeItem('autoGenerateTitles');
+    localStorage.removeItem('disableAutoScroll');
         localStorage.removeItem('lightThemeEnabled');
     
 

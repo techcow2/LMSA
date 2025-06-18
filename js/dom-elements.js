@@ -25,6 +25,7 @@ export const loadedModelDisplay = document.getElementById('loaded-model');
 export const hideThinkingCheckbox = document.getElementById('hide-thinking');
 export const autoGenerateTitlesCheckbox = document.getElementById('auto-generate-titles');
 export const themeToggleCheckbox = document.getElementById('theme-toggle');
+export const disableAutoScrollCheckbox = document.getElementById('disable-auto-scroll');
 
 export const refreshButton = document.getElementById('refresh-button');
 export const modelToggleButton = document.getElementById('model-toggle-button');

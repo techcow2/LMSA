@@ -358,11 +358,17 @@ export function hideExportConfirmationModal() {
                 exportConfirmationModal.classList.add('hidden');
                 modalContent.classList.remove('animate-modal-out');
 
+                // Update hamburger icon to show hamburger (in case sidebar was closed)
+                updateHamburgerIcon(false);
+
                 // Check if welcome message should be shown
                 checkAndShowWelcomeMessage();
             }, 300);
         } else {
             exportConfirmationModal.classList.add('hidden');
+
+            // Update hamburger icon to show hamburger (in case sidebar was closed)
+            updateHamburgerIcon(false);
 
             // Check if welcome message should be shown
             checkAndShowWelcomeMessage();
