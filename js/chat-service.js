@@ -1100,17 +1100,78 @@ export function updateChatHistoryUI() {
                 const actionWrapper = document.createElement('div');
                 actionWrapper.classList.add('action-wrapper', 'flex-shrink-0');
 
+                // Create trash icon container for better touch target
+                const trashContainer = document.createElement('button');
+                trashContainer.classList.add('trash-icon-container');
+                trashContainer.setAttribute('aria-label', 'Delete chat');
+                trashContainer.setAttribute('title', 'Delete this chat');
+                trashContainer.style.cssText = `
+                    background: transparent;
+                    border: none;
+                    padding: 8px;
+                    margin: 0;
+                    cursor: pointer;
+                    border-radius: 6px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 44px;
+                    min-height: 44px;
+                    transition: all 0.2s ease;
+                    -webkit-tap-highlight-color: transparent;
+                    touch-action: manipulation;
+                `;
+
                 const trashIcon = document.createElement('i');
                 trashIcon.classList.add('fas', 'fa-trash');
-                trashIcon.style.color = '#b91c1c'; // Dark red color for both themes
-                trashIcon.style.transition = 'color 0.2s ease';
-                trashIcon.addEventListener('mouseover', () => {
+                trashIcon.style.cssText = `
+                    color: #b91c1c;
+                    font-size: 14px;
+                    transition: all 0.2s ease;
+                    pointer-events: none;
+                `;
+
+                // Add hover/focus styles programmatically for better control
+                trashContainer.addEventListener('mouseenter', () => {
+                    trashContainer.style.backgroundColor = 'rgba(220, 38, 38, 0.1)';
                     trashIcon.style.color = 'var(--button-danger-bg)';
+                    trashIcon.style.transform = 'scale(1.1)';
                 });
-                trashIcon.addEventListener('mouseout', () => {
-                    trashIcon.style.color = '#b91c1c'; // Return to dark red on mouseout
+
+                trashContainer.addEventListener('mouseleave', () => {
+                    trashContainer.style.backgroundColor = 'transparent';
+                    trashIcon.style.color = '#b91c1c';
+                    trashIcon.style.transform = 'scale(1)';
                 });
-                trashIcon.addEventListener('click', (e) => {
+
+                // Add focus styles
+                trashContainer.addEventListener('focus', () => {
+                    trashContainer.style.backgroundColor = 'rgba(220, 38, 38, 0.1)';
+                    trashContainer.style.outline = '2px solid rgba(220, 38, 38, 0.5)';
+                    trashContainer.style.outlineOffset = '2px';
+                });
+
+                trashContainer.addEventListener('blur', () => {
+                    trashContainer.style.backgroundColor = 'transparent';
+                    trashContainer.style.outline = 'none';
+                    trashContainer.style.outlineOffset = '0';
+                });
+
+                // Add touch feedback for mobile
+                trashContainer.addEventListener('touchstart', (e) => {
+                    e.stopPropagation(); // Prevent chat item touch handling
+                    trashContainer.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
+                    trashIcon.style.transform = 'scale(0.95)';
+                }, { passive: true });
+
+                trashContainer.addEventListener('touchend', () => {
+                    setTimeout(() => {
+                        trashContainer.style.backgroundColor = 'transparent';
+                        trashIcon.style.transform = 'scale(1)';
+                    }, 150);
+                }, { passive: true });
+
+                trashContainer.addEventListener('click', (e) => {
                     e.stopPropagation();
                     showDeleteConfirmation(id);
                     const sidebar = document.getElementById('sidebar');
@@ -1118,7 +1179,9 @@ export function updateChatHistoryUI() {
                         toggleSidebar();
                     }
                 });
-                actionWrapper.appendChild(trashIcon);
+
+                trashContainer.appendChild(trashIcon);
+                actionWrapper.appendChild(trashContainer);
                 button.appendChild(actionWrapper);
 
                 button.addEventListener('click', () => loadChat(id));

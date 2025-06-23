@@ -303,7 +303,7 @@ body.light-theme .sidebar-overlay {
   backdrop-filter: blur(4px);
 }
 
-/* Chat History Items Styling */
+/* Enhanced Chat History Items Styling */
 #chat-history .chat-item {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 0.5rem;
@@ -312,6 +312,8 @@ body.light-theme .sidebar-overlay {
   cursor: pointer;
   background-color: rgba(30, 41, 59, 0.4);
   border: 1px solid rgba(59, 130, 246, 0.05);
+  /* Ensure proper spacing for action wrapper */
+  padding-right: 0.25rem;
 }
 
 #chat-history .chat-item:hover {
@@ -337,6 +339,99 @@ body.light-theme #chat-history .chat-item:hover {
 body.light-theme #chat-history .chat-item.active {
   background-color: rgba(59, 130, 246, 0.12);
   border-left: 3px solid var(--modern-accent-primary);
+}
+
+/* Modern trash icon container styling */
+.trash-icon-container {
+  background-color: transparent;
+  border: none;
+  border-radius: 0.375rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.trash-icon-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(220, 38, 38, 0) 0%, rgba(220, 38, 38, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border-radius: inherit;
+}
+
+.trash-icon-container:hover::before {
+  opacity: 1;
+}
+
+.trash-icon-container .fas.fa-trash {
+  position: relative;
+  z-index: 1;
+  color: #dc2626;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.trash-icon-container:hover .fas.fa-trash {
+  color: #ef4444;
+  transform: scale(1.1);
+}
+
+.trash-icon-container:active .fas.fa-trash {
+  transform: scale(0.95);
+}
+
+/* Light theme adjustments */
+body.light-theme .trash-icon-container .fas.fa-trash {
+  color: #dc2626;
+}
+
+body.light-theme .trash-icon-container:hover .fas.fa-trash {
+  color: #b91c1c;
+}
+
+/* Focus styles for accessibility */
+.trash-icon-container:focus-visible {
+  outline: 2px solid rgba(220, 38, 38, 0.5);
+  outline-offset: 2px;
+  background-color: rgba(220, 38, 38, 0.05);
+}
+
+/* Touch feedback enhancements */
+@media (max-width: 768px) {
+  .trash-icon-container {
+    min-width: 48px;
+    min-height: 48px;
+    padding: 12px;
+    border-radius: 0.5rem;
+  }
+  
+  .trash-icon-container .fas.fa-trash {
+    font-size: 16px;
+  }
+  
+  /* Enhanced touch feedback */
+  .trash-icon-container:active {
+    background-color: rgba(220, 38, 38, 0.15);
+    transform: scale(0.95);
+  }
+  
+  /* Ensure proper spacing on mobile */
+  #chat-history .chat-item .action-wrapper {
+    margin-left: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .trash-icon-container {
+    min-width: 52px;
+    min-height: 52px;
+    padding: 14px;
+  }
+  
+  .trash-icon-container .fas.fa-trash {
+    font-size: 18px;
+  }
 }
 
 /* Enhanced Chat Interface */

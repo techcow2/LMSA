@@ -44,7 +44,15 @@ export function resetApp() {
         localStorage.removeItem('whatsNewDontShow');
         localStorage.removeItem('whatsNewSeen');
 
-        // 7. Reload the page to apply all changes
+        // 7. Clear rating modal tracking
+        localStorage.removeItem('appOpenCount');
+        localStorage.removeItem('ratingModalShown');
+        localStorage.removeItem('ratingModalFirstShown');
+        localStorage.removeItem('ratingDismissed');
+        localStorage.removeItem('ratingModalSecondShown');
+        localStorage.removeItem('ratingModalThirdShown');
+
+        // 8. Reload the page to apply all changes
         window.location.reload();
 
         debugLog('App reset complete');

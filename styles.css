@@ -6769,3 +6769,105 @@ body.light-theme #full-model-name-modal #full-model-name {
         opacity: 0;
     }
 }
+
+/* Chat item action wrapper and trash icon improvements for touch */
+.chat-item .action-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    padding-left: 0.5rem;
+}
+
+.trash-icon-container {
+    /* Base styles are set in JavaScript for dynamic control */
+    position: relative;
+    isolation: isolate; /* Create new stacking context */
+}
+
+/* Ensure trash icon is properly sized and accessible */
+.trash-icon-container .fas.fa-trash {
+    display: block;
+    line-height: 1;
+}
+
+/* Enhanced touch target for mobile devices */
+@media (max-width: 768px) {
+    .trash-icon-container {
+        min-width: 48px !important;
+        min-height: 48px !important;
+        padding: 12px !important;
+        margin: -4px;
+        border-radius: 8px !important;
+    }
+    
+    .trash-icon-container .fas.fa-trash {
+        font-size: 16px !important;
+    }
+    
+    /* Increase space between chat title and trash icon on mobile */
+    .chat-item .action-wrapper {
+        padding-left: 0.75rem;
+    }
+}
+
+/* Extra large touch targets for very small screens */
+@media (max-width: 480px) {
+    .trash-icon-container {
+        min-width: 52px !important;
+        min-height: 52px !important;
+        padding: 14px !important;
+        margin: -6px;
+    }
+    
+    .trash-icon-container .fas.fa-trash {
+        font-size: 18px !important;
+    }
+}
+
+/* Improve visibility and contrast for the trash icon */
+.trash-icon-container:hover {
+    /* Hover styles are handled in JavaScript for better control */
+}
+
+/* Active state for better feedback */
+.trash-icon-container:active {
+    transform: scale(0.95);
+}
+
+/* Focus styles for keyboard navigation */
+.trash-icon-container:focus-visible {
+    /* Focus styles are handled in JavaScript for better control */
+}
+
+/* Ensure action wrapper doesn't interfere with chat item layout */
+.chat-item {
+    position: relative;
+}
+
+.chat-item .action-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+/* Prevent accidental text selection when tapping near trash icon */
+.chat-item .action-wrapper * {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Improve spacing and layout for chat items with action buttons */
+.chat-item {
+    padding-right: 0.5rem; /* Reduce right padding since action wrapper has its own padding */
+}
+
+/* Ensure trash icon container works well in both light and dark themes */
+body.light-theme .trash-icon-container:hover {
+    /* Hover styles are handled in JavaScript */
+}
+
+body.light-theme .trash-icon-container:focus {
+    /* Focus styles are handled in JavaScript */
+}

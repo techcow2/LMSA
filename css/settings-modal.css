@@ -1192,8 +1192,6 @@
         min-height: 44px; /* Ensure minimum height for touch targets */
     }
 
-
-
     /* Remove extra padding at the bottom of steps since buttons are now static */
     #settings-modal .settings-step {
         padding-bottom: 0.5rem;
@@ -1410,5 +1408,176 @@
         margin-bottom: 0.5rem;
         padding-bottom: 0.25rem;
         border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+    }
+}
+
+/* Mobile keyboard handling for settings modal */
+@media (max-width: 767px) {
+    /* Base modal positioning for mobile */
+    #settings-modal .modal-content {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow: hidden;
+        z-index: 1052;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--modal-bg);
+        /* Use dvh units for better mobile support */
+        max-height: calc(100dvh - 2rem);
+    }
+
+    /* When keyboard is visible, adjust modal positioning */
+    #settings-modal.keyboard-visible .modal-content {
+        position: fixed;
+        top: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        max-height: calc(100vh - 2rem);
+        max-height: calc(100dvh - 2rem);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Content wrapper adjustments for keyboard visibility */
+    #settings-modal.keyboard-visible #settings-content-wrapper {
+        max-height: calc(100vh - 8rem);
+        max-height: calc(100dvh - 8rem);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 2rem;
+    }
+
+    /* Ensure active step content is scrollable when keyboard is visible */
+    #settings-modal.keyboard-visible .settings-step.active {
+        max-height: calc(100vh - 12rem);
+        max-height: calc(100dvh - 12rem);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 2rem;
+    }
+
+    /* Input field adjustments for mobile */
+    #settings-modal input[type="text"],
+    #settings-modal input[type="number"] {
+        height: 44px;
+        font-size: 16px !important; /* Prevent iOS zoom */
+        padding: 8px 12px;
+        box-sizing: border-box;
+    }
+
+    /* IP input specific adjustments */
+    #settings-modal #server-ip {
+        padding-left: 2.4rem !important;
+        background-position: 0.6rem center !important;
+        background-size: 14px !important;
+    }
+
+    /* Port input specific adjustments */
+    #settings-modal #server-port {
+        padding-left: 1.7rem !important;
+        padding-right: 0.5rem !important;
+        background-position: 0.4rem center !important;
+        background-size: 10px !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* Navigation buttons positioning for keyboard visibility */
+    #settings-modal.keyboard-visible #settings-navigation-buttons {
+        position: sticky;
+        bottom: 0;
+        background: var(--modal-bg);
+        padding: 1rem 0;
+        border-top: 1px solid var(--border-color);
+        z-index: 1055;
+    }
+
+    /* Close button positioning for keyboard visibility */
+    #settings-modal.keyboard-visible #close-settings {
+        position: sticky;
+        bottom: 0;
+        z-index: 1055;
+        margin-top: 1rem;
+    }
+
+    /* Ensure focused inputs have proper spacing from keyboard */
+    #settings-modal.keyboard-visible input:focus,
+    #settings-modal.keyboard-visible textarea:focus {
+        scroll-margin-bottom: 200px;
+        scroll-margin-top: 100px;
+    }
+
+    /* Better touch handling for input containers */
+    #settings-modal.keyboard-visible .ip-port-container {
+        margin-bottom: 2rem;
+    }
+
+    /* Improved scrolling behavior */
+    #settings-modal.keyboard-visible {
+        scroll-behavior: smooth;
+    }
+
+    #settings-modal.keyboard-visible .settings-step.active {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Enhanced mobile keyboard detection using viewport units */
+@supports (height: 100dvh) {
+    @media (max-width: 767px) {
+        #settings-modal .modal-content {
+            max-height: calc(100dvh - 2rem);
+        }
+
+        #settings-modal.keyboard-visible .modal-content {
+            max-height: calc(100dvh - 2rem);
+        }
+
+        #settings-modal.keyboard-visible #settings-content-wrapper {
+            max-height: calc(100dvh - 8rem);
+        }
+
+        #settings-modal.keyboard-visible .settings-step.active {
+            max-height: calc(100dvh - 12rem);
+        }
+    }
+}
+
+/* Fallback for very small screens */
+@media (max-width: 480px) {
+    #settings-modal.keyboard-visible .modal-content {
+        position: fixed;
+        top: 0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        max-height: calc(100vh - 1rem);
+        width: 95%;
+    }
+
+    #settings-modal.keyboard-visible #settings-content-wrapper {
+        max-height: calc(100vh - 6rem);
+    }
+
+    #settings-modal.keyboard-visible .settings-step.active {
+        max-height: calc(100vh - 10rem);
+    }
+}
+
+/* Additional viewport-based responsive design */
+@media (max-width: 767px) and (max-height: 600px) {
+    /* For small height screens (landscape mobile) */
+    #settings-modal.keyboard-visible .modal-content {
+        top: 0.25rem;
+        max-height: calc(100vh - 0.5rem);
+    }
+
+    #settings-modal.keyboard-visible #settings-content-wrapper {
+        max-height: calc(100vh - 5rem);
+    }
+
+    #settings-modal.keyboard-visible .settings-step.active {
+        max-height: calc(100vh - 8rem);
     }
 }
