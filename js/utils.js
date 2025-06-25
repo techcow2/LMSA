@@ -1070,14 +1070,6 @@ export function ensureCursorVisible(inputField) {
 export function handleScroll(messagesContainer) {
     if (!messagesContainer) return;
 
-    // Use throttled scroll handling for better performance with requestAnimationFrame
-    if (!window._scrollThrottleTimer) {
-        window._scrollThrottleTimer = requestAnimationFrame(() => {
-            window._scrollThrottleTimer = null;
-            checkScrollPosition();
-        });
-    }
-
     /**
      * Checks the scroll position to determine if user has scrolled up
      */
@@ -1113,6 +1105,11 @@ export function handleScroll(messagesContainer) {
             });
         }
     }
+
+    // Use requestAnimationFrame for smooth scrolling
+    requestAnimationFrame(() => {
+        checkScrollPosition();
+    });
 }
 
 /**

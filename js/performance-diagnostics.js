@@ -1,12 +1,11 @@
 // Performance diagnostics utility for AdMob environments
-import { detectAdMobEnvironment, getDevicePerformanceLevel } from './performance-utils.js';
+import { getDevicePerformanceLevel } from './performance-utils.js';
 
 /**
  * Performance diagnostics class for monitoring app performance
  */
 class PerformanceDiagnostics {
     constructor() {
-        this.isAdMobEnv = detectAdMobEnvironment();
         this.performanceLevel = getDevicePerformanceLevel();
         this.metrics = {
             memoryUsage: [],
@@ -26,7 +25,6 @@ class PerformanceDiagnostics {
         this.isMonitoring = true;
 
         console.log('Starting performance diagnostics...');
-        console.log(`Environment: ${this.isAdMobEnv ? 'AdMob WebView' : 'Regular Browser'}`);
         console.log(`Performance Level: ${this.performanceLevel}`);
 
         // Monitor memory usage
@@ -51,7 +49,7 @@ class PerformanceDiagnostics {
                 if (usage.percentage > 80) {
                     console.warn(`High memory usage detected: ${usage.percentage}%`);
                 }
-            }, 5000);
+            }, 30000); // Reduced frequency: every 30 seconds instead of 5
         }
 
         // Monitor frame rate
@@ -179,7 +177,6 @@ class PerformanceDiagnostics {
 
         const report = {
             environment: {
-                isAdMobWebView: this.isAdMobEnv,
                 performanceLevel: this.performanceLevel,
                 userAgent: navigator.userAgent,
                 viewport: `${window.innerWidth}x${window.innerHeight}`,
@@ -225,9 +222,7 @@ class PerformanceDiagnostics {
             recommendations.push('Multiple errors detected. Check console for details and consider refreshing the page.');
         }
 
-        if (this.isAdMobEnv) {
-            recommendations.push('AdMob environment detected. Consider using minimal themes and disabling non-essential features.');
-        }
+
 
         if (this.performanceLevel === 'low') {
             recommendations.push('Low-end device detected. Use emergency performance mode if experiencing issues.');

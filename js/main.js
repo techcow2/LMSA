@@ -17,14 +17,16 @@ import { initializeSettingsModal } from './settings-modal-manager.js';
 import { initializeCharacterManager } from './character-manager.js';
 import { initializeCharacterGallery } from './character-gallery.js';
 import {
+    debounce,
+    throttle,
+    createDebouncedResizeObserver,
+    optimizedAnimation,
+    cancelOptimizedAnimation,
     setupLazyLoading,
     addHardwareAcceleration,
     getDevicePerformanceLevel,
     startMemoryMonitoring,
     progressiveComponentLoading,
-    detectAdMobEnvironment,
-    applyAdMobOptimizations,
-    startAdaptivePerformanceMonitoring,
     cleanupEventListenersAndObservers,
     aggressiveImageCleanup
 } from './performance-utils.js';
@@ -42,20 +44,13 @@ function initializeApp() {
 
     // Detect device performance level first
     const performanceLevel = getDevicePerformanceLevel();
-    const isAdMobEnvironment = detectAdMobEnvironment();
     console.log(`Detected device performance level: ${performanceLevel}`);
-    
-    // Apply AdMob-specific optimizations if needed
-    if (isAdMobEnvironment) {
-        applyAdMobOptimizations();
-        startAdaptivePerformanceMonitoring();
-    }
 
     // Start memory monitoring for automatic cleanup
     startMemoryMonitoring();
 
-    // Setup periodic cleanup for memory optimization
-    const cleanupInterval = performanceLevel === 'low' ? 60000 : (performanceLevel === 'medium' ? 120000 : 300000);
+    // Setup periodic cleanup for memory optimization - less aggressive intervals
+    const cleanupInterval = performanceLevel === 'low' ? 300000 : 600000; // 5 minutes for low-end, 10 minutes for others
     setInterval(() => {
         cleanupEventListenersAndObservers();
         aggressiveImageCleanup();
@@ -69,8 +64,8 @@ function initializeApp() {
         console.error('Error setting up Monaco cleanup:', error);
     });
 
-    // Load performance diagnostics if in AdMob environment or low performance
-    if (isAdMobEnvironment || performanceLevel === 'low') {
+    // Load performance diagnostics for low performance devices
+    if (performanceLevel === 'low') {
         import('./performance-diagnostics.js').catch(error => {
             console.error('Error loading performance diagnostics:', error);
         });

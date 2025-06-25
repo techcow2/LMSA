@@ -368,6 +368,8 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
         let lastChunkTime = Date.now();
         let isInThinkingProcess = false;
         let thinkingStartTime = null;
+        
+        // Streaming progress tracking for reasoning models
 
         // Create a new timeout for the streaming process (reset on each chunk)
         const resetChunkTimeout = () => {
@@ -584,10 +586,14 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
                                                     contentContainer.innerHTML = '';
                                                     contentContainer.appendChild(thinkingIndicator);
                                                 } else {
-                                                    // Update existing indicator with duration
-                                                    const thinkingDuration = thinkingStartTime ? Date.now() - thinkingStartTime : 0;
-                                                    const durationText = thinkingDuration > 1000 ? ` (${Math.round(thinkingDuration / 1000)}s)` : '';
-                                                    thinkingIndicator.innerHTML = `<i class="fas fa-brain"></i>${durationText}`;
+                                                    // Update existing indicator with duration (throttled to avoid too frequent updates)
+                                                    const now = Date.now();
+                                                    if (!window._lastThinkingUpdateTime || now - window._lastThinkingUpdateTime > 100) {
+                                                        window._lastThinkingUpdateTime = now;
+                                                        const thinkingDuration = thinkingStartTime ? Date.now() - thinkingStartTime : 0;
+                                                        const durationText = thinkingDuration > 1000 ? ` (${Math.round(thinkingDuration / 1000)}s)` : '';
+                                                        thinkingIndicator.innerHTML = `<i class="fas fa-brain"></i>${durationText}`;
+                                                    }
                                                 }
 
                                                 // Update the data attribute with current thinking content
@@ -622,6 +628,8 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
                                         // The Monaco code initialization is deferred until after we close the connection
                                         hasInitializedCodeBlocks = true;
                                     }
+                                    
+                                    // Scroll to bottom during streaming
                                     scrollToBottom(messagesContainer, true);
                                 }
                             }
@@ -2821,10 +2829,14 @@ export async function regenerateLastResponse(isRetry = false) {
                                                         contentContainer.innerHTML = '';
                                                         contentContainer.appendChild(thinkingIndicator);
                                                     } else {
-                                                        // Update existing indicator with duration (same as initial generation)
-                                                        const thinkingDuration = thinkingStartTime ? Date.now() - thinkingStartTime : 0;
-                                                        const durationText = thinkingDuration > 1000 ? ` (${Math.round(thinkingDuration / 1000)}s)` : '';
-                                                        thinkingIndicator.innerHTML = `<i class="fas fa-brain"></i>${durationText}`;
+                                                        // Update existing indicator with duration (throttled to avoid too frequent updates)
+                                                        const now = Date.now();
+                                                        if (!window._lastThinkingUpdateTime || now - window._lastThinkingUpdateTime > 100) {
+                                                            window._lastThinkingUpdateTime = now;
+                                                            const thinkingDuration = thinkingStartTime ? Date.now() - thinkingStartTime : 0;
+                                                            const durationText = thinkingDuration > 1000 ? ` (${Math.round(thinkingDuration / 1000)}s)` : '';
+                                                            thinkingIndicator.innerHTML = `<i class="fas fa-brain"></i>${durationText}`;
+                                                        }
                                                     }
 
                                                     // Update the data attribute with current thinking content
@@ -2862,6 +2874,7 @@ export async function regenerateLastResponse(isRetry = false) {
                                             hasInitializedCodeBlocks = true;
                                         }
 
+                                        // Scroll to bottom during streaming
                                         scrollToBottom(messagesContainer, true);
                                     }
                                 }

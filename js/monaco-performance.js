@@ -269,14 +269,14 @@ export function setupMonacoCleanup() {
     const performanceLevel = getDevicePerformanceLevel();
     
     if (performanceLevel === 'low') {
-        // More frequent cleanup for low-end devices
-        setInterval(cleanupMonacoEditors, 30000); // Every 30 seconds
+        // Reduced frequency cleanup for low-end devices
+        setInterval(cleanupMonacoEditors, 300000); // Every 5 minutes
     } else if (performanceLevel === 'medium') {
         // Moderate cleanup for medium devices
-        setInterval(cleanupMonacoEditors, 60000); // Every minute
+        setInterval(cleanupMonacoEditors, 600000); // Every 10 minutes
     } else {
         // Less frequent cleanup for high-end devices
-        setInterval(cleanupMonacoEditors, 120000); // Every 2 minutes
+        setInterval(cleanupMonacoEditors, 900000); // Every 15 minutes
     }
     
     console.log(`Monaco cleanup scheduled for ${performanceLevel} performance device`);
