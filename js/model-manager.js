@@ -8,7 +8,11 @@ import {
     fullModelNameModal,
     closeFullModelNameButton,
     fullModelNameDisplay,
-    modelHeaderIcon
+    modelHeaderIcon,
+    modelLoadingModal,
+    modelLoadingTitle,
+    modelLoadingName,
+    modelLoadingStatus
 } from './dom-elements.js';
 import { fetchAvailableModels, getAvailableModels, isServerRunning, loadModel as apiLoadModel } from './api-service.js';
 import { checkAndShowWelcomeMessage } from './ui-manager.js';
@@ -36,6 +40,10 @@ export function initializeModelManager() {
 
     if (refreshModelsButton) {
         refreshModelsButton.addEventListener('click', refreshModels);
+    }
+
+    if (closeFullModelNameButton) {
+        closeFullModelNameButton.addEventListener('click', closeFullModelNameModal);
     }
 
     // The model header icon doesn't exist when this function runs
@@ -78,11 +86,6 @@ export function showModelModal() {
         }
 
         // Model header icon is now just decorative (info icon) - no click handler needed
-
-        // Set up the close button for the full model name modal
-        if (closeFullModelNameButton) {
-            closeFullModelNameButton.addEventListener('click', closeFullModelNameModal);
-        }
 
         // Show mobile instructions on smartphones
         showMobileInstructionsIfNeeded();
@@ -308,7 +311,7 @@ async function updateModelDisplay(modelId) {
         window.isInitialStartup = true;
 
         // Use the API service to get updated model information
-        await fetchAvailableModels();
+        await fetchAvailableModels(true); // Skip fallback methods when updating display
 
         // Restore original flag
         window.isInitialStartup = originalStartupFlag;
@@ -390,10 +393,13 @@ async function loadModel(modelId) {
         // Set loading flag to true
         isModelLoading = true;
 
+        // Show the loading modal with the model name
+        showModelLoadingModal(modelId);
+
         // Disable all load buttons in the modal
         disableLoadButtons();
 
-        // Show loading indicator
+        // Show loading indicator in the model list
         const modelElement = document.getElementById(`model-${modelId}`);
         if (modelElement) {
             const actionSpan = modelElement.querySelector('.model-action');
@@ -419,6 +425,10 @@ async function loadModel(modelId) {
 
         if (!success) {
             console.log(`Failed to load model: ${modelId}`);
+            
+            // Hide the loading modal
+            hideModelLoadingModal();
+            
             showActionError(modelId, 'Failed to load');
 
             // Restore the current model display to previous state
@@ -441,6 +451,9 @@ async function loadModel(modelId) {
         // Update the UI with the newly loaded model
         await updateModelDisplay(modelId);
 
+        // Hide the loading modal after successful load
+        hideModelLoadingModal();
+
         // Set loading flag back to false
         isModelLoading = false;
 
@@ -450,6 +463,10 @@ async function loadModel(modelId) {
         return true;
     } catch (error) {
         console.error('Error loading model:', error);
+        
+        // Hide the loading modal on error
+        hideModelLoadingModal();
+        
         showActionError(modelId, 'Failed to load');
 
         // Restore the current model display
@@ -889,48 +906,17 @@ function displayServerError() {
  * Shows the full model name modal
  */
 function showFullModelNameModal() {
-    // Get fresh reference to the modal in case the original reference is stale
-    const modalElement = document.getElementById('full-model-name-modal');
-
-    if (modalElement) {
-        // Set the full model name in the modal
-        const modelNameDisplay = document.getElementById('full-model-name');
-        if (modelNameDisplay) {
-            if (currentModelFullName) {
-                modelNameDisplay.textContent = currentModelFullName;
-            } else {
-                modelNameDisplay.innerHTML = `
-                    <div class="flex items-center text-yellow-500">
-                        <i class="fas fa-exclamation-triangle mr-2"></i>
-                        <span>No model information available</span>
-                    </div>
-                `;
-            }
-        }
-
-        // Add event listener to close button
-        const closeButton = document.getElementById('close-full-model-name');
-        if (closeButton) {
-            // Remove existing listeners to avoid duplicates
-            const newCloseButton = closeButton.cloneNode(true);
-            if (closeButton.parentNode) {
-                closeButton.parentNode.replaceChild(newCloseButton, closeButton);
-            }
-
-            // Add click event to the new button
-            newCloseButton.addEventListener('click', closeFullModelNameModal);
-        }
-
-        // Add event listener to close when clicking outside the modal content
-        modalElement.addEventListener('click', function(e) {
-            if (e.target === modalElement) {
-                closeFullModelNameModal();
-            }
-        });
-
-        // Show the modal with animation
-        modalElement.classList.remove('hidden');
-        const modalContent = modalElement.querySelector('.modal-content');
+    console.log('Showing full model name modal with:', currentModelFullName);
+    
+    if (fullModelNameModal && fullModelNameDisplay) {
+        // Set the model name text
+        fullModelNameDisplay.textContent = currentModelFullName;
+        
+        // Show the modal
+        fullModelNameModal.classList.remove('hidden');
+        
+        // Add fade in animation
+        const modalContent = fullModelNameModal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.classList.add('animate-modal-in');
             setTimeout(() => {
@@ -939,6 +925,100 @@ function showFullModelNameModal() {
         }
     } else {
         console.error('Full model name modal element not found in the DOM');
+    }
+}
+
+/**
+ * Closes the full model name modal
+ */
+function closeFullModelNameModal() {
+    if (fullModelNameModal) {
+        fullModelNameModal.classList.add('hidden');
+    }
+}
+
+/**
+ * Shows the model loading modal with animations
+ * @param {string} modelName - Name of the model being loaded
+ */
+function showModelLoadingModal(modelName) {
+    if (!modelLoadingModal) {
+        console.error('Model loading modal element not found');
+        return;
+    }
+
+    // Set the model name
+    if (modelLoadingName) {
+        modelLoadingName.textContent = modelName;
+    }
+
+    // Reset loading status
+    if (modelLoadingStatus) {
+        modelLoadingStatus.innerHTML = 'Initializing<span class="loading-dots">...</span>';
+    }
+
+    // Show the modal with fade-in animation
+    modelLoadingModal.classList.remove('hidden');
+    
+    // Start the status animation cycle
+    startLoadingStatusAnimation();
+    
+    console.log(`Showing loading modal for model: ${modelName}`);
+}
+
+/**
+ * Hides the model loading modal
+ */
+function hideModelLoadingModal() {
+    if (!modelLoadingModal) {
+        console.error('Model loading modal element not found');
+        return;
+    }
+
+    // Stop any ongoing animations
+    stopLoadingStatusAnimation();
+
+    // Hide the modal with fade-out animation
+    modelLoadingModal.classList.add('hidden');
+    
+    console.log('Hiding loading modal');
+}
+
+/**
+ * Updates the loading status text with different messages
+ */
+let loadingStatusInterval;
+const loadingMessages = [
+    'Initializing<span class="loading-dots">...</span>',
+    'Loading model files<span class="loading-dots">...</span>',
+    'Preparing neural network<span class="loading-dots">...</span>',
+    'Optimizing for your system<span class="loading-dots">...</span>',
+    'Almost ready<span class="loading-dots">...</span>'
+];
+let currentMessageIndex = 0;
+
+function startLoadingStatusAnimation() {
+    if (!modelLoadingStatus) return;
+    
+    // Clear any existing interval
+    if (loadingStatusInterval) {
+        clearInterval(loadingStatusInterval);
+    }
+    
+    // Reset message index
+    currentMessageIndex = 0;
+    
+    // Update status every 2 seconds
+    loadingStatusInterval = setInterval(() => {
+        currentMessageIndex = (currentMessageIndex + 1) % loadingMessages.length;
+        modelLoadingStatus.innerHTML = loadingMessages[currentMessageIndex];
+    }, 2000);
+}
+
+function stopLoadingStatusAnimation() {
+    if (loadingStatusInterval) {
+        clearInterval(loadingStatusInterval);
+        loadingStatusInterval = null;
     }
 }
 
@@ -959,25 +1039,6 @@ function showMobileInstructionsIfNeeded() {
         } else {
             mobileInstructions.classList.add('hidden');
             console.log('Hiding mobile instructions for tablet/desktop user');
-        }
-    }
-}
-
-/**
- * Closes the full model name modal
- */
-function closeFullModelNameModal() {
-    const modal = document.getElementById('full-model-name-modal');
-    if (modal) {
-        const modalContent = modal.querySelector('.modal-content');
-        if (modalContent) {
-            modalContent.classList.add('animate-modal-out');
-            setTimeout(() => {
-                modalContent.classList.remove('animate-modal-out');
-                modal.classList.add('hidden');
-            }, 300);
-        } else {
-            modal.classList.add('hidden');
         }
     }
 }

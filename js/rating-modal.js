@@ -1,3 +1,13 @@
+// Rating Modal Manager
+// Shows a rating request modal on the 3rd, 10th, and 30th app openings
+// 
+// Behavior:
+// - First show (3rd opening): "Rate on Play Store" or "Remind Me Later" (no manual disable option)
+// - Second show (10th opening): "Rate on Play Store" or "Remind Me Later" (no manual disable option)
+// - Third show (30th opening): "Rate on Play Store" or "Not Right Now" (final show)
+// - Modal ALWAYS appears on scheduled openings regardless of previous choices
+// - Only permanent dismiss is after third show (any action on third show)
+
 import { checkAndShowWelcomeMessage } from './ui-manager.js';
 import { showExternalSiteModal } from '../external-site-confirmation-modal.js';
 import { getLightThemeEnabled } from './settings-manager.js';

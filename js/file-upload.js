@@ -160,6 +160,126 @@ async function loadJSZip() {
 }
 
 /**
+ * Dynamically load PDF.js library if not already available
+ */
+async function loadPDFJS() {
+    if (window.pdfjsLib) {
+        return window.pdfjsLib;
+    }
+    
+    try {
+        console.log('Loading PDF.js library...');
+        
+        // Load PDF.js from CDN using ES6 module import
+        const pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.3.31/pdf.min.mjs');
+        
+        console.log('PDF.js library loaded successfully');
+        
+        // Set up worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.3.31/pdf.worker.min.mjs';
+        
+        // Store in global scope for future use
+        window.pdfjsLib = pdfjsLib;
+        
+        console.log('PDF.js worker configured');
+        
+        return pdfjsLib;
+    } catch (error) {
+        console.error('Failed to load PDF.js:', error);
+        
+        // Fallback error message with more details
+        const errorMessage = error.message || 'Unknown error';
+        if (errorMessage.includes('import') || errorMessage.includes('module')) {
+            throw new Error('Browser does not support ES6 modules required for PDF.js. Please use a modern browser.');
+        } else {
+            throw new Error(`Network error loading PDF.js: ${errorMessage}`);
+        }
+    }
+}
+
+/**
+ * Extract text content from a PDF file using PDF.js
+ * @param {File} file - The PDF file to read
+ * @returns {Promise<string>} - Extracted text content
+ */
+async function extractPdfText(file) {
+    try {
+        console.log(`Extracting text from PDF file: ${file.name}`);
+        
+        // Load PDF.js library
+        const pdfjsLib = await loadPDFJS();
+        
+        // Read file as ArrayBuffer
+        const arrayBuffer = await readFileAsArrayBuffer(file);
+        
+        // Load PDF document
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        console.log(`PDF loaded successfully. Page count: ${pdf.numPages}`);
+        
+        let fullText = '';
+        
+        // Extract text from each page
+        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+            try {
+                const page = await pdf.getPage(pageNum);
+                const textContent = await page.getTextContent();
+                
+                // Combine text items into readable text with proper spacing
+                let pageText = '';
+                let lastY = null;
+                let lastX = null;
+                
+                for (let i = 0; i < textContent.items.length; i++) {
+                    const item = textContent.items[i];
+                    const currentY = item.transform[5];
+                    const currentX = item.transform[4];
+                    
+                    // Check if we need a line break (Y position changed significantly)
+                    if (lastY !== null && Math.abs(currentY - lastY) > 5) {
+                        pageText += '\n';
+                    }
+                    // Check if we need a space (X position has a gap on same line)
+                    else if (lastY !== null && lastX !== null && 
+                             Math.abs(currentY - lastY) <= 5 && 
+                             currentX > lastX + 10) {  // Use fixed gap instead of item.width which might be undefined
+                        pageText += ' ';
+                    }
+                    
+                    pageText += item.str;
+                    
+                    lastY = currentY;
+                    lastX = currentX;
+                }
+                
+                // Clean up extra spaces and normalize line breaks
+                pageText = pageText
+                    .replace(/\s+/g, ' ')           // Multiple spaces to single space
+                    .replace(/\s*\n\s*/g, '\n')     // Clean line breaks
+                    .replace(/\n+/g, '\n')          // Multiple line breaks to single
+                    .trim();
+                
+                if (pageText) {
+                    fullText += `--- Page ${pageNum} ---\n${pageText}\n\n`;
+                }
+                
+                console.log(`Extracted text from page ${pageNum}, length: ${pageText.length}`);
+                
+            } catch (pageError) {
+                console.error(`Error extracting text from page ${pageNum}:`, pageError);
+                fullText += `--- Page ${pageNum} ---\n[Error extracting text from this page: ${pageError.message}]\n\n`;
+            }
+        }
+        
+        console.log(`Successfully extracted text from PDF ${file.name}, total length: ${fullText.length}`);
+        return fullText.trim();
+        
+    } catch (error) {
+        console.error(`Error extracting text from PDF ${file.name}:`, error);
+        throw new Error(`Failed to extract text from PDF: ${error.message}`);
+    }
+}
+
+/**
  * Handles file selection from the file input
  * @param {Event} event - The change event from the file input
  */
@@ -172,21 +292,12 @@ function handleFileSelection(event) {
         return;
     }
 
-    // Define allowed file extensions - ensure this matches the extensions handled in extractFileContent
+    // Define allowed file extensions - only PDF, DOCX, TXT, and CSV
     const allowedExtensions = [
-        // Text files
-        '.txt', '.md',
-        // Code files
-        '.js', '.ts', '.jsx', '.tsx', '.py', '.java', '.c', '.cpp', '.h', '.hpp',
-        '.go', '.rs', '.rb', '.php', '.sh', '.ps1',
-        // Data files
-        '.json', '.csv', '.tsv', '.xml', '.yaml', '.yml', '.toml', '.ini', '.config', '.jsonl', '.jsonlines',
-        // Document files
-        '.docx', '.doc', '.pdf',
-        // Log files
-        '.log',
-        // Web files
-        '.html', '.css'
+        '.txt',    // Plain Text
+        '.pdf',    // PDF
+        '.docx',   // Microsoft Word
+        '.csv'     // Comma-Separated Values
     ];
 
     console.log('Files selected:', Array.from(files).map(f => `${f.name} (${f.type})`).join(', '));
@@ -196,17 +307,18 @@ function handleFileSelection(event) {
         const fileName = file.name.toLowerCase();
         const isAllowed = allowedExtensions.some(ext => fileName.endsWith(ext));
         
-        // Also allow files with text MIME types
-        const isTextMimeType = file.type && (
-            file.type.startsWith('text/') || 
-            file.type.includes('json') || 
-            file.type.includes('javascript') || 
-            file.type.includes('xml') ||
-            file.type.includes('csv')
+        // Also allow files with specific MIME types for the allowed file types
+        const isAllowedMimeType = file.type && (
+            file.type === 'text/plain' ||                    // TXT files
+            file.type === 'application/pdf' ||               // PDF files
+            file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || // DOCX files
+            file.type === 'application/msword' ||            // DOC files (legacy)
+            file.type === 'text/csv' ||                      // CSV files
+            file.type.includes('csv')                        // Alternative CSV MIME types
         );
         
-        const isValid = isAllowed || isTextMimeType;
-        console.log(`File ${file.name} - allowed by extension: ${isAllowed}, text mime type: ${isTextMimeType}, valid: ${isValid}`);
+        const isValid = isAllowed || isAllowedMimeType;
+        console.log(`File ${file.name} - allowed by extension: ${isAllowed}, allowed mime type: ${isAllowedMimeType}, valid: ${isValid}`);
         return isValid;
     });
 
@@ -345,34 +457,27 @@ async function readFileContent(file) {
             }
             
             // Check if it's a DOCX file
-            const isDocxFile = file.name.toLowerCase().endsWith('.docx') || file.name.toLowerCase().endsWith('.doc');
+            const isDocxFile = file.name.toLowerCase().endsWith('.docx');
             
-            // Define text file types
-            const textFileTypes = [
-                'text/', 
-                'application/json', 
-                'application/javascript', 
-                'application/typescript',
-                'application/xml', 
-                'application/x-sh', 
-                'application/xhtml+xml'
+            // Check if it's a PDF file
+            const isPdfFile = file.name.toLowerCase().endsWith('.pdf');
+            
+            // Define allowed text file types (TXT and CSV)
+            const allowedTextFileTypes = [
+                'text/plain',    // TXT files
+                'text/csv'       // CSV files
             ];
             
-            // Define text file extensions
-            const textFileExtensions = [
-                '.txt', '.json', '.md', '.py', '.js', '.ts', '.jsx', '.tsx', 
-                '.sh', '.c', '.cpp', '.h', '.hpp', '.yaml', '.yml', '.html', 
-                '.css', '.svg', '.csv', '.log', '.java', '.php', '.rb', '.go', 
-                '.rs', '.toml', '.ini', '.config', '.sql'
-            ];
+            // Define allowed text file extensions (TXT and CSV)
+            const allowedTextFileExtensions = ['.txt', '.csv'];
             
-            // Check if it's a text file based on type or extension
+            // Check if it's an allowed text file based on type or extension
             const fileNameLower = file.name.toLowerCase();
-            const isTextTypeByMimeType = textFileTypes.some(type => file.type && file.type.startsWith(type));
-            const isTextTypeByExtension = textFileExtensions.some(ext => fileNameLower.endsWith(ext));
-            const isTextFile = isTextTypeByMimeType || isTextTypeByExtension;
+            const isAllowedTextByMimeType = allowedTextFileTypes.some(type => file.type && file.type === type);
+            const isAllowedTextByExtension = allowedTextFileExtensions.some(ext => fileNameLower.endsWith(ext));
+            const isAllowedTextFile = isAllowedTextByMimeType || isAllowedTextByExtension || file.type.includes('csv');
             
-            console.log(`File ${file.name} classification: isDocx=${isDocxFile}, isTextByMime=${isTextTypeByMimeType}, isTextByExt=${isTextTypeByExtension}`);
+            console.log(`File ${file.name} classification: isDocx=${isDocxFile}, isPdf=${isPdfFile}, isAllowedText=${isAllowedTextFile}`);
             
             if (isDocxFile) {
                 // Process DOCX files using JSZip
@@ -396,8 +501,26 @@ async function readFileContent(file) {
                         reject(readError);
                     });
                 });
-            } else if (isTextFile || !file.type) {
-                // Read as text for all text file types - also default to text for unknown types
+            } else if (isPdfFile) {
+                // Process PDF files using PDF.js
+                extractPdfText(file).then(content => {
+                    console.log(`Successfully extracted PDF content from ${file.name}, length: ${content.length}`);
+                    resolve({
+                        name: file.name,
+                        type: file.type || 'application/pdf',
+                        content: content
+                    });
+                }).catch(error => {
+                    console.error(`Error extracting PDF content from ${file.name}:`, error);
+                    // Fallback to error message if PDF extraction fails
+                    resolve({
+                        name: file.name,
+                        type: file.type || 'application/pdf',
+                        content: `[Error extracting PDF content: ${error.message}. Please ensure the PDF is not password-protected or corrupted.]`
+                    });
+                });
+            } else if (isAllowedTextFile) {
+                // Read as text for allowed text file types (TXT and CSV)
                 readAsText(file).then(content => {
                     console.log(`Successfully read text content from ${file.name}, length: ${content.length}`);
                     resolve({
@@ -410,23 +533,12 @@ async function readFileContent(file) {
                     reject(error);
                 });
             } else {
-                // For unsupported types, try to read as text anyway as a fallback
-                console.log(`Unsupported file type: ${file.type} for ${file.name}, trying text fallback`);
-                readAsText(file).then(content => {
-                    console.log(`Fallback text read successful for ${file.name}, length: ${content.length}`);
-                    resolve({
-                        name: file.name,
-                        type: file.type || inferFileType(file.name),
-                        content: content
-                    });
-                }).catch(error => {
-                    console.error(`Fallback text read failed for ${file.name}:`, error);
-                    // Return an empty string as content if we can't read the file
-                    resolve({
-                        name: file.name,
-                        type: file.type || inferFileType(file.name),
-                        content: `[Unable to read file content: ${error.message}]`
-                    });
+                // For unsupported types (should not happen due to filtering)
+                console.log(`Unsupported file type: ${file.type} for ${file.name}`);
+                resolve({
+                    name: file.name,
+                    type: file.type || inferFileType(file.name),
+                    content: '[Unsupported file type. Only PDF, DOCX, TXT, and CSV files are allowed.]'
                 });
             }
         } catch (error) {
@@ -613,19 +725,36 @@ async function extractFileContent(file) {
         const fileName = file.name.toLowerCase();
         
         // DOCX files
-        if (fileName.endsWith('.docx') || fileName.endsWith('.doc')) {
+        if (fileName.endsWith('.docx')) {
             console.log(`Processing ${file.name} as DOCX document`);
             return await extractDocxText(file);
         }
         
-        // For all other file types, try to read as text
-        console.log(`Processing ${file.name} as text file`);
-        try {
-            return await readAsText(file);
-        } catch (error) {
-            console.error(`Error reading ${file.name} as text:`, error);
-            return `[Error reading file: ${error.message}]`;
+        // PDF files
+        if (fileName.endsWith('.pdf')) {
+            console.log(`Processing ${file.name} as PDF document`);
+            try {
+                return await extractPdfText(file);
+            } catch (error) {
+                console.error(`Error extracting text from PDF ${file.name}:`, error);
+                return `[Error extracting PDF content: ${error.message}. Please ensure the PDF is not password-protected or corrupted.]`;
+            }
         }
+        
+        // TXT and CSV files
+        if (fileName.endsWith('.txt') || fileName.endsWith('.csv')) {
+            console.log(`Processing ${file.name} as text file`);
+            try {
+                return await readAsText(file);
+            } catch (error) {
+                console.error(`Error reading ${file.name} as text:`, error);
+                return `[Error reading file: ${error.message}]`;
+            }
+        }
+        
+        // Unsupported file type (should not happen due to filtering)
+        console.log(`Unsupported file type for ${file.name}`);
+        return '[Unsupported file type. Only PDF, DOCX, TXT, and CSV files are allowed.]';
         
     } catch (error) {
         console.error(`Error extracting content from ${file.name}:`, error);
@@ -720,30 +849,11 @@ export async function prepareFilesForLLM(files) {
 function inferFileType(fileName) {
     const extension = fileName.split('.').pop().toLowerCase();
     
+    // Only include MIME types for allowed file types: PDF, DOCX, TXT, CSV
     const mimeTypes = {
         'txt': 'text/plain',
-        'html': 'text/html',
-        'css': 'text/css',
-        'js': 'application/javascript',
-        'json': 'application/json',
-        'xml': 'application/xml',
         'csv': 'text/csv',
-        'md': 'text/markdown',
-        'py': 'text/x-python',
-        'java': 'text/x-java',
-        'c': 'text/x-c',
-        'cpp': 'text/x-c++',
-        'h': 'text/x-c',
-        'rb': 'text/x-ruby',
-        'php': 'text/x-php',
-        'go': 'text/x-go',
-        'rs': 'text/x-rust',
-        'sh': 'text/x-shellscript',
-        'yaml': 'text/yaml',
-        'yml': 'text/yaml',
-        'toml': 'text/toml',
-        'ini': 'text/ini',
-        'doc': 'application/msword',
+        'pdf': 'application/pdf',
         'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     };
     

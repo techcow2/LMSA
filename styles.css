@@ -6871,3 +6871,177 @@ body.light-theme .trash-icon-container:hover {
 body.light-theme .trash-icon-container:focus {
     /* Focus styles are handled in JavaScript */
 }
+
+body.light-theme #model-modal .load-model-btn:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+}
+
+/* Model Loading Modal Styles */
+#model-loading-modal {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#model-loading-modal.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+#model-loading-modal .modal-content {
+    transform: scale(0.9);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#model-loading-modal:not(.hidden) .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Loading animations */
+@keyframes progressPulse {
+    0% {
+        width: 0%;
+        opacity: 0.7;
+    }
+    50% {
+        width: 60%;
+        opacity: 1;
+    }
+    100% {
+        width: 0%;
+        opacity: 0.7;
+    }
+}
+
+.progress-bar-loading {
+    animation: progressPulse 2s ease-in-out infinite;
+}
+
+/* Realistic progress bar styling */
+#model-loading-progress {
+    transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Loading dots animation */
+.loading-dots {
+    animation: loadingDots 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingDots {
+    0%, 20% {
+        color: rgba(156, 163, 175, 0.4);
+        text-shadow: 0.25em 0 0 rgba(156, 163, 175, 0.4), 
+                     0.5em 0 0 rgba(156, 163, 175, 0.4);
+    }
+    40% {
+        color: rgba(156, 163, 175, 1);
+        text-shadow: 0.25em 0 0 rgba(156, 163, 175, 0.4), 
+                     0.5em 0 0 rgba(156, 163, 175, 0.4);
+    }
+    60% {
+        color: rgba(156, 163, 175, 1);
+        text-shadow: 0.25em 0 0 rgba(156, 163, 175, 1), 
+                     0.5em 0 0 rgba(156, 163, 175, 0.4);
+    }
+    80%, 100% {
+        color: rgba(156, 163, 175, 1);
+        text-shadow: 0.25em 0 0 rgba(156, 163, 175, 1), 
+                     0.5em 0 0 rgba(156, 163, 175, 1);
+    }
+}
+
+/* Enhanced spinning animation for loading ring */
+@keyframes spinRing {
+    0% { 
+        transform: rotate(0deg);
+        border-color: transparent transparent rgba(59, 130, 246, 0.8) rgba(34, 197, 94, 0.8);
+    }
+    25% { 
+        border-color: rgba(34, 197, 94, 0.8) transparent transparent rgba(59, 130, 246, 0.8);
+    }
+    50% { 
+        transform: rotate(180deg);
+        border-color: transparent rgba(59, 130, 246, 0.8) rgba(34, 197, 94, 0.8) transparent;
+    }
+    75% { 
+        border-color: rgba(59, 130, 246, 0.8) rgba(34, 197, 94, 0.8) transparent transparent;
+    }
+    100% { 
+        transform: rotate(360deg);
+        border-color: transparent transparent rgba(59, 130, 246, 0.8) rgba(34, 197, 94, 0.8);
+    }
+}
+
+#model-loading-modal .animate-spin {
+    animation: spinRing 2s linear infinite;
+}
+
+/* Enhanced pulse animation */
+@keyframes enhancedPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+#model-loading-modal .animate-pulse {
+    animation: enhancedPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Light theme adjustments for loading modal */
+body.light-theme #model-loading-modal .loading-dots {
+    color: rgba(75, 85, 99, 0.6);
+}
+
+body.light-theme #model-loading-modal .loading-dots {
+    animation: loadingDotsLight 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingDotsLight {
+    0%, 20% {
+        color: rgba(75, 85, 99, 0.4);
+        text-shadow: 0.25em 0 0 rgba(75, 85, 99, 0.4), 
+                     0.5em 0 0 rgba(75, 85, 99, 0.4);
+    }
+    40% {
+        color: rgba(75, 85, 99, 1);
+        text-shadow: 0.25em 0 0 rgba(75, 85, 99, 0.4), 
+                     0.5em 0 0 rgba(75, 85, 99, 0.4);
+    }
+    60% {
+        color: rgba(75, 85, 99, 1);
+        text-shadow: 0.25em 0 0 rgba(75, 85, 99, 1), 
+                     0.5em 0 0 rgba(75, 85, 99, 0.4);
+    }
+    80%, 100% {
+        color: rgba(75, 85, 99, 1);
+        text-shadow: 0.25em 0 0 rgba(75, 85, 99, 1), 
+                     0.5em 0 0 rgba(75, 85, 99, 1);
+    }
+}
+
+/* Mobile responsiveness for loading modal */
+@media (max-width: 640px) {
+    #model-loading-modal .modal-content {
+        margin: 1rem;
+        padding: 1.5rem;
+        max-width: calc(100% - 2rem);
+    }
+    
+    #model-loading-modal .w-20.h-20 {
+        width: 4rem;
+        height: 4rem;
+    }
+    
+    #model-loading-modal .text-2xl {
+        font-size: 1.5rem;
+    }
+}
