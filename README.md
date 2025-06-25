@@ -4,6 +4,29 @@
 ![Version: Current](https://img.shields.io/badge/Version-Current-green)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
 
+<p align="left">
+  <a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
+    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80">
+  </a>
+  <a href="https://github.com/your-repo/lmsa-android/releases">
+    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" height="80">
+  </a>
+</p>
+
+## 🆕 What's New in Version 5.2
+
+🎉 **Latest Update: Version 5.2** - Now Available!
+
+### Bug Fixes
+- **Fixed PDF File Attachments**: Resolved the issue where PDF files weren't allowed as attachments. You can now upload and analyze PDF documents seamlessly with your AI models.
+
+### Improvements
+- Enhanced file processing stability
+- Improved document analysis performance
+- Better error handling for file uploads
+
+---
+
 ## 📸 Screenshots
 
 <p align="left">
@@ -125,4 +148,4 @@ LMSA is a third-party application and is not affiliated with LM Studio or its de
 
 ---
 
-© 2025 TechRay Apps LLC. All rights reserved
+© 2025 IslandApps. All rights reserved
