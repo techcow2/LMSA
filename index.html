@@ -846,7 +846,11 @@
                         About
                     </button>
                     
-
+                    <!-- Feedback Survey -->
+                    <button id="feedback-survey-btn" class="menu-item w-full text-left">
+                        <i class="fas fa-comment-dots"></i>
+                        Feedback
+                    </button>
                 </div>
             </div>
 
@@ -965,7 +969,7 @@
                         <button type="button" id="stop-button" class="bg-red-600 text-white hover:bg-red-700 focus:outline-none transition-all duration-300 ease-in-out hidden">
                             <i class="fas fa-stop mr-1"></i><span>Stop</span>
                         </button>
-                        <input type="file" id="file-upload-input" class="hidden" multiple accept=".txt,.pdf,.docx,.csv">
+                        <input type="file" id="file-upload-input" class="hidden" multiple accept=".txt,.pdf,.json,.csv,.tsv,.xml,.html,.log,.md,.yaml,.yml,.jsonl,.jsonlines,.c,.cpp,.h,.hpp,.py,.js,.ts,.jsx,.tsx,.sh,.ps1,.docx">
                     </form>
                 </div>
 
@@ -1121,7 +1125,7 @@
                                 <div class="toggle-dot"></div>
                             </div>
                         </div>
-                        <p class="text-xs text-gray-400 mt-1">When enabled, disables some automatic scrolling features in the chat.</p>
+                        <p class="text-xs text-gray-400 mt-1">When enabled, disables automatic scrolling to the bottom of the chat when new messages arrive.</p>
                     </div>
 
 
@@ -1588,7 +1592,68 @@
         </button>
     </div>
 
-
+    <!-- Feedback Survey Modal -->
+    <div id="feedback-survey-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden modal-container z-50" aria-labelledby="feedback-title" role="dialog" aria-modal="true">
+        <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-white/10 overflow-hidden animate-modal-in" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
+            <!-- Header with title -->
+            <div class="relative flex items-center justify-between mb-6 border-b border-gray-700/60 pb-4">
+                <h2 id="feedback-title" class="text-xl font-bold flex items-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">
+                    <div class="mr-3 p-2 bg-blue-500/10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-comment-dots text-blue-400"></i>
+                    </div>
+                    How can we improve?
+                </h2>
+                <button id="close-feedback-modal" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Feedback Form -->
+            <form id="feedback-form" action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+                <input type="hidden" name="access_key" value="2abee2af-7350-45de-aaea-74628f94db55">
+                <input type="hidden" name="subject" value="New Feedback from LMSA">
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                
+                <div>
+                    <textarea 
+                        name="message" 
+                        id="feedback-message" 
+                        rows="5" 
+                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800/50 text-white border-gray-700" 
+                        placeholder="Your feedback helps us improve. Please share your thoughts..."
+                        required
+                    ></textarea>
+                </div>
+                
+                <div class="flex justify-end">
+                    <button 
+                        type="submit" 
+                        class="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300"
+                    >
+                        <span class="flex items-center">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Send Feedback
+                        </span>
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Success and Error Messages -->
+            <div id="feedback-success" class="hidden mt-4 p-3 bg-green-900/50 text-green-300 rounded-lg border border-green-700">
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span>Thank you for your feedback! We appreciate your input.</span>
+                </div>
+            </div>
+            
+            <div id="feedback-error" class="hidden mt-4 p-3 bg-red-900/50 text-red-300 rounded-lg border border-red-700">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    <span>Something went wrong. Please try again later.</span>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- About modal -->
     <div id="about-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden modal-container z-50" aria-labelledby="about-title" role="dialog" aria-modal="true">
@@ -1605,7 +1670,7 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="version-badge bg-white/10 px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300">Version 5.1</p>
+                    <p class="text-sm font-medium text-blue-300">Version 5.0</p>
                 </div>
             </div>
 
@@ -1617,7 +1682,7 @@
                 <div class="flex flex-col items-center justify-center mb-6">
                     <p class="text-center text-gray-300 mb-4 flex items-center">
                         <i class="fas fa-copyright text-blue-400 mr-2 opacity-75"></i>
-                        <span>2025 Island Apps</span>
+                        <span>2025 TechRay Apps LLC</span>
                     </p>
 
                     <!-- Links section with improved styling -->
@@ -1817,59 +1882,9 @@
         </div>
     </div>
 
-    <!-- Model Loading modal -->
-    <div id="model-loading-modal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-md flex items-center justify-center hidden modal-container" aria-labelledby="model-loading-title" role="dialog" aria-modal="true" style="z-index: 1050;">
-        <div class="bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 dark:from-slate-900/95 dark:via-slate-800/95 dark:to-slate-900/95 light:from-white/95 light:via-gray-50/95 light:to-white/95 p-8 rounded-2xl shadow-2xl border border-white/20 dark:border-white/20 light:border-gray-200/50 modal-content max-w-md w-[90%]" style="box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(59, 130, 246, 0.2);">
-            <div class="text-center">
-                <!-- Animated loading icon -->
-                <div class="relative mb-6">
-                    <div class="mx-auto w-20 h-20 relative">
-                        <!-- Outer spinning ring -->
-                        <div class="absolute inset-0 border-4 border-transparent border-t-blue-500 border-r-green-500 rounded-full animate-spin"></div>
-                        <!-- Inner pulsing circle -->
-                        <div class="absolute inset-2 bg-gradient-to-br from-blue-500/20 to-green-500/20 rounded-full animate-pulse"></div>
-                        <!-- Center icon -->
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <i class="fas fa-brain text-2xl text-green-400 animate-pulse"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Loading title -->
-                <h2 id="model-loading-title" class="text-2xl font-bold mb-3 text-white dark:text-white light:text-gray-800">
-                    <span class="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">Loading Model</span>
-                </h2>
-                
-                <!-- Model name being loaded -->
-                <div class="mb-6">
-                    <p class="text-gray-300 dark:text-gray-300 light:text-gray-600 text-sm mb-2">Preparing</p>
-                    <div id="model-loading-name" class="text-lg font-medium text-green-300 dark:text-green-300 light:text-green-600 px-4 py-2 bg-slate-800/50 dark:bg-slate-800/50 light:bg-gray-100/80 rounded-lg border border-green-500/20 dark:border-green-500/20 light:border-green-400/30 truncate">
-                        Model Name
-                    </div>
-                </div>
-                
-                <!-- Loading status -->
-                <div class="mb-3">
-                    <!-- Loading text with animated dots -->
-                    <p id="model-loading-status" class="text-gray-400 dark:text-gray-400 light:text-gray-500 text-sm">
-                        Initializing<span class="loading-dots">...</span>
-                    </p>
-                </div>
-                
-                <!-- Tip text -->
-                <div class="mt-6 p-3 bg-green-500/10 dark:bg-green-500/10 light:bg-green-50 rounded-lg border border-green-500/20 dark:border-green-500/20 light:border-green-200">
-                    <p class="text-xs text-green-300 dark:text-green-300 light:text-green-600">
-                        <i class="fas fa-lightbulb mr-1 text-yellow-400"></i>
-                        This may take a few moments depending on the model size
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- What's New modal -->
     <div id="whats-new-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center hidden modal-container" aria-labelledby="whats-new-title" role="dialog" aria-modal="true" style="padding: 1.5rem;">
-        <div class="bg-gradient-to-b from-[#0a192f]/95 via-[#0c1e36]/95 to-[#0a192f]/95 p-4 rounded-2xl shadow-2xl modal-content flex flex-col border border-white/10 overflow-hidden w-full max-w-lg" style="box-shadow: 0 20px 60px -15px rgba(0,0,0,0.7), 0 0 30px rgba(31, 66, 135, 0.2), 0 0 0 1px rgba(255,255,255,0.1) inset;">
+        <div class="bg-gradient-to-b from-[#0a192f]/95 via-[#0c1e36]/95 to-[#0a192f]/95 p-4 rounded-2xl shadow-2xl modal-content flex flex-col border border-white/10 overflow-hidden" style="box-shadow: 0 20px 60px -15px rgba(0,0,0,0.7), 0 0 30px rgba(31, 66, 135, 0.2), 0 0 0 1px rgba(255,255,255,0.1) inset;">
             <div class="flex justify-between items-center mb-3 pb-3 border-b border-white/15">
                 <h2 id="whats-new-title" class="text-xl font-bold flex items-center">
                     <div class="icon-wrapper mr-3 flex items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 w-9 h-9 text-darkBg shadow-lg animate-pulse-subtle">
@@ -1877,10 +1892,10 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-blue-400 font-extrabold">What's New</span>
-                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">5.1</span></span>
+                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">5.0</span></span>
                     </div>
                 </h2>
-                <button id="close-whats-new" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:rotate-90 transform flex-shrink-0">
+                <button id="close-whats-new" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:rotate-90 transform">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -1891,33 +1906,20 @@
                         <div class="relative overflow-hidden">
                             <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-blue-500/10 to-blue-700/5 rounded-full blur-xl"></div>
                             <div class="flex items-start relative z-10">
-                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-blue-500/20 w-10 h-10 shadow-sm flex-shrink-0">
-                                    <i class="fas fa-paperclip text-blue-400"></i>
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-blue-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-heart text-blue-400"></i>
                                 </div>
-                                <div class="flex-1 min-w-0">
+                                <div class="flex-1">
                                     <div class="flex items-center">
-                                        <h3 class="feature-title">Attachment Feature Improved</h3>
+                                        <h3 class="feature-title whitespace-nowrap">LMSA is Now Free!</h3>
                                     </div>
                                     <div class="feature-description">
-                                        <p class="mb-3">You can now reliably attach and read PDF files and other documents. The attachment feature has been improved to handle these file types and avoid previous issues with document reading.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-purple-500/10 to-purple-700/5 rounded-full blur-xl"></div>
-                            <div class="flex items-start relative z-10">
-                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-purple-500/20 w-10 h-10 shadow-sm flex-shrink-0">
-                                    <i class="fas fa-info-circle text-purple-400"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex items-center">
-                                        <h3 class="feature-title">Model Information Page Enhancements</h3>
-                                    </div>
-                                    <div class="feature-description">
-                                        <p class="mb-3">The Model Information page has received visual improvements.</p>
+                                        <p class="mb-4"><strong>Dear LMSA Users,</strong></p>
+                                        <p class="mb-3">We're excited to announce that LMSA, your front end for LM Studio, is now completely free for everyone.</p>
+                                        <p class="mb-3">To keep LMSA accessible and to support ongoing development, we've introduced ads into the app. This change allows us to continue improving LMSA and providing new features, while making sure it remains free to use.</p>
+                                        <p class="mb-3"><strong>Important:</strong> Being ad-supported does not mean we track you. Your chats will continue to be completely private and will never be monitored or sent to any server. Your privacy remains our top priority.</p>
+                                        <p class="mb-3">Thank you for your understanding and continued support.</p>
+                                        <p><strong>The LMSA Team</strong></p>
                                     </div>
                                 </div>
                             </div>
@@ -2142,7 +2144,166 @@
     <script>
         // Add preview mode toggle functionality
         document.addEventListener('DOMContentLoaded', function() {
-
+            // Feedback Survey Modal Functionality
+            const feedbackBtn = document.getElementById('feedback-survey-btn');
+            const feedbackModal = document.getElementById('feedback-survey-modal');
+            const closeFeedbackModal = document.getElementById('close-feedback-modal');
+            const feedbackForm = document.getElementById('feedback-form');
+            const feedbackSuccess = document.getElementById('feedback-success');
+            const feedbackError = document.getElementById('feedback-error');
+            
+            // Open feedback modal with animation
+            if (feedbackBtn) {
+                feedbackBtn.addEventListener('click', function() {
+                    // Ensure animation classes are properly set before showing the modal
+                    const modalContent = feedbackModal.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.classList.remove('animate-modal-out');
+                        modalContent.classList.add('animate-modal-in');
+                    }
+                    feedbackModal.classList.remove('hidden');
+                    
+                    // Close sidebar when opening modal (regardless of screen size)
+                    const sidebar = document.getElementById('sidebar');
+                    const sidebarOverlay = document.getElementById('sidebar-overlay');
+                    
+                    if (sidebar) {
+                        // Use the same pattern as in toggleSidebar function
+                        sidebar.classList.add('animate-slide-out');
+                        sidebar.classList.remove('animate-slide-in');
+                        document.body.classList.remove('sidebar-open');
+                        
+                        // Hide the sidebar after animation completes
+                        setTimeout(() => {
+                            sidebar.classList.remove('active');
+                            sidebar.classList.add('hidden');
+                            sidebar.classList.remove('animate-slide-out');
+                        }, 300);
+                    }
+                    
+                    // Handle the overlay
+                    if (sidebarOverlay) {
+                        sidebarOverlay.classList.remove('active');
+                        setTimeout(() => {
+                            sidebarOverlay.classList.add('hidden');
+                        }, 300);
+                    }
+                });
+            }
+            
+            // Close feedback modal with animation
+            if (closeFeedbackModal) {
+                closeFeedbackModal.addEventListener('click', function() {
+                    // Add the closing animation class
+                    const modalContent = feedbackModal.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.classList.remove('animate-modal-in');
+                        modalContent.classList.add('animate-modal-out');
+                        
+                        // Wait for animation to complete before hiding the modal
+                        setTimeout(() => {
+                            feedbackModal.classList.add('hidden');
+                            // Reset form and hide messages
+                            if (feedbackForm) feedbackForm.reset();
+                            if (feedbackSuccess) feedbackSuccess.classList.add('hidden');
+                            if (feedbackError) feedbackError.classList.add('hidden');
+                            // Reset animation classes for next opening
+                            modalContent.classList.remove('animate-modal-out');
+                        }, 300); // Match the animation duration (0.3s)
+                    } else {
+                        // Fallback if modal content element not found
+                        feedbackModal.classList.add('hidden');
+                        // Reset form and hide messages
+                        if (feedbackForm) feedbackForm.reset();
+                        if (feedbackSuccess) feedbackSuccess.classList.add('hidden');
+                        if (feedbackError) feedbackError.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // Close modal when clicking outside with animation
+            if (feedbackModal) {
+                feedbackModal.addEventListener('click', function(e) {
+                    if (e.target === feedbackModal) {
+                        // Add the closing animation class
+                        const modalContent = feedbackModal.querySelector('.modal-content');
+                        if (modalContent) {
+                            modalContent.classList.remove('animate-modal-in');
+                            modalContent.classList.add('animate-modal-out');
+                            
+                            // Wait for animation to complete before hiding the modal
+                            setTimeout(() => {
+                                feedbackModal.classList.add('hidden');
+                                // Reset form and hide messages
+                                if (feedbackForm) feedbackForm.reset();
+                                if (feedbackSuccess) feedbackSuccess.classList.add('hidden');
+                                if (feedbackError) feedbackError.classList.add('hidden');
+                                // Reset animation classes for next opening
+                                modalContent.classList.remove('animate-modal-out');
+                            }, 300); // Match the animation duration (0.3s)
+                        } else {
+                            // Fallback if modal content element not found
+                            feedbackModal.classList.add('hidden');
+                            // Reset form and hide messages
+                            if (feedbackForm) feedbackForm.reset();
+                            if (feedbackSuccess) feedbackSuccess.classList.add('hidden');
+                            if (feedbackError) feedbackError.classList.add('hidden');
+                        }
+                    }
+                });
+            }
+            
+            // Handle form submission
+            if (feedbackForm) {
+                feedbackForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(feedbackForm);
+                    
+                    fetch(feedbackForm.action, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            feedbackForm.reset();
+                            feedbackForm.style.display = 'none';
+                            feedbackSuccess.classList.remove('hidden');
+                            
+                            // Close modal after 3 seconds with animation
+                            setTimeout(() => {
+                                // Add the closing animation class
+                                const modalContent = feedbackModal.querySelector('.modal-content');
+                                if (modalContent) {
+                                    modalContent.classList.remove('animate-modal-in');
+                                    modalContent.classList.add('animate-modal-out');
+                                    
+                                    // Wait for animation to complete before hiding the modal
+                                    setTimeout(() => {
+                                        feedbackModal.classList.add('hidden');
+                                        feedbackForm.style.display = 'block';
+                                        feedbackSuccess.classList.add('hidden');
+                                        // Reset animation classes for next opening
+                                        modalContent.classList.remove('animate-modal-out');
+                                    }, 300); // Match the animation duration (0.3s)
+                                } else {
+                                    // Fallback if modal content element not found
+                                    feedbackModal.classList.add('hidden');
+                                    feedbackForm.style.display = 'block';
+                                    feedbackSuccess.classList.add('hidden');
+                                }
+                            }, 3000);
+                        } else {
+                            feedbackError.classList.remove('hidden');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        feedbackError.classList.remove('hidden');
+                    });
+                });
+            }
             const previewToggle = document.getElementById('preview-toggle');
 
             // We'll control button visibility through the updateViewMode function

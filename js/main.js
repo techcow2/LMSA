@@ -16,7 +16,6 @@ import { initializeWhatsNew } from './whats-new.js';
 import { initializeSettingsModal } from './settings-modal-manager.js';
 import { initializeCharacterManager } from './character-manager.js';
 import { initializeCharacterGallery } from './character-gallery.js';
-import { initializeRatingModal } from './rating-modal.js';
 import {
     setupLazyLoading,
     addHardwareAcceleration,
@@ -175,7 +174,6 @@ function initializeApp() {
         () => initializeWhatsNew(),
         () => initializeCharacterManager(),
         () => initializeCharacterGallery(),
-        () => initializeRatingModal(),
 
         // Lowest priority - theme and visual enhancements
         () => updateConfirmationModalTheme(),

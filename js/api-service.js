@@ -10,66 +10,18 @@ let availableModels = [];
 // Add a flag to track if this is the initial startup
 window.isInitialStartup = true;
 
-// Store failed endpoints to avoid retrying them
-let failedEndpoints = new Set();
-let serverCapabilities = null;
-
-// Reset failed endpoints cache every 5 minutes in case server gets updated
-setInterval(() => {
-    if (failedEndpoints.size > 0) {
-        console.log('Resetting failed endpoints cache (periodic cleanup)');
-        failedEndpoints.clear();
-    }
-}, 5 * 60 * 1000); // 5 minutes
-
-/**
- * Reset cached endpoint failures when server details change
- */
-function resetEndpointCache() {
-    failedEndpoints.clear();
-    serverCapabilities = null;
-    console.log('Reset endpoint cache due to server change');
-}
-
-/**
- * Check if an endpoint is known to fail
- */
-function isEndpointFailed(endpoint) {
-    return failedEndpoints.has(endpoint);
-}
-
-/**
- * Mark an endpoint as failed
- */
-function markEndpointFailed(endpoint) {
-    failedEndpoints.add(endpoint);
-}
-
 /**
  * Updates the server URL based on IP and port inputs
  */
 export function updateServerUrl() {
-    if (!serverIpInput || !serverPortInput) return;
-
     const ip = serverIpInput.value.trim();
     const port = serverPortInput.value.trim();
 
     if (ip && port) {
-        const newApiUrl = `http://${ip}:${port}/v1/chat/completions`;
-        if (API_URL !== newApiUrl) {
-            API_URL = newApiUrl;
-            console.log('API URL updated:', API_URL);
-            
-            // Reset endpoint cache when server changes
-            resetEndpointCache();
-
-            // Save to localStorage
-            localStorage.setItem('serverIp', ip);
-            localStorage.setItem('serverPort', port);
-            
-            // Fetch models with new server settings
-            fetchAvailableModels();
-        }
+        API_URL = `http://${ip}:${port}/v1/chat/completions`;
+        localStorage.setItem('serverIp', ip);
+        localStorage.setItem('serverPort', port);
+        fetchAvailableModels();
     }
 }
 
@@ -77,7 +29,7 @@ export function updateServerUrl() {
  * Fetches available models from the server
  * @returns {Promise<Array>} - Array of available model objects
  */
-export async function fetchAvailableModels(skipFallbackMethods = false) {
+export async function fetchAvailableModels() {
     try {
         if (!serverIpInput || !serverPortInput) {
             console.error('Server IP or port input elements not found');
@@ -144,10 +96,9 @@ export async function fetchAvailableModels(skipFallbackMethods = false) {
             );
 
             // Method 2: If no model is marked as loaded, check if we can get info via a different endpoint
-            // Only try this if we haven't already determined these endpoints don't work
-            if (!loadedModelInfo && !skipFallbackMethods) {
+            if (!loadedModelInfo) {
                 try {
-                    // Try different endpoints that LM Studio might use, but skip known failed ones
+                    // Try different endpoints that LM Studio might use
                     const endpoints = [
                         '/v1/internal/model/info',
                         '/v1/model/info',
@@ -155,118 +106,94 @@ export async function fetchAvailableModels(skipFallbackMethods = false) {
                         '/v1/models/current'
                     ];
 
-                    const availableEndpoints = endpoints.filter(endpoint => !isEndpointFailed(endpoint));
-                    
-                    if (availableEndpoints.length > 0) {
-                        console.log('Trying model info endpoints:', availableEndpoints);
-                        
-                        for (const endpoint of availableEndpoints) {
-                            try {
-                                const controller = new AbortController();
-                                // Use shorter timeout during initial startup to avoid delays
-                                const timeoutMs = window.isInitialStartup ? 1000 : 2000;
-                                const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+                    for (const endpoint of endpoints) {
+                        try {
+                            const controller = new AbortController();
+                            const timeoutId = setTimeout(() => controller.abort(), 2000); // shorter timeout for info endpoints
 
-                                const modelInfoResponse = await fetch(`http://${ip}:${port}${endpoint}`, {
-                                    method: 'GET',
-                                    signal: controller.signal
-                                }).catch(() => {
-                                    return { ok: false };
-                                });
+                            const modelInfoResponse = await fetch(`http://${ip}:${port}${endpoint}`, {
+                                method: 'GET',
+                                signal: controller.signal
+                            }).catch(() => {
+                                // Silently catch network errors
+                                return { ok: false };
+                            });
 
-                                clearTimeout(timeoutId);
+                            clearTimeout(timeoutId);
 
-                                if (modelInfoResponse.ok) {
-                                    const modelInfo = await modelInfoResponse.json();
-                                    console.log(`Model info from ${endpoint}:`, modelInfo);
+                            if (modelInfoResponse.ok) {
+                                const modelInfo = await modelInfoResponse.json();
+                                console.log(`Model info from ${endpoint}:`, modelInfo);
 
-                                    if (modelInfo && modelInfo.id) {
-                                        loadedModelInfo = modelsList.find(model => model.id === modelInfo.id);
-                                        if (loadedModelInfo) {
-                                            console.log('Found loaded model through info endpoint:', loadedModelInfo.id);
-                                            break;
-                                        }
+                                if (modelInfo && modelInfo.id) {
+                                    // Find the matching model in our list
+                                    loadedModelInfo = modelsList.find(model => model.id === modelInfo.id);
+                                    if (loadedModelInfo) {
+                                        console.log('Found loaded model through info endpoint:', loadedModelInfo.id);
+                                        break;
                                     }
-                                } else {
-                                    // Mark this endpoint as failed to avoid future attempts
-                                    markEndpointFailed(endpoint);
-                                    console.log(`Endpoint ${endpoint} marked as failed (${modelInfoResponse.status})`);
                                 }
-                            } catch (endpointError) {
-                                // Mark this endpoint as failed
-                                markEndpointFailed(endpoint);
-                                console.log(`Endpoint ${endpoint} marked as failed (error)`);
+                            } else {
+                                // Don't log errors for expected 400 responses
+                                console.log(`Endpoint ${endpoint} not available or returned non-OK response`);
                             }
+                        } catch (endpointError) {
+                            // Don't log the full error, just note that it wasn't available
+                            console.log(`Endpoint ${endpoint} not supported by this LM Studio version`);
                         }
-                    } else {
-                        console.log('All model info endpoints have been marked as failed, skipping...');
                     }
                 } catch (infoError) {
-                    console.log('Info endpoints not available:', infoError.message);
+                    console.log('Info endpoints not available or no model loaded:', infoError);
                 }
             }
 
             // Method 3: If we still couldn't detect a loaded model, try making a simple completion request
             // This will help detect if a model is actually loaded even if the API doesn't report it
-            // Only try this if we haven't already determined the completion API doesn't work
-            // During initial startup, use a shorter timeout to avoid delays
-            if (!loadedModelInfo && modelsList.length > 0 && !skipFallbackMethods) {
-                const completionEndpoint = '/v1/chat/completions';
-                
-                if (!isEndpointFailed(completionEndpoint)) {
-                    try {
-                        console.log('Trying to detect loaded model via completion API...');
-                        const controller = new AbortController();
-                        // Use shorter timeout during initial startup to avoid delays
-                        const timeoutMs = window.isInitialStartup ? 1500 : 3000;
-                        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+            if (!loadedModelInfo && modelsList.length > 0) {
+                try {
+                    console.log('Trying to detect loaded model via completion API...');
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 3000);
 
-                        const chatResponse = await fetch(`http://${ip}:${port}${completionEndpoint}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                messages: [
-                                    { role: 'system', content: 'You are a helpful assistant.' },
-                                    { role: 'user', content: 'test' }
-                                ],
-                                max_tokens: 1,
-                                stream: false
-                            }),
-                            signal: controller.signal
-                        }).catch(() => {
-                            return { ok: false };
-                        });
+                    const chatResponse = await fetch(`http://${ip}:${port}/v1/chat/completions`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            messages: [
+                                { role: 'system', content: 'You are a helpful assistant.' },
+                                { role: 'user', content: 'test' }
+                            ],
+                            max_tokens: 1,
+                            stream: false
+                        }),
+                        signal: controller.signal
+                    }).catch(() => {
+                        return { ok: false };
+                    });
 
-                        clearTimeout(timeoutId);
+                    clearTimeout(timeoutId);
 
-                        if (chatResponse.ok) {
-                            const result = await chatResponse.json();
-                            console.log('Completion API response:', result);
+                    if (chatResponse.ok) {
+                        const result = await chatResponse.json();
+                        console.log('Completion API response:', result);
 
-                            if (result && result.model) {
-                                console.log('Found model ID from completion API:', result.model);
-                                loadedModelInfo = modelsList.find(model => model.id === result.model);
-                                if (!loadedModelInfo && modelsList.length > 0) {
-                                    console.log('Model from completion API not in list, assuming first model');
-                                    loadedModelInfo = modelsList[0];
-                                }
-                            }
-                        } else {
-                            // Mark completion endpoint as failed if it returns 404 or similar
-                            if (chatResponse.status === 404 || chatResponse.status >= 400) {
-                                markEndpointFailed(completionEndpoint);
-                                console.log(`Completion API marked as failed (${chatResponse.status})`);
+                        if (result && result.model) {
+                            console.log('Found model ID from completion API:', result.model);
+                            // Find this model in our list
+                            loadedModelInfo = modelsList.find(model => model.id === result.model);
+                            if (!loadedModelInfo && modelsList.length > 0) {
+                                // If we can't find the exact model but know one is loaded, use the first one
+                                console.log('Model from completion API not in list, assuming first model');
+                                loadedModelInfo = modelsList[0];
                             }
                         }
-                    } catch (completionError) {
-                        // Mark completion endpoint as failed
-                        markEndpointFailed(completionEndpoint);
-                        console.log('Completion API marked as failed (error)');
+                    } else {
+                        console.log('Completion API not available or no model loaded');
                     }
-                } else {
-                    console.log('Completion API already marked as failed, skipping...');
+                } catch (completionError) {
+                    console.log('Error checking completion API:', completionError);
                 }
             }
 
@@ -671,7 +598,7 @@ export async function loadModel(modelId) {
 
             if (verified) {
                 console.log(`Successfully verified ${modelId} is loaded via endpoint method`);
-                await fetchAvailableModels(true); // Skip fallback methods since we just loaded a model
+                await fetchAvailableModels();
                 return true;
             } else {
                 console.log(`API endpoint succeeded but model is not actually loaded, trying force load...`);
@@ -684,7 +611,7 @@ export async function loadModel(modelId) {
 
         if (forceSuccess) {
             console.log(`Successfully loaded ${modelId} via force load method`);
-            await fetchAvailableModels(true); // Skip fallback methods since we just loaded a model
+            await fetchAvailableModels();
             return true;
         }
 
@@ -797,14 +724,14 @@ export async function ejectModel() {
 
             // Verify the model was actually ejected
             await new Promise(resolve => setTimeout(resolve, 1000));
-            await fetchAvailableModels(true); // Skip fallback methods since we just ejected the model
+            await fetchAvailableModels();
 
             return true;
         } else {
             console.log('All eject endpoints failed - the model may still be loaded');
 
             // Force a refresh of the models list to update the UI regardless
-            await fetchAvailableModels(true); // Skip fallback methods during eject operation
+            await fetchAvailableModels();
 
             return false;
         }
@@ -813,7 +740,7 @@ export async function ejectModel() {
 
         // Try to refresh the models list to at least update the UI
         try {
-            await fetchAvailableModels(true); // Skip fallback methods during eject error recovery
+            await fetchAvailableModels();
         } catch (refreshError) {
             console.log('Failed to refresh models after eject error');
         }
@@ -862,10 +789,6 @@ export function loadServerSettings() {
 
         if (savedIp && savedPort) {
             API_URL = `http://${savedIp}:${savedPort}/v1/chat/completions`;
-            
-            // Reset endpoint cache when loading server settings
-            resetEndpointCache();
-            
             // Fetch models after setting the API URL, but set a flag to indicate this is the initial load
             window.isInitialStartup = true;
             setTimeout(() => fetchAvailableModels(), 500);

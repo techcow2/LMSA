@@ -4,14 +4,6 @@
 ![Version: Current](https://img.shields.io/badge/Version-Current-green)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
 
-## 📥 Download Now
-
-<p align="left">
-  <a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
-    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="200"/>
-  </a>
-</p>
-
 ## 📸 Screenshots
 
 <p align="left">
@@ -43,9 +35,9 @@ The project is now community-driven and open source. Development efforts are foc
 
 ### Community Release
 
-The current version is available through Google Play and GitHub:
+The current version is available through GitHub and includes:
 
-| <a href="https://play.google.com/store/apps/details?id=com.lmsa.app"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="160"></a> | **Open Source LMSA App**<br>-  Community-driven updates and maintenance<br>-  Complete feature set<br>-  Community support<br>-  Fully customizable |
+| <a href="https://play.google.com/store/apps/details?id=com.lmsa.app"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" width="160"></a> | **Open Source LMSA App**<br>-  Community-driven updates and maintenance<br>-  Complete feature set<br>-  Community support<br>-  Fully customizable |
 |:---|:---|
 
 ## 🌟 Features Overview
@@ -107,13 +99,13 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 
 ## 🔧 Technical Requirements
 
-- Android 5.0 or higher
+- Android 8.0 or higher
 - LM Studio installed and running on a computer with a suitable language model
 - Both devices connected to the same network
 
 ## 🚀 Get Started Today
 
-1. Download and install the app from Google Play
+1. Download and install the app
 2. Start LM Studio and load a model on your computer
 3. Start the LM Studio server
 4. Open the app and enter the server IP and port in Settings
@@ -121,17 +113,11 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 
 ## 📥 Download Information
 
-### Recommended: Google Play Store
-<p align="left">
-  <a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
-    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="200"/>
-  </a>
-</p>
-
-**LMSA - Official Release**<br>
+### Recommended: Community Release
+**LMSA - GitHub Version**<br>
 **Publisher:** LMSA Community<br>
 **Updates:** Regular community-driven feature and maintenance updates<br>
-**Download:** Available now on Google Play Store
+[**Download Now →**](https://play.google.com/store/apps/details?id=com.lmsa.app)
 
 ## ⚠️ Disclaimer
 
@@ -139,4 +125,4 @@ LMSA is a third-party application and is not affiliated with LM Studio or its de
 
 ---
 
-© 2025 IslandApps All rights reserved
+© 2025 TechRay Apps LLC. All rights reserved

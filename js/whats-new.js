@@ -10,7 +10,7 @@ const dontShowAgainToggle = document.getElementById('dont-show-again');
 const versionElement = document.getElementById('whats-new-version');
 
 // Local storage keys
-const WHATS_NEW_VERSION = '5.1'; // Updated for free version announcement
+const WHATS_NEW_VERSION = '5.0'; // Updated for free version announcement
 const WHATS_NEW_SEEN_KEY = 'whatsNewSeen';
 const WHATS_NEW_DONT_SHOW_KEY = 'whatsNewDontShow';
 
@@ -219,8 +219,8 @@ function shouldShowModal() {
     }
 
     // Show if never seen before or if version is different
-    // For version 5.1 (free announcement), show to everyone regardless of previous preferences
-    if (WHATS_NEW_VERSION === '5.1' && lastSeenVersion !== WHATS_NEW_VERSION) {
+    // For version 5.0 (free announcement), show to everyone regardless of previous preferences
+    if (WHATS_NEW_VERSION === '5.0' && lastSeenVersion !== WHATS_NEW_VERSION) {
         return true;
     }
 
@@ -309,10 +309,10 @@ function setupTouchScrolling() {
  * Initializes the What's New modal functionality
  */
 export function initializeWhatsNew() {
-    // For version 5.1 (free announcement), reset the "don't show again" preference
+    // For version 5.0 (free announcement), reset the "don't show again" preference
     // so all users see this important announcement
     const lastSeenVersion = localStorage.getItem(WHATS_NEW_SEEN_KEY);
-    if (WHATS_NEW_VERSION === '5.1' && lastSeenVersion !== WHATS_NEW_VERSION) {
+    if (WHATS_NEW_VERSION === '5.0' && lastSeenVersion !== WHATS_NEW_VERSION) {
         localStorage.removeItem(WHATS_NEW_DONT_SHOW_KEY);
         // Reset the toggle to unchecked state
         if (dontShowAgainToggle) {

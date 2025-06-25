@@ -6,73 +6,6 @@ import { debugLog } from './utils.js';
 import { checkAndShowWelcomeMessage } from './ui-manager.js';
 
 /**
- * Function to detect mobile keyboard visibility for settings modal
- */
-function setupSettingsModalKeyboardDetection() {
-    if (!window.matchMedia('(max-width: 767px)').matches) {
-        return () => {}; // Only apply on mobile devices
-    }
-
-    let initialViewportHeight = window.innerHeight;
-    let initialVisualViewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-    let keyboardVisible = false;
-
-    function handleViewportChange() {
-        const currentHeight = window.innerHeight;
-        const currentVisualHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-        
-        // Use visual viewport if available for more accurate detection
-        const referenceHeight = window.visualViewport ? initialVisualViewportHeight : initialViewportHeight;
-        const currentReferenceHeight = window.visualViewport ? currentVisualHeight : currentHeight;
-        
-        const heightDifference = referenceHeight - currentReferenceHeight;
-        
-        // Dynamic threshold based on screen size for better detection
-        const threshold = Math.min(200, Math.max(150, window.screen.height * 0.25));
-        
-        // Consider keyboard visible if viewport height decreased by more than the threshold
-        const shouldShowKeyboard = heightDifference > threshold;
-
-        if (shouldShowKeyboard !== keyboardVisible) {
-            keyboardVisible = shouldShowKeyboard;
-
-            if (settingsModal) {
-                if (keyboardVisible) {
-                    settingsModal.classList.add('keyboard-visible');
-                    // Ensure any focused input scrolls into view
-                    setTimeout(() => {
-                        const focusedElement = document.activeElement;
-                        if (focusedElement && (focusedElement.tagName === 'INPUT' || focusedElement.tagName === 'TEXTAREA')) {
-                            focusedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }
-                    }, 100);
-                    debugLog('Settings modal: Mobile keyboard detected as visible');
-                } else {
-                    settingsModal.classList.remove('keyboard-visible');
-                    debugLog('Settings modal: Mobile keyboard detected as hidden');
-                }
-            }
-        }
-    }
-
-    // Listen for viewport changes
-    window.addEventListener('resize', handleViewportChange);
-
-    // Also listen for visual viewport changes (better support on newer browsers)
-    if (window.visualViewport) {
-        window.visualViewport.addEventListener('resize', handleViewportChange);
-    }
-
-    // Clean up function
-    return function cleanup() {
-        window.removeEventListener('resize', handleViewportChange);
-        if (window.visualViewport) {
-            window.visualViewport.removeEventListener('resize', handleViewportChange);
-        }
-    };
-}
-
-/**
  * Shows the settings modal
  */
 export function showSettingsModal() {
@@ -920,7 +853,70 @@ function initializeSystemPromptOverlay() {
     overlay.classList.add('hidden');
     overlay.style.display = 'none';
 
+    // Function to detect mobile keyboard visibility for settings modal
+    function setupSettingsModalKeyboardDetection() {
+        if (!window.matchMedia('(max-width: 767px)').matches) {
+            return () => {}; // Only apply on mobile devices
+        }
 
+        let initialViewportHeight = window.innerHeight;
+        let initialVisualViewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        let keyboardVisible = false;
+
+        function handleViewportChange() {
+            const currentHeight = window.innerHeight;
+            const currentVisualHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+            
+            // Use visual viewport if available for more accurate detection
+            const referenceHeight = window.visualViewport ? initialVisualViewportHeight : initialViewportHeight;
+            const currentReferenceHeight = window.visualViewport ? currentVisualHeight : currentHeight;
+            
+            const heightDifference = referenceHeight - currentReferenceHeight;
+            
+            // Dynamic threshold based on screen size for better detection
+            const threshold = Math.min(200, Math.max(150, window.screen.height * 0.25));
+            
+            // Consider keyboard visible if viewport height decreased by more than the threshold
+            const shouldShowKeyboard = heightDifference > threshold;
+
+            if (shouldShowKeyboard !== keyboardVisible) {
+                keyboardVisible = shouldShowKeyboard;
+
+                if (settingsModal) {
+                    if (keyboardVisible) {
+                        settingsModal.classList.add('keyboard-visible');
+                        // Ensure any focused input scrolls into view
+                        setTimeout(() => {
+                            const focusedElement = document.activeElement;
+                            if (focusedElement && (focusedElement.tagName === 'INPUT' || focusedElement.tagName === 'TEXTAREA')) {
+                                focusedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                        }, 100);
+                        debugLog('Settings modal: Mobile keyboard detected as visible');
+                    } else {
+                        settingsModal.classList.remove('keyboard-visible');
+                        debugLog('Settings modal: Mobile keyboard detected as hidden');
+                    }
+                }
+            }
+        }
+
+        // Listen for viewport changes
+        window.addEventListener('resize', handleViewportChange);
+
+        // Also listen for visual viewport changes (better support on newer browsers)
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', handleViewportChange);
+        }
+
+        // Clean up function
+        return function cleanup() {
+            window.removeEventListener('resize', handleViewportChange);
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener('resize', handleViewportChange);
+            }
+        };
+    }
 
     // Function to detect mobile keyboard visibility (original for system prompt overlay)
     function setupMobileKeyboardDetection() {
