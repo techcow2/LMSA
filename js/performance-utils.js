@@ -4,6 +4,44 @@
 // Device performance detection
 let devicePerformanceLevel = null;
 let memoryInfo = null;
+let isAdMobEnvironment = null;
+
+/**
+ * Detects if the app is running in an AdMob WebView environment
+ * @returns {boolean} - True if running in AdMob WebView
+ */
+export function detectAdMobEnvironment() {
+    if (isAdMobEnvironment !== null) {
+        return isAdMobEnvironment;
+    }
+    
+    const userAgent = navigator.userAgent;
+    
+    // Check for AdMob WebView indicators
+    const isAndroidWebView = /Android.*wv/i.test(userAgent);
+    const hasWebViewIndicators = /Version\/[\d.]+.*Chrome\/[\d.]+.*Mobile.*Safari/i.test(userAgent);
+    
+    // Additional checks for AdMob environment
+    const hasAdMobIndicators = (
+        // Check for common AdMob app packages or identifiers
+        window.location.href.includes('webview') ||
+        window.location.href.includes('app://') ||
+        // Check for Android WebView with specific Chrome versions that AdMob uses
+        (isAndroidWebView && /Chrome\/([0-9]+)/.test(userAgent)) ||
+        // Check for missing features that are typically disabled in AdMob WebViews
+        (!window.openDatabase && !window.indexedDB) ||
+        // Check for reduced navigator features
+        navigator.plugins.length === 0
+    );
+    
+    isAdMobEnvironment = isAndroidWebView && (hasWebViewIndicators || hasAdMobIndicators);
+    
+    if (isAdMobEnvironment) {
+        console.log('AdMob WebView environment detected, applying aggressive optimizations');
+    }
+    
+    return isAdMobEnvironment;
+}
 
 /**
  * Detects device performance level for adaptive optimizations
@@ -25,6 +63,7 @@ export function getDevicePerformanceLevel() {
     // Check if running in Android WebView
     const isAndroidWebView = /Android.*wv/i.test(navigator.userAgent);
     const isLowEndAndroid = /Android [4-6]\./i.test(navigator.userAgent);
+    const isAdMobEnv = detectAdMobEnvironment();
 
     // Performance scoring based on available metrics
     let score = 0;
@@ -47,6 +86,12 @@ export function getDevicePerformanceLevel() {
     // Android WebView penalty (typically slower)
     if (isAndroidWebView) score -= 1;
     if (isLowEndAndroid) score -= 2;
+    
+    // AdMob environment penalty (additional performance constraints)
+    if (isAdMobEnv) {
+        score -= 2; // More aggressive penalty for AdMob
+        console.log('AdMob environment detected - applying additional performance penalties');
+    }
 
     // Screen size consideration (smaller screens often indicate lower-end devices)
     const screenArea = window.screen.width * window.screen.height;
@@ -61,7 +106,7 @@ export function getDevicePerformanceLevel() {
         devicePerformanceLevel = 'low';
     }
 
-    console.log(`Device performance level: ${devicePerformanceLevel} (score: ${score}, memory: ${memoryInfo}GB, cores: ${cores})`);
+    console.log(`Device performance level: ${devicePerformanceLevel} (score: ${score}, memory: ${memoryInfo}GB, cores: ${cores}, AdMob: ${isAdMobEnv})`);
     return devicePerformanceLevel;
 }
 
@@ -208,9 +253,17 @@ let lastMemoryCheck = 0;
  */
 export function startMemoryMonitoring() {
     const performanceLevel = getDevicePerformanceLevel();
+    const isAdMobEnv = detectAdMobEnvironment();
 
-    // Adjust monitoring frequency based on device performance
-    const monitoringInterval = performanceLevel === 'low' ? 30000 : 60000; // 30s for low-end, 60s for others
+    // Adjust monitoring frequency based on device performance and AdMob environment
+    let monitoringInterval;
+    if (isAdMobEnv) {
+        monitoringInterval = 15000; // Very aggressive monitoring for AdMob (15s)
+    } else if (performanceLevel === 'low') {
+        monitoringInterval = 30000; // 30s for low-end devices
+    } else {
+        monitoringInterval = 60000; // 60s for others
+    }
 
     if (memoryCleanupInterval) {
         clearInterval(memoryCleanupInterval);
@@ -220,7 +273,7 @@ export function startMemoryMonitoring() {
         checkMemoryUsage();
     }, monitoringInterval);
 
-    console.log(`Memory monitoring started with ${monitoringInterval}ms interval`);
+    console.log(`Memory monitoring started with ${monitoringInterval}ms interval (AdMob: ${isAdMobEnv})`);
 }
 
 /**
@@ -228,9 +281,12 @@ export function startMemoryMonitoring() {
  */
 function checkMemoryUsage() {
     const now = performance.now();
+    const isAdMobEnv = detectAdMobEnvironment();
+    const performanceLevel = getDevicePerformanceLevel();
 
     // Throttle memory checks to avoid performance impact
-    if (now - lastMemoryCheck < 5000) return;
+    const throttleTime = isAdMobEnv ? 3000 : 5000; // More frequent checks for AdMob
+    if (now - lastMemoryCheck < throttleTime) return;
     lastMemoryCheck = now;
 
     // Check if memory API is available
@@ -242,15 +298,16 @@ function checkMemoryUsage() {
 
         console.log(`Memory usage: ${usedMB.toFixed(1)}MB / ${limitMB.toFixed(1)}MB (${usagePercent.toFixed(1)}%)`);
 
-        // Trigger cleanup if memory usage is high
-        if (usagePercent > 70) {
-            console.log('High memory usage detected, triggering cleanup');
+        // Trigger cleanup if memory usage is high (more aggressive thresholds for AdMob)
+        const cleanupThreshold = isAdMobEnv ? 50 : (performanceLevel === 'low' ? 60 : 70);
+        if (usagePercent > cleanupThreshold) {
+            console.log(`High memory usage detected (${usagePercent.toFixed(1)}% > ${cleanupThreshold}%), triggering cleanup`);
             triggerMemoryCleanup();
         }
     }
 
     // Force garbage collection if available (Chrome DevTools)
-    if (window.gc && getDevicePerformanceLevel() === 'low') {
+    if (window.gc && (performanceLevel === 'low' || isAdMobEnv)) {
         window.gc();
     }
 }
@@ -350,7 +407,18 @@ function cleanupOldChatMessages() {
     if (!messagesContainer) return;
 
     const messages = messagesContainer.querySelectorAll('.message');
-    const maxMessages = getDevicePerformanceLevel() === 'low' ? 50 : 100;
+    const performanceLevel = getDevicePerformanceLevel();
+    const isAdMobEnv = detectAdMobEnvironment();
+    
+    // More aggressive message limits for AdMob environments
+    let maxMessages;
+    if (isAdMobEnv) {
+        maxMessages = 30; // Very conservative for AdMob
+    } else if (performanceLevel === 'low') {
+        maxMessages = 50;
+    } else {
+        maxMessages = 100;
+    }
 
     if (messages.length > maxMessages) {
         const messagesToRemove = messages.length - maxMessages;
@@ -359,7 +427,7 @@ function cleanupOldChatMessages() {
                 messages[i].remove();
             }
         }
-        console.log(`Cleaned up ${messagesToRemove} old chat messages`);
+        console.log(`Cleaned up ${messagesToRemove} old chat messages (AdMob: ${isAdMobEnv}, max: ${maxMessages})`);
     }
 }
 
@@ -491,6 +559,270 @@ export function setupLazyLoading(selector = 'img[data-src]') {
     });
 
     console.log(`Enhanced lazy loading setup complete with ${performanceLevel} performance settings`);
+}
+
+/**
+ * AdMob-specific performance optimizations
+ */
+export function applyAdMobOptimizations() {
+    const isAdMobEnv = detectAdMobEnvironment();
+    if (!isAdMobEnv) return;
+    
+    console.log('Applying AdMob-specific performance optimizations...');
+    
+    // Apply AdMob CSS class for styles
+    document.body.classList.add('admob-env');
+    
+    // Load AdMob-specific CSS if not already loaded
+    if (!document.querySelector('link[href*="admob-optimizations.css"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'css/admob-optimizations.css';
+        document.head.appendChild(link);
+    }
+    
+    // Reduce animation frame rate for AdMob environments
+    const originalRAF = window.requestAnimationFrame;
+    let lastFrameTime = 0;
+    const targetFrameRate = 30; // 30fps for AdMob
+    const frameInterval = 1000 / targetFrameRate;
+    
+    window.requestAnimationFrame = function(callback) {
+        return originalRAF(function(currentTime) {
+            if (currentTime - lastFrameTime >= frameInterval) {
+                lastFrameTime = currentTime;
+                callback(currentTime);
+            } else {
+                originalRAF(arguments.callee);
+            }
+        });
+    };
+    
+    // Disable expensive CSS features for AdMob
+    const style = document.createElement('style');
+    style.textContent = `
+        /* AdMob WebView optimizations */
+        * {
+            will-change: auto !important;
+            transform: none !important;
+            transition: none !important;
+            animation: none !important;
+        }
+        
+        /* Keep essential transforms for layout */
+        .character-card, .modal-content, #messages {
+            transform: translateZ(0) !important;
+        }
+        
+        /* Reduce visual complexity */
+        .character-card {
+            box-shadow: none !important;
+        }
+        
+        .modal-content {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        }
+        
+        /* Optimize scrolling */
+        * {
+            -webkit-overflow-scrolling: touch !important;
+            scroll-behavior: auto !important;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Aggressive image optimization for AdMob
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.loading = 'lazy';
+        img.decoding = 'async';
+    });
+    
+    // Reduce timer frequencies
+    const originalSetInterval = window.setInterval;
+    window.setInterval = function(callback, delay) {
+        // Increase minimum delay for AdMob environments
+        const minDelay = Math.max(delay, 100); // Minimum 100ms
+        return originalSetInterval(callback, minDelay);
+    };
+    
+    console.log('AdMob optimizations applied successfully');
+}
+
+/**
+ * Throttled scroll handler for improved performance in AdMob environments
+ */
+export function createAdMobOptimizedScrollHandler(originalHandler) {
+    const isAdMobEnv = detectAdMobEnvironment();
+    if (!isAdMobEnv) return originalHandler;
+    
+    // More aggressive throttling for AdMob
+    return throttle(originalHandler, 33); // ~30fps for scroll events
+}
+
+/**
+ * Emergency performance mode for critical memory situations
+ */
+export function enableEmergencyPerformanceMode() {
+    console.log('Enabling emergency performance mode...');
+    
+    // Add emergency performance class
+    document.body.classList.add('emergency-performance');
+    
+    // Pause all non-essential timers
+    const timers = [];
+    const originalSetInterval = window.setInterval;
+    window.setInterval = function(callback, delay) {
+        if (delay < 1000) { // Only allow intervals longer than 1 second
+            return null;
+        }
+        return originalSetInterval(callback, delay);
+    };
+    
+    // Disable all animations immediately
+    const emergencyStyle = document.createElement('style');
+    emergencyStyle.id = 'emergency-performance-style';
+    emergencyStyle.textContent = `
+        * {
+            animation: none !important;
+            transition: none !important;
+            transform: none !important;
+            will-change: auto !important;
+            filter: none !important;
+            backdrop-filter: none !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
+        }
+        
+        /* Keep only essential layout transforms */
+        #messages, #sidebar, .modal-content {
+            transform: translateZ(0) !important;
+        }
+        
+        /* Minimal visual styling */
+        .character-card, .message, .button {
+            background: #222 !important;
+            border: 1px solid #444 !important;
+            border-radius: 2px !important;
+        }
+    `;
+    document.head.appendChild(emergencyStyle);
+    
+    // Aggressive memory cleanup
+    triggerMemoryCleanup();
+    
+    // Clean up images aggressively
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        if (!img.closest('#welcome-message') && !img.closest('.character-card')) {
+            img.style.display = 'none';
+        }
+    });
+    
+    // Disable Monaco editors temporarily
+    if (window.monaco) {
+        const editors = window.monaco.editor.getEditors();
+        editors.forEach(editor => {
+            try {
+                editor.dispose();
+            } catch (e) {
+                console.warn('Error disposing Monaco editor:', e);
+            }
+        });
+    }
+    
+    console.log('Emergency performance mode activated');
+}
+
+/**
+ * Adaptive performance monitoring that can trigger emergency mode
+ */
+export function startAdaptivePerformanceMonitoring() {
+    const isAdMobEnv = detectAdMobEnvironment();
+    if (!isAdMobEnv) return;
+    
+    let emergencyModeTriggered = false;
+    
+    const monitor = () => {
+        if (emergencyModeTriggered) return;
+        
+        // Check memory usage
+        if ('memory' in performance) {
+            const memInfo = performance.memory;
+            const usagePercent = (memInfo.usedJSHeapSize / memInfo.jsHeapSizeLimit) * 100;
+            
+            // Trigger emergency mode at 85% memory usage in AdMob
+            if (usagePercent > 85) {
+                emergencyModeTriggered = true;
+                enableEmergencyPerformanceMode();
+                return;
+            }
+        }
+        
+        // Check if page is becoming unresponsive
+        const startTime = performance.now();
+        setTimeout(() => {
+            const delay = performance.now() - startTime;
+            if (delay > 100) { // If setTimeout is delayed by more than 100ms
+                emergencyModeTriggered = true;
+                enableEmergencyPerformanceMode();
+            }
+        }, 0);
+    };
+    
+    // Monitor every 5 seconds in AdMob environments
+    setInterval(monitor, 5000);
+    
+    console.log('Adaptive performance monitoring started for AdMob environment');
+}
+
+/**
+ * Optimizes API requests for AdMob environments
+ * @param {string} url - API URL
+ * @param {Object} options - Fetch options
+ * @returns {Promise} - Optimized fetch promise
+ */
+export function optimizedFetch(url, options = {}) {
+    const isAdMobEnv = detectAdMobEnvironment();
+    
+    if (!isAdMobEnv) {
+        return fetch(url, options);
+    }
+    
+    // Apply AdMob-specific optimizations
+    const optimizedOptions = {
+        ...options,
+        // Reduce timeout for faster failure detection
+        signal: AbortSignal.timeout(10000), // 10 seconds instead of default
+        // Optimize headers
+        headers: {
+            ...options.headers,
+            'Connection': 'close', // Don't keep connections alive
+            'Cache-Control': 'no-cache' // Prevent caching issues
+        }
+    };
+    
+    // Add retry logic for AdMob environments
+    const maxRetries = 2;
+    let attempt = 0;
+    
+    const attemptFetch = async () => {
+        try {
+            const response = await fetch(url, optimizedOptions);
+            return response;
+        } catch (error) {
+            attempt++;
+            if (attempt < maxRetries && error.name !== 'AbortError') {
+                console.log(`Retrying API request (attempt ${attempt + 1}/${maxRetries})`);
+                // Exponential backoff
+                await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+                return attemptFetch();
+            }
+            throw error;
+        }
+    };
+    
+    return attemptFetch();
 }
 
 /**

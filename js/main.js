@@ -21,7 +21,10 @@ import {
     addHardwareAcceleration,
     getDevicePerformanceLevel,
     startMemoryMonitoring,
-    progressiveComponentLoading
+    progressiveComponentLoading,
+    detectAdMobEnvironment,
+    applyAdMobOptimizations,
+    startAdaptivePerformanceMonitoring
 } from './performance-utils.js';
 
 import { updateConfirmationModalTheme, updateExportImportModalsTheme } from '../confirmation-modal-fix.js';
@@ -37,7 +40,14 @@ function initializeApp() {
 
     // Detect device performance level first
     const performanceLevel = getDevicePerformanceLevel();
+    const isAdMobEnvironment = detectAdMobEnvironment();
     console.log(`Detected device performance level: ${performanceLevel}`);
+    
+    // Apply AdMob-specific optimizations if needed
+    if (isAdMobEnvironment) {
+        applyAdMobOptimizations();
+        startAdaptivePerformanceMonitoring();
+    }
 
     // Start memory monitoring for automatic cleanup
     startMemoryMonitoring();
@@ -48,6 +58,13 @@ function initializeApp() {
     }).catch(error => {
         console.error('Error setting up Monaco cleanup:', error);
     });
+
+    // Load performance diagnostics if in AdMob environment or low performance
+    if (isAdMobEnvironment || performanceLevel === 'low') {
+        import('./performance-diagnostics.js').catch(error => {
+            console.error('Error loading performance diagnostics:', error);
+        });
+    }
 
     // Apply performance optimizations to key UI elements
     applyPerformanceOptimizations();

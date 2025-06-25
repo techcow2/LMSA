@@ -1,5 +1,5 @@
 // Monaco Editor performance optimizations for slower devices
-import { getDevicePerformanceLevel } from './performance-utils.js';
+import { getDevicePerformanceLevel, detectAdMobEnvironment } from './performance-utils.js';
 
 /**
  * Gets optimized Monaco editor options based on device performance
@@ -9,6 +9,7 @@ import { getDevicePerformanceLevel } from './performance-utils.js';
  */
 export function getOptimizedMonacoOptions(language, content) {
     const performanceLevel = getDevicePerformanceLevel();
+    const isAdMobEnv = detectAdMobEnvironment();
     
     // Base options for all devices
     const baseOptions = {
@@ -23,8 +24,8 @@ export function getOptimizedMonacoOptions(language, content) {
         scrollBeyondLastLine: false
     };
     
-    // Adaptive options based on device performance
-    if (performanceLevel === 'low') {
+    // Adaptive options based on device performance and AdMob environment
+    if (performanceLevel === 'low' || isAdMobEnv) {
         return {
             ...baseOptions,
             // Disable expensive features for low-end devices
@@ -54,9 +55,17 @@ export function getOptimizedMonacoOptions(language, content) {
             acceptSuggestionOnEnter: 'off',
             // Reduce validation and syntax highlighting
             validate: false,
-            semanticHighlighting: { enabled: false }
+            semanticHighlighting: { enabled: false },
+            // Additional AdMob optimizations
+            ...(isAdMobEnv && {
+                dragAndDrop: false,
+                links: false,
+                colorDecorators: false,
+                lightbulb: { enabled: false },
+                codeLens: false
+            })
         };
-    } else if (performanceLevel === 'medium') {
+    } else if (performanceLevel === 'medium' && !isAdMobEnv) {
         return {
             ...baseOptions,
             // Moderate optimizations for medium devices

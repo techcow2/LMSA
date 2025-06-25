@@ -1,18 +1,19 @@
 // Touch event handlers for mobile devices with performance optimizations
 import { messagesContainer, userInput } from './dom-elements.js';
 import { ensureCursorVisible } from './utils.js';
-import { getDevicePerformanceLevel, throttle } from './performance-utils.js';
+import { getDevicePerformanceLevel, throttle, detectAdMobEnvironment, createAdMobOptimizedScrollHandler } from './performance-utils.js';
 
 /**
  * Initializes touch event handlers with adaptive performance optimizations
  */
 export async function initializeTouchHandlers() {
     const performanceLevel = getDevicePerformanceLevel();
-    console.log(`Initializing touch handlers for ${performanceLevel} performance device`);
+    const isAdMobEnv = detectAdMobEnvironment();
+    console.log(`Initializing touch handlers for ${performanceLevel} performance device (AdMob: ${isAdMobEnv})`);
 
-    // Create throttled touch handler for low-end devices
-    const touchMoveHandler = performanceLevel === 'low'
-        ? throttle(handleTouchMove, 16) // ~60fps for low-end devices
+    // Create throttled touch handler for low-end devices and AdMob environments
+    const touchMoveHandler = (performanceLevel === 'low' || isAdMobEnv)
+        ? throttle(handleTouchMove, isAdMobEnv ? 33 : 16) // 30fps for AdMob, 60fps for low-end
         : handleTouchMove;
 
     function handleTouchMove(e) {
@@ -90,7 +91,7 @@ export async function initializeTouchHandlers() {
         const { scrollToBottom } = await import('./utils.js');
 
         // Consolidated function to handle all input field interactions with performance optimization
-        const handleInputInteraction = performanceLevel === 'low'
+        const handleInputInteraction = (performanceLevel === 'low' || isAdMobEnv)
             ? throttle(function(e) {
                 e.stopPropagation();
 
@@ -105,7 +106,7 @@ export async function initializeTouchHandlers() {
                         scrollToBottom(messagesContainer, true);
                     }
                 });
-            }, 100) // Throttle to 10fps for low-end devices
+            }, isAdMobEnv ? 150 : 100) // More aggressive throttling for AdMob (6.7fps vs 10fps for low-end)
             : function(e) {
                 e.stopPropagation();
 
