@@ -122,7 +122,7 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 
 ## 🔧 Technical Requirements
 
-- Android 8.0 or higher
+- Android 5.0 or higher
 - LM Studio installed and running on a computer with a suitable language model
 - Both devices connected to the same network
 
