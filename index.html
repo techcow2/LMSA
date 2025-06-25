@@ -41,19 +41,37 @@
     <noscript>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </noscript>
-    <!-- Load libraries BEFORE Monaco's RequireJS loader to prevent AMD conflicts -->
-    <script src="https://cdn.jsdelivr.net/npm/marked@4.2.12/marked.min.js"></script>
+    <!-- Marked.js is now lazy-loaded when needed to reduce initial memory footprint -->
     <!-- JSZip Library for DOCX file processing - moved before Monaco -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous"></script>
     
-    <!-- PDF.js Library for PDF text extraction -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <!-- PDF.js is now lazy-loaded when needed to reduce initial memory footprint -->
     <script>
-        // Configure PDF.js worker immediately after loading
-        if (window.pdfjsLib) {
-            window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-            console.log('PDF.js configured successfully');
-        }
+        // Lazy load PDF.js only when needed
+        window.loadPDFLibrary = function() {
+            return new Promise((resolve, reject) => {
+                if (window.pdfjsLib) {
+                    resolve();
+                    return;
+                }
+                
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js';
+                script.onload = function() {
+                    if (window.pdfjsLib) {
+                        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+                        console.log('PDF.js loaded and configured successfully (lazy-loaded)');
+                        resolve();
+                    } else {
+                        reject(new Error('PDF.js failed to load'));
+                    }
+                };
+                script.onerror = function(e) {
+                    reject(e);
+                };
+                document.head.appendChild(script);
+            });
+        };
     </script>
     <!-- Monaco Editor with CDN configuration -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs/editor/editor.main.min.css">
@@ -1066,8 +1084,9 @@
                         <div id="system-prompt-preview" class="border p-3 rounded-lg min-h-[80px] mb-2 whitespace-pre-wrap" style="background-color: var(--settings-input-bg); color: var(--settings-input-text); border-color: var(--settings-input-border);"><span class="italic" id="prompt-placeholder" style="color: var(--text-muted);">Leave empty to pass user messages directly to LM Studio without any system prompt</span></div>
 
                         <!-- Edit button -->
-                        <button id="edit-system-prompt-btn" class="w-full text-white rounded-lg px-4 py-2 focus:outline-none transition-all duration-300 ease-in-out" style="background: linear-gradient(135deg, #1e40af, #3b82f6); box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15); border: none; font-weight: 600; letter-spacing: 0.02em; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px -1px rgba(37, 99, 235, 0.3), 0 4px 8px -1px rgba(37, 99, 235, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)'; this.style.background='linear-gradient(135deg, #2563eb, #60a5fa)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15)'; this.style.background='linear-gradient(135deg, #1e40af, #3b82f6)';">
-                            <i class="fas fa-edit mr-2" style="position: relative;"></i><span style="position: relative;">Edit System Prompt</span>
+                        <button id="edit-system-prompt-btn" class="professional-button flex items-center justify-center gap-3 w-full h-[48px]">
+                            <i class="fas fa-edit text-sm"></i>
+                            <span>Edit System Prompt</span>
                         </button>
                     </div>
                 </div>
@@ -1144,11 +1163,13 @@
                     <div class="mb-4">
                         <h3 class="text-sm font-medium mb-3 text-gray-200">
                             <i class="fas fa-bolt mr-2 text-blue-400"></i>Actions:</h3>
-                        <button id="clear-chat" class="w-full text-white rounded-lg px-4 py-2 focus:outline-none mb-4 transition-all duration-300 ease-in-out" style="background: linear-gradient(135deg, #dc2626, #ef4444); box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.2), 0 2px 4px -1px rgba(220, 38, 38, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15); border: none; font-weight: 600; letter-spacing: 0.02em; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px -1px rgba(220, 38, 38, 0.3), 0 4px 8px -1px rgba(220, 38, 38, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)'; this.style.background='linear-gradient(135deg, #b91c1c, #f87171)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(220, 38, 38, 0.2), 0 2px 4px -1px rgba(220, 38, 38, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15)'; this.style.background='linear-gradient(135deg, #dc2626, #ef4444)';">
-                            <i class="fas fa-trash-alt mr-2" style="position: relative;"></i><span style="position: relative;">Clear All Chats</span>
+                        <button id="clear-chat" class="professional-button flex items-center justify-center gap-3 w-full h-[48px] mb-4">
+                            <i class="fas fa-trash-alt text-sm"></i>
+                            <span>Clear All Chats</span>
                         </button>
-                        <button id="reset-app" class="w-full text-white rounded-lg px-4 py-2 focus:outline-none transition-all duration-300 ease-in-out" style="background: linear-gradient(135deg, #991b1b, #b91c1c); box-shadow: 0 4px 6px -1px rgba(153, 27, 27, 0.2), 0 2px 4px -1px rgba(153, 27, 27, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15); border: none; font-weight: 600; letter-spacing: 0.02em; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px -1px rgba(153, 27, 27, 0.3), 0 4px 8px -1px rgba(153, 27, 27, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)'; this.style.background='linear-gradient(135deg, #7f1d1d, #dc2626)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(153, 27, 27, 0.2), 0 2px 4px -1px rgba(153, 27, 27, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15)'; this.style.background='linear-gradient(135deg, #991b1b, #b91c1c)';">
-                            <i class="fas fa-exclamation-triangle mr-2" style="position: relative;"></i><span style="position: relative;">Reset App</span>
+                        <button id="reset-app" class="professional-button flex items-center justify-center gap-3 w-full h-[48px]">
+                            <i class="fas fa-exclamation-triangle text-sm"></i>
+                            <span>Reset App</span>
                         </button>
                     </div>
                 </div>
@@ -1158,38 +1179,45 @@
             <div id="settings-navigation-buttons" class="lg:hidden mt-5 mb-2">
                 <!-- Connection step buttons -->
                 <div class="flex justify-end navigation-buttons" id="connection-step-buttons">
-                    <button id="to-prompt-step-btn" class="w-[48%] text-white rounded-lg px-4 py-2 focus:outline-none transition-all duration-300 ease-in-out flex items-center justify-center" style="background: linear-gradient(135deg, #1e40af, #3b82f6); box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1); border: none; font-weight: 600;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px -1px rgba(37, 99, 235, 0.3), 0 4px 8px -1px rgba(37, 99, 235, 0.2)'; this.style.background='linear-gradient(135deg, #2563eb, #60a5fa)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1)'; this.style.background='linear-gradient(135deg, #1e40af, #3b82f6)';">
-                        <i class="fas fa-arrow-right mr-2"></i><span class="button-text">Next</span>
+                    <button id="to-prompt-step-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                        <i class="fas fa-arrow-right text-sm"></i>
+                        <span class="button-text">Next</span>
                     </button>
                 </div>
 
                 <!-- Prompt step buttons -->
                 <div class="flex justify-between navigation-buttons hidden" id="prompt-step-buttons">
-                    <button id="back-to-connection-btn" class="w-[48%] bg-gray-600 text-white rounded-lg px-4 py-2 hover:bg-gray-700 focus:outline-none transition-all duration-300 ease-in-out">
-                        <i class="fas fa-arrow-left mr-2"></i><span class="button-text">Back</span>
+                    <button id="back-to-connection-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                        <i class="fas fa-arrow-left text-sm"></i>
+                        <span class="button-text">Back</span>
                     </button>
-                    <button id="to-options-step-btn" class="w-[48%] bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 focus:outline-none transition-all duration-300 ease-in-out">
-                        <i class="fas fa-arrow-right mr-2"></i><span class="button-text">Next</span>
+                    <button id="to-options-step-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                        <i class="fas fa-arrow-right text-sm"></i>
+                        <span class="button-text">Next</span>
                     </button>
                 </div>
 
                 <!-- Options step buttons -->
                 <div class="flex justify-between navigation-buttons hidden" id="options-step-buttons">
-                    <button id="back-to-prompt-btn" class="w-[48%] bg-gray-600 text-white rounded-lg px-4 py-2 hover:bg-gray-700 focus:outline-none transition-all duration-300 ease-in-out">
-                        <i class="fas fa-arrow-left mr-2"></i><span class="button-text">Back</span>
+                    <button id="back-to-prompt-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                        <i class="fas fa-arrow-left text-sm"></i>
+                        <span class="button-text">Back</span>
                     </button>
-                    <button id="to-actions-step-btn" class="w-[48%] bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 focus:outline-none transition-all duration-300 ease-in-out">
-                        <i class="fas fa-arrow-right mr-2"></i><span class="button-text">Next</span>
+                    <button id="to-actions-step-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                        <i class="fas fa-arrow-right text-sm"></i>
+                        <span class="button-text">Next</span>
                     </button>
                 </div>
 
                 <!-- Actions step buttons -->
                 <div class="flex justify-between navigation-buttons hidden" id="actions-step-buttons">
-                    <button id="back-to-options-btn" class="w-[48%] bg-gray-600 text-white rounded-lg px-4 py-2 hover:bg-gray-700 focus:outline-none transition-all duration-300 ease-in-out">
-                        <i class="fas fa-arrow-left mr-2"></i><span class="button-text">Back</span>
+                    <button id="back-to-options-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                        <i class="fas fa-arrow-left text-sm"></i>
+                        <span class="button-text">Back</span>
                     </button>
-                    <button id="settings-help-btn" class="w-[48%] text-white rounded-lg px-4 py-2 focus:outline-none transition-all duration-300 ease-in-out flex items-center justify-center" style="background: linear-gradient(135deg, #ff8a00, #e63c00); box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.2), 0 2px 4px -1px rgba(249, 115, 22, 0.1); border: none; font-weight: 600;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px -1px rgba(249, 115, 22, 0.3), 0 4px 8px -1px rgba(249, 115, 22, 0.2)'; this.style.background='linear-gradient(135deg, #ff9d33, #ff5722)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(249, 115, 22, 0.2), 0 2px 4px -1px rgba(249, 115, 22, 0.1)'; this.style.background='linear-gradient(135deg, #ff8a00, #e63c00)';">
-                        <i class="fas fa-question-circle mr-2"></i><span class="button-text">Help</span>
+                    <button id="settings-help-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                        <i class="fas fa-question-circle text-sm"></i>
+                        <span class="button-text">Help</span>
                     </button>
                 </div>
             </div>
@@ -1205,8 +1233,8 @@
 
             <!-- Save button (always visible) -->
             <div class="mt-1">
-                <button id="close-settings" class="w-full text-white rounded-lg px-4 py-3 focus:outline-none transition-all duration-300 ease-in-out flex items-center justify-center" style="background: linear-gradient(to right, #059669, #10b981); border: none; font-weight: 600; letter-spacing: 0.01em; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: relative;">
-                    <i class="fas fa-check mr-2"></i>
+                <button id="close-settings" class="professional-button flex items-center justify-center gap-3 w-full h-[52px]">
+                    <i class="fas fa-check text-sm"></i>
                     <span>Apply Changes</span>
                 </button>
 
@@ -1437,44 +1465,16 @@
             <div class="h-4"></div>
             <div class="p-6 pt-0 space-y-4 sticky bottom-0 z-10" style="background: var(--modal-bg);">
                 <div class="flex flex-col md:flex-row gap-4">
-                    <!-- Watch Tutorial Video Button - Refined professional video player design without progress bar -->
-                    <button id="tutorial-video-btn" class="group relative flex-1 flex items-center justify-center text-white px-6 py-3.5 transition-all duration-300 ease-in-out overflow-hidden rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
-                        <!-- Professional gradient background -->
-                        <div class="absolute inset-0 bg-gradient-to-r from-red-700 via-red-600 to-red-700">
-                            <!-- Subtle pattern overlay -->
-                            <div class="absolute inset-0 opacity-8 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MCIgaGVpZ2h0PSI3MCIgdmlld0JveD0iMCAwIDcwIDcwIj48cGF0aCBkPSJNMCAwaDcwdjcwSDBWMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMCAwaDM1djM1SDBWMHoiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiIvPjxwYXRoIGQ9Ik0zNSAzNWgzNXYzNUgzNVYzNXoiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiIvPjwvc3ZnPg==')}"></div>
-                        </div>
-                        <!-- Professional play icon container -->
-                        <div class="absolute left-4 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center group-hover:bg-opacity-30 transition-all duration-300">
-                            <div class="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-white border-b-[6px] border-b-transparent group-hover:scale-110 transition-transform ml-0.5"></div>
-                        </div>
-                        <!-- Button content -->
-                        <span class="relative flex items-center justify-center z-10 pl-6">
-                            <i class="fab fa-youtube mr-2.5 text-lg text-white group-hover:text-red-200 transition-colors duration-300"></i>
-                            <span class="font-medium tracking-wide">Watch Tutorial Video</span>
-                        </span>
-                        <!-- Enhanced hover state -->
-                        <div class="absolute inset-x-0 bottom-0 h-0.5 bg-red-300 opacity-0 group-hover:opacity-90 transition-opacity duration-300"></div>
+                    <!-- Watch Tutorial Video Button -->
+                    <button id="tutorial-video-btn" class="professional-button flex items-center justify-center gap-3 flex-1 h-[48px]">
+                        <i class="fab fa-youtube text-sm"></i>
+                        <span>Watch Tutorial Video</span>
                     </button>
 
-                    <!-- Support Articles Button - Refined professional document design -->
-                    <button id="support-articles-btn" class="group relative flex-1 flex items-center justify-center text-white px-6 py-3.5 transition-all duration-300 ease-in-out overflow-hidden rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50">
-                        <!-- Professional gradient background -->
-                        <div class="absolute inset-0 bg-gradient-to-r from-emerald-700 via-emerald-600 to-emerald-700">
-                            <!-- Subtle pattern overlay -->
-                            <div class="absolute inset-0 opacity-8 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MCIgaGVpZ2h0PSI3MCIgdmlld0JveD0iMCAwIDcwIDcwIj48cGF0aCBkPSJNMCAwaDcwdjcwSDBWMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMCAwaDM1djM1SDBWMHoiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiIvPjxwYXRoIGQ9Ik0zNSAzNWgzNXYzNUgzNVYzNXoiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiIvPjwvc3ZnPg==')}"></div>
-                        </div>
-                        <!-- Refined document elements -->
-                        <div class="absolute left-0 top-0 bottom-0 w-0.5 bg-emerald-300 opacity-80"></div>
-                        <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-emerald-500/20 via-emerald-500/10 to-emerald-500/20"></div>
-                        <!-- Document styling simplified to match tutorial button height -->
-                        <!-- Button content -->
-                        <span class="relative flex items-center justify-center z-10">
-                            <i class="fas fa-book mr-2.5 text-lg text-white group-hover:text-emerald-200 transition-colors duration-300"></i>
-                            <span class="font-medium tracking-wide">Support Articles</span>
-                        </span>
-                        <!-- Enhanced hover state -->
-                        <div class="absolute inset-x-0 bottom-0 h-0.5 bg-emerald-300 opacity-0 group-hover:opacity-90 transition-opacity duration-300"></div>
+                    <!-- Support Articles Button -->
+                    <button id="support-articles-btn" class="professional-button flex items-center justify-center gap-3 flex-1 h-[48px]">
+                        <i class="fas fa-book text-sm"></i>
+                        <span>Support Articles</span>
                     </button>
                 </div>
 
@@ -1605,7 +1605,7 @@
     <div id="about-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden modal-container z-50" aria-labelledby="about-title" role="dialog" aria-modal="true">
         <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] p-0 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-white/10 overflow-hidden animate-modal-in" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
             <!-- Header with app icon and title -->
-            <div class="relative p-6 pb-4 bg-gradient-to-r from-[#0c1d36] to-[#102240]">
+            <div class="relative p-6 pb-4">
                 <div class="flex items-center justify-center mb-2">
                     <img src="icon.png" alt="LMSA Icon" class="w-16 h-16 mb-1 filter drop-shadow-lg animate-pulse-subtle">
                 </div>
@@ -1631,18 +1631,24 @@
                         <span>2025 IslandApps</span>
                     </p>
 
-                    <!-- Links section with improved styling -->
+                    <!-- Links section with professional styling -->
                     <div class="space-y-3 w-full">
-                        <a href="#" id="official-website-link" class="inline-flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-teal-500 hover:from-blue-700 hover:to-teal-600 text-white px-4 py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] shadow-lg hover:shadow-blue-500/30 text-sm font-medium group">
-                            <i class="fas fa-globe text-blue-200 mr-2.5 group-hover:animate-spin-slow"></i>
+                        <a href="#" id="official-website-link" class="professional-button flex items-center justify-center w-full h-[48px] gap-3">
+                            <i class="fas fa-globe text-sm"></i>
                             <span>Visit Official Website</span>
-                            <i class="fas fa-external-link-alt text-xs ml-2 opacity-75"></i>
+                            <i class="fas fa-external-link-alt text-xs opacity-75"></i>
                         </a>
 
-                        <a href="#" id="rate-app-link" class="inline-flex items-center justify-center w-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white px-4 py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] shadow-lg hover:shadow-orange-500/30 text-sm font-medium group">
-                            <i class="fas fa-star text-yellow-300 mr-2.5 group-hover:animate-wobble"></i>
+                        <a href="#" id="rate-app-link" class="professional-button flex items-center justify-center w-full h-[48px] gap-3">
+                            <i class="fas fa-star text-sm"></i>
                             <span>Rate us on Google Play</span>
-                            <i class="fab fa-google-play ml-2.5"></i>
+                            <i class="fab fa-google-play text-sm"></i>
+                        </a>
+
+                        <a href="#" id="dev-website-link" class="professional-button flex items-center justify-center w-full h-[48px] gap-3">
+                            <i class="fas fa-code text-sm"></i>
+                            <span>Visit IslandApps</span>
+                            <i class="fas fa-external-link-alt text-xs opacity-75"></i>
                         </a>
                     </div>
 

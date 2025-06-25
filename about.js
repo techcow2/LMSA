@@ -12,6 +12,7 @@ const openHelpLink = document.getElementById('open-help-link');
 const helpModal = document.getElementById('help-modal');
 const rateAppLink = document.getElementById('rate-app-link');
 const officialWebsiteLink = document.getElementById('official-website-link');
+const devWebsiteLink = document.getElementById('dev-website-link');
 
 // Function to close sidebar
 function closeSidebar() {
@@ -140,6 +141,26 @@ if (officialWebsiteLink) {
 
             // Remove the active scale class
             officialWebsiteLink.classList.remove('active-scale');
+        }, 200);
+    });
+}
+
+// Dev website link click handler
+if (devWebsiteLink) {
+    devWebsiteLink.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Add a visual feedback effect when clicked
+        devWebsiteLink.classList.add('active-scale');
+
+        // Short delay before showing confirmation modal for visual feedback
+        setTimeout(() => {
+            // Show confirmation modal before opening dev website
+            const devWebsiteUrl = 'https://islandapps.dev';
+            showExternalSiteModal(devWebsiteUrl);
+
+            // Remove the active scale class
+            devWebsiteLink.classList.remove('active-scale');
         }, 200);
     });
 }

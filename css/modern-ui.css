@@ -517,10 +517,11 @@ body.light-theme #active-character-display {
 }
 
 #user-input {
-  border-radius: 1.5rem;
+  border-radius: 1.5rem 0 0 1.5rem; /* Left side rounded to blend with send button */
   padding: 0.875rem 3rem 0.875rem 1.25rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid transparent;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-right: none; /* Remove right border for seamless blend */
   background-color: var(--modern-bg-tertiary);
   box-shadow: var(--modern-shadow-inner), 0 0 0 1px rgba(255, 255, 255, 0.05);
   white-space: nowrap;
@@ -528,6 +529,8 @@ body.light-theme #active-character-display {
   overflow-y: hidden;
   -ms-overflow-style: none;  /* Hide scrollbar in IE and Edge */
   scrollbar-width: none;  /* Hide scrollbar in Firefox */
+  position: relative;
+  z-index: 1; /* Allow send button to overlap slightly */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -535,15 +538,51 @@ body.light-theme #active-character-display {
   display: none;
 }
 
+/* Send button styling for modern UI */
+#chat-form #send-button,
+#chat-form #stop-button {
+  border-radius: 0 1.5rem 1.5rem 0; /* Right side rounded to blend with input */
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-left: none; /* Remove left border for seamless blend */
+  margin-left: -2px; /* Overlap input by 2px to create seamless appearance */
+  background: var(--modern-gradient-primary);
+  box-shadow: var(--modern-shadow), 0 0 0 1px rgba(59, 130, 246, 0.3);
+  position: relative;
+  z-index: 2; /* Ensure button is above input */
+}
+
+#chat-form #send-button:hover,
+#chat-form #stop-button:hover {
+  transform: none; /* Remove transform to prevent breaking the seam */
+  box-shadow: var(--modern-shadow-md), 0 0 0 1px rgba(59, 130, 246, 0.5);
+  filter: brightness(1.05);
+}
+
 @media (max-width: 768px) {
   #user-input {
-    border-radius: 1.5rem 0 0 1.5rem;
+    border-radius: 1.5rem 0 0 1.5rem; /* Consistent rounded left side */
   }
 }
 
 body.light-theme #user-input {
   background-color: var(--modern-light-bg-tertiary);
   box-shadow: var(--modern-shadow-inner), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-right: none; /* Remove right border for seamless blend */
+}
+
+/* Light theme send button styling */
+body.light-theme #chat-form #send-button,
+body.light-theme #chat-form #stop-button {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-left: none; /* Remove left border for seamless blend */
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: var(--modern-shadow), 0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+body.light-theme #chat-form #send-button:hover,
+body.light-theme #chat-form #stop-button:hover {
+  box-shadow: var(--modern-shadow-md), 0 0 0 1px rgba(59, 130, 246, 0.5);
 }
 
 #user-input:focus {
@@ -2913,4 +2952,567 @@ body.light-theme #welcome-help-btn.professional-button:hover {
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     inset 0 -1px 0 rgba(0, 0, 0, 0.1),
     0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* About modal button color accents */
+#official-website-link.professional-button {
+  border-color: rgba(59, 130, 246, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+#official-website-link.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(59, 130, 246, 0.25),
+    0 6px 20px rgba(37, 99, 235, 0.15),
+    0 3px 10px rgba(29, 78, 216, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+#rate-app-link.professional-button {
+  border-color: rgba(249, 115, 22, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(249, 115, 22, 0.3);
+}
+
+#rate-app-link.professional-button:hover {
+  border-color: rgba(249, 115, 22, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(249, 115, 22, 0.25),
+    0 6px 20px rgba(234, 88, 12, 0.15),
+    0 3px 10px rgba(194, 65, 12, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(249, 115, 22, 0.4);
+}
+
+#dev-website-link.professional-button {
+  border-color: rgba(147, 51, 234, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(147, 51, 234, 0.3);
+}
+
+#dev-website-link.professional-button:hover {
+  border-color: rgba(147, 51, 234, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(147, 51, 234, 0.25),
+    0 6px 20px rgba(126, 34, 206, 0.15),
+    0 3px 10px rgba(107, 33, 168, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(147, 51, 234, 0.4);
+}
+
+/* Light theme adaptations for about modal buttons */
+body.light-theme #official-website-link.professional-button {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(59, 130, 246, 0.4);
+}
+
+body.light-theme #official-website-link.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(59, 130, 246, 0.3),
+    0 6px 20px rgba(37, 99, 235, 0.2),
+    0 3px 10px rgba(29, 78, 216, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+body.light-theme #rate-app-link.professional-button {
+  border-color: rgba(249, 115, 22, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(249, 115, 22, 0.4);
+}
+
+body.light-theme #rate-app-link.professional-button:hover {
+  border-color: rgba(249, 115, 22, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(249, 115, 22, 0.3),
+    0 6px 20px rgba(234, 88, 12, 0.2),
+    0 3px 10px rgba(194, 65, 12, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(249, 115, 22, 0.5);
+}
+
+body.light-theme #dev-website-link.professional-button {
+  border-color: rgba(147, 51, 234, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(147, 51, 234, 0.4);
+}
+
+body.light-theme #dev-website-link.professional-button:hover {
+  border-color: rgba(147, 51, 234, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(147, 51, 234, 0.3),
+    0 6px 20px rgba(126, 34, 206, 0.2),
+    0 3px 10px rgba(107, 33, 168, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(147, 51, 234, 0.5);
+}
+
+/* Help modal button color accents */
+#tutorial-video-btn.professional-button {
+  border-color: rgba(220, 38, 38, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(220, 38, 38, 0.3);
+}
+
+#tutorial-video-btn.professional-button:hover {
+  border-color: rgba(220, 38, 38, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(220, 38, 38, 0.25),
+    0 6px 20px rgba(185, 28, 28, 0.15),
+    0 3px 10px rgba(153, 27, 27, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(220, 38, 38, 0.4);
+}
+
+#support-articles-btn.professional-button {
+  border-color: rgba(16, 185, 129, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(16, 185, 129, 0.3);
+}
+
+#support-articles-btn.professional-button:hover {
+  border-color: rgba(16, 185, 129, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(16, 185, 129, 0.25),
+    0 6px 20px rgba(5, 150, 105, 0.15),
+    0 3px 10px rgba(4, 120, 87, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(16, 185, 129, 0.4);
+}
+
+/* Light theme variants for help modal buttons */
+body.light-theme #tutorial-video-btn.professional-button {
+  border-color: rgba(220, 38, 38, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(220, 38, 38, 0.4);
+}
+
+body.light-theme #tutorial-video-btn.professional-button:hover {
+  border-color: rgba(220, 38, 38, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(220, 38, 38, 0.3),
+    0 6px 20px rgba(185, 28, 28, 0.2),
+    0 3px 10px rgba(153, 27, 27, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(220, 38, 38, 0.5);
+}
+
+body.light-theme #support-articles-btn.professional-button {
+  border-color: rgba(16, 185, 129, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(16, 185, 129, 0.4);
+}
+
+body.light-theme #support-articles-btn.professional-button:hover {
+  border-color: rgba(16, 185, 129, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(16, 185, 129, 0.3),
+    0 6px 20px rgba(5, 150, 105, 0.2),
+    0 3px 10px rgba(4, 120, 87, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(16, 185, 129, 0.5);
+}
+
+/* Settings modal button color accents */
+#edit-system-prompt-btn.professional-button {
+  border-color: rgba(59, 130, 246, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+#edit-system-prompt-btn.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(59, 130, 246, 0.25),
+    0 6px 20px rgba(37, 99, 235, 0.15),
+    0 3px 10px rgba(29, 78, 216, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+#clear-chat.professional-button {
+  border-color: rgba(220, 38, 38, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(220, 38, 38, 0.3);
+}
+
+#clear-chat.professional-button:hover {
+  border-color: rgba(220, 38, 38, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(220, 38, 38, 0.25),
+    0 6px 20px rgba(185, 28, 28, 0.15),
+    0 3px 10px rgba(153, 27, 27, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(220, 38, 38, 0.4);
+}
+
+#reset-app.professional-button {
+  border-color: rgba(153, 27, 27, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(153, 27, 27, 0.3);
+}
+
+#reset-app.professional-button:hover {
+  border-color: rgba(153, 27, 27, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(153, 27, 27, 0.25),
+    0 6px 20px rgba(127, 29, 29, 0.15),
+    0 3px 10px rgba(105, 30, 30, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(153, 27, 27, 0.4);
+}
+
+#close-settings.professional-button {
+  border-color: rgba(5, 150, 105, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(5, 150, 105, 0.3);
+}
+
+#close-settings.professional-button:hover {
+  border-color: rgba(5, 150, 105, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(5, 150, 105, 0.25),
+    0 6px 20px rgba(4, 120, 87, 0.15),
+    0 3px 10px rgba(6, 95, 70, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(5, 150, 105, 0.4);
+}
+
+/* Navigation buttons in settings modal */
+#to-prompt-step-btn.professional-button,
+#to-options-step-btn.professional-button,
+#to-actions-step-btn.professional-button {
+  border-color: rgba(59, 130, 246, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+#to-prompt-step-btn.professional-button:hover,
+#to-options-step-btn.professional-button:hover,
+#to-actions-step-btn.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(59, 130, 246, 0.25),
+    0 6px 20px rgba(37, 99, 235, 0.15),
+    0 3px 10px rgba(29, 78, 216, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+#back-to-connection-btn.professional-button,
+#back-to-prompt-btn.professional-button,
+#back-to-options-btn.professional-button {
+  border-color: rgba(107, 114, 128, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(107, 114, 128, 0.3);
+}
+
+#back-to-connection-btn.professional-button:hover,
+#back-to-prompt-btn.professional-button:hover,
+#back-to-options-btn.professional-button:hover {
+  border-color: rgba(107, 114, 128, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(107, 114, 128, 0.25),
+    0 6px 20px rgba(75, 85, 99, 0.15),
+    0 3px 10px rgba(55, 65, 81, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(107, 114, 128, 0.4);
+}
+
+#settings-help-btn.professional-button {
+  border-color: rgba(245, 158, 11, 0.6);
+  border-width: 2px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(245, 158, 11, 0.3);
+}
+
+#settings-help-btn.professional-button:hover {
+  border-color: rgba(245, 158, 11, 0.8);
+  box-shadow: 
+    0 12px 40px rgba(245, 158, 11, 0.25),
+    0 6px 20px rgba(217, 119, 6, 0.15),
+    0 3px 10px rgba(180, 83, 9, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(245, 158, 11, 0.4);
+}
+
+/* Light theme variants for settings modal buttons */
+body.light-theme #edit-system-prompt-btn.professional-button {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(59, 130, 246, 0.4);
+}
+
+body.light-theme #edit-system-prompt-btn.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(59, 130, 246, 0.3),
+    0 6px 20px rgba(37, 99, 235, 0.2),
+    0 3px 10px rgba(29, 78, 216, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+body.light-theme #clear-chat.professional-button {
+  border-color: rgba(220, 38, 38, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(220, 38, 38, 0.4);
+}
+
+body.light-theme #clear-chat.professional-button:hover {
+  border-color: rgba(220, 38, 38, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(220, 38, 38, 0.3),
+    0 6px 20px rgba(185, 28, 28, 0.2),
+    0 3px 10px rgba(153, 27, 27, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(220, 38, 38, 0.5);
+}
+
+body.light-theme #reset-app.professional-button {
+  border-color: rgba(153, 27, 27, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(153, 27, 27, 0.4);
+}
+
+body.light-theme #reset-app.professional-button:hover {
+  border-color: rgba(153, 27, 27, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(153, 27, 27, 0.3),
+    0 6px 20px rgba(127, 29, 29, 0.2),
+    0 3px 10px rgba(105, 30, 30, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(153, 27, 27, 0.5);
+}
+
+body.light-theme #close-settings.professional-button {
+  border-color: rgba(5, 150, 105, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(5, 150, 105, 0.4);
+}
+
+body.light-theme #close-settings.professional-button:hover {
+  border-color: rgba(5, 150, 105, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(5, 150, 105, 0.3),
+    0 6px 20px rgba(4, 120, 87, 0.2),
+    0 3px 10px rgba(6, 95, 70, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(5, 150, 105, 0.5);
+}
+
+body.light-theme #to-prompt-step-btn.professional-button,
+body.light-theme #to-options-step-btn.professional-button,
+body.light-theme #to-actions-step-btn.professional-button {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(59, 130, 246, 0.4);
+}
+
+body.light-theme #to-prompt-step-btn.professional-button:hover,
+body.light-theme #to-options-step-btn.professional-button:hover,
+body.light-theme #to-actions-step-btn.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(59, 130, 246, 0.3),
+    0 6px 20px rgba(37, 99, 235, 0.2),
+    0 3px 10px rgba(29, 78, 216, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+body.light-theme #back-to-connection-btn.professional-button,
+body.light-theme #back-to-prompt-btn.professional-button,
+body.light-theme #back-to-options-btn.professional-button {
+  border-color: rgba(107, 114, 128, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(107, 114, 128, 0.4);
+}
+
+body.light-theme #back-to-connection-btn.professional-button:hover,
+body.light-theme #back-to-prompt-btn.professional-button:hover,
+body.light-theme #back-to-options-btn.professional-button:hover {
+  border-color: rgba(107, 114, 128, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(107, 114, 128, 0.3),
+    0 6px 20px rgba(75, 85, 99, 0.2),
+    0 3px 10px rgba(55, 65, 81, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(107, 114, 128, 0.5);
+}
+
+body.light-theme #settings-help-btn.professional-button {
+  border-color: rgba(245, 158, 11, 0.7);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(245, 158, 11, 0.4);
+}
+
+body.light-theme #settings-help-btn.professional-button:hover {
+  border-color: rgba(245, 158, 11, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(245, 158, 11, 0.3),
+    0 6px 20px rgba(217, 119, 6, 0.2),
+    0 3px 10px rgba(180, 83, 9, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(245, 158, 11, 0.5);
 }

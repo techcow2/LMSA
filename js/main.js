@@ -24,7 +24,9 @@ import {
     progressiveComponentLoading,
     detectAdMobEnvironment,
     applyAdMobOptimizations,
-    startAdaptivePerformanceMonitoring
+    startAdaptivePerformanceMonitoring,
+    cleanupEventListenersAndObservers,
+    aggressiveImageCleanup
 } from './performance-utils.js';
 
 import { updateConfirmationModalTheme, updateExportImportModalsTheme } from '../confirmation-modal-fix.js';
@@ -51,6 +53,14 @@ function initializeApp() {
 
     // Start memory monitoring for automatic cleanup
     startMemoryMonitoring();
+
+    // Setup periodic cleanup for memory optimization
+    const cleanupInterval = performanceLevel === 'low' ? 60000 : (performanceLevel === 'medium' ? 120000 : 300000);
+    setInterval(() => {
+        cleanupEventListenersAndObservers();
+        aggressiveImageCleanup();
+    }, cleanupInterval);
+    console.log(`Periodic memory cleanup scheduled every ${cleanupInterval/1000} seconds`);
 
     // Initialize Monaco editor cleanup for memory management
     import('./monaco-performance.js').then(module => {

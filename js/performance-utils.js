@@ -6,6 +6,11 @@ let devicePerformanceLevel = null;
 let memoryInfo = null;
 let isAdMobEnvironment = null;
 
+// Use WeakMap/WeakSet for better memory management
+const elementObservers = new WeakMap(); // Map DOM elements to their observers
+const cachedElements = new WeakSet(); // Track cached elements for cleanup
+const processedElements = new WeakSet(); // Track processed elements
+
 /**
  * Detects if the app is running in an AdMob WebView environment
  * @returns {boolean} - True if running in AdMob WebView
@@ -298,8 +303,8 @@ function checkMemoryUsage() {
 
         console.log(`Memory usage: ${usedMB.toFixed(1)}MB / ${limitMB.toFixed(1)}MB (${usagePercent.toFixed(1)}%)`);
 
-        // Trigger cleanup if memory usage is high (more aggressive thresholds for AdMob)
-        const cleanupThreshold = isAdMobEnv ? 50 : (performanceLevel === 'low' ? 60 : 70);
+        // Trigger cleanup if memory usage is high (more aggressive thresholds for all environments)
+        const cleanupThreshold = isAdMobEnv ? 45 : (performanceLevel === 'low' ? 50 : (performanceLevel === 'medium' ? 60 : 65));
         if (usagePercent > cleanupThreshold) {
             console.log(`High memory usage detected (${usagePercent.toFixed(1)}% > ${cleanupThreshold}%), triggering cleanup`);
             triggerMemoryCleanup();
@@ -327,6 +332,12 @@ function triggerMemoryCleanup() {
 
     // Clear any cached data that's not immediately needed
     clearNonEssentialCaches();
+
+    // Clean up event listeners and observers
+    cleanupEventListenersAndObservers();
+
+    // Perform aggressive image cleanup
+    aggressiveImageCleanup();
 }
 
 /**
@@ -410,14 +421,16 @@ function cleanupOldChatMessages() {
     const performanceLevel = getDevicePerformanceLevel();
     const isAdMobEnv = detectAdMobEnvironment();
     
-    // More aggressive message limits for AdMob environments
+    // More aggressive message limits for memory optimization
     let maxMessages;
     if (isAdMobEnv) {
-        maxMessages = 30; // Very conservative for AdMob
+        maxMessages = 25; // Very conservative for AdMob
     } else if (performanceLevel === 'low') {
-        maxMessages = 50;
+        maxMessages = 40; // Reduced for low-end devices
+    } else if (performanceLevel === 'medium') {
+        maxMessages = 75; // Reduced for medium devices
     } else {
-        maxMessages = 100;
+        maxMessages = 100; // High-end devices remain at 100
     }
 
     if (messages.length > maxMessages) {
@@ -444,6 +457,52 @@ function clearNonEssentialCaches() {
     if (window.tempDataCache) {
         window.tempDataCache.clear();
     }
+}
+
+/**
+ * Cleanup function for event listeners and observers to prevent memory leaks
+ */
+export function cleanupEventListenersAndObservers() {
+    // Cleanup ResizeObserver instances
+    document.querySelectorAll('[data-has-resize-observer]').forEach(element => {
+        const observer = elementObservers.get(element);
+        if (observer) {
+            observer.disconnect();
+            elementObservers.delete(element);
+            element.removeAttribute('data-has-resize-observer');
+        }
+    });
+
+    // Cleanup IntersectionObserver instances  
+    document.querySelectorAll('[data-has-intersection-observer]').forEach(element => {
+        const observer = elementObservers.get(element);
+        if (observer) {
+            observer.disconnect();
+            elementObservers.delete(element);
+            element.removeAttribute('data-has-intersection-observer');
+        }
+    });
+
+    // Cleanup MutationObserver instances
+    document.querySelectorAll('[data-has-mutation-observer]').forEach(element => {
+        const observer = elementObservers.get(element);
+        if (observer) {
+            observer.disconnect();
+            elementObservers.delete(element);
+            element.removeAttribute('data-has-mutation-observer');
+        }
+    });
+
+    // Clear cached elements that are no longer in DOM
+    const elementsToRemove = [];
+    cachedElements.forEach(element => {
+        if (!document.contains(element)) {
+            elementsToRemove.push(element);
+        }
+    });
+    elementsToRemove.forEach(element => cachedElements.delete(element));
+
+    console.log('Cleaned up event listeners and observers for memory optimization');
 }
 
 /**
@@ -975,4 +1034,45 @@ export function setupVirtualScrolling(container, items, renderItem, itemHeight =
             container.removeChild(scrollContainer);
         }
     };
+}
+
+/**
+ * Aggressively cleans up images and DOM references for memory optimization
+ */
+export function aggressiveImageCleanup() {
+    // Clean up blob URLs that might be lingering
+    const images = document.querySelectorAll('img[src^="blob:"]');
+    images.forEach(img => {
+        if (!img.parentNode || !document.contains(img)) {
+            try {
+                URL.revokeObjectURL(img.src);
+            } catch (e) {
+                // Silently ignore errors
+            }
+        }
+    });
+
+    // Clean up canvas elements that might be holding memory
+    const canvases = document.querySelectorAll('canvas');
+    canvases.forEach(canvas => {
+        if (!document.contains(canvas)) {
+            try {
+                const ctx = canvas.getContext('2d');
+                if (ctx) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+                canvas.width = 1;
+                canvas.height = 1;
+            } catch (e) {
+                // Silently ignore errors
+            }
+        }
+    });
+
+    // Force garbage collection of unused image data
+    if (window.gc) {
+        window.gc();
+    }
+
+    console.log('Performed aggressive image cleanup for memory optimization');
 }

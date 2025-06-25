@@ -1241,7 +1241,9 @@ body.light-theme #loaded-model {
     flex-shrink: 0; /* Prevent shrinking */
     box-sizing: border-box; /* Ensure padding is included in height calculation */
     border-radius: 0 0.5rem 0.5rem 0; /* Ensure rounded corners only on right side */
-    margin-left: 0; /* Remove any margin */
+    margin-left: -1px; /* Overlap input by 1px to blend seam */
+    border: 1px solid var(--input-border); /* Match input border */
+    border-left: none; /* Remove left border to blend with input */
 }
 
 /* Ensure buttons have the same dimensions */
@@ -1262,11 +1264,15 @@ body.light-theme #loaded-model {
     border-radius: 0.5rem 0 0 0.5rem; /* Ensure rounded corners only on left side */
     padding: 0 2.5rem 0 0.75rem; /* Adjust padding for better text positioning */
     border-right: none; /* Remove right border on input */
+    border: 1px solid var(--input-border); /* Ensure consistent border */
+    position: relative;
+    z-index: 1; /* Place input below button to allow button overlap */
 }
 
 /* Position the paperclip button properly */
 #chat-form .absolute {
     right: 0.75rem; /* Adjust position */
+    z-index: 2; /* Ensure paperclip is above input but below send button */
 }
 
 /* When hidden class is applied, actually hide the element */

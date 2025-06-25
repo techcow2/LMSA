@@ -56,13 +56,21 @@ export function getOptimizedMonacoOptions(language, content) {
             // Reduce validation and syntax highlighting
             validate: false,
             semanticHighlighting: { enabled: false },
+            // Additional memory optimizations
+            wordBasedSuggestions: false,
+            wordBasedSuggestionsOnlySameLanguage: false,
+            parameterHints: { enabled: false },
+            formatOnType: false,
+            formatOnPaste: false,
             // Additional AdMob optimizations
             ...(isAdMobEnv && {
                 dragAndDrop: false,
                 links: false,
                 colorDecorators: false,
                 lightbulb: { enabled: false },
-                codeLens: false
+                codeLens: false,
+                occurrencesHighlight: false,
+                selectionHighlight: false
             })
         };
     } else if (performanceLevel === 'medium' && !isAdMobEnv) {
