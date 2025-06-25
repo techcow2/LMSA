@@ -44,6 +44,16 @@
     <script src="https://cdn.jsdelivr.net/npm/marked@4.2.12/marked.min.js"></script>
     <!-- JSZip Library for DOCX file processing - moved before Monaco -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous"></script>
+    
+    <!-- PDF.js Library for PDF text extraction -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>
+        // Configure PDF.js worker immediately after loading
+        if (window.pdfjsLib) {
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+            console.log('PDF.js configured successfully');
+        }
+    </script>
     <!-- Monaco Editor with CDN configuration -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs/editor/editor.main.min.css">
     <script>
@@ -1670,7 +1680,7 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="version-badge bg-white/10 px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300">Version 5.0</p>
+                    <p class="text-sm font-medium text-blue-300">Version 5.2</p>
                 </div>
             </div>
 
@@ -1830,7 +1840,7 @@
                                 <i class="fas fa-robot mr-1"></i>Model Information
                             </h4>
                             <p class="text-xs text-gray-300 dark:text-gray-300 light:text-gray-600 leading-relaxed">
-                                Model names now wrap to multiple lines for better readability. Tap the model name itself to view the complete model name in a popup.
+                                Model names now wrap to multiple lines for better readability. Tap the robot icon to view the complete model name in a popup.
                             </p>
                         </div>
                     </div>
@@ -1892,7 +1902,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-blue-400 font-extrabold">What's New</span>
-                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">5.0</span></span>
+                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">5.2</span></span>
                     </div>
                 </h2>
                 <button id="close-whats-new" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:rotate-90 transform">
@@ -1904,22 +1914,40 @@
                 <div class="space-y-3">
                     <div class="feature-item">
                         <div class="relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-blue-500/10 to-blue-700/5 rounded-full blur-xl"></div>
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-green-500/10 to-emerald-700/5 rounded-full blur-xl"></div>
                             <div class="flex items-start relative z-10">
-                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-blue-500/20 w-10 h-10 shadow-sm">
-                                    <i class="fas fa-heart text-blue-400"></i>
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-green-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-file-pdf text-green-400"></i>
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center">
-                                        <h3 class="feature-title whitespace-nowrap">LMSA is Now Free!</h3>
+                                        <h3 class="feature-title">PDF File Attachments Fixed</h3>
+                                        <span class="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full ml-2 font-semibold">Fixed</span>
                                     </div>
                                     <div class="feature-description">
-                                        <p class="mb-4"><strong>Dear LMSA Users,</strong></p>
-                                        <p class="mb-3">We're excited to announce that LMSA, your front end for LM Studio, is now completely free for everyone.</p>
-                                        <p class="mb-3">To keep LMSA accessible and to support ongoing development, we've introduced ads into the app. This change allows us to continue improving LMSA and providing new features, while making sure it remains free to use.</p>
-                                        <p class="mb-3"><strong>Important:</strong> Being ad-supported does not mean we track you. Your chats will continue to be completely private and will never be monitored or sent to any server. Your privacy remains our top priority.</p>
-                                        <p class="mb-3">Thank you for your understanding and continued support.</p>
-                                        <p><strong>The LMSA Team</strong></p>
+                                        <p class="mb-3">We've resolved the issues with PDF file attachments that were preventing them from working correctly. You can now seamlessly upload and process PDF documents in your conversations with AI models.</p>
+                                        <p class="mb-3">This fix ensures that your PDF files are properly read and their content is available for the AI to analyze and discuss, making document-based conversations more reliable and effective.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-purple-500/10 to-indigo-700/5 rounded-full blur-xl"></div>
+                            <div class="flex items-start relative z-10">
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-purple-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-robot text-purple-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <h3 class="feature-title">Model Info Page UI Improvements</h3>
+                                        <span class="px-1.5 py-0.5 bg-purple-500/20 text-purple-400 text-xs rounded-full ml-2 font-semibold">Enhanced</span>
+                                    </div>
+                                    <div class="feature-description">
+                                        <p class="mb-3">The model information page has received significant UI improvements for better readability and user experience. The interface now displays model details more clearly and efficiently.</p>
+                                        <p class="mb-3">These enhancements make it easier to view and understand your currently loaded AI model's specifications and capabilities at a glance.</p>
                                     </div>
                                 </div>
                             </div>
@@ -2749,5 +2777,72 @@
             });
         });
     </script>
+
+    <!-- Model loading modal -->
+    <div id="model-loading-modal" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-md flex items-center justify-center hidden modal-container animate-fade-in" style="z-index: 2200;" aria-labelledby="model-loading-title" role="dialog" aria-modal="true">
+        <div class="relative dark:bg-gradient-to-b dark:from-[#1e293b] dark:via-[#334155] dark:to-[#1e293b] light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-10 rounded-2xl w-[550px] max-w-[90%] shadow-2xl overflow-hidden flex flex-col modal-content border border-blue-400/50 dark:border-blue-400/50 light:border-blue-400/30 backdrop-blur-sm">
+            <!-- Animated background gradient -->
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 animate-pulse-slow rounded-2xl"></div>
+            
+            <!-- Decorative border glow -->
+            <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/30 via-purple-500/20 to-blue-500/30 animate-border-glow"></div>
+            
+            <div class="relative z-10 flex flex-col items-center justify-center text-center">
+                <!-- Enhanced loading spinner section -->
+                <div class="mb-8 relative">
+                    <div class="loading-spinner-container relative">
+                        <!-- Outer animated ring -->
+                        <div class="absolute inset-0 w-20 h-20 border-2 border-blue-500/30 rounded-full animate-spin-slow"></div>
+                        <!-- Main spinner -->
+                        <div class="loading-spinner w-20 h-20 border-4 border-transparent border-t-blue-500 border-r-blue-400 rounded-full animate-spin shadow-lg"></div>
+                        <!-- Inner pulse ring -->
+                        <div class="loading-pulse absolute inset-2 w-16 h-16 border-2 border-blue-300/40 rounded-full animate-ping"></div>
+                        <!-- Center dot -->
+                        <div class="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                    </div>
+                    
+                    <!-- Floating particles -->
+                    <div class="absolute -top-2 -left-2 w-1 h-1 bg-blue-400 rounded-full animate-float-1"></div>
+                    <div class="absolute -top-1 -right-3 w-1.5 h-1.5 bg-purple-400 rounded-full animate-float-2"></div>
+                    <div class="absolute -bottom-2 -left-1 w-1 h-1 bg-blue-300 rounded-full animate-float-3"></div>
+                    <div class="absolute -bottom-1 -right-2 w-1 h-1 bg-purple-300 rounded-full animate-float-1"></div>
+                </div>
+
+                <!-- Enhanced title with better typography -->
+                <div class="mb-4">
+                    <h2 id="model-loading-title" class="text-2xl font-bold mb-2 text-blue-400 dark:text-blue-400 light:text-blue-600">
+                        <i class="fas fa-robot mr-3"></i>Loading Model
+                    </h2>
+                    <div class="w-20 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full animate-pulse"></div>
+                </div>
+
+                <!-- Enhanced message with better spacing -->
+                <p id="model-loading-message" class="text-gray-300 dark:text-gray-300 light:text-gray-600 mb-4 font-medium text-lg">
+                    Please wait while the model is being loaded...
+                </p>
+
+                <!-- Enhanced model name display -->
+                <div class="model-name-container mb-6">
+                    <p id="model-loading-name" class="text-blue-300 dark:text-blue-300 light:text-blue-600 text-sm font-mono bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-500/10 dark:to-purple-500/10 light:from-blue-100 light:to-purple-100 px-4 py-2 rounded-xl border border-blue-500/20 dark:border-blue-500/20 light:border-blue-400/30 shadow-inner backdrop-blur-sm">
+                    <!-- Model name will be inserted here -->
+                    </p>
+                </div>
+
+                <!-- Enhanced info section with better styling -->
+                <div class="mt-6 flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-xl border border-blue-500/10 dark:border-blue-500/10 light:border-blue-400/20">
+                    <div class="flex items-center text-sm text-gray-400 dark:text-gray-400 light:text-gray-500">
+                        <div class="flex space-x-1 mr-3">
+                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
+                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
+                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 300ms;"></div>
+                        </div>
+                        <span>This may take a few moments depending on model size</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Model Name modal -->
 </body>
 </html>

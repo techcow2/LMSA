@@ -8,7 +8,11 @@ import {
     fullModelNameModal,
     closeFullModelNameButton,
     fullModelNameDisplay,
-    modelHeaderIcon
+    modelHeaderIcon,
+    modelLoadingModal,
+    modelLoadingTitle,
+    modelLoadingMessage,
+    modelLoadingName
 } from './dom-elements.js';
 import { fetchAvailableModels, getAvailableModels, isServerRunning, loadModel as apiLoadModel } from './api-service.js';
 import { checkAndShowWelcomeMessage } from './ui-manager.js';
@@ -24,6 +28,8 @@ let currentServerIp = '';
 let currentServerPort = '';
 // Store current model full name
 let currentModelFullName = '';
+// Track loading modal display timing
+let loadingModalStartTime = null;
 
 /**
  * Initializes the model manager
@@ -376,6 +382,76 @@ async function updateModelDisplay(modelId) {
 }
 
 /**
+ * Shows the model loading modal with the specified model name
+ * @param {string} modelId - ID of the model being loaded
+ */
+function showModelLoadingModal(modelId) {
+    if (modelLoadingModal && modelLoadingName) {
+        // Record when we start showing the modal
+        loadingModalStartTime = Date.now();
+        
+        // Set the model name in the modal
+        modelLoadingName.textContent = modelId;
+        
+        // Ensure modal is above all other content
+        modelLoadingModal.style.zIndex = '2200';
+        modelLoadingModal.style.display = 'flex';
+        
+        // Show the modal with animation
+        modelLoadingModal.classList.remove('hidden');
+        
+        // Add animation class to modal content
+        const modalContent = modelLoadingModal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.classList.add('animate-modal-in');
+            setTimeout(() => {
+                modalContent.classList.remove('animate-modal-in');
+            }, 300);
+        }
+        
+        console.log('Model loading modal shown for:', modelId, 'at time:', loadingModalStartTime);
+    } else {
+        console.error('Model loading modal elements not found');
+    }
+}
+
+/**
+ * Hides the model loading modal
+ */
+function hideModelLoadingModal() {
+    if (modelLoadingModal) {
+        const currentTime = Date.now();
+        const elapsedTime = loadingModalStartTime ? currentTime - loadingModalStartTime : 0;
+        const minDisplayTime = 1500; // Minimum 1.5 seconds display time
+        
+        console.log('Hiding modal - elapsed time:', elapsedTime, 'ms');
+        
+        // Ensure the modal is visible for at least the minimum time
+        const delayTime = Math.max(0, minDisplayTime - elapsedTime);
+        
+        setTimeout(() => {
+            const modalContent = modelLoadingModal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.classList.add('animate-modal-out');
+                setTimeout(() => {
+                    modalContent.classList.remove('animate-modal-out');
+                    modelLoadingModal.classList.add('hidden');
+                    modelLoadingModal.style.display = 'none';
+                }, 300);
+            } else {
+                modelLoadingModal.classList.add('hidden');
+                modelLoadingModal.style.display = 'none';
+            }
+            
+            console.log('Model loading modal hidden after total time:', Date.now() - loadingModalStartTime, 'ms');
+            loadingModalStartTime = null;
+        }, delayTime);
+    } else {
+        console.error('Model loading modal element not found');
+    }
+}
+
+/**
  * Loads a model in LM Studio
  * @param {string} modelId - ID of the model to load
  */
@@ -389,6 +465,9 @@ async function loadModel(modelId) {
 
         // Set loading flag to true
         isModelLoading = true;
+
+        // Show the loading modal immediately
+        showModelLoadingModal(modelId);
 
         // Disable all load buttons in the modal
         disableLoadButtons();
@@ -421,6 +500,9 @@ async function loadModel(modelId) {
             console.log(`Failed to load model: ${modelId}`);
             showActionError(modelId, 'Failed to load');
 
+            // Hide the loading modal
+            hideModelLoadingModal();
+
             // Restore the current model display to previous state
             await updateModelDisplay(null);
 
@@ -434,6 +516,9 @@ async function loadModel(modelId) {
         }
 
         console.log(`Successfully loaded model: ${modelId}`);
+
+        // Hide the loading modal
+        hideModelLoadingModal();
 
         // Update global variable immediately to ensure consistency
         window.currentLoadedModel = modelId;
@@ -451,6 +536,9 @@ async function loadModel(modelId) {
     } catch (error) {
         console.error('Error loading model:', error);
         showActionError(modelId, 'Failed to load');
+
+        // Hide the loading modal
+        hideModelLoadingModal();
 
         // Restore the current model display
         await updateModelDisplay(null);
@@ -541,7 +629,7 @@ function displayCurrentModel(modelName) {
                     <i class="fas fa-robot"></i>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <div class="model-name font-medium" title="${modelName}">${modelName}</div>
+                    <div class="model-name font-medium">${modelName}</div>
                 </div>
             </div>
         `;
@@ -558,19 +646,7 @@ function displayCurrentModel(modelName) {
             };
         }
 
-        // Add click event to the model name
-        const currentModelName = currentModelDisplay.querySelector('.model-name');
-        if (currentModelName) {
-            console.log('Setting up click handler for current model name');
-            currentModelName.onclick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Current model name clicked');
-                showFullModelNameModal();
-            };
-            // Add cursor pointer to indicate it's clickable
-            currentModelName.style.cursor = 'pointer';
-        }
+
     }
 }
 
@@ -629,7 +705,7 @@ function displayAvailableModels(models, loadedModelId) {
                     <i class="fas fa-robot"></i>
                 </div>
                 <div class="model-content">
-                    <div class="model-name" title="${model.id}">${model.id}</div>
+                    <div class="model-name">${model.id}</div>
                 </div>
                 <div class="model-actions">
                     ${isCurrentModel ?
@@ -672,20 +748,7 @@ function displayAvailableModels(models, loadedModelId) {
                 };
             }
 
-            // Add event listener to the model name to show full model name
-            const modelName = modelElement.querySelector('.model-name');
-            if (modelName) {
-                console.log('Setting up click handler for model name:', model.id);
-                modelName.onclick = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Model name clicked:', model.id);
-                    currentModelFullName = model.id;
-                    showFullModelNameModal();
-                };
-                // Add cursor pointer to indicate it's clickable
-                modelName.style.cursor = 'pointer';
-            }
+
         });
     }
 }
@@ -748,7 +811,7 @@ function displayPotentialModels(models) {
                     <i class="fas fa-robot"></i>
                 </div>
                 <div class="model-content">
-                    <div class="model-name" title="${model.id}">${model.id}</div>
+                    <div class="model-name">${model.id}</div>
                 </div>
                 <div class="model-actions">
                     <button class="load-model-btn"><i class="fas fa-plug"></i>Load</button>
@@ -786,20 +849,7 @@ function displayPotentialModels(models) {
                 };
             }
 
-            // Add event listener to the model name to show full model name
-            const modelName = modelElement.querySelector('.model-name');
-            if (modelName) {
-                console.log('Setting up click handler for potential model name:', model.id);
-                modelName.onclick = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Potential model name clicked:', model.id);
-                    currentModelFullName = model.id;
-                    showFullModelNameModal();
-                };
-                // Add cursor pointer to indicate it's clickable
-                modelName.style.cursor = 'pointer';
-            }
+
         });
     }
 }
@@ -941,8 +991,6 @@ function showFullModelNameModal() {
         console.error('Full model name modal element not found in the DOM');
     }
 }
-
-
 
 /**
  * Shows mobile instructions if the user is on a smartphone

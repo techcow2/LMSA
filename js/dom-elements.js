@@ -134,6 +134,12 @@ export const closeFullModelNameButton = document.getElementById('close-full-mode
 export const fullModelNameDisplay = document.getElementById('full-model-name');
 export const modelHeaderIcon = document.getElementById('model-header-icon');
 
+// Model Loading modal elements
+export const modelLoadingModal = document.getElementById('model-loading-modal');
+export const modelLoadingTitle = document.getElementById('model-loading-title');
+export const modelLoadingMessage = document.getElementById('model-loading-message');
+export const modelLoadingName = document.getElementById('model-loading-name');
+
 // Character Gallery elements
 export const characterGalleryButton = document.getElementById('character-gallery-btn');
 export const characterGalleryContainer = document.getElementById('character-gallery-container');

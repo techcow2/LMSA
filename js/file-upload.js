@@ -160,6 +160,136 @@ async function loadJSZip() {
 }
 
 /**
+ * Check if PDF.js library is available
+ */
+async function loadPDFJS() {
+    return new Promise((resolve, reject) => {
+        // Check if PDF.js is already loaded (should be loaded from HTML)
+        if (window.pdfjsLib) {
+            resolve(window.pdfjsLib);
+            return;
+        }
+        
+        // Check alternative global variable names
+        if (window.PDFJS) {
+            window.pdfjsLib = window.PDFJS;
+            resolve(window.PDFJS);
+            return;
+        }
+        
+        // If not found, wait a moment and try again (library might still be loading)
+        setTimeout(() => {
+            if (window.pdfjsLib) {
+                resolve(window.pdfjsLib);
+            } else if (window.PDFJS) {
+                window.pdfjsLib = window.PDFJS;
+                resolve(window.PDFJS);
+            } else {
+                reject(new Error('PDF.js library not found. Please ensure it is loaded in the HTML.'));
+            }
+        }, 500);
+    });
+}
+
+/**
+ * Extract text from PDF files using PDF.js
+ * @param {File|ArrayBuffer|Object} input - The PDF file, its content as ArrayBuffer, or a file-like object with content
+ * @returns {Promise<string>} - Extracted text from the PDF file
+ */
+async function extractPdfText(input) {
+    try {
+        // If input is an object with content property (from chat history), use it directly
+        if (input && typeof input === 'object' && input.content && typeof input.content === 'string') {
+            console.log(`File ${input.name} already has content as string, using directly`);
+            return input.content;
+        }
+        
+        // Load PDF.js library if not already available
+        let pdfjsLib = window.pdfjsLib;
+        if (!pdfjsLib) {
+            console.log('PDF.js library not available. Loading it dynamically.');
+            pdfjsLib = await loadPDFJS();
+        }
+        
+        // Convert File to ArrayBuffer if needed
+        let arrayBuffer;
+        if (input instanceof File) {
+            console.log(`Converting File ${input.name} to ArrayBuffer for PDF processing`);
+            arrayBuffer = await readFileAsArrayBuffer(input);
+        } else {
+            // Assume it's already an ArrayBuffer
+            arrayBuffer = input;
+        }
+        
+        // Load the PDF document
+        const typedArray = new Uint8Array(arrayBuffer);
+        const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+        
+        console.log(`PDF loaded successfully. Number of pages: ${pdf.numPages}`);
+        
+        let extractedText = '';
+        
+        // Extract text from each page
+        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+            try {
+                const page = await pdf.getPage(pageNum);
+                const textContent = await page.getTextContent();
+                
+                // Process text items with better spacing and formatting
+                let pageText = '';
+                let lastY = null;
+                
+                textContent.items.forEach((item, index) => {
+                    // item.transform[5] contains the Y coordinate
+                    const currentY = item.transform ? item.transform[5] : 0;
+                    
+                    // If this is a new line (different Y coordinate), add line break
+                    if (lastY !== null && Math.abs(currentY - lastY) > 5) {
+                        pageText += '\n';
+                    }
+                    
+                    // Add the text content
+                    pageText += item.str;
+                    
+                    // Add space if needed (check if next item needs a space)
+                    if (index < textContent.items.length - 1) {
+                        const nextItem = textContent.items[index + 1];
+                        const nextY = nextItem.transform ? nextItem.transform[5] : 0;
+                        
+                        // If on the same line and there's a gap, add space
+                        if (Math.abs(currentY - nextY) <= 5 && !item.str.endsWith(' ') && !nextItem.str.startsWith(' ')) {
+                            pageText += ' ';
+                        }
+                    }
+                    
+                    lastY = currentY;
+                });
+                
+                // Clean up excessive whitespace
+                pageText = pageText
+                    .replace(/\n\s*\n\s*\n/g, '\n\n') // Replace multiple line breaks with double line break
+                    .replace(/[ \t]+/g, ' ') // Replace multiple spaces/tabs with single space
+                    .trim();
+                
+                extractedText += `--- Page ${pageNum} ---\n${pageText}\n\n`;
+                
+                console.log(`Successfully extracted text from page ${pageNum}, length: ${pageText.length} characters`);
+            } catch (pageError) {
+                console.error(`Error extracting text from page ${pageNum}:`, pageError);
+                extractedText += `--- Page ${pageNum} ---\n[Error extracting text from this page: ${pageError.message}]\n\n`;
+            }
+        }
+        
+        console.log(`Successfully extracted PDF content from ${input.name || 'PDF'}, total length: ${extractedText.length} characters`);
+        return extractedText || 'No text content could be extracted from PDF file.';
+        
+    } catch (error) {
+        console.error('Error extracting PDF content:', error);
+        return `[Failed to extract PDF content: ${error.message}]`;
+    }
+}
+
+/**
  * Handles file selection from the file input
  * @param {Event} event - The change event from the file input
  */
@@ -344,8 +474,10 @@ async function readFileContent(file) {
                 return;
             }
             
-            // Check if it's a DOCX file
-            const isDocxFile = file.name.toLowerCase().endsWith('.docx') || file.name.toLowerCase().endsWith('.doc');
+            // Check file types by extension and MIME type
+            const fileNameLower = file.name.toLowerCase();
+            const isPdfFile = fileNameLower.endsWith('.pdf') || (file.type && file.type === 'application/pdf');
+            const isDocxFile = fileNameLower.endsWith('.docx') || fileNameLower.endsWith('.doc');
             
             // Define text file types
             const textFileTypes = [
@@ -367,14 +499,31 @@ async function readFileContent(file) {
             ];
             
             // Check if it's a text file based on type or extension
-            const fileNameLower = file.name.toLowerCase();
             const isTextTypeByMimeType = textFileTypes.some(type => file.type && file.type.startsWith(type));
             const isTextTypeByExtension = textFileExtensions.some(ext => fileNameLower.endsWith(ext));
             const isTextFile = isTextTypeByMimeType || isTextTypeByExtension;
             
-            console.log(`File ${file.name} classification: isDocx=${isDocxFile}, isTextByMime=${isTextTypeByMimeType}, isTextByExt=${isTextTypeByExtension}`);
+            console.log(`File ${file.name} classification: isPdf=${isPdfFile}, isDocx=${isDocxFile}, isTextByMime=${isTextTypeByMimeType}, isTextByExt=${isTextTypeByExtension}`);
             
-            if (isDocxFile) {
+            if (isPdfFile) {
+                // Process PDF files using PDF.js
+                extractPdfText(file).then(content => {
+                    console.log(`Successfully extracted PDF content from ${file.name}, length: ${content.length}`);
+                    resolve({
+                        name: file.name,
+                        type: file.type || 'application/pdf',
+                        content: content
+                    });
+                }).catch(error => {
+                    console.error(`Error extracting PDF content from ${file.name}:`, error);
+                    // Return error message instead of trying text fallback for PDFs
+                    resolve({
+                        name: file.name,
+                        type: file.type || 'application/pdf',
+                        content: `[Failed to extract PDF content: ${error.message}]`
+                    });
+                });
+            } else if (isDocxFile) {
                 // Process DOCX files using JSZip
                 extractDocxText(file).then(content => {
                     console.log(`Successfully extracted DOCX content from ${file.name}, length: ${content.length}`);
@@ -612,6 +761,12 @@ async function extractFileContent(file) {
         // Check file type by extension
         const fileName = file.name.toLowerCase();
         
+        // PDF files
+        if (fileName.endsWith('.pdf')) {
+            console.log(`Processing ${file.name} as PDF document`);
+            return await extractPdfText(file);
+        }
+        
         // DOCX files
         if (fileName.endsWith('.docx') || fileName.endsWith('.doc')) {
             console.log(`Processing ${file.name} as DOCX document`);
@@ -681,26 +836,63 @@ export async function prepareFilesForLLM(files) {
             })
         );
         
-        // Build the formatted context for the LLM with clear attachment markers
-        let formattedContext = "--- ATTACHMENTS BEGIN ---\n\n";
+        // Build the formatted context for the LLM with very clear attachment markers
+        const totalFiles = extractionResults.length;
+        const fileTypes = extractionResults.map(r => r.type.includes('pdf') ? 'PDF' : 
+                                                    r.type.includes('word') || r.name.toLowerCase().includes('doc') ? 'Word Document' :
+                                                    r.type.includes('text') ? 'Text File' : 'Document').join(', ');
+        
+        let formattedContext = `📎 ATTACHMENTS: ${totalFiles} file(s) attached (${fileTypes})\n`;
+        formattedContext += "=".repeat(60) + "\n\n";
         
         extractionResults.forEach((result, index) => {
-            formattedContext += `ATTACHMENT ${index + 1}: ${result.name} (${result.type})\n`;
-            formattedContext += "```\n";
-            
-            // Limit content length to avoid excessive tokens
-            const maxContentLength = 100000;
-            if (result.content.length > maxContentLength) {
-                formattedContext += result.content.substring(0, maxContentLength);
-                formattedContext += `\n[Content truncated. Original size: ${result.content.length} characters]`;
-            } else {
-                formattedContext += result.content;
+            // Determine file type for display
+            let fileTypeDisplay = 'Document';
+            if (result.type === 'application/pdf' || result.name.toLowerCase().endsWith('.pdf')) {
+                fileTypeDisplay = 'PDF Document';
+            } else if (result.type.includes('word') || result.name.toLowerCase().includes('doc')) {
+                fileTypeDisplay = 'Word Document';
+            } else if (result.type.includes('text')) {
+                fileTypeDisplay = 'Text File';
             }
             
-            formattedContext += "\n```\n\n";
+            formattedContext += `📄 ATTACHMENT ${index + 1}: ${fileTypeDisplay}\n`;
+            formattedContext += `📝 Filename: ${result.name}\n`;
+            formattedContext += `📋 Content Type: ${result.type}\n`;
+            
+            // More conservative content length limits for better API compatibility
+            let maxContentLength = 50000; // Reduced from 100000 to be more conservative
+            
+            // For PDFs, be even more conservative as they tend to have dense content
+            if (result.type === 'application/pdf' || result.name.toLowerCase().endsWith('.pdf')) {
+                maxContentLength = 30000; // Further reduced for PDFs
+            }
+            
+            const wasContentTruncated = result.content.length > maxContentLength;
+            const displayContent = wasContentTruncated ? result.content.substring(0, maxContentLength) : result.content;
+            
+            formattedContext += `📊 Content Length: ${wasContentTruncated ? `${maxContentLength} chars (truncated from ${result.content.length})` : `${result.content.length} chars (complete)`}\n`;
+            formattedContext += "─".repeat(50) + "\n";
+            formattedContext += "CONTENT:\n";
+            formattedContext += "```\n";
+            formattedContext += displayContent;
+            
+            if (wasContentTruncated) {
+                formattedContext += `\n\n⚠️ [CONTENT TRUNCATED: Original document had ${result.content.length} characters. Showing first ${maxContentLength} characters for analysis.]`;
+                
+                // Add a brief summary of what was truncated
+                const remainingLength = result.content.length - maxContentLength;
+                if (remainingLength > 1000) {
+                    formattedContext += `\n💡 [NOTE: ${remainingLength} additional characters contain more content from this document.]`;
+                }
+            }
+            
+            formattedContext += "\n```\n";
+            formattedContext += "=".repeat(60) + "\n\n";
         });
         
-        formattedContext += "--- ATTACHMENTS END ---\n\n";
+        formattedContext += `✅ Total ${totalFiles} attachment(s) processed and ready for analysis.\n`;
+        formattedContext += `💬 Please analyze the attached ${fileTypes.toLowerCase()} and respond to the user's question.\n\n`;
         
         console.log(`Successfully prepared ${extractionResults.length} attachments for LLM input`);
         console.log(`Total attachment content size: ${formattedContext.length} characters`);
@@ -743,6 +935,7 @@ function inferFileType(fileName) {
         'yml': 'text/yaml',
         'toml': 'text/toml',
         'ini': 'text/ini',
+        'pdf': 'application/pdf',
         'doc': 'application/msword',
         'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     };

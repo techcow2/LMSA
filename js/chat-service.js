@@ -226,8 +226,25 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
             }
         }
 
-        // Add the new user message
-        messages.push({ role: 'user', content: userMessage });
+        // Enhance the user message when files are attached
+        let enhancedUserMessage = userMessage;
+        if (fileContents && fileContents.length > 0) {
+            const fileCount = fileContents.length;
+            const fileNames = fileContents.map(f => f.name).join(', ');
+            const fileTypes = fileContents.map(f => {
+                if (f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf')) return 'PDF';
+                if (f.type.includes('word') || f.name.toLowerCase().includes('doc')) return 'Word document';
+                if (f.type.includes('text')) return 'text file';
+                return 'document';
+            });
+            const uniqueFileTypes = [...new Set(fileTypes)].join(' and ');
+            
+            // Add clear context about attached files to the user message
+            enhancedUserMessage = `[USER HAS ATTACHED ${fileCount} FILE(S): ${fileNames} - These are ${uniqueFileTypes}(s) that need to be analyzed]\n\n${userMessage}`;
+        }
+
+        // Add the enhanced user message
+        messages.push({ role: 'user', content: enhancedUserMessage });
 
         // Add file contents as attachments or embedded in the message
         if (fileContents && fileContents.length > 0) {
@@ -237,18 +254,41 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
                 // Add files as attachments in the last user message
                 const lastUserMessageIndex = messages.length - 1;
                 messages[lastUserMessageIndex].file_ids = fileContents.map(file => file.id);
-                    } else {
-                // Embed file contents in the message
+            } else {
+                // Embed file contents in the message with proper formatting and length limits
                 const lastUserMessageIndex = messages.length - 1;
-                let fileContent = '';
-
-                // Format the file contents for the message
-                for (const file of fileContents) {
-                    fileContent += `\n\nFile: ${file.name}\n\`\`\`\n${file.content}\n\`\`\`\n`;
+                
+                // Import the prepareFilesForLLM function to format files properly
+                try {
+                    const { prepareFilesForLLM } = await import('./file-upload.js');
+                    const formattedFileContent = await prepareFilesForLLM(fileContents);
+                    
+                    // Log the formatted content length for debugging
+                    console.log(`Formatted file content length: ${formattedFileContent.length} characters`);
+                    
+                    // Append the properly formatted file contents to the user message
+                    messages[lastUserMessageIndex].content += `\n\n${formattedFileContent}`;
+                } catch (importError) {
+                    console.warn('Could not import prepareFilesForLLM, using fallback formatting:', importError);
+                    
+                    // Fallback to simple formatting with length limits
+                    let fileContent = '';
+                    
+                    for (const file of fileContents) {
+                        // Conservative length limit for safety
+                        const maxLength = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf') ? 25000 : 40000;
+                        
+                        let content = file.content;
+                        if (content.length > maxLength) {
+                            content = content.substring(0, maxLength) + `\n\n[Content truncated. Original length: ${file.content.length} characters]`;
+                        }
+                        
+                        fileContent += `\n\nFile: ${file.name}\n\`\`\`\n${content}\n\`\`\`\n`;
+                    }
+                    
+                    console.log(`Fallback formatted file content length: ${fileContent.length} characters`);
+                    messages[lastUserMessageIndex].content += fileContent;
                 }
-
-                // Append the file contents to the user message
-                messages[lastUserMessageIndex].content += fileContent;
             }
         }
 
