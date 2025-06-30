@@ -43,7 +43,7 @@
 
 ## 📋 What is LMSA?
 
-LMSA (LM Studio Assistant) is an Android front-end application for LM Studio that provides a clean, user-friendly interface to interact with language models on your Android device. It's designed with privacy in mind, offering a tracking-free and ad-free experience for users who want to leverage the power of large language models on mobile.
+LMSA (LM Studio Assistant) is an Android front-end application for LM Studio that provides a clean, user-friendly interface to interact with language models on your Android device. It's designed with privacy in mind, offering a tracking-free experience for users who want to leverage the power of large language models on mobile.
 
 ### Key Functionality:
 - Connect to LM Studio running on your computer
