@@ -19,16 +19,10 @@ import { initializeCharacterGallery } from './character-gallery.js';
 import {
     debounce,
     throttle,
-    createDebouncedResizeObserver,
-    optimizedAnimation,
-    cancelOptimizedAnimation,
     setupLazyLoading,
     addHardwareAcceleration,
     getDevicePerformanceLevel,
-    startMemoryMonitoring,
-    progressiveComponentLoading,
-    cleanupEventListenersAndObservers,
-    aggressiveImageCleanup
+    startMemoryMonitoring
 } from './performance-utils.js';
 
 import { updateConfirmationModalTheme, updateExportImportModalsTheme } from '../confirmation-modal-fix.js';
@@ -36,40 +30,18 @@ import { updateConfirmationModalTheme, updateExportImportModalsTheme } from '../
 /**
  * Initializes the application with enhanced performance optimizations
  */
-function initializeApp() {
+async function initializeApp() {
     // Disable debug logging by default
     setDebugEnabled(false);
 
-    console.log('Starting LMSA with enhanced performance optimizations...');
+    console.log('Starting LMSA with simplified performance optimizations...');
 
-    // Detect device performance level first
+    // Basic performance detection and monitoring
     const performanceLevel = getDevicePerformanceLevel();
     console.log(`Detected device performance level: ${performanceLevel}`);
 
-    // Start memory monitoring for automatic cleanup
+    // Start basic memory monitoring (runs every 10 minutes)
     startMemoryMonitoring();
-
-    // Setup periodic cleanup for memory optimization - less aggressive intervals
-    const cleanupInterval = performanceLevel === 'low' ? 300000 : 600000; // 5 minutes for low-end, 10 minutes for others
-    setInterval(() => {
-        cleanupEventListenersAndObservers();
-        aggressiveImageCleanup();
-    }, cleanupInterval);
-    console.log(`Periodic memory cleanup scheduled every ${cleanupInterval/1000} seconds`);
-
-    // Initialize Monaco editor cleanup for memory management
-    import('./monaco-performance.js').then(module => {
-        module.setupMonacoCleanup();
-    }).catch(error => {
-        console.error('Error setting up Monaco cleanup:', error);
-    });
-
-    // Load performance diagnostics for low performance devices
-    if (performanceLevel === 'low') {
-        import('./performance-diagnostics.js').catch(error => {
-            console.error('Error loading performance diagnostics:', error);
-        });
-    }
 
     // Apply performance optimizations to key UI elements
     applyPerformanceOptimizations();
@@ -98,30 +70,13 @@ function initializeApp() {
     }
 
     /**
-     * Applies performance optimizations to key UI elements
+     * Applies basic performance optimizations
      */
     function applyPerformanceOptimizations() {
-        // Add hardware acceleration to scrollable containers
-        const scrollableContainers = [
-            document.getElementById('messages'),
-            document.getElementById('chat-history'),
-            document.getElementById('sidebar'),
-            document.getElementById('settings-content-wrapper')
-        ];
-
-        scrollableContainers.forEach(container => {
-            if (container) {
-                addHardwareAcceleration(container);
-            }
-        });
-
         // Setup lazy loading for images
         setupLazyLoading('img[data-src]');
 
-        // Add passive event listeners for better touch performance
-        // This is handled by our touch handlers, but we ensure it's applied
-
-        console.log('Performance optimizations applied');
+        console.log('Basic performance optimizations applied');
     }
 
     // Load critical settings first
@@ -174,36 +129,33 @@ function initializeApp() {
     // Initialize critical components first
     initializeEventHandlers();
 
-    // Use progressive loading for non-critical components based on device performance
-    // (performanceLevel already declared above)
-
-    // Define component initialization functions in order of priority
-    const componentInitializers = [
-        // High priority - touch and interaction
-        () => initializeTouchHandlers(),
-        () => initializeChatHistoryTouchHandler(),
-        () => initializeSettingsModalTouchHandler(),
-        () => initializeSidebarTouchHandler(),
-
-        // Medium priority - core functionality
-        () => initializeFileUpload(),
-        () => initializeModelManager(),
-        () => initializeCollapsibleSections(),
-        () => initializeSettingsModal(),
-
-        // Lower priority - additional features
-        () => initializeExportImport(),
-        () => initializeWhatsNew(),
-        () => initializeCharacterManager(),
-        () => initializeCharacterGallery(),
-
-        // Lowest priority - theme and visual enhancements
-        () => updateConfirmationModalTheme(),
-        () => updateExportImportModalsTheme()
-    ];
-
-    // Use progressive loading for better performance on slower devices
-    progressiveComponentLoading(componentInitializers);
+    // Initialize components in a simpler order
+    initializeTouchHandlers();
+    initializeChatHistoryTouchHandler();
+    initializeSettingsModalTouchHandler();
+    initializeSidebarTouchHandler();
+    
+    initializeFileUpload();
+    initializeModelManager();
+    
+    // Update file upload capabilities after model manager is initialized
+    try {
+        const { updateFileUploadCapabilities } = await import('./file-upload.js');
+        await updateFileUploadCapabilities();
+    } catch (error) {
+        console.error('Error updating initial file upload capabilities:', error);
+    }
+    
+    initializeCollapsibleSections();
+    initializeSettingsModal();
+    
+    initializeExportImport();
+    initializeWhatsNew();
+    initializeCharacterManager();
+    initializeCharacterGallery();
+    
+    updateConfirmationModalTheme();
+    updateExportImportModalsTheme();
 
     // Initialize scroll button state - ensure it's hidden on startup
     const messagesContainer = document.getElementById('messages');

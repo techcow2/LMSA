@@ -1,322 +1,95 @@
-/* Enhanced performance optimizations for the app with adaptive settings */
+/* Simplified performance optimizations - focused on what actually helps */
 
-/* Base hardware acceleration for all devices */
-.hardware-accelerated,
+/* Only apply hardware acceleration to elements that actually animate */
+.modal-content,
+#scroll-to-bottom,
+.character-card:hover {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Apply will-change only to elements that actively animate - not static content */
+.modal-content.show {
+    will-change: transform, opacity;
+}
+
+.character-card:hover {
+    will-change: transform;
+}
+
+/* Remove will-change after animations complete */
+.modal-content:not(.show) {
+    will-change: auto;
+}
+
+.character-card:not(:hover) {
+    will-change: auto;
+}
+
+/* Efficient scrolling optimizations */
 #messages,
 #chat-history,
 #sidebar,
-.character-gallery-container,
-.monaco-container,
-.modal-content,
-.welcome-container,
-.character-card {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-}
-
-/* Adaptive hardware acceleration based on device capabilities */
-/* High-end devices get full optimization */
-@media (min-width: 1024px) and (min-height: 768px) {
-    .hardware-accelerated,
-    #messages,
-    #chat-history,
-    #sidebar,
-    .character-gallery-container,
-    .monaco-container,
-    .modal-content,
-    .welcome-container,
-    .character-card {
-        will-change: transform, opacity;
-    }
-}
-
-/* Medium devices get moderate optimization */
-@media (max-width: 1023px) and (min-width: 768px) {
-    .hardware-accelerated,
-    #messages,
-    #chat-history,
-    #sidebar,
-    .character-gallery-container,
-    .monaco-container,
-    .modal-content,
-    .welcome-container,
-    .character-card {
-        will-change: transform;
-    }
-}
-
-/* Low-end devices get minimal optimization to avoid performance issues */
-@media (max-width: 767px) {
-    .hardware-accelerated,
-    #messages,
-    #chat-history,
-    #sidebar,
-    .character-gallery-container,
-    .monaco-container,
-    .modal-content,
-    .welcome-container,
-    .character-card {
-        will-change: auto;
-    }
-
-    /* Reduce complex effects on low-end devices */
-    .character-card {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .modal-content {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
-    }
-}
-
-/* Adaptive animations based on device performance */
-/* Base animation settings */
-.animate-fade-in {
-    animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
-}
-
-.transition-optimized,
-.character-card,
-.character-gallery-container,
-.modal-content,
-#scroll-to-bottom,
-.menu-item,
-.chat-item {
-    transition-timing-function: cubic-bezier(0.2, 0, 0.2, 1) !important;
-}
-
-/* High-end devices - full animation quality */
-@media (min-width: 1024px) and (min-height: 768px) {
-    .animate-fade-in {
-        animation-duration: 0.3s;
-    }
-
-    .transition-optimized,
-    .character-card,
-    .character-gallery-container,
-    .modal-content,
-    #scroll-to-bottom,
-    .menu-item,
-    .chat-item {
-        transition-duration: 0.3s !important;
-    }
-}
-
-/* Medium devices - balanced animations */
-@media (max-width: 1023px) and (min-width: 768px) {
-    .animate-fade-in {
-        animation-duration: 0.25s;
-    }
-
-    .transition-optimized,
-    .character-card,
-    .character-gallery-container,
-    .modal-content,
-    #scroll-to-bottom,
-    .menu-item,
-    .chat-item {
-        transition-duration: 0.25s !important;
-    }
-}
-
-/* Low-end devices - faster, simpler animations */
-@media (max-width: 767px) {
-    .animate-fade-in {
-        animation-duration: 0.2s;
-    }
-
-    .transition-optimized,
-    .character-card,
-    .character-gallery-container,
-    .modal-content,
-    #scroll-to-bottom,
-    .menu-item,
-    .chat-item {
-        transition-duration: 0.2s !important;
-    }
-
-    /* Disable complex animations on very slow devices */
-    @media (max-width: 480px) {
-        .character-card:hover {
-            transform: none !important;
-        }
-
-        .character-card-image img {
-            transition: none !important;
-        }
-
-        .character-card:hover .character-card-image img {
-            transform: none !important;
-        }
-
-        /* Simplify shimmer effects */
-        .img-placeholder {
-            animation: none !important;
-            background: #ececec !important;
-        }
-    }
-}
-
-/* Adaptive scrolling optimizations based on device performance */
-.scroll-optimized,
-#chat-history,
-#sidebar,
 .character-gallery-content,
-.settings-content-wrapper,
-.modal-content,
-#messages {
-    -webkit-overflow-scrolling: touch !important;
-    touch-action: pan-y !important;
-    overscroll-behavior: contain !important;
+.settings-content-wrapper {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior: contain;
 }
 
-/* High-end devices - allow smooth scrolling */
-@media (min-width: 1024px) and (min-height: 768px) {
-    .scroll-optimized,
+/* Smooth scrolling only for high-end devices */
+@media (min-width: 1024px) and (pointer: fine) {
+    #messages,
     #chat-history,
-    #sidebar,
-    .character-gallery-content,
-    .settings-content-wrapper,
-    .modal-content,
-    #messages {
+    #sidebar {
         scroll-behavior: smooth;
     }
 }
 
-/* Medium and low-end devices - use auto scrolling for better performance */
-@media (max-width: 1023px) {
-    .scroll-optimized,
-    #chat-history,
-    #sidebar,
-    .character-gallery-content,
-    .settings-content-wrapper,
-    .modal-content,
-    #messages {
-        scroll-behavior: auto !important; /* Use JS for smooth scrolling instead */
-    }
+/* Simplified animations - single duration for consistency */
+.transition-optimized,
+.character-card,
+.modal-content,
+#scroll-to-bottom,
+.menu-item,
+.chat-item {
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
 }
 
-/* Very low-end devices - minimal scroll optimizations */
+/* Disable complex animations on low-end devices */
 @media (max-width: 480px) {
-    .scroll-optimized,
-    #chat-history,
-    #sidebar,
-    .character-gallery-content,
-    .settings-content-wrapper,
-    .modal-content,
-    #messages {
-        /* Reduce GPU usage for scrolling */
-        will-change: auto !important;
-        /* Simplify scroll behavior */
+    .character-card:hover {
+        transform: none !important;
+    }
+    
+    .character-card-image img {
+        transition: none !important;
+    }
+    
+    /* Simplify shimmer effects */
+    .img-placeholder {
+        animation: none !important;
+        background: #ececec !important;
+    }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
-        /* Optimize for memory usage */
-        contain: layout !important;
     }
 }
 
-/* Optimize touch targets for mobile */
-@media (max-width: 768px) {
-    .button,
-    .menu-item,
-    .chat-item,
-    .character-card-btn,
-    #send-btn,
-    #stop-btn,
-    #scroll-to-bottom {
-        min-width: 44px !important;
-        min-height: 44px !important;
-        padding: 10px !important;
-    }
-
-    /* Increase tap target size without affecting layout */
-    .menu-item::after,
-    .chat-item::after,
-    .button::after {
-        content: '';
-        position: absolute;
-        top: -5px;
-        left: -5px;
-        right: -5px;
-        bottom: -5px;
-        z-index: -1;
-    }
-}
-
-/* Optimize image loading */
+/* Simple lazy loading styles */
 img[data-src] {
     opacity: 0;
-    transition: opacity 0.3s ease-in;
+    transition: opacity 0.3s ease;
 }
 
 img[data-src][src]:not([src^="data:"]) {
     opacity: 1;
-}
-
-/* Placeholder for images while loading */
-.img-placeholder {
-    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s linear infinite;
-}
-
-@keyframes shimmer {
-    0% { background-position: 100% 0; }
-    100% { background-position: -100% 0; }
-}
-
-/* Optimize Monaco editor containers */
-.monaco-container {
-    contain: content; /* Use CSS containment for better performance */
-}
-
-/* Optimize scroll-to-bottom button */
-#scroll-to-bottom {
-    transition: opacity 0.2s cubic-bezier(0.2, 0, 0.2, 1),
-                transform 0.2s cubic-bezier(0.2, 0, 0.2, 1),
-                visibility 0.2s cubic-bezier(0.2, 0, 0.2, 1) !important;
-}
-
-/* Optimize modals */
-.modal-content {
-    contain: content; /* Use CSS containment for better performance */
-}
-
-/* Optimize welcome message */
-.welcome-container {
-    contain: layout; /* Use CSS containment for better performance */
-}
-
-/* Optimize character cards */
-.character-card {
-    contain: content; /* Use CSS containment for better performance */
-}
-
-/* Optimize for reduced motion if user prefers it */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-        scroll-behavior: auto !important;
-    }
-}
-
-/* Optimize for mobile devices */
-@media (max-width: 768px) {
-    /* Reduce animation complexity on mobile */
-    .animate-fade-in {
-        animation-duration: 0.2s;
-    }
-
-    /* Optimize touch scrolling on mobile */
-    body, html {
-        touch-action: manipulation;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    /* Ensure buttons have proper touch feedback */
-    button, .button, .menu-item, .chat-item {
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-    }
 }

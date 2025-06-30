@@ -552,7 +552,7 @@ body.light-theme #welcome-footer p {
     overflow: hidden;
     z-index: 10;
     transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: height;
+    /* will-change removed - not needed for static height changes */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     position: sticky !important;
     top: 0 !important;
@@ -593,7 +593,7 @@ body.light-theme #loaded-model-wrapper {
     /* No background properties - these are handled by the wrapper */
     background-color: transparent;
     background-image: none;
-    will-change: transform, opacity, max-height;
+    /* will-change removed - applied via CSS when needed */
 }
 
 /* Light theme specific styles */
@@ -714,7 +714,7 @@ body.light-theme #loaded-model {
     border-radius: 8px;
     transition: all 0.2s ease;
     margin-bottom: 0.5rem;
-    padding: 0.75rem 0.875rem;
+    padding: 0.5rem 0.75rem; /* Reduced from 0.75rem 0.875rem */
     background: var(--chat-item-bg);
     color: var(--chat-item-text);
     border: 1px solid var(--chat-item-border);
@@ -723,7 +723,7 @@ body.light-theme #loaded-model {
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    min-height: 3rem;
+    min-height: 2.25rem; /* Reduced from 3rem (48px) to 2.25rem (36px) */
 }
 
 .chat-item:hover {
@@ -734,6 +734,22 @@ body.light-theme #loaded-model {
     background: var(--chat-item-hover-bg);
     border-color: var(--chat-item-border);
     color: var(--button-primary-bg);
+}
+
+/* Enhanced touch targets for mobile - keep them touch-friendly */
+@media (max-width: 768px) {
+    .chat-item {
+        min-height: 2.5rem; /* 40px minimum on mobile for better touch targets */
+        padding: 0.625rem 0.75rem; /* Slightly more padding on mobile */
+    }
+}
+
+/* Extra care for very small screens - ensure adequate touch targets */
+@media (max-width: 480px) {
+    .chat-item {
+        min-height: 2.75rem; /* 44px on very small screens for accessibility */
+        padding: 0.75rem 0.875rem; /* Original padding on very small screens */
+    }
 }
 
 /* Mobile-first sidebar styles */
@@ -3242,7 +3258,7 @@ body.light-theme #send-context-menu .menu-header {
     max-width: 100% !important;
     box-sizing: border-box !important;
     overflow-x: hidden !important;
-    transform: translateZ(0) !important; /* Force GPU acceleration */
+    /* Hardware acceleration removed - not beneficial for static elements */
     backface-visibility: hidden !important;
     transform-style: preserve-3d !important;
     contain: layout !important;
@@ -6075,6 +6091,19 @@ body.light-theme .gradient-text {
 .file-preview .remove-file:hover {
     opacity: 1;
 }
+
+/* Vision model indicator for file upload button - DISABLED to maintain consistent appearance */
+/*
+#paperclip-button.vision-enabled {
+    background: linear-gradient(135deg, #3b82f6, #10b981);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+}
+
+#paperclip-button.vision-enabled:hover {
+    background: linear-gradient(135deg, #2563eb, #059669);
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+*/
 
 /* Add a class to temporarily disable pointer events */
 #sidebar #new-chat.no-pointer-events {

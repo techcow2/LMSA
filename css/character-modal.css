@@ -13,7 +13,7 @@
     max-height: 90vh;
     display: flex;
     flex-direction: column;
-    will-change: transform, opacity; /* Optimize for animations */
+    /* will-change removed - only apply during actual animations */
     animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 

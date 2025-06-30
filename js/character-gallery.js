@@ -20,12 +20,8 @@ import { createNewChat } from './chat-service.js';
 import { checkAndShowWelcomeMessage } from './ui-manager.js';
 import { appendMessage } from './ui-manager.js';
 import {
-    batchDOMRead,
-    batchDOMWrite,
     addHardwareAcceleration,
-    setupLazyLoading,
-    optimizedAnimation,
-    cancelOptimizedAnimation
+    setupLazyLoading
 } from './performance-utils.js';
 
 // Store characters data reference
@@ -51,22 +47,14 @@ export function initializeCharacterGallery() {
         // Apply hardware acceleration for smoother animations
         addHardwareAcceleration(characterGalleryContainer);
 
-        // Batch DOM writes to avoid layout thrashing
-        batchDOMWrite(() => {
-            // Make sure it's hidden initially
-            characterGalleryContainer.style.display = 'none';
-            characterGalleryContainer.style.opacity = '0';
+        // Make sure it's hidden initially
+        characterGalleryContainer.style.display = 'none';
+        characterGalleryContainer.style.opacity = '0';
 
-            // Add CSS properties for smoother animations
-            characterGalleryContainer.style.willChange = 'transform, opacity';
-            characterGalleryContainer.style.backfaceVisibility = 'hidden';
-            characterGalleryContainer.style.perspective = '1000px';
-
-            // Add touch-friendly properties
-            characterGalleryContainer.style.touchAction = 'pan-y';
-            characterGalleryContainer.style.webkitOverflowScrolling = 'touch';
-            characterGalleryContainer.style.overscrollBehavior = 'contain';
-        });
+        // Add touch-friendly properties
+        characterGalleryContainer.style.touchAction = 'pan-y';
+        characterGalleryContainer.style.webkitOverflowScrolling = 'touch';
+        characterGalleryContainer.style.overscrollBehavior = 'contain';
 
         debugLog('Character gallery container initialized with performance optimizations');
     }
@@ -208,7 +196,7 @@ export function showCharacterGallery(characters) {
 
     // Cancel any ongoing animations
     if (animationFrameId) {
-        cancelOptimizedAnimation(animationFrameId);
+        cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
     }
 
@@ -251,25 +239,20 @@ export function showCharacterGallery(characters) {
         if (isFirstGalleryOpen) {
             debugLog('First time opening gallery with optimized animation');
 
-            // Batch DOM operations to avoid layout thrashing
-            batchDOMWrite(() => {
-                // First make sure the gallery is hidden but in the DOM
-                characterGalleryContainer.style.display = 'flex';
-                characterGalleryContainer.style.opacity = '0';
-                characterGalleryContainer.style.transform = 'translateY(20px) scale(0.98)';
-                characterGalleryContainer.style.transition = 'none';
-            });
+            // First make sure the gallery is hidden but in the DOM
+            characterGalleryContainer.style.display = 'flex';
+            characterGalleryContainer.style.opacity = '0';
+            characterGalleryContainer.style.transform = 'translateY(20px) scale(0.98)';
+            characterGalleryContainer.style.transition = 'none';
 
-            // Use optimizedAnimation for smoother animation
-            animationFrameId = optimizedAnimation(() => {
-                batchDOMWrite(() => {
-                    // Apply the transition properties
-                    characterGalleryContainer.style.transition = 'opacity 0.28s cubic-bezier(0.2, 0, 0.2, 1), transform 0.28s cubic-bezier(0.2, 0, 0.2, 1)';
+            // Use requestAnimationFrame for smoother animation
+            animationFrameId = requestAnimationFrame(() => {
+                // Apply the transition properties
+                characterGalleryContainer.style.transition = 'opacity 0.28s cubic-bezier(0.2, 0, 0.2, 1), transform 0.28s cubic-bezier(0.2, 0, 0.2, 1)';
 
-                    // Trigger the animation with optimized properties
-                    characterGalleryContainer.style.opacity = '1';
-                    characterGalleryContainer.style.transform = 'translateY(0) scale(1)';
-                });
+                // Trigger the animation with optimized properties
+                characterGalleryContainer.style.opacity = '1';
+                characterGalleryContainer.style.transform = 'translateY(0) scale(1)';
 
                 // Mark that we've opened the gallery at least once
                 isFirstGalleryOpen = false;
@@ -278,26 +261,22 @@ export function showCharacterGallery(characters) {
                 updateCharacterGallery();
             });
         } else {
-            // Standard animation for subsequent openings with optimized properties
-            batchDOMWrite(() => {
-                // Make it visible first
-                characterGalleryContainer.style.display = 'flex';
+            // Standard animation for subsequent openings
+            // Make it visible first
+            characterGalleryContainer.style.display = 'flex';
 
-                // Set initial state for animation
-                characterGalleryContainer.style.opacity = '0';
-                characterGalleryContainer.style.transform = 'translateY(20px) scale(0.98)';
+            // Set initial state for animation
+            characterGalleryContainer.style.opacity = '0';
+            characterGalleryContainer.style.transform = 'translateY(20px) scale(0.98)';
 
-                // Apply optimized transition properties
-                characterGalleryContainer.style.transition = 'opacity 0.28s cubic-bezier(0.2, 0, 0.2, 1), transform 0.28s cubic-bezier(0.2, 0, 0.2, 1)';
-            });
+            // Apply transition properties
+            characterGalleryContainer.style.transition = 'opacity 0.28s cubic-bezier(0.2, 0, 0.2, 1), transform 0.28s cubic-bezier(0.2, 0, 0.2, 1)';
 
-            // Use optimizedAnimation for the actual animation
-            animationFrameId = optimizedAnimation(() => {
-                batchDOMWrite(() => {
-                    // Trigger the animation
-                    characterGalleryContainer.style.opacity = '1';
-                    characterGalleryContainer.style.transform = 'translateY(0) scale(1)';
-                });
+            // Use requestAnimationFrame for the actual animation
+            animationFrameId = requestAnimationFrame(() => {
+                // Trigger the animation
+                characterGalleryContainer.style.opacity = '1';
+                characterGalleryContainer.style.transform = 'translateY(0) scale(1)';
 
                 // Update the gallery content after animation starts
                 updateCharacterGallery();
@@ -319,19 +298,16 @@ export function hideCharacterGallery() {
 
     // Cancel any ongoing animations
     if (animationFrameId) {
-        cancelOptimizedAnimation(animationFrameId);
+        cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
     }
 
-    // Use optimized animation with batched DOM operations
-    batchDOMWrite(() => {
-        // Apply optimized transition for smoother animation
-        characterGalleryContainer.style.transition = 'opacity 0.25s cubic-bezier(0.2, 0, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0, 0.2, 1)';
+    // Apply transition for smooth animation
+    characterGalleryContainer.style.transition = 'opacity 0.25s cubic-bezier(0.2, 0, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0, 0.2, 1)';
 
-        // Start the fade-out animation with slight scale for more natural feel
-        characterGalleryContainer.style.opacity = '0';
-        characterGalleryContainer.style.transform = 'translateY(20px) scale(0.98)';
-    });
+    // Start the fade-out animation with slight scale for more natural feel
+    characterGalleryContainer.style.opacity = '0';
+    characterGalleryContainer.style.transform = 'translateY(20px) scale(0.98)';
 
     // Use a more reliable method than setTimeout to detect when animation ends
     const transitionEndHandler = (e) => {
@@ -342,14 +318,12 @@ export function hideCharacterGallery() {
         characterGalleryContainer.removeEventListener('transitionend', transitionEndHandler);
 
         // Batch DOM operations for cleanup
-        batchDOMWrite(() => {
-            // Hide the gallery container
-            characterGalleryContainer.style.display = 'none';
+        // Hide the gallery container
+        characterGalleryContainer.style.display = 'none';
 
-            // Reset properties to ensure they work correctly on next open
-            characterGalleryContainer.style.transform = '';
-            characterGalleryContainer.style.transition = '';
-        });
+        // Reset properties to ensure they work correctly on next open
+        characterGalleryContainer.style.transform = '';
+        characterGalleryContainer.style.transition = '';
 
         // Show welcome message when returning from character gallery
         // This ensures we don't get a blank screen
@@ -374,11 +348,9 @@ export function hideCharacterGallery() {
             characterGalleryContainer.removeEventListener('transitionend', transitionEndHandler);
 
             // Manually trigger the cleanup
-            batchDOMWrite(() => {
-                characterGalleryContainer.style.display = 'none';
-                characterGalleryContainer.style.transform = '';
-                characterGalleryContainer.style.transition = '';
-            });
+            characterGalleryContainer.style.display = 'none';
+            characterGalleryContainer.style.transform = '';
+            characterGalleryContainer.style.transition = '';
 
             // Show welcome message
             import('./ui-manager.js').then(module => {
@@ -411,30 +383,26 @@ function updateCharacterGallery() {
     // Check if there are characters to display
     if (!charactersData || Object.keys(charactersData).length === 0) {
         // Batch DOM operations for empty state
-        batchDOMWrite(() => {
-            // Show empty state
-            if (characterGalleryEmpty) {
-                characterGalleryEmpty.classList.remove('hidden');
-            }
-            characterGalleryGrid.classList.add('hidden');
+        // Show empty state
+        if (characterGalleryEmpty) {
+            characterGalleryEmpty.classList.remove('hidden');
+        }
+        characterGalleryGrid.classList.add('hidden');
 
-            // Clear the grid to free memory
-            characterGalleryGrid.innerHTML = '';
-        });
+        // Clear the grid to free memory
+        characterGalleryGrid.innerHTML = '';
         return;
     }
 
     // Batch DOM operations for showing the grid
-    batchDOMWrite(() => {
-        // Hide empty state and show grid
-        if (characterGalleryEmpty) {
-            characterGalleryEmpty.classList.add('hidden');
-        }
-        characterGalleryGrid.classList.remove('hidden');
+    // Hide empty state and show grid
+    if (characterGalleryEmpty) {
+        characterGalleryEmpty.classList.add('hidden');
+    }
+    characterGalleryGrid.classList.remove('hidden');
 
-        // Clear the grid
-        characterGalleryGrid.innerHTML = '';
-    });
+    // Clear the grid
+    characterGalleryGrid.innerHTML = '';
 
     // Sort characters by newest first (most recently updated or created at the top)
     // This ensures the most recently modified characters appear first in the gallery
@@ -483,9 +451,7 @@ function updateCharacterGallery() {
 
         // If this is the last batch or the first batch, append to the DOM
         if (endIndex === sortedCharacters.length || currentIndex === 0) {
-            batchDOMWrite(() => {
-                characterGalleryGrid.appendChild(fragment);
-            });
+            characterGalleryGrid.appendChild(fragment);
         }
 
         // Move to the next batch

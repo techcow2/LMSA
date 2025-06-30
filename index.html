@@ -26,16 +26,15 @@
     </noscript>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/theme-variables.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20250629231150">
     <link rel="stylesheet" href="css/settings-modal.css">
     <link rel="stylesheet" href="css/system-prompt-overlay.css">
     <link rel="stylesheet" href="css/code-blocks.css">
-    <link rel="stylesheet" href="css/modern-ui.css">
+    <link rel="stylesheet" href="css/modern-ui.css?v=20250629231150">
     <link rel="stylesheet" href="css/character-modal.css">
     <link rel="stylesheet" href="css/character-gallery.css">
     <link rel="stylesheet" href="css/continue-with-character.css">
     <link rel="stylesheet" href="css/performance-optimizations.css">
-    <link rel="stylesheet" href="css/admob-optimizations.css">
     <!-- Font Awesome with optimized loading -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript>
@@ -1616,7 +1615,7 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="version-badge bg-white/10 px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300">Version 5.2</p>
+                    <p class="text-sm font-medium text-blue-300">Version 5.3</p>
                 </div>
             </div>
 
@@ -1779,10 +1778,10 @@
                         </div>
                         <div class="flex-1">
                             <h4 class="text-sm font-semibold text-blue-400 dark:text-blue-400 light:text-blue-600 mb-1">
-                                <i class="fas fa-robot mr-1"></i>Model Information
+                                <i class="fas fa-robot mr-1"></i>Tip
                             </h4>
                             <p class="text-xs text-gray-300 dark:text-gray-300 light:text-gray-600 leading-relaxed">
-                                Model names now wrap to multiple lines for better readability. Tap the robot icon to view the complete model name in a popup.
+                                Tap the robot icon to view the complete model name in a popup.
                             </p>
                         </div>
                     </div>
@@ -1844,7 +1843,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-blue-400 font-extrabold">What's New</span>
-                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">5.2</span></span>
+                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">5.3</span></span>
                     </div>
                 </h2>
                 <button id="close-whats-new" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:rotate-90 transform">
@@ -1854,6 +1853,27 @@
 
             <div class="features-container overflow-y-auto flex-grow px-1 py-2">
                 <div class="space-y-3">
+                    <div class="feature-item">
+                        <div class="relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-indigo-500/10 to-purple-700/5 rounded-full blur-xl"></div>
+                            <div class="flex items-start relative z-10">
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-indigo-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-eye text-indigo-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <h3 class="feature-title">Vision Language Model Support</h3>
+                                        <span class="px-1.5 py-0.5 bg-indigo-500/20 text-indigo-400 text-xs rounded-full ml-2 font-semibold">New</span>
+                                    </div>
+                                    <div class="feature-description">
+                                        <p class="mb-3">The LMSA app is now fully compatible with Vision Language Models (VLMs)! While LM Studio has always supported vision models, LMSA can now seamlessly interface with them, allowing you to attach PNG, JPG, and WebP images to your chat messages.</p>
+                                        <p class="mb-3">This enhanced compatibility bridges the gap between LMSA's interface and LM Studio's vision capabilities, enabling you to have conversations about images, ask questions about visual content, and get AI analysis of your photos and graphics directly within your chats.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="feature-item">
                         <div class="relative overflow-hidden">
                             <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-green-500/10 to-emerald-700/5 rounded-full blur-xl"></div>

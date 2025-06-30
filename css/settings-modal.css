@@ -13,7 +13,7 @@
     inset: 0;
     overflow: hidden;
     z-index: 1050;
-    will-change: opacity, visibility;
+    /* will-change removed - only apply during transitions */
 }
 
 /* Rich immersive background pattern with dynamic effects */
@@ -89,7 +89,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    will-change: transform, opacity;
+    /* will-change removed - only apply during transitions */
 }
 
 /* Premium edge highlight with animated gradient border */

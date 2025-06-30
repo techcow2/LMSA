@@ -7,6 +7,359 @@ let uploadedFileIds = []; // Track uploaded file IDs for API requests
 let localFileInput; // Local reference to the file input element
 
 /**
+ * Check if the current model is a vision language model
+ * This now checks actual model capabilities through the LM Studio API
+ * @returns {Promise<boolean>} - True if current model supports vision
+ */
+export async function isVisionModel() {
+    try {
+        // Check if there's a currently loaded model
+        if (!window.currentLoadedModel) {
+            return false;
+        }
+        
+        // Get server connection details
+        const serverIp = document.getElementById('server-ip')?.value?.trim() || 'localhost';
+        const serverPort = document.getElementById('server-port')?.value?.trim() || '1234';
+        
+        if (!serverIp || !serverPort) {
+            console.log('Server connection not configured, falling back to name-based detection');
+            return fallbackNameBasedDetection();
+        }
+
+        // Try to get model information from various LM Studio endpoints
+        const modelId = window.currentLoadedModel;
+        console.log('Checking vision capabilities for model:', modelId);
+        
+        // Method 1: Check model details from /v1/models endpoint
+        try {
+            const modelsResponse = await fetch(`http://${serverIp}:${serverPort}/v1/models`, {
+                method: 'GET',
+                signal: AbortSignal.timeout(3000) // 3 second timeout
+            });
+
+            if (modelsResponse.ok) {
+                const modelsData = await modelsResponse.json();
+                console.log('Models API response:', modelsData);
+                
+                if (modelsData.data && Array.isArray(modelsData.data)) {
+                    const currentModel = modelsData.data.find(model => model.id === modelId);
+                    if (currentModel) {
+                        console.log('Found current model data:', currentModel);
+                        
+                        // Check for vision capabilities in model metadata
+                        if (hasVisionCapabilities(currentModel)) {
+                            console.log('Vision capabilities detected through model metadata');
+                            return true;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.log('Models endpoint check failed:', error.message);
+        }
+
+        // Method 2: Test vision capability with a small image request
+        try {
+            console.log('Testing vision capability with test request...');
+            const visionTestResult = await testVisionCapability(serverIp, serverPort, modelId);
+            if (visionTestResult !== null) {
+                return visionTestResult;
+            }
+        } catch (error) {
+            console.log('Vision capability test failed:', error.message);
+        }
+
+        // Method 3: Check model info through additional endpoints
+        try {
+            const infoEndpoints = [
+                '/v1/internal/model/info',
+                '/v1/model/info',
+                '/v1/models/info'
+            ];
+
+            for (const endpoint of infoEndpoints) {
+                try {
+                    const infoResponse = await fetch(`http://${serverIp}:${serverPort}${endpoint}`, {
+                        method: 'GET',
+                        signal: AbortSignal.timeout(2000)
+                    });
+
+                    if (infoResponse.ok) {
+                        const infoData = await infoResponse.json();
+                        console.log(`Model info from ${endpoint}:`, infoData);
+                        
+                        if (hasVisionCapabilities(infoData)) {
+                            console.log('Vision capabilities detected through info endpoint');
+                            return true;
+                        }
+                    }
+                } catch (endpointError) {
+                    // Silently continue to next endpoint
+                }
+            }
+        } catch (error) {
+            console.log('Info endpoints check failed:', error.message);
+        }
+
+        // Method 4: Fallback to name-based detection
+        console.log('All API checks failed, using fallback name-based detection');
+        return fallbackNameBasedDetection();
+        
+    } catch (error) {
+        console.error('Error checking vision model capabilities:', error);
+        // Fallback to name-based detection on any error
+        return fallbackNameBasedDetection();
+    }
+}
+
+/**
+ * Fallback method for name-based vision detection
+ * @returns {boolean} - True if model name suggests vision capabilities
+ */
+function fallbackNameBasedDetection() {
+    if (!window.currentLoadedModel) {
+        return false;
+    }
+    
+    const modelName = window.currentLoadedModel.toLowerCase();
+    console.log('Using fallback name-based detection for:', modelName);
+    
+    // Check if the model name contains vision indicators
+    const visionIndicators = [
+        'vision', 'visual', 'multimodal', 'mm', 'vlm',
+        'qwen2-vl', 'qwen2.5-vl', 'llava', 'pixtral',
+        'gemma-3', 'gemma3', 'phi-3.5-vision', 'minicpm-v',
+        'internvl', 'cogvlm', 'blip', 'flamingo'
+    ];
+    
+    const hasVisionKeyword = visionIndicators.some(indicator => modelName.includes(indicator));
+    console.log('Name-based detection result:', hasVisionKeyword);
+    return hasVisionKeyword;
+}
+
+/**
+ * Check if model metadata indicates vision capabilities
+ * @param {Object} modelData - Model metadata object
+ * @returns {boolean} - True if vision capabilities are detected
+ */
+function hasVisionCapabilities(modelData) {
+    if (!modelData || typeof modelData !== 'object') {
+        return false;
+    }
+
+    // Check various possible capability indicators in model metadata
+    const capabilityFields = [
+        'capabilities', 'modalities', 'supported_modalities', 
+        'input_modalities', 'features', 'model_capabilities'
+    ];
+
+    for (const field of capabilityFields) {
+        const capabilities = modelData[field];
+        if (capabilities) {
+            // Check if capabilities is an array
+            if (Array.isArray(capabilities)) {
+                const hasVision = capabilities.some(cap => 
+                    typeof cap === 'string' && (
+                        cap.toLowerCase().includes('vision') ||
+                        cap.toLowerCase().includes('image') ||
+                        cap.toLowerCase().includes('visual') ||
+                        cap.toLowerCase() === 'multimodal'
+                    )
+                );
+                if (hasVision) return true;
+            }
+            // Check if capabilities is an object
+            else if (typeof capabilities === 'object') {
+                const hasVision = Object.keys(capabilities).some(key => 
+                    key.toLowerCase().includes('vision') || 
+                    key.toLowerCase().includes('image') ||
+                    key.toLowerCase().includes('visual')
+                ) || Object.values(capabilities).some(value => 
+                    typeof value === 'string' && (
+                        value.toLowerCase().includes('vision') ||
+                        value.toLowerCase().includes('image') ||
+                        value.toLowerCase().includes('visual')
+                    )
+                );
+                if (hasVision) return true;
+            }
+            // Check if capabilities is a string
+            else if (typeof capabilities === 'string') {
+                const hasVision = capabilities.toLowerCase().includes('vision') ||
+                               capabilities.toLowerCase().includes('image') ||
+                               capabilities.toLowerCase().includes('visual') ||
+                               capabilities.toLowerCase().includes('multimodal');
+                if (hasVision) return true;
+            }
+        }
+    }
+
+    // Check for vision-specific model properties
+    const visionProperties = [
+        'vision_model', 'image_processor', 'vision_config', 
+        'vision_tower', 'mm_projector', 'image_encoder'
+    ];
+    
+    for (const prop of visionProperties) {
+        if (modelData[prop]) {
+            return true;
+        }
+    }
+
+    // Check model type or architecture indicators
+    const modelType = modelData.model_type || modelData.architecture || modelData.type;
+    if (modelType && typeof modelType === 'string') {
+        const typeIndicators = ['vlm', 'vision', 'multimodal', 'mm'];
+        if (typeIndicators.some(indicator => modelType.toLowerCase().includes(indicator))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Test vision capability by attempting a minimal image input request
+ * @param {string} serverIp - Server IP address
+ * @param {string} serverPort - Server port
+ * @param {string} modelId - Model identifier
+ * @returns {Promise<boolean|null>} - True if vision capable, false if not, null if test failed
+ */
+async function testVisionCapability(serverIp, serverPort, modelId) {
+    try {
+        // Create a minimal test image (1x1 PNG in base64)
+        const testImageBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+        
+        const testRequest = {
+            model: modelId,
+            messages: [
+                {
+                    role: 'user',
+                    content: [
+                        {
+                            type: 'text',
+                            text: 'test'
+                        },
+                        {
+                            type: 'image_url',
+                            image_url: {
+                                url: `data:image/png;base64,${testImageBase64}`
+                            }
+                        }
+                    ]
+                }
+            ],
+            max_tokens: 1,
+            stream: false
+        };
+
+        console.log('Testing vision capability with minimal image request...');
+        
+        const response = await fetch(`http://${serverIp}:${serverPort}/v1/chat/completions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(testRequest),
+            signal: AbortSignal.timeout(5000) // 5 second timeout
+        });
+
+        if (response.ok) {
+            console.log('Vision capability test successful - model accepts image input');
+            return true;
+        } else {
+            const errorText = await response.text().catch(() => '');
+            console.log('Vision capability test response:', response.status, errorText);
+            
+            // If the error suggests the model doesn't support images, it's not a vision model
+            if (errorText.toLowerCase().includes('image') || 
+                errorText.toLowerCase().includes('vision') ||
+                errorText.toLowerCase().includes('multimodal')) {
+                return false;
+            }
+            
+            // For other errors, we can't determine capability
+            return null;
+        }
+    } catch (error) {
+        console.log('Vision capability test error:', error.message);
+        return null;
+    }
+}
+
+/**
+ * Get the allowed file extensions based on whether vision model is loaded
+ * @returns {Promise<Array>} - Array of allowed file extensions
+ */
+async function getAllowedFileExtensions() {
+    const baseExtensions = [
+        // Text files
+        '.txt', '.md',
+        // Code files
+        '.js', '.ts', '.jsx', '.tsx', '.py', '.java', '.c', '.cpp', '.h', '.hpp',
+        '.go', '.rs', '.rb', '.php', '.sh', '.ps1',
+        // Data files
+        '.json', '.csv', '.tsv', '.xml', '.yaml', '.yml', '.toml', '.ini', '.config', '.jsonl', '.jsonlines',
+        // Document files
+        '.docx', '.doc', '.pdf',
+        // Log files
+        '.log',
+        // Web files
+        '.html', '.css'
+    ];
+
+    // Add image extensions if vision model is loaded
+    if (await isVisionModel()) {
+        const imageExtensions = [
+            '.jpg', '.jpeg', '.png', '.webp'
+        ];
+        return [...baseExtensions, ...imageExtensions];
+    }
+
+    return baseExtensions;
+}
+
+/**
+ * Get allowed MIME types based on whether vision model is loaded
+ * @returns {Promise<Array>} - Array of allowed MIME types
+ */
+async function getAllowedMimeTypes() {
+    const baseMimeTypes = [
+        'text/',
+        'application/json',
+        'application/javascript',
+        'application/xml',
+        'application/csv'
+    ];
+
+    // Add image MIME types if vision model is loaded
+    if (await isVisionModel()) {
+        const imageMimeTypes = [
+            'image/jpeg',
+            'image/jpg', 
+            'image/png',
+            'image/webp'
+        ];
+        return [...baseMimeTypes, ...imageMimeTypes];
+    }
+
+    return baseMimeTypes;
+}
+
+/**
+ * Update the file input accept attribute based on current model
+ */
+async function updateFileInputAccept() {
+    if (!localFileInput) return;
+    
+    const allowedExtensions = await getAllowedFileExtensions();
+    localFileInput.setAttribute('accept', allowedExtensions.join(','));
+    
+    console.log('Updated file input accept attribute:', allowedExtensions.join(','));
+}
+
+/**
  * Initialize file upload functionality
  * This needs to be called when the app starts to set up file upload handlers
  */
@@ -36,13 +389,16 @@ export function initializeFileUpload() {
     }
     
     // Add event listener for file selection
-    localFileInput.addEventListener('change', (event) => {
+    localFileInput.addEventListener('change', async (event) => {
         console.log('File upload input change event triggered');
-        handleFileSelection(event);
+        await handleFileSelection(event);
     });
     
     // Reset the uploaded files state
     resetUploadedFiles();
+    
+    // Update file input accept attribute based on current model
+    updateFileInputAccept();
     
     // Add event listener to the paperclip button
     const paperclipButton = document.getElementById('paperclip-button');
@@ -56,21 +412,65 @@ export function initializeFileUpload() {
             paperclipButton.parentNode.replaceChild(newPaperclipButton, paperclipButton);
 
             // Add click event to open file dialog
-            newPaperclipButton.addEventListener('click', () => {
+            newPaperclipButton.addEventListener('click', async () => {
                 console.log('Paperclip button clicked, triggering file input');
+                // Update accept attribute before opening dialog
+                await updateFileInputAccept();
                 localFileInput.click();
             });
         } else {
             // If no parent node, add event listener directly
             console.log('Paperclip button has no parent node, adding event listener directly');
-            paperclipButton.addEventListener('click', () => {
+            paperclipButton.addEventListener('click', async () => {
                 console.log('Paperclip button clicked, triggering file input');
+                // Update accept attribute before opening dialog
+                await updateFileInputAccept();
                 localFileInput.click();
             });
         }
     }
     
     console.log('File upload initialization complete');
+}
+
+/**
+ * Update file upload capabilities when model changes
+ * Call this function when a new model is loaded
+ */
+export async function updateFileUploadCapabilities() {
+    console.log('Updating file upload capabilities for model:', window.currentLoadedModel);
+    
+    const visionCapable = await isVisionModel();
+    console.log('Vision model detected:', visionCapable);
+    
+    // Update the file input accept attribute
+    await updateFileInputAccept();
+    
+    // Update UI to show/hide image upload capability
+    const paperclipButton = document.getElementById('paperclip-button');
+    if (paperclipButton) {
+        // Update tooltip based on vision capability, but maintain consistent visual appearance
+        if (visionCapable) {
+            paperclipButton.setAttribute('title', 'Upload files or images (Vision model detected)');
+            paperclipButton.classList.add('vision-enabled');
+            
+            // Camera icon indicator disabled to maintain consistent appearance
+            // Remove any existing camera icon indicator
+            const existingCameraIcon = paperclipButton.querySelector('.vision-indicator');
+            if (existingCameraIcon) {
+                existingCameraIcon.remove();
+            }
+        } else {
+            paperclipButton.setAttribute('title', 'Upload files');
+            paperclipButton.classList.remove('vision-enabled');
+            
+            // Remove camera icon indicator
+            const existingCameraIcon = paperclipButton.querySelector('.vision-indicator');
+            if (existingCameraIcon) {
+                existingCameraIcon.remove();
+            }
+        }
+    }
 }
 
 /**
@@ -293,7 +693,7 @@ async function extractPdfText(input) {
  * Handles file selection from the file input
  * @param {Event} event - The change event from the file input
  */
-function handleFileSelection(event) {
+async function handleFileSelection(event) {
     console.log('handleFileSelection called with event:', event);
     
     const files = event.target.files;
@@ -302,51 +702,41 @@ function handleFileSelection(event) {
         return;
     }
 
-    // Define allowed file extensions - ensure this matches the extensions handled in extractFileContent
-    const allowedExtensions = [
-        // Text files
-        '.txt', '.md',
-        // Code files
-        '.js', '.ts', '.jsx', '.tsx', '.py', '.java', '.c', '.cpp', '.h', '.hpp',
-        '.go', '.rs', '.rb', '.php', '.sh', '.ps1',
-        // Data files
-        '.json', '.csv', '.tsv', '.xml', '.yaml', '.yml', '.toml', '.ini', '.config', '.jsonl', '.jsonlines',
-        // Document files
-        '.docx', '.doc', '.pdf',
-        // Log files
-        '.log',
-        // Web files
-        '.html', '.css'
-    ];
-
     console.log('Files selected:', Array.from(files).map(f => `${f.name} (${f.type})`).join(', '));
+
+    // Get allowed file types (async)
+    const allowedExtensions = await getAllowedFileExtensions();
+    const allowedMimeTypes = await getAllowedMimeTypes();
+    const visionModelLoaded = await isVisionModel();
 
     // Filter files to only include allowed types
     const validFiles = Array.from(files).filter(file => {
         const fileName = file.name.toLowerCase();
         const isAllowed = allowedExtensions.some(ext => fileName.endsWith(ext));
         
-        // Also allow files with text MIME types
-        const isTextMimeType = file.type && (
-            file.type.startsWith('text/') || 
-            file.type.includes('json') || 
-            file.type.includes('javascript') || 
-            file.type.includes('xml') ||
-            file.type.includes('csv')
-        );
+        // Also allow files with allowed MIME types
+        const isAllowedMimeType = file.type && allowedMimeTypes.some(type => file.type.startsWith(type));
         
-        const isValid = isAllowed || isTextMimeType;
-        console.log(`File ${file.name} - allowed by extension: ${isAllowed}, text mime type: ${isTextMimeType}, valid: ${isValid}`);
+        const isValid = isAllowed || isAllowedMimeType;
+        console.log(`File ${file.name} - allowed by extension: ${isAllowed}, allowed mime type: ${isAllowedMimeType}, valid: ${isValid}`);
         return isValid;
     });
 
     if (validFiles.length === 0) {
         console.error('No valid files selected');
         
+        // Create a helpful error message based on current model capabilities
+        let errorMessage = 'No valid files selected. ';
+        if (visionModelLoaded) {
+            errorMessage += 'You can upload text files, documents, and images (JPEG, PNG, WebP) with this vision model.';
+        } else {
+            errorMessage += 'You can upload text files and documents. For image support, please load a vision language model.';
+        }
+        
         // Use dynamic import to avoid circular dependency
         import('./ui-manager.js').then(uiModule => {
             if (typeof uiModule.appendMessage === 'function') {
-                uiModule.appendMessage('error', 'No valid files selected. Please upload files with the following extensions: ' + allowedExtensions.join(', '));
+                uiModule.appendMessage('error', errorMessage);
             }
         }).catch(error => {
             console.error('Failed to import ui-manager.js:', error);
@@ -355,9 +745,15 @@ function handleFileSelection(event) {
     }
 
     if (validFiles.length < files.length) {
+        const skippedCount = files.length - validFiles.length;
+        let warningMessage = `${skippedCount} file(s) were skipped because they are not supported. `;
+        if (!visionModelLoaded) {
+            warningMessage += 'Load a vision language model to enable image uploads.';
+        }
+        
         import('./ui-manager.js').then(uiModule => {
             if (typeof uiModule.appendMessage === 'function') {
-                uiModule.appendMessage('warning', 'Some files were skipped because they are not supported.');
+                uiModule.appendMessage('warning', warningMessage);
             }
         }).catch(error => {
             console.error('Failed to import ui-manager.js:', error);
@@ -376,16 +772,49 @@ function handleFileSelection(event) {
         const filePreview = document.createElement('div');
         filePreview.className = 'file-preview';
 
-        // Choose icon based on file type
+        // Choose icon and create preview based on file type
         let iconClass = 'fa-file';
-        if (file.type.includes('image')) iconClass = 'fa-file-image';
-        else if (file.type.includes('text')) iconClass = 'fa-file-alt';
-        else if (file.type.includes('pdf')) iconClass = 'fa-file-pdf';
-        else if (file.name.endsWith('.docx') || file.name.endsWith('.doc')) iconClass = 'fa-file-word';
+        let isImage = false;
+        
+        if (file.type.includes('image')) {
+            iconClass = 'fa-file-image';
+            isImage = true;
+        } else if (file.type.includes('text')) {
+            iconClass = 'fa-file-alt';
+        } else if (file.type.includes('pdf')) {
+            iconClass = 'fa-file-pdf';
+        } else if (file.name.endsWith('.docx') || file.name.endsWith('.doc')) {
+            iconClass = 'fa-file-word';
+        }
+
+        // Create image preview for image files
+        if (isImage) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imagePreview = document.createElement('img');
+                imagePreview.src = e.target.result;
+                imagePreview.className = 'file-preview-image';
+                imagePreview.style.cssText = `
+                    width: 40px;
+                    height: 40px;
+                    object-fit: cover;
+                    border-radius: 4px;
+                    margin-right: 8px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                `;
+                
+                // Replace icon with image preview
+                const icon = filePreview.querySelector('.fas');
+                if (icon) {
+                    icon.replaceWith(imagePreview);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
 
         filePreview.innerHTML = `
             <i class="fas ${iconClass}"></i>
-            ${file.name}
+            <span class="file-name" style="margin-left: 8px;">${file.name}</span>
         `;
 
         filePreviewContainer.appendChild(filePreview);
@@ -478,6 +907,8 @@ async function readFileContent(file) {
             const fileNameLower = file.name.toLowerCase();
             const isPdfFile = fileNameLower.endsWith('.pdf') || (file.type && file.type === 'application/pdf');
             const isDocxFile = fileNameLower.endsWith('.docx') || fileNameLower.endsWith('.doc');
+            const isImageFile = (file.type && file.type.startsWith('image/')) || 
+                               ['.jpg', '.jpeg', '.png', '.webp'].some(ext => fileNameLower.endsWith(ext));
             
             // Define text file types
             const textFileTypes = [
@@ -503,9 +934,28 @@ async function readFileContent(file) {
             const isTextTypeByExtension = textFileExtensions.some(ext => fileNameLower.endsWith(ext));
             const isTextFile = isTextTypeByMimeType || isTextTypeByExtension;
             
-            console.log(`File ${file.name} classification: isPdf=${isPdfFile}, isDocx=${isDocxFile}, isTextByMime=${isTextTypeByMimeType}, isTextByExt=${isTextTypeByExtension}`);
+            console.log(`File ${file.name} classification: isPdf=${isPdfFile}, isDocx=${isDocxFile}, isImage=${isImageFile}, isTextByMime=${isTextTypeByMimeType}, isTextByExt=${isTextTypeByExtension}`);
             
-            if (isPdfFile) {
+            if (isImageFile) {
+                // Process image files as base64
+                readAsDataURL(file).then(base64Content => {
+                    console.log(`Successfully read image content from ${file.name}, base64 length: ${base64Content.length}`);
+                    resolve({
+                        name: file.name,
+                        type: file.type || inferFileType(file.name),
+                        content: base64Content,
+                        isImage: true
+                    });
+                }).catch(error => {
+                    console.error(`Error reading image from ${file.name}:`, error);
+                    resolve({
+                        name: file.name,
+                        type: file.type || inferFileType(file.name),
+                        content: `[Failed to read image: ${error.message}]`,
+                        isImage: true
+                    });
+                });
+            } else if (isPdfFile) {
                 // Process PDF files using PDF.js
                 extractPdfText(file).then(content => {
                     console.log(`Successfully extracted PDF content from ${file.name}, length: ${content.length}`);
@@ -586,6 +1036,47 @@ async function readFileContent(file) {
                 type: file.type || inferFileType(file.name) || 'application/octet-stream',
                 content: `[Error processing file: ${error.message}]`
             });
+        }
+    });
+}
+
+/**
+ * Read a file as data URL (base64)
+ * @param {File} file - The file to read
+ * @returns {Promise<string>} - Base64 data URL content of the file
+ */
+function readAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+        // If file is not a Blob (e.g., not a real File object), we can't use FileReader
+        if (!(file instanceof Blob)) {
+            console.error(`File ${file.name} is not a Blob, cannot use FileReader for data URL`);
+            reject(new Error('Input is not a Blob. Cannot use FileReader for data URL.'));
+            return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            try {
+                const dataUrl = e.target.result;
+                console.log(`Successfully read ${file.name} as data URL, length: ${dataUrl.length}`);
+                resolve(dataUrl);
+            } catch (error) {
+                console.error(`Error in FileReader onload for data URL ${file.name}:`, error);
+                reject(error);
+            }
+        };
+        
+        reader.onerror = function(e) {
+            console.error(`FileReader error for data URL ${file.name}:`, e);
+            reject(new Error(`FileReader error: ${e.target.error}`));
+        };
+        
+        try {
+            reader.readAsDataURL(file);
+        } catch (error) {
+            console.error(`Error initiating readAsDataURL for ${file.name}:`, error);
+            reject(error);
         }
     });
 }
@@ -848,7 +1339,9 @@ export async function prepareFilesForLLM(files) {
         extractionResults.forEach((result, index) => {
             // Determine file type for display
             let fileTypeDisplay = 'Document';
-            if (result.type === 'application/pdf' || result.name.toLowerCase().endsWith('.pdf')) {
+            if (result.isImage) {
+                fileTypeDisplay = 'Image';
+            } else if (result.type === 'application/pdf' || result.name.toLowerCase().endsWith('.pdf')) {
                 fileTypeDisplay = 'PDF Document';
             } else if (result.type.includes('word') || result.name.toLowerCase().includes('doc')) {
                 fileTypeDisplay = 'Word Document';
@@ -859,6 +1352,15 @@ export async function prepareFilesForLLM(files) {
             formattedContext += `📄 ATTACHMENT ${index + 1}: ${fileTypeDisplay}\n`;
             formattedContext += `📝 Filename: ${result.name}\n`;
             formattedContext += `📋 Content Type: ${result.type}\n`;
+            
+            // Handle image files differently
+            if (result.isImage) {
+                formattedContext += `🖼️ Image Content: Base64 encoded image data (${result.content.length} characters)\n`;
+                formattedContext += `ℹ️ Note: This image is attached for vision-capable models.\n`;
+                formattedContext += "─".repeat(50) + "\n";
+                formattedContext += "=".repeat(60) + "\n\n";
+                return; // Skip the normal content processing for images
+            }
             
             // More conservative content length limits for better API compatibility
             let maxContentLength = 50000; // Reduced from 100000 to be more conservative
@@ -937,7 +1439,12 @@ function inferFileType(fileName) {
         'ini': 'text/ini',
         'pdf': 'application/pdf',
         'doc': 'application/msword',
-        'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        // Image types
+        'jpg': 'image/jpeg',
+        'jpeg': 'image/jpeg',
+        'png': 'image/png',
+        'webp': 'image/webp'
     };
     
     return mimeTypes[extension] || 'application/octet-stream';

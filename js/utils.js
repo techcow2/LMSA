@@ -1,8 +1,7 @@
 // Debug logging utility
 let isDebugEnabled = true; // Enable debug mode by default to help troubleshoot the send button issue
 
-// Import performance utilities
-import { batchDOMWrite } from './performance-utils.js';
+// Performance utilities are now simplified - no complex batching needed
 
 export function setDebugEnabled(enabled) {
     isDebugEnabled = enabled;

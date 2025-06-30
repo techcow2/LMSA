@@ -248,14 +248,68 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
 
         // Add file contents as attachments or embedded in the message
         if (fileContents && fileContents.length > 0) {
+            // Check if this is a vision model that can handle images
+            let isVisionModel = false;
+            try {
+                const { isVisionModel: checkVisionModel } = await import('./file-upload.js');
+                isVisionModel = checkVisionModel();
+            } catch (error) {
+                console.error('Error checking vision model capability:', error);
+            }
+
             // If the server supports file uploads, add them as attachments
             // Otherwise, we'll embed the file contents in the message
             if (supportsFileUploads()) {
                 // Add files as attachments in the last user message
                 const lastUserMessageIndex = messages.length - 1;
                 messages[lastUserMessageIndex].file_ids = fileContents.map(file => file.id);
+            } else if (isVisionModel) {
+                // For vision models, use the proper content format with images
+                const lastUserMessageIndex = messages.length - 1;
+                const imageFiles = fileContents.filter(file => file.isImage);
+                const nonImageFiles = fileContents.filter(file => !file.isImage);
+
+                // Create content array starting with the text
+                const content = [
+                    {
+                        type: "text",
+                        text: messages[lastUserMessageIndex].content
+                    }
+                ];
+
+                // Add images to the content array
+                for (const imageFile of imageFiles) {
+                    if (imageFile.content && imageFile.content.startsWith('data:')) {
+                        content.push({
+                            type: "image_url",
+                            image_url: {
+                                url: imageFile.content
+                            }
+                        });
+                        console.log(`Added image to vision model request: ${imageFile.name}`);
+                    }
+                }
+
+                // Add non-image files as text if any
+                if (nonImageFiles.length > 0) {
+                    try {
+                        const { prepareFilesForLLM } = await import('./file-upload.js');
+                        const formattedFileContent = await prepareFilesForLLM(nonImageFiles);
+                        
+                        if (formattedFileContent.trim()) {
+                            content[0].text += `\n\n${formattedFileContent}`;
+                        }
+                    } catch (importError) {
+                        console.warn('Could not import prepareFilesForLLM for non-image files:', importError);
+                    }
+                }
+
+                // Replace the content with the new format
+                messages[lastUserMessageIndex].content = content;
+                
+                console.log(`Vision model message prepared with ${imageFiles.length} image(s) and ${nonImageFiles.length} text file(s)`);
             } else {
-                // Embed file contents in the message with proper formatting and length limits
+                // For non-vision models, embed all file contents as text
                 const lastUserMessageIndex = messages.length - 1;
                 
                 // Import the prepareFilesForLLM function to format files properly

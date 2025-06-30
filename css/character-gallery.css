@@ -32,7 +32,7 @@
     overscroll-behavior: contain; /* Prevent scroll chaining */
     -webkit-tap-highlight-color: transparent; /* Remove default mobile tap highlight */
     scroll-behavior: smooth; /* Enable smooth scrolling */
-    will-change: transform, opacity; /* Optimize for animations */
+    /* will-change removed - only apply during actual animations */
     user-select: none; /* Prevent text selection during scrolling */
     /* Transition properties for smooth animations */
     transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),

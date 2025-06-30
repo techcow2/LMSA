@@ -303,17 +303,51 @@ body.light-theme .sidebar-overlay {
   backdrop-filter: blur(4px);
 }
 
+/* FIXED: Reduced height chat items with proper responsive design */
+.chat-history-wrapper .chat-item,
+#chat-history .chat-item,
+#sidebar .chat-item,
+.chat-item {
+  min-height: 2.25rem !important; /* 36px for desktop - reduced from 48px */
+  padding: 0.5rem 0.75rem !important;
+  padding-right: 0.25rem !important; /* Space for action wrapper */
+}
+
+/* Responsive height adjustments */
+@media (max-width: 768px) {
+  .chat-history-wrapper .chat-item,
+  #chat-history .chat-item,
+  #sidebar .chat-item,
+  .chat-item {
+    min-height: 2.5rem !important; /* 40px on mobile for better touch targets */
+    padding: 0.625rem 0.75rem !important;
+    padding-right: 0.25rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-history-wrapper .chat-item,
+  #chat-history .chat-item,
+  #sidebar .chat-item,
+  .chat-item {
+    min-height: 2.75rem !important; /* 44px on very small screens for accessibility */
+    padding: 0.75rem 0.875rem !important;
+    padding-right: 0.25rem !important;
+  }
+}
+
 /* Enhanced Chat History Items Styling */
 #chat-history .chat-item {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 0.5rem;
   margin: 0.25rem 0;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.75rem; /* Reduced from 0.5rem 0.75rem to be more compact */
   cursor: pointer;
   background-color: rgba(30, 41, 59, 0.4);
   border: 1px solid rgba(59, 130, 246, 0.05);
   /* Ensure proper spacing for action wrapper */
   padding-right: 0.25rem;
+  min-height: 2.25rem; /* Reduced from default 3rem (48px) to 2.25rem (36px) for desktop */
 }
 
 #chat-history .chat-item:hover {
@@ -416,9 +450,16 @@ body.light-theme .trash-icon-container:hover .fas.fa-trash {
     transform: scale(0.95);
   }
   
-  /* Ensure proper spacing on mobile */
+  /* Ensure proper spacing on mobile and maintain touch-friendly sizing */
   #chat-history .chat-item .action-wrapper {
     margin-left: 0.5rem;
+  }
+  
+  /* Keep chat items touch-friendly on mobile while being more compact */
+  #chat-history .chat-item {
+    padding: 0.625rem 0.75rem;
+    padding-right: 0.25rem;
+    min-height: 2.5rem; /* 40px minimum on mobile for better touch targets */
   }
 }
 
@@ -431,6 +472,13 @@ body.light-theme .trash-icon-container:hover .fas.fa-trash {
   
   .trash-icon-container .fas.fa-trash {
     font-size: 18px;
+  }
+  
+  /* Extra care for very small screens - ensure adequate touch targets */
+  #chat-history .chat-item {
+    min-height: 2.75rem; /* 44px on very small screens for accessibility */
+    padding: 0.75rem 0.875rem; /* Original padding on very small screens */
+    padding-right: 0.25rem; /* Maintain space for action wrapper */
   }
 }
 
@@ -1054,9 +1102,11 @@ body.light-theme .modal-header {
 
   /* Message history items */
   #chat-history .chat-item {
-    padding: 0.45rem 0.6rem !important;
+    padding: 0.5rem 0.65rem !important; /* Slightly increased for better touch targets */
+    padding-right: 0.25rem !important; /* Maintain space for action wrapper */
     margin: 0.2rem 0 !important;
     font-size: 0.8rem !important;
+    min-height: 2.75rem !important; /* 44px on very small screens for accessibility */
   }
 
   /* Code blocks and pre formatting */

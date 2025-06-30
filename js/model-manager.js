@@ -357,11 +357,8 @@ async function updateModelDisplay(modelId) {
                 }
 
                 // Update the current banner if it exists
-                import('./api-service.js').then(apiService => {
-                    apiService.updateLoadedModelDisplay(displayModelId);
-                }).catch(error => {
-                    console.error('Error updating model display:', error);
-                });
+                const { updateFileUploadCapabilities } = await import('./file-upload.js');
+                await updateFileUploadCapabilities();
             } else {
                 // No model is loaded, show the appropriate message
                 isModelLoaded = false;
@@ -525,6 +522,10 @@ async function loadModel(modelId) {
 
         // Update the UI with the newly loaded model
         await updateModelDisplay(modelId);
+
+        // Update file upload capabilities for the new model
+        const { updateFileUploadCapabilities } = await import('./file-upload.js');
+        await updateFileUploadCapabilities();
 
         // Set loading flag back to false
         isModelLoading = false;

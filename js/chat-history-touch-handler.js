@@ -1,7 +1,7 @@
 // Touch handler for chat history scrolling with optimized performance
 import { chatHistory } from './dom-elements.js';
 import { loadChat } from './chat-service.js';
-import { throttle, optimizedAnimation, cancelOptimizedAnimation, addHardwareAcceleration } from './performance-utils.js';
+import { throttle, addHardwareAcceleration } from './performance-utils.js';
 
 /**
  * Initializes touch handling for the chat history container
@@ -207,10 +207,10 @@ export function initializeChatHistoryTouchHandler() {
             return;
         }
 
-        // Use optimizedAnimation from performance-utils.js
+        // Use requestAnimationFrame for momentum
         function momentumStep() {
             if (Math.abs(velocity) < MIN_VELOCITY) {
-                cancelOptimizedAnimation(momentumFrame);
+                cancelAnimationFrame(momentumFrame);
                 momentumFrame = null;
                 return;
             }
@@ -233,17 +233,17 @@ export function initializeChatHistoryTouchHandler() {
                 velocity *= 0.88; // Slightly increased for smoother stop
             }
 
-            // Use optimizedAnimation for the next frame
-            momentumFrame = optimizedAnimation(momentumStep);
+                                // Use requestAnimationFrame for the next frame
+                    momentumFrame = requestAnimationFrame(momentumStep);
         }
 
         // Cancel any existing animation before starting a new one
         if (momentumFrame) {
-            cancelOptimizedAnimation(momentumFrame);
+            cancelAnimationFrame(momentumFrame);
         }
 
         // Start the momentum scrolling animation
-        momentumFrame = optimizedAnimation(momentumStep);
+        momentumFrame = requestAnimationFrame(momentumStep);
 
         // Clear velocity history after starting momentum
         velocityHistory = [];
