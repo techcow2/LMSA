@@ -1,6 +1,3 @@
-/* Immersive Professional Settings Modal Theme */
-
-/* Modal background with rich visual backdrop */
 #settings-modal {
     background: var(--modal-overlay);
     backdrop-filter: blur(12px) saturate(180%);
