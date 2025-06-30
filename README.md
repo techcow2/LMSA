@@ -13,9 +13,9 @@
   </a>
 </p>
 
-## 🆕 What's New in Version 5.3
+## 🆕 What's New in Version 5.4
 
-🎉 **Latest Update: Version 5.3** - Now Available!
+🎉 **Latest Update: Version 5.4** - Now Available!
 
 ### New Features
 - **Vision Language Model Support**: Added full support for vision language models (VLMs). You can now upload and analyze images alongside text, enabling multimodal conversations with AI models that can understand and discuss visual content.
