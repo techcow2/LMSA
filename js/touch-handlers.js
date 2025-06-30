@@ -32,7 +32,8 @@ export async function initializeTouchHandlers() {
                                      e.target.closest('#chat-history') !== null ||
                                      e.target.closest('#settings-content-wrapper') !== null ||
                                      e.target.closest('.settings-step.active') !== null ||
-                                     e.target.closest('#whats-new-modal') !== null;
+                                     e.target.closest('#whats-new-modal') !== null ||
+                                     e.target.closest('.file-previews') !== null;
 
         // If not in any scrollable container, prevent default behavior
         if (!isMonacoElement && !isScrollableContainer) {
@@ -82,6 +83,53 @@ export async function initializeTouchHandlers() {
                 e.stopPropagation();
             }
         }, { passive: true });
+    }
+
+    // Allow scrolling within the file previews container
+    function setupFilePreviewsScrolling() {
+        const filePreviewsContainer = document.querySelector('.file-previews');
+        if (filePreviewsContainer) {
+            filePreviewsContainer.addEventListener('touchmove', function(e) {
+                e.stopPropagation();
+            }, { passive: true });
+        }
+    }
+
+    // Set up file previews scrolling initially
+    setupFilePreviewsScrolling();
+
+    // Set up a MutationObserver to handle dynamically added file preview containers
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    // Check if the added node is a file previews container or contains one
+                    if (node.classList && node.classList.contains('file-previews')) {
+                        node.addEventListener('touchmove', function(e) {
+                            e.stopPropagation();
+                        }, { passive: true });
+                    }
+                    // Also check for file previews containers within the added node
+                    const filePreviewsContainers = node.querySelectorAll('.file-previews');
+                    filePreviewsContainers.forEach(function(container) {
+                        container.addEventListener('touchmove', function(e) {
+                            e.stopPropagation();
+                        }, { passive: true });
+                    });
+                }
+            });
+        });
+    });
+
+    // Start observing the document body for changes
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    // Store observer reference for potential cleanup
+    if (!window.touchHandlerObserver) {
+        window.touchHandlerObserver = observer;
     }
 
     // Prevent sidebar toggle when interacting with chat input

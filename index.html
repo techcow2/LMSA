@@ -44,31 +44,78 @@
     <!-- JSZip Library for DOCX file processing - moved before Monaco -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous"></script>
     
-    <!-- PDF.js is now lazy-loaded when needed to reduce initial memory footprint -->
+    <!-- Tesseract.js for OCR functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.4/dist/tesseract.min.js" crossorigin="anonymous"></script>
+    
+    <!-- PDF.js will be loaded directly when needed -->
     <script>
-        // Lazy load PDF.js only when needed
+        // Simple PDF.js loader that avoids module conflicts
         window.loadPDFLibrary = function() {
             return new Promise((resolve, reject) => {
-                if (window.pdfjsLib) {
+                // Check if PDF.js is already available
+                if (window.pdfjsLib || window.PDFJS) {
+                    console.log('PDF.js already available, skipping load');
                     resolve();
                     return;
                 }
                 
-                const script = document.createElement('script');
-                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js';
-                script.onload = function() {
-                    if (window.pdfjsLib) {
-                        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-                        console.log('PDF.js loaded and configured successfully (lazy-loaded)');
-                        resolve();
-                    } else {
-                        reject(new Error('PDF.js failed to load'));
-                    }
-                };
-                script.onerror = function(e) {
-                    reject(e);
-                };
-                document.head.appendChild(script);
+                // Check if we're already loading PDF.js to prevent duplicate loads
+                if (window._pdfJsLoading) {
+                    console.log('PDF.js already loading, waiting for completion...');
+                    window._pdfJsLoading.then(resolve).catch(reject);
+                    return;
+                }
+                
+                console.log('Loading PDF.js via direct script inclusion...');
+                
+                // Mark that we're loading PDF.js
+                window._pdfJsLoading = new Promise((loadResolve, loadReject) => {
+                    // Create a unique script element to avoid conflicts
+                    const script = document.createElement('script');
+                    script.id = 'pdfjs-loader-' + Date.now();
+                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+                    
+                    script.onload = function() {
+                        console.log('PDF.js script loaded, checking availability...');
+                        
+                        // Multiple attempts to find the library
+                        let attempts = 0;
+                        const maxAttempts = 10;
+                        
+                        const checkLibrary = () => {
+                            attempts++;
+                            
+                            if (window.pdfjsLib) {
+                                window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                                console.log('PDF.js found as pdfjsLib and configured successfully');
+                                loadResolve();
+                            } else if (window.PDFJS) {
+                                window.pdfjsLib = window.PDFJS;
+                                window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                                console.log('PDF.js found as PDFJS and configured successfully');
+                                loadResolve();
+                            } else if (attempts < maxAttempts) {
+                                console.log(`PDF.js not available yet, attempt ${attempts}/${maxAttempts}, retrying...`);
+                                setTimeout(checkLibrary, 100);
+                            } else {
+                                console.error('PDF.js failed to load after multiple attempts');
+                                loadReject(new Error('PDF.js failed to load after multiple attempts'));
+                            }
+                        };
+                        
+                        // Start checking immediately
+                        checkLibrary();
+                    };
+                    
+                    script.onerror = function(e) {
+                        console.error('PDF.js script load error:', e);
+                        loadReject(new Error('Failed to load PDF.js script'));
+                    };
+                    
+                    document.head.appendChild(script);
+                });
+                
+                window._pdfJsLoading.then(resolve).catch(reject);
             });
         };
     </script>
@@ -1019,6 +1066,35 @@
                                     <i class="fas fa-times mr-2"></i>Close
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File removal confirmation modal -->
+                <div id="file-removal-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50" aria-labelledby="file-removal-title" role="dialog" aria-modal="true">
+                    <div class="modal-content bg-darkSecondary border border-gray-600 rounded-lg p-6 max-w-md mx-4">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-trash text-red-400"></i>
+                            </div>
+                            <h3 id="file-removal-title" class="text-lg font-semibold text-white">Remove File</h3>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <p class="text-gray-300 mb-2">Are you sure you want to remove this file?</p>
+                            <div class="bg-gray-800 rounded-lg p-3 flex items-center">
+                                <i id="file-removal-icon" class="fas fa-file text-blue-400 mr-3 hidden"></i>
+                                <span id="file-removal-name" class="text-gray-200 font-medium">filename.txt</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-3">
+                            <button id="cancel-file-removal" class="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                                <i class="fas fa-times mr-2"></i>Cancel
+                            </button>
+                            <button id="confirm-file-removal" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                <i class="fas fa-trash mr-2"></i>Remove
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -2582,7 +2658,7 @@
     </script>
 
     <!-- Model loading modal -->
-    <div id="model-loading-modal" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-md flex items-center justify-center hidden modal-container animate-fade-in" style="z-index: 2200;" aria-labelledby="model-loading-title" role="dialog" aria-modal="true">
+    <div id="model-loading-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container animate-fade-in" style="z-index: 2200;" aria-labelledby="model-loading-title" role="dialog" aria-modal="true">
         <div class="relative dark:bg-gradient-to-b dark:from-[#1e293b] dark:via-[#334155] dark:to-[#1e293b] light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-10 rounded-2xl w-[550px] max-w-[90%] shadow-2xl overflow-hidden flex flex-col modal-content border border-blue-400/50 dark:border-blue-400/50 light:border-blue-400/30 backdrop-blur-sm">
             <!-- Animated background gradient -->
             <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 animate-pulse-slow rounded-2xl"></div>

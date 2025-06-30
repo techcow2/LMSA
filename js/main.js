@@ -9,6 +9,7 @@ import { initializeTouchHandlers } from './touch-handlers.js';
 import { initializeChatHistoryTouchHandler } from './chat-history-touch-handler.js';
 import { initializeSettingsModalTouchHandler } from './settings-modal-touch-handler.js';
 import { initializeSidebarTouchHandler } from './sidebar-touch-handler.js';
+import { initializeFilePreviewTouchHandler } from './file-preview-touch-handler.js';
 import { handleScroll, setDebugEnabled, wasRefreshDueToCodeGeneration, getLastActiveChatId, clearRefreshDueToCodeGenerationFlag } from './utils.js';
 import { initializeExportImport } from './export-import.js';
 import { initializeModelManager } from './model-manager.js';
@@ -134,6 +135,7 @@ async function initializeApp() {
     initializeChatHistoryTouchHandler();
     initializeSettingsModalTouchHandler();
     initializeSidebarTouchHandler();
+    initializeFilePreviewTouchHandler();
     
     initializeFileUpload();
     initializeModelManager();

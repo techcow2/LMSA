@@ -564,35 +564,189 @@ async function loadJSZip() {
  */
 async function loadPDFJS() {
     return new Promise((resolve, reject) => {
-        // Check if PDF.js is already loaded (should be loaded from HTML)
+        console.log('loadPDFJS called - checking PDF.js availability...');
+        
+        // Check if PDF.js is already loaded
         if (window.pdfjsLib) {
+            console.log('PDF.js already available as pdfjsLib');
             resolve(window.pdfjsLib);
             return;
         }
         
         // Check alternative global variable names
         if (window.PDFJS) {
+            console.log('PDF.js already available as PDFJS, setting up pdfjsLib alias');
             window.pdfjsLib = window.PDFJS;
             resolve(window.PDFJS);
             return;
         }
         
-        // If not found, wait a moment and try again (library might still be loading)
-        setTimeout(() => {
-            if (window.pdfjsLib) {
-                resolve(window.pdfjsLib);
-            } else if (window.PDFJS) {
-                window.pdfjsLib = window.PDFJS;
-                resolve(window.PDFJS);
+        // Check if we're already in the process of loading PDF.js
+        if (window._loadingPDFJS) {
+            console.log('PDF.js already being loaded, waiting for completion...');
+            window._loadingPDFJS.then(resolve).catch(reject);
+            return;
+        }
+        
+        console.log('PDF.js not available, starting load process...');
+        
+        // Create a promise to track the loading process
+        window._loadingPDFJS = new Promise((loadResolve, loadReject) => {
+            // Use the HTML lazy loader
+            if (typeof window.loadPDFLibrary === 'function') {
+                console.log('Using HTML loadPDFLibrary function...');
+                window.loadPDFLibrary()
+                    .then(() => {
+                        console.log('HTML loadPDFLibrary resolved, checking for PDF.js...');
+                        
+                        // Wait a bit and check multiple times
+                        let checkAttempts = 0;
+                        const maxChecks = 20;
+                        
+                        const checkForPDFJS = () => {
+                            checkAttempts++;
+                            console.log(`Checking for PDF.js, attempt ${checkAttempts}/${maxChecks}`);
+                            
+                            if (window.pdfjsLib) {
+                                console.log('PDF.js found as pdfjsLib after HTML loader');
+                                loadResolve(window.pdfjsLib);
+                            } else if (window.PDFJS) {
+                                console.log('PDF.js found as PDFJS after HTML loader');
+                                window.pdfjsLib = window.PDFJS;
+                                loadResolve(window.pdfjsLib);
+                            } else if (checkAttempts < maxChecks) {
+                                console.log('PDF.js not found yet, waiting...');
+                                setTimeout(checkForPDFJS, 100);
+                            } else {
+                                console.error('PDF.js not found after HTML loader and multiple checks');
+                                loadReject(new Error('PDF.js not available after loading'));
+                            }
+                        };
+                        
+                        // Start checking immediately
+                        checkForPDFJS();
+                    })
+                    .catch(error => {
+                        console.error('HTML loadPDFLibrary failed:', error);
+                        loadReject(error);
+                    });
             } else {
-                reject(new Error('PDF.js library not found. Please ensure it is loaded in the HTML.'));
+                console.error('HTML loadPDFLibrary function not available');
+                loadReject(new Error('PDF.js loader not available'));
             }
-        }, 500);
+        });
+        
+        // Return the loading promise
+        window._loadingPDFJS
+            .then(lib => {
+                console.log('PDF.js loading completed successfully');
+                resolve(lib);
+            })
+            .catch(error => {
+                console.error('PDF.js loading failed:', error);
+                reject(error);
+            });
     });
 }
 
 /**
- * Extract text from PDF files using PDF.js
+ * Preprocess image for better OCR accuracy
+ * @param {HTMLCanvasElement} originalCanvas - The original canvas with the PDF page
+ * @returns {HTMLCanvasElement} - Preprocessed canvas optimized for OCR
+ */
+function preprocessImageForOCR(originalCanvas) {
+    // Create a new canvas for preprocessing
+    const preprocessedCanvas = document.createElement('canvas');
+    const ctx = preprocessedCanvas.getContext('2d');
+    
+    // Set canvas size to match original
+    preprocessedCanvas.width = originalCanvas.width;
+    preprocessedCanvas.height = originalCanvas.height;
+    
+    // Draw original image to new canvas
+    ctx.drawImage(originalCanvas, 0, 0);
+    
+    // Get image data for processing
+    const imageData = ctx.getImageData(0, 0, preprocessedCanvas.width, preprocessedCanvas.height);
+    const data = imageData.data;
+    
+    // Apply image preprocessing techniques
+    for (let i = 0; i < data.length; i += 4) {
+        // Convert to grayscale using luminance formula
+        const gray = Math.round(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]);
+        
+        // Apply contrast enhancement and binarization
+        // Threshold for black/white conversion (adjust as needed)
+        const threshold = 128;
+        const binaryValue = gray > threshold ? 255 : 0;
+        
+        // Set RGB values to binary result
+        data[i] = binaryValue;     // Red
+        data[i + 1] = binaryValue; // Green
+        data[i + 2] = binaryValue; // Blue
+        // Alpha channel (data[i + 3]) remains unchanged
+    }
+    
+    // Put processed image data back to canvas
+    ctx.putImageData(imageData, 0, 0);
+    
+    return preprocessedCanvas;
+}
+
+/**
+ * Load Tesseract.js OCR library
+ * @returns {Promise<Object>} - Tesseract library object
+ */
+async function loadTesseract() {
+    return new Promise((resolve, reject) => {
+        // Check if Tesseract is already loaded and ready
+        if (window.Tesseract && typeof window.Tesseract.recognize === 'function') {
+            console.log('Tesseract.js already available and ready');
+            resolve(window.Tesseract);
+            return;
+        }
+        
+        // Check if we're already waiting for Tesseract to initialize
+        if (window._tesseractLoading) {
+            console.log('Tesseract.js already being initialized, waiting for completion...');
+            window._tesseractLoading.then(resolve).catch(reject);
+            return;
+        }
+        
+        console.log('Waiting for Tesseract.js to initialize...');
+        
+        // Mark that we're waiting for Tesseract initialization
+        window._tesseractLoading = new Promise((loadResolve, loadReject) => {
+            let attempts = 0;
+            const maxAttempts = 100; // 10 seconds max wait
+            
+            const checkTesseract = () => {
+                attempts++;
+                
+                if (window.Tesseract && typeof window.Tesseract.recognize === 'function') {
+                    console.log('Tesseract.js fully initialized and ready');
+                    loadResolve(window.Tesseract);
+                } else if (attempts < maxAttempts) {
+                    if (attempts % 10 === 0) { // Log every second
+                        console.log(`Waiting for Tesseract.js initialization... attempt ${attempts}/${maxAttempts}`);
+                    }
+                    setTimeout(checkTesseract, 100);
+                } else {
+                    console.error('Tesseract.js failed to initialize after maximum attempts');
+                    loadReject(new Error('Tesseract.js failed to initialize after waiting 10 seconds. Make sure the library is properly loaded.'));
+                }
+            };
+            
+            // Start checking immediately
+            checkTesseract();
+        });
+        
+        window._tesseractLoading.then(resolve).catch(reject);
+    });
+}
+
+/**
+ * Extract text from PDF files using PDF.js and OCR for image-based content
  * @param {File|ArrayBuffer|Object} input - The PDF file, its content as ArrayBuffer, or a file-like object with content
  * @returns {Promise<string>} - Extracted text from the PDF file
  */
@@ -605,10 +759,21 @@ async function extractPdfText(input) {
         }
         
         // Load PDF.js library if not already available
-        let pdfjsLib = window.pdfjsLib;
+        let pdfjsLib = window.pdfjsLib || window.PDFJS;
         if (!pdfjsLib) {
             console.log('PDF.js library not available. Loading it dynamically.');
-            pdfjsLib = await loadPDFJS();
+            try {
+                pdfjsLib = await loadPDFJS();
+            } catch (loadError) {
+                console.error('Failed to load PDF.js:', loadError);
+                // Check one more time if the library is available despite the error
+                pdfjsLib = window.pdfjsLib || window.PDFJS;
+                if (!pdfjsLib) {
+                    throw new Error(`PDF.js library could not be loaded: ${loadError.message}`);
+                } else {
+                    console.log('PDF.js library found despite loading error, continuing with extraction...');
+                }
+            }
         }
         
         // Convert File to ArrayBuffer if needed
@@ -628,12 +793,21 @@ async function extractPdfText(input) {
         console.log(`PDF loaded successfully. Number of pages: ${pdf.numPages}`);
         
         let extractedText = '';
+        let hasTextContent = false;
+        let ocrNeeded = false;
         
-        // Extract text from each page
+        // First pass: Extract text from each page using PDF.js
         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
             try {
                 const page = await pdf.getPage(pageNum);
                 const textContent = await page.getTextContent();
+                
+                console.log(`Page ${pageNum}: Found ${textContent.items.length} text items`);
+                
+                // Debug: Log first few text items to see what we're getting
+                if (textContent.items.length > 0 && pageNum === 1) {
+                    console.log(`First 5 text items on page 1:`, textContent.items.slice(0, 5).map(item => ({ str: item.str, transform: item.transform })));
+                }
                 
                 // Process text items with better spacing and formatting
                 let pageText = '';
@@ -671,9 +845,14 @@ async function extractPdfText(input) {
                     .replace(/[ \t]+/g, ' ') // Replace multiple spaces/tabs with single space
                     .trim();
                 
+                if (pageText.length > 10) {
+                    hasTextContent = true;
+                }
+                
                 extractedText += `--- Page ${pageNum} ---\n${pageText}\n\n`;
                 
                 console.log(`Successfully extracted text from page ${pageNum}, length: ${pageText.length} characters`);
+                console.log(`Page ${pageNum} raw text preview:`, pageText.substring(0, 200) + (pageText.length > 200 ? '...' : ''));
             } catch (pageError) {
                 console.error(`Error extracting text from page ${pageNum}:`, pageError);
                 extractedText += `--- Page ${pageNum} ---\n[Error extracting text from this page: ${pageError.message}]\n\n`;
@@ -681,10 +860,130 @@ async function extractPdfText(input) {
         }
         
         console.log(`Successfully extracted PDF content from ${input.name || 'PDF'}, total length: ${extractedText.length} characters`);
-        return extractedText || 'No text content could be extracted from PDF file.';
+        
+        // Check if we got very little or no text content - if so, try OCR
+        const cleanedText = extractedText.replace(/--- Page \d+ ---\n/g, '').trim();
+        if (cleanedText.length < 50) {
+            console.warn(`PDF appears to be image-based or has very little text content. Extracted length: ${cleanedText.length}. Attempting OCR...`);
+            ocrNeeded = true;
+            
+            try {
+                // Notify user that OCR is starting
+                const fileName = input.name || 'PDF';
+                appendMessage('system', `📄 Processing image-based PDF "${fileName}" with OCR (Optical Character Recognition). This may take a few moments...`);
+                
+                // Load Tesseract.js for OCR
+                const Tesseract = await loadTesseract();
+                console.log('Tesseract.js loaded successfully, starting OCR process...');
+                
+                let ocrText = '';
+                
+                // Second pass: Render pages as images and perform OCR
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    try {
+                        console.log(`Starting OCR for page ${pageNum}...`);
+                        
+                        const page = await pdf.getPage(pageNum);
+                        const viewport = page.getViewport({ scale: 2.0 }); // Higher scale for better OCR accuracy
+                        
+                        // Create canvas to render PDF page
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        
+                        // Render PDF page to canvas
+                        const renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+                        
+                        await page.render(renderContext).promise;
+                        
+                        // Preprocess the image for better OCR accuracy
+                        const preprocessedCanvas = preprocessImageForOCR(canvas);
+                        
+                        // Convert canvas to image data for OCR
+                        const imageData = preprocessedCanvas.toDataURL('image/png');
+                        
+                        console.log(`Performing OCR on page ${pageNum}...`);
+                        
+                        // Perform OCR on the rendered page with optimized settings
+                        const { data: { text } } = await Tesseract.recognize(imageData, 'eng', {
+                            logger: m => {
+                                if (m.status === 'recognizing text') {
+                                    console.log(`OCR progress for page ${pageNum}: ${Math.round(m.progress * 100)}%`);
+                                }
+                            },
+                            tessedit_pageseg_mode: '1',  // Automatic page segmentation with OSD
+                            preserve_interword_spaces: '1',
+                            tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?:;()-[]{}"\'/\\@#$%^&*+=<>|~`'
+                        });
+                        
+                        const cleanedOcrText = text.trim();
+                        if (cleanedOcrText.length > 0) {
+                            ocrText += `--- Page ${pageNum} (OCR) ---\n${cleanedOcrText}\n\n`;
+                            console.log(`OCR completed for page ${pageNum}, extracted ${cleanedOcrText.length} characters`);
+                        } else {
+                            ocrText += `--- Page ${pageNum} (OCR) ---\n[No text detected via OCR]\n\n`;
+                            console.log(`OCR completed for page ${pageNum}, but no text was detected`);
+                        }
+                        
+                    } catch (ocrError) {
+                        console.error(`OCR error for page ${pageNum}:`, ocrError);
+                        ocrText += `--- Page ${pageNum} (OCR) ---\n[OCR failed: ${ocrError.message}]\n\n`;
+                    }
+                }
+                
+                if (ocrText.trim().length > 0) {
+                    const fileName = input.name || 'PDF';
+                    const ocrExtractedText = ocrText.replace(/--- Page \d+ \(OCR\) ---\n/g, '').trim();
+                    
+                    if (ocrExtractedText.length > 50) {
+                        console.log(`OCR successful! Extracted ${ocrExtractedText.length} characters from image-based PDF`);
+                        appendMessage('system', `✅ OCR processing completed for "${fileName}". Successfully extracted ${ocrExtractedText.length} characters of text.`);
+                        return `[OCR Text Extraction from ${fileName}]\n\n${ocrText}`;
+                    } else {
+                        console.warn(`OCR completed but extracted very little text (${ocrExtractedText.length} characters)`);
+                        appendMessage('system', `⚠️ OCR processing completed for "${fileName}", but only extracted ${ocrExtractedText.length} characters. The image quality may be too poor for accurate text recognition.`);
+                    }
+                } else {
+                    appendMessage('system', `❌ OCR processing completed for "${fileName}", but no text was detected in the images.`);
+                }
+                
+            } catch (ocrError) {
+                console.error('OCR processing failed:', ocrError);
+                const fileName = input.name || 'PDF';
+                appendMessage('system', `❌ OCR processing failed for "${fileName}": ${ocrError.message}. The PDF will be processed without OCR.`);
+                // Fall through to original error message
+            }
+            
+            // If OCR failed or didn't find much text, return the original message
+            const fileName = input.name || 'PDF';
+            return `[This PDF (${fileName}) appears to be an image-based/scanned document with ${pdf.numPages} pages. ${ocrNeeded ? 'OCR was attempted but' : ''} No extractable text was found. This could be because:
+
+1. The PDF contains scanned images of text rather than actual text
+2. The PDF is encrypted or password-protected
+3. The text is embedded in a format that cannot be extracted
+4. The image quality is too poor for OCR recognition
+
+${ocrNeeded ? 'OCR (Optical Character Recognition) was attempted but did not yield sufficient results.' : 'To analyze image-based PDFs, OCR (Optical Character Recognition) will be attempted automatically.'}
+
+The PDF was successfully loaded and has ${pdf.numPages} pages, but contains no extractable text content.]`;
+        }
+        
+        return extractedText;
         
     } catch (error) {
         console.error('Error extracting PDF content:', error);
+        console.error('PDF extraction error details:', {
+            errorMessage: error.message,
+            errorStack: error.stack,
+            inputType: typeof input,
+            inputName: input?.name || 'unknown',
+            pdfjsLibAvailable: !!window.pdfjsLib,
+            PDFJSAvailable: !!window.PDFJS
+        });
         return `[Failed to extract PDF content: ${error.message}]`;
     }
 }
@@ -959,6 +1258,13 @@ async function readFileContent(file) {
                 // Process PDF files using PDF.js
                 extractPdfText(file).then(content => {
                     console.log(`Successfully extracted PDF content from ${file.name}, length: ${content.length}`);
+                    
+                    // Check if the content looks like an error message
+                    if (content.includes('[Failed to extract PDF content:') || content.length < 50) {
+                        console.warn(`PDF extraction may have failed for ${file.name}, content length: ${content.length}`);
+                        console.warn(`Content preview: ${content.substring(0, 100)}`);
+                    }
+                    
                     resolve({
                         name: file.name,
                         type: file.type || 'application/pdf',
@@ -966,11 +1272,31 @@ async function readFileContent(file) {
                     });
                 }).catch(error => {
                     console.error(`Error extracting PDF content from ${file.name}:`, error);
-                    // Return error message instead of trying text fallback for PDFs
-                    resolve({
-                        name: file.name,
-                        type: file.type || 'application/pdf',
-                        content: `[Failed to extract PDF content: ${error.message}]`
+                    
+                    // Try a simple text extraction as fallback
+                    console.log(`Attempting text fallback for PDF ${file.name}...`);
+                    readAsText(file).then(textContent => {
+                        console.log(`Text fallback for PDF ${file.name} returned ${textContent.length} characters`);
+                        
+                        // Check if the text content contains any readable text
+                        const hasReadableText = textContent.length > 100 && 
+                                              /[a-zA-Z]{3,}/.test(textContent) && 
+                                              !textContent.includes('PDF') || textContent.includes('%PDF');
+                        
+                        resolve({
+                            name: file.name,
+                            type: file.type || 'application/pdf',
+                            content: hasReadableText ? 
+                                `[PDF processed as raw text - may contain formatting artifacts and binary data]\n\n${textContent.substring(0, 5000)}${textContent.length > 5000 ? '\n\n[Content truncated due to length...]' : ''}` :
+                                `[Failed to extract PDF content: ${error.message}. This appears to be an image-based PDF. OCR (Optical Character Recognition) processing will be attempted automatically for image-based PDFs.]`
+                        });
+                    }).catch(textError => {
+                        console.error(`Text fallback also failed for ${file.name}:`, textError);
+                        resolve({
+                            name: file.name,
+                            type: file.type || 'application/pdf',
+                            content: `[Failed to extract PDF content: ${error.message}. Text fallback also failed: ${textError.message}. This PDF may be image-based, encrypted, or corrupted. OCR processing will be attempted if possible.]`
+                        });
                     });
                 });
             } else if (isDocxFile) {
@@ -1212,6 +1538,20 @@ export function resetUploadedFiles() {
     if (localFileInput) {
         localFileInput.value = '';
     }
+    
+    // Collapse any expanded file previews before removing them
+    try {
+        import('./file-preview-touch-handler.js').then(module => {
+            if (module.collapseAllFilePreviews) {
+                module.collapseAllFilePreviews();
+            }
+        }).catch(error => {
+            console.log('File preview touch handler not available:', error);
+        });
+    } catch (error) {
+        console.log('Error importing file preview touch handler:', error);
+    }
+    
     const filePreviewsExisting = document.querySelector('.file-previews');
     if (filePreviewsExisting) {
         filePreviewsExisting.parentNode.removeChild(filePreviewsExisting);
@@ -1448,4 +1788,12 @@ function inferFileType(fileName) {
     };
     
     return mimeTypes[extension] || 'application/octet-stream';
+}
+
+/**
+ * Removes a file from the uploadedFiles array by file name
+ * @param {string} fileName - The name of the file to remove
+ */
+export function removeUploadedFileByName(fileName) {
+    uploadedFiles = uploadedFiles.filter(file => file.name !== fileName);
 }

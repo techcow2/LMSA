@@ -1,3 +1,6 @@
+#file-removal-icon {
+    display: none !important;
+  }
 body {
     font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
     font-size: 16px;
@@ -3750,6 +3753,21 @@ body.light-theme #clear-system-prompt-modal #close-clear-system-prompt-modal:hov
     padding: 8px 12px;
     background-color: #1a1a1a;
     border-top: 1px solid #2c3e50;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-height: 100px;
+    overflow-y: auto;
+    /* Optimize for touch scrolling */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior: contain;
+}
+
+/* Final light theme override for file preview section */
+body.light-theme .file-previews {
+    background-color: #ffffff5b !important;
+    border-top-color: #bfc0c0 !important;
 }
 
 .file-preview {
@@ -6059,6 +6077,270 @@ body.light-theme .gradient-text {
     gap: 6px;
     max-height: 100px;
     overflow-y: auto;
+    /* Optimize for touch scrolling */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior: contain;
+    /* Performance optimizations for mobile */
+    will-change: scroll-position;
+    transform: translateZ(0);
+    /* Smooth transition for height changes */
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+    /* Cursor to indicate it's interactive */
+    cursor: pointer;
+    /* Position relative for expand indicator */
+    position: relative;
+}
+
+/* Expanded state */
+.file-previews.expanded {
+    max-height: 300px;
+    padding: 12px 16px;
+}
+
+/* Expand indicator */
+.file-previews::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    right: 8px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 6px solid rgba(255, 255, 255, 0.4);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0.7;
+    pointer-events: none; /* Ensure the indicator doesn't interfere with clicks */
+}
+
+.file-previews.expanded::after {
+    transform: rotate(180deg);
+}
+
+/* Hover effect for expand indicator */
+.file-previews:hover::after {
+    opacity: 1;
+    border-top-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Subtle pulse animation for expand indicator on mobile */
+@media (max-width: 768px) {
+    .file-previews::after {
+        animation: expandIndicatorPulse 2s ease-in-out infinite;
+    }
+    
+    .file-previews.expanded::after {
+        animation: none; /* Stop pulsing when expanded */
+    }
+}
+
+@keyframes expandIndicatorPulse {
+    0%, 100% { 
+        opacity: 0.7; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.1);
+    }
+}
+
+/* Light theme support for file previews expansion */
+body.light-theme .file-previews {
+    background-color: #f8f9fa;
+    border-top-color: #dee2e6;
+}
+
+body.light-theme .file-previews::after {
+    border-top-color: rgba(0, 0, 0, 0.4);
+}
+
+body.light-theme .file-previews:hover::after {
+    border-top-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Light theme support for individual file preview items */
+body.light-theme .file-preview {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    color: #374151;
+}
+
+body.light-theme .file-preview:hover {
+    background-color: #f9fafb;
+    border-color: #9ca3af;
+}
+
+body.light-theme .file-preview i {
+    color: #3b82f6;
+}
+
+body.light-theme .file-preview .remove-file {
+    color: #dc2626;
+}
+
+body.light-theme .file-preview .remove-file:hover {
+    color: #b91c1c;
+}
+
+/* File removal modal styles */
+#file-removal-modal {
+    z-index: 2300 !important; /* Higher than all other modals */
+}
+
+#file-removal-modal .modal-content {
+    animation: modalFadeIn 0.3s ease-out forwards;
+}
+
+#file-removal-modal.hidden .modal-content {
+    animation: modalFadeOut 0.3s ease-in forwards;
+}
+
+/* Light theme support for file removal modal */
+body.light-theme #file-removal-modal .modal-content {
+    background-color: #ffffff;
+    border-color: #d1d5db;
+    color: #1f2937;
+}
+
+body.light-theme #file-removal-modal h3 {
+    color: #1f2937;
+}
+
+body.light-theme #file-removal-modal .text-gray-300 {
+    color: #6b7280;
+}
+
+body.light-theme #file-removal-modal .text-gray-200 {
+    color: #374151;
+}
+
+body.light-theme #file-removal-modal .bg-gray-800 {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+}
+
+body.light-theme #file-removal-modal #cancel-file-removal {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+body.light-theme #file-removal-modal #cancel-file-removal:hover {
+    background-color: #d1d5db;
+}
+
+/* Reduce tap highlight during touch interactions */
+.file-preview {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Light theme pulse animation */
+@media (max-width: 768px) {
+    body.light-theme .file-previews::after {
+        animation: expandIndicatorPulseDark 2s ease-in-out infinite;
+    }
+    
+    body.light-theme .file-previews.expanded::after {
+        animation: none;
+    }
+}
+
+@keyframes expandIndicatorPulseDark {
+    0%, 100% { 
+        opacity: 0.4; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.1);
+    }
+}
+
+/* File previews scrollbar styles */
+.file-previews::-webkit-scrollbar {
+    width: 6px;
+}
+
+.file-previews::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.file-previews::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.file-previews::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Light theme scrollbar styles for file previews */
+body.light-theme .file-previews::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .file-previews::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme .file-previews::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile responsive styles for file previews */
+@media (max-width: 768px) {
+    .file-previews {
+        padding: 6px 8px;
+        gap: 4px;
+        max-height: 80px;
+    }
+    
+    .file-previews.expanded {
+        max-height: 250px;
+        padding: 10px 12px;
+    }
+    
+    /* Ensure expand indicator is visible on mobile */
+    .file-previews::after {
+        bottom: 6px;
+        right: 10px;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 7px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    .file-previews::-webkit-scrollbar {
+        width: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .file-previews {
+        padding: 4px 6px;
+        gap: 3px;
+        max-height: 60px;
+    }
+    
+    .file-previews.expanded {
+        max-height: 200px;
+        padding: 8px 10px;
+    }
+    
+    /* Make expand indicator more prominent on small screens */
+    .file-previews::after {
+        bottom: 4px;
+        right: 8px;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 6px solid rgba(255, 255, 255, 0.6);
+    }
+    
+    .file-previews::-webkit-scrollbar {
+        width: 3px;
+    }
 }
 
 .file-preview {
@@ -6862,19 +7144,22 @@ body.light-theme .trash-icon-container:focus {
 /* Enhanced Model Loading Modal Styles */
 #model-loading-modal {
     z-index: 2200; /* Higher than all other modals to ensure it appears on top */
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.85); /* Darker backdrop for better visibility */
 }
 
 #model-loading-modal .modal-content {
     animation: modalFadeInScale 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 
-        0 25px 50px -12px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(59, 130, 246, 0.3),
-        0 0 80px rgba(59, 130, 246, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+        0 32px 64px -12px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(59, 130, 246, 0.4),
+        0 0 120px rgba(59, 130, 246, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    background: var(--modal-bg);
 }
 
 /* Enhanced Loading Spinner Styles */
@@ -6887,11 +7172,17 @@ body.light-theme .trash-icon-container:focus {
 
 .loading-spinner {
     animation: spin 1.2s linear infinite;
-    filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.6)) drop-shadow(0 0 20px rgba(59, 130, 246, 0.3));
+    filter: drop-shadow(0 0 16px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 28px rgba(59, 130, 246, 0.4));
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent;
+    border-top-color: var(--loading-indicator);
+    border-right-color: rgba(59, 130, 246, 0.7);
 }
 
 .loading-pulse {
     animation: ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    border-color: rgba(59, 130, 246, 0.5);
 }
 
 /* Enhanced spinning animations */
@@ -6937,6 +7228,18 @@ body.light-theme .trash-icon-container:focus {
 
 .animate-pulse-slow {
     animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Pulse glow animation for robot icon */
+@keyframes pulse-glow {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 12px rgba(96, 165, 250, 0.7));
+    }
+    50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 20px rgba(96, 165, 250, 1));
+    }
 }
 
 /* Border glow animation */
@@ -7007,14 +7310,17 @@ body.light-theme .trash-icon-container:focus {
 
 .animate-float-1 {
     animation: float-1 3s ease-in-out infinite;
+    box-shadow: 0 0 6px rgba(59, 130, 246, 0.6);
 }
 
 .animate-float-2 {
     animation: float-2 4s ease-in-out infinite;
+    box-shadow: 0 0 8px rgba(147, 51, 234, 0.6);
 }
 
 .animate-float-3 {
     animation: float-3 3.5s ease-in-out infinite;
+    box-shadow: 0 0 6px rgba(96, 165, 250, 0.6);
 }
 
 /* Enhanced modal entrance animation */
@@ -7038,17 +7344,40 @@ body.light-theme .trash-icon-container:focus {
 #model-loading-modal .w-20.h-0\.5 {
     background: linear-gradient(90deg, #3b82f6, #8b5cf6) !important;
     min-height: 2px;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+}
+
+/* Improve info section styling */
+#model-loading-modal .text-gray-400 {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Add subtle glow to bouncing dots */
+#model-loading-modal .w-1\.5.h-1\.5.bg-blue-400 {
+    background-color: var(--loading-indicator) !important;
+    box-shadow: 0 0 6px rgba(59, 130, 246, 0.6);
 }
 
 /* Modal loading content styling */
 #model-loading-modal h2 {
-    text-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
-    filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.2));
+    text-shadow: 0 0 40px rgba(59, 130, 246, 0.6);
+    filter: drop-shadow(0 2px 6px rgba(59, 130, 246, 0.3));
+    color: var(--modal-title);
+    font-weight: 700;
+    letter-spacing: 0.02em;
 }
 
 #model-loading-modal h2 i.fa-robot {
-    color: #60a5fa;
-    filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.5));
+    color: var(--loading-indicator);
+    filter: drop-shadow(0 0 12px rgba(96, 165, 250, 0.7));
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+#model-loading-modal #model-loading-message {
+    color: var(--modal-text);
+    font-weight: 500;
+    opacity: 0.9;
 }
 
 #model-loading-modal #model-loading-name {
@@ -7056,6 +7385,10 @@ body.light-theme .trash-icon-container:focus {
     max-width: 100%;
     text-align: center;
     transition: all 0.3s ease;
+    color: var(--loading-indicator);
+    font-weight: 600;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 #model-loading-modal .model-name-container {
@@ -7065,55 +7398,64 @@ body.light-theme .trash-icon-container:focus {
 #model-loading-modal .model-name-container::before {
     content: '';
     position: absolute;
-    inset: -2px;
-    background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+    inset: -3px;
+    background: linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.15));
     border-radius: inherit;
-    opacity: 0.5;
+    opacity: 0.6;
     animation: pulse-slow 2s ease-in-out infinite;
 }
 
 /* Enhanced light theme support for loading modal */
+body.light-theme #model-loading-modal {
+    background: rgba(15, 23, 42, 0.75); /* Better contrast for light theme */
+}
+
 body.light-theme #model-loading-modal .modal-content {
     box-shadow: 
-        0 25px 50px -12px rgba(0, 0, 0, 0.2),
-        0 0 0 1px rgba(59, 130, 246, 0.15),
-        0 0 80px rgba(59, 130, 246, 0.08);
+        0 32px 64px -12px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(59, 130, 246, 0.25),
+        0 0 120px rgba(59, 130, 246, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    border: 2px solid rgba(59, 130, 246, 0.4);
+    background: var(--modal-bg);
 }
 
 body.light-theme #model-loading-modal .loading-spinner {
     border-color: transparent;
-    border-top-color: #3b82f6;
-    border-right-color: #60a5fa;
-    filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.4)) drop-shadow(0 0 20px rgba(59, 130, 246, 0.2));
+    border-top-color: #1e40af;
+    border-right-color: #3b82f6;
+    filter: drop-shadow(0 0 18px rgba(30, 64, 175, 0.6)) drop-shadow(0 0 30px rgba(30, 64, 175, 0.3));
 }
 
 body.light-theme #model-loading-modal .loading-pulse {
-    border-color: rgba(59, 130, 246, 0.4);
+    border-color: rgba(30, 64, 175, 0.5);
 }
 
 body.light-theme #model-loading-modal h2 {
-    color: #2563eb !important;
-    text-shadow: 0 0 30px rgba(37, 99, 235, 0.3);
-    filter: drop-shadow(0 2px 4px rgba(37, 99, 235, 0.2));
+    color: #1e40af !important;
+    text-shadow: 0 0 40px rgba(30, 64, 175, 0.5);
+    filter: drop-shadow(0 2px 6px rgba(30, 64, 175, 0.3));
 }
 
 body.light-theme #model-loading-modal h2 i.fa-robot {
     color: #2563eb !important;
-    filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.5));
+    filter: drop-shadow(0 0 15px rgba(37, 99, 235, 0.8));
 }
 
 body.light-theme #model-loading-modal #model-loading-message {
-    color: #374151 !important;
+    color: #1f2937 !important;
+    font-weight: 600;
 }
 
 body.light-theme #model-loading-modal #model-loading-name {
-    color: #1d4ed8 !important;
-    background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1)) !important;
-    border-color: rgba(59, 130, 246, 0.3) !important;
+    color: #1e40af !important;
+    background: rgba(30, 64, 175, 0.1) !important;
+    border: 1px solid rgba(30, 64, 175, 0.3) !important;
 }
 
 body.light-theme #model-loading-modal .text-gray-400 {
-    color: #6b7280 !important;
+    color: #4b5563 !important;
+    font-weight: 500;
 }
 
 body.light-theme #model-loading-modal .bg-gradient-to-r.from-blue-400.to-purple-400 {
@@ -7123,11 +7465,13 @@ body.light-theme #model-loading-modal .bg-gradient-to-r.from-blue-400.to-purple-
 body.light-theme #model-loading-modal .animate-float-1,
 body.light-theme #model-loading-modal .animate-float-2,
 body.light-theme #model-loading-modal .animate-float-3 {
-    filter: brightness(0.8);
+    background-color: rgba(30, 64, 175, 0.9) !important;
+    box-shadow: 0 0 8px rgba(30, 64, 175, 0.5) !important;
 }
 
 body.light-theme #model-loading-modal .w-1\.5.h-1\.5.bg-blue-400 {
-    background-color: #3b82f6 !important;
+    background-color: #1e40af !important;
+    box-shadow: 0 0 6px rgba(30, 64, 175, 0.6) !important;
 }
 
 body.light-theme #model-loading-modal .animate-border-glow {
