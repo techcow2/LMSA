@@ -13,17 +13,22 @@
   </a>
 </p>
 
-## 🆕 What's New in Version 5.2
+## 🆕 What's New in Version 5.3
 
-🎉 **Latest Update: Version 5.2** - Now Available!
+🎉 **Latest Update: Version 5.3** - Now Available!
 
-### Bug Fixes
+### New Features
+- **Vision Language Model Support**: Added full support for vision language models (VLMs). You can now upload and analyze images alongside text, enabling multimodal conversations with AI models that can understand and discuss visual content.
+
+### Previous Updates
 - **Fixed PDF File Attachments**: Resolved the issue where PDF files weren't allowed as attachments. You can now upload and analyze PDF documents seamlessly with your AI models.
 
 ### Improvements
+- Enhanced multimodal processing capabilities
+- Improved image analysis performance
+- Better error handling for vision model interactions
 - Enhanced file processing stability
 - Improved document analysis performance
-- Better error handling for file uploads
 
 ---
 
@@ -44,6 +49,7 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 - Connect to LM Studio running on your computer
 - Chat with AI models through a mobile-optimized interface
 - Upload and analyze documents using AI
+- Upload and analyze images with vision language models
 - Customize AI behavior with system prompts and temperature settings
 
 ## 🔓 Project Status
@@ -73,6 +79,8 @@ The current version is available through GitHub and includes:
 
 ### AI Capabilities
 - **Document analysis** - Chat with your files
+- **Image analysis** - Upload and discuss images with vision language models
+- **Multimodal interactions** - Combine text, documents, and images in conversations
 - **Custom instructions** - Personalize AI responses
 - **Precision tuning** - Adjust response creativity and accuracy  
 - **System prompt** - Set context for more relevant responses
@@ -101,7 +109,7 @@ The current version is available through GitHub and includes:
 
 ## 💻 How It Works
 
-1. Start LM Studio on your computer and load your favorite language model
+1. Start LM Studio on your computer and load your favorite language model (including vision language models)
 2. Activate the server feature in LM Studio (usually on port 1234)
 3. Connect the Android app to your computer using your local network
 4. Start chatting with your AI models from anywhere in your home
@@ -110,6 +118,7 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - Access powerful AI language models from your mobile device
 - Chat with AI models using a simple, intuitive interface
 - Upload documents for the AI to analyze and discuss
+- Upload images for vision language models to analyze and discuss
 - Customize AI behavior through temperature and system prompt settings
 
 ## 👥 Perfect For
@@ -118,12 +127,13 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - Privacy-conscious users who prefer keeping their data local
 - Developers testing different prompts and model responses
 - Researchers who need to include file content in their AI interactions
+- Visual content creators who want to analyze and discuss images with AI
 - Anyone who wants the convenience of mobile access to powerful AI
 
 ## 🔧 Technical Requirements
 
 - Android 5.0 or higher
-- LM Studio installed and running on a computer with a suitable language model
+- LM Studio installed and running on a computer with a suitable language model (text or vision)
 - Both devices connected to the same network
 
 ## 🚀 Get Started Today
