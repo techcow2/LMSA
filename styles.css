@@ -3259,8 +3259,7 @@ body.light-theme #send-context-menu .menu-header {
     max-width: 100% !important;
     box-sizing: border-box !important;
     overflow-x: hidden !important;
-    /* Hardware acceleration removed - not beneficial for static elements */
-    backface-visibility: hidden !important;
+
     transform-style: preserve-3d !important;
     contain: layout !important;
     isolation: isolate !important;
@@ -6379,9 +6378,7 @@ body.light-theme .gradient-text {
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
     overscroll-behavior: contain;
-    /* Performance optimizations for mobile */
-    will-change: scroll-position;
-    transform: translateZ(0);
+    /* Mobile styles */
     /* Smooth transition for height changes */
     transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
     /* Cursor to indicate it's interactive */
@@ -7844,7 +7841,7 @@ body.light-theme #model-loading-modal .w-20.h-0\.5 {
     #model-loading-modal .animate-float-1,
     #model-loading-modal .animate-float-2,
     #model-loading-modal .animate-float-3 {
-        display: none; /* Hide particles on mobile for better performance */
+        display: none; /* Hide particles on mobile */
     }
 }
 
