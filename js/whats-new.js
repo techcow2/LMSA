@@ -10,7 +10,7 @@ const dontShowAgainToggle = document.getElementById('dont-show-again');
 const versionElement = document.getElementById('whats-new-version');
 
 // Local storage keys
-const WHATS_NEW_VERSION = '5.3'; // Updated for Vision Language Model support
+const WHATS_NEW_VERSION = '5.4'; // Updated for Vision Language Model support
 const WHATS_NEW_SEEN_KEY = 'whatsNewSeen';
 const WHATS_NEW_DONT_SHOW_KEY = 'whatsNewDontShow';
 

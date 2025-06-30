@@ -68,6 +68,126 @@ export function removeThinkTags(text) {
 // Utility functions
 
 /**
+ * Detects if content contains HTML-like patterns that should be displayed as code
+ * @param {string} content - The content to check
+ * @returns {boolean} - True if content appears to be HTML code
+ */
+function isHtmlContent(content) {
+    if (!content) return false;
+    
+    // First check if content is wrapped in code blocks
+    const codeBlockMatch = content.match(/```html?\s*\n([\s\S]*?)```/i);
+    if (codeBlockMatch) {
+        // Extract the content from the code block and check if it's HTML
+        const codeContent = codeBlockMatch[1];
+        return isHtmlContentRaw(codeContent);
+    }
+    
+    // Check for HTML_CODE_BLOCK markers and extract content
+    if (content.includes('[HTML_CODE_BLOCK_START]') && content.includes('[HTML_CODE_BLOCK_END]')) {
+        const startMarker = content.indexOf('[HTML_CODE_BLOCK_START]');
+        const endMarker = content.indexOf('[HTML_CODE_BLOCK_END]');
+        if (startMarker !== -1 && endMarker !== -1) {
+            const markerLength = 22; // Length of [HTML_CODE_BLOCK_START]
+            const extractedContent = content.substring(startMarker + markerLength, endMarker);
+            return isHtmlContentRaw(extractedContent);
+        }
+    }
+    
+    // Check raw content
+    return isHtmlContentRaw(content);
+}
+
+/**
+ * Detects if raw content contains HTML-like patterns
+ * @param {string} content - The raw content to check
+ * @returns {boolean} - True if content appears to be HTML code
+ */
+function isHtmlContentRaw(content) {
+    if (!content) return false;
+    
+    // Check for HTML patterns
+    const htmlPatterns = [
+        /<!DOCTYPE\s+html/i,
+        /<html[\s>]/i,
+        /<head[\s>]/i,
+        /<body[\s>]/i,
+        /<\/html>/i,
+        /<\/head>/i,
+        /<\/body>/i,
+        /<div[\s>]/i,
+        /<span[\s>]/i,
+        /<p[\s>]/i,
+        /<h[1-6][\s>]/i,
+        /<meta[\s>]/i,
+        /<title[\s>]/i,
+        /<style[\s>]/i,
+        /<script[\s>]/i,
+        /<link[\s>]/i
+    ];
+    
+    // Check if content matches HTML patterns
+    return htmlPatterns.some(pattern => pattern.test(content));
+}
+
+/**
+ * Formats HTML content for display as code text
+ * @param {string} htmlContent - The HTML content to format
+ * @returns {string} - Formatted HTML for display
+ */
+function formatHtmlAsCode(htmlContent) {
+    let content = htmlContent;
+    
+    // Extract content from code blocks if present
+    const codeBlockMatch = content.match(/```html?\s*\n([\s\S]*?)```/i);
+    if (codeBlockMatch) {
+        content = codeBlockMatch[1];
+    }
+    
+    // Remove HTML_CODE_BLOCK markers if present
+    if (content.includes('[HTML_CODE_BLOCK_START]') && content.includes('[HTML_CODE_BLOCK_END]')) {
+        const startMarker = content.indexOf('[HTML_CODE_BLOCK_START]');
+        const endMarker = content.indexOf('[HTML_CODE_BLOCK_END]');
+        if (startMarker !== -1 && endMarker !== -1) {
+            const markerLength = 22; // Length of [HTML_CODE_BLOCK_START]
+            content = content.substring(startMarker + markerLength, endMarker);
+        }
+    }
+    
+    // Remove other HTML markers
+    content = content
+        .replace(/\[HTML_CODE_BLOCK\]/g, '')
+        .replace(/\[\/HTML_CODE_BLOCK\]/g, '')
+        .replace(/\[HTMLCODEBLOCK\]/g, '')
+        .replace(/\[\/HTMLCODEBLOCK\]/g, '')
+        .replace(/\[HTML_CODE_BLOCK_EXACT\]/g, '')
+        .replace(/\[\/HTML_CODE_BLOCK_EXACT\]/g, '');
+    
+    // Escape HTML entities to prevent rendering
+    const escaped = content
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    
+    // Split into lines and format each line
+    const lines = escaped.split('\n');
+    const formattedLines = lines.map(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return '';
+        
+        // Add proper indentation based on original spacing
+        const leadingSpaces = line.length - line.trimStart().length;
+        const indent = '&nbsp;'.repeat(leadingSpaces);
+        
+        return `<div class="html-code-line">${indent}${trimmed}</div>`;
+    }).filter(line => line);
+    
+    return formattedLines.join('\n');
+}
+
+/**
  * Sanitizes input for non-reasoning models
  * @param {string} input - The input text to sanitize
  * @returns {string} - Sanitized HTML
@@ -75,6 +195,12 @@ export function removeThinkTags(text) {
 export function basicSanitizeInput(input) {
     // First, remove any <think> tags that might be present
     let processedInput = input.replace(/<think>[\s\S]*?<\/think>/g, '');
+
+    // Check if the entire content appears to be HTML code
+    if (isHtmlContent(processedInput)) {
+        // Format as HTML code display
+        return `<div class="html-code-container">${formatHtmlAsCode(processedInput)}</div>`;
+    }
 
     // Escape HTML for XSS prevention
     const div = document.createElement('div');
@@ -127,9 +253,24 @@ export function basicSanitizeInput(input) {
     // Handle paragraphs - treat all newlines as paragraph breaks
     // First, split the text by newlines and wrap each paragraph in <p> tags
     const paragraphs = sanitized.split(/\n/);
-    sanitized = paragraphs.map(p => p.trim() ? `<p>${p}</p>` : '').join('\n');
+    sanitized = paragraphs.map(p => {
+        const trimmed = p.trim();
+        if (!trimmed) return '';
+        
+        // Check if this line contains HTML-like content that should be displayed as text
+        // Look for patterns like &lt;tag&gt; which indicate escaped HTML
+        const hasEscapedHtml = /&lt;\/?[a-zA-Z][^&]*&gt;/.test(trimmed);
+        
+        if (hasEscapedHtml) {
+            // For lines containing escaped HTML, use a pre-formatted style to preserve formatting
+            return `<div class="html-code-line">${trimmed}</div>`;
+        } else {
+            // Regular paragraph handling
+            return `<p>${trimmed}</p>`;
+        }
+    }).join('\n');
 
-    // Add extra spacing between paragraphs with CSS
+    // Add extra spacing between regular paragraphs with CSS
     sanitized = sanitized.replace(/<\/p>\s*<p>/g, '</p><p style="margin-top: 1.5em;">');
 
     return sanitized;
@@ -159,6 +300,30 @@ export function sanitizeInput(input) {
             });
             hasThinkTag = true;
         }
+    }
+
+    // Remove think tags to check if remaining content is HTML
+    const contentWithoutThink = processedInput.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+    
+    // Check if the content (excluding think tags) appears to be HTML code
+    if (contentWithoutThink && isHtmlContent(contentWithoutThink)) {
+        // Format as HTML code display, but preserve think tags if they exist
+        let result = '';
+        
+        // Add think sections first if they exist
+        if (hasThinkTag) {
+            thinkMatches.forEach(match => {
+                result += `<div class="think"><div class="reasoning-intro"><i class="fas fa-brain"></i> Reasoning Process<span class="reasoning-toggle" onclick="toggleReasoningVisibility(this)" title="Toggle visibility">[<span class="toggle-text">Hide</span>]</span></div><div class="reasoning-content">${match.content.split('\n\n').map(paragraph => {
+                    if (!paragraph.trim()) return '';
+                    return `<div class="reasoning-step">${paragraph.trim()}</div>`;
+                }).join('')}</div></div>`;
+            });
+        }
+        
+        // Add the HTML content formatted as code
+        result += `<div class="html-code-container">${formatHtmlAsCode(contentWithoutThink)}</div>`;
+        
+        return result;
     }
 
     // Now escape HTML for XSS prevention
@@ -267,9 +432,24 @@ export function sanitizeInput(input) {
     // Handle paragraphs - treat all newlines as paragraph breaks
     // First, split the text by newlines and wrap each paragraph in <p> tags
     const paragraphs = sanitized.split(/\n/);
-    sanitized = paragraphs.map(p => p.trim() ? `<p>${p}</p>` : '').join('\n');
+    sanitized = paragraphs.map(p => {
+        const trimmed = p.trim();
+        if (!trimmed) return '';
+        
+        // Check if this line contains HTML-like content that should be displayed as text
+        // Look for patterns like &lt;tag&gt; which indicate escaped HTML
+        const hasEscapedHtml = /&lt;\/?[a-zA-Z][^&]*&gt;/.test(trimmed);
+        
+        if (hasEscapedHtml) {
+            // For lines containing escaped HTML, use a pre-formatted style to preserve formatting
+            return `<div class="html-code-line">${trimmed}</div>`;
+        } else {
+            // Regular paragraph handling
+            return `<p>${trimmed}</p>`;
+        }
+    }).join('\n');
 
-    // Add extra spacing between paragraphs with CSS
+    // Add extra spacing between regular paragraphs with CSS
     sanitized = sanitized.replace(/<\/p>\s*<p>/g, '</p><p style="margin-top: 1.5em;">');
 
     // Close thinking section div if it was opened
@@ -296,418 +476,290 @@ export function escapeHtml(unsafe) {
 }
 
 /**
- * Initializes Monaco Editor for code blocks with performance optimizations
+ * Initializes basic code blocks with copy functionality
  * @param {HTMLElement} element - The element containing code blocks
  */
 export function initializeCodeMirror(element) {
     if (!element) return;
 
-    // Use a more efficient scheduling approach with a longer timeout
-    // This ensures the browser has time to finish other critical operations first
     setTimeout(() => {
         const contentContainer = element.querySelector('.message-content');
         if (!contentContainer) return;
 
-        // Handle multiline pre blocks (for copy functionality)
-        const multilinePreBlocks = contentContainer.querySelectorAll('pre');
+        // Use event delegation to handle copy button clicks for all code containers
+        // This avoids the issue of multiple event listeners on the same element
+        if (!contentContainer.hasAttribute('data-copy-delegation-added')) {
+            contentContainer.setAttribute('data-copy-delegation-added', 'true');
+            
+            contentContainer.addEventListener('click', (e) => {
+                // Handle HTML code container clicks
+                const htmlContainer = e.target.closest('.html-code-container');
+                if (htmlContainer) {
+                    const rect = htmlContainer.getBoundingClientRect();
+                    const isTopRightCorner = (
+                        e.clientX >= rect.right - 100 &&
+                        e.clientX <= rect.right &&
+                        e.clientY >= rect.top &&
+                        e.clientY <= rect.top + 40
+                    );
 
-        // Add click handlers for the copy button
-        multilinePreBlocks.forEach(pre => {
-            // Add click handler for the copy button (::before pseudo-element)
-            pre.addEventListener('click', (e) => {
-                // Check if click was in the top-right corner (where the button is)
-                const rect = pre.getBoundingClientRect();
-                const isTopRightCorner = (
-                    e.clientX >= rect.right - 40 &&
-                    e.clientX <= rect.right &&
-                    e.clientY >= rect.top &&
-                    e.clientY <= rect.top + 40
-                );
+                    if (isTopRightCorner) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        debugLog('Click on HTML copy button');
+                        
+                        // Extract the original HTML content from the container
+                        const htmlLines = htmlContainer.querySelectorAll('.html-code-line');
+                        let htmlContent = '';
+                        
+                        htmlLines.forEach(line => {
+                            // Get the text content and decode HTML entities
+                            let lineText = line.textContent || '';
+                            // Remove the &nbsp; characters used for indentation
+                            lineText = lineText.replace(/\u00A0/g, ' ');
+                            htmlContent += lineText + '\n';
+                        });
+                        
+                        // Remove the last newline
+                        htmlContent = htmlContent.replace(/\n$/, '');
+                        
+                        debugLog('Copying HTML content:', htmlContent);
+                        
+                        copyToClipboard(htmlContent);
 
-                const isBottomRightCorner = (
-                    e.clientX >= rect.right - 40 &&
-                    e.clientX <= rect.right &&
-                    e.clientY >= rect.bottom - 40 &&
-                    e.clientY <= rect.bottom
-                );
-
-                // Get the computed style to check if we're hovering over the ::before or ::after elements
-                // This is more reliable than position detection
-                const computedStyle = window.getComputedStyle(pre, '::before');
-                const buttonVisible = computedStyle.getPropertyValue('content') !== 'none';
-
-                // Special handling if clicking on a Monaco container's parent (the pre tag was replaced)
-                if (pre.classList.contains('monaco-container')) {
-                    debugLog('Click on Monaco container');
-                    const editor = pre.querySelector('.monaco-editor');
-                    if (editor && isTopRightCorner) {
-                        // Clicked on top corner of Monaco editor, copy its contents
-                        let editorContent = pre.getAttribute('data-original-content') || '';
-                        // Remove thinking tags from the content before copying (safety measure)
-                        editorContent = removeThinkTags(editorContent);
-                        copyToClipboard(editorContent);
-                        pre.setAttribute('data-copied', 'true');
+                        // Visual feedback
+                        htmlContainer.setAttribute('data-copied', 'true');
                         setTimeout(() => {
-                            pre.removeAttribute('data-copied');
+                            htmlContainer.removeAttribute('data-copied');
+                        }, 2000);
+                        return;
+                    }
+                }
+
+                // Handle pre element clicks
+                const preElement = e.target.closest('pre[data-multiline="true"]');
+                if (preElement) {
+                    const rect = preElement.getBoundingClientRect();
+                    const isTopRightCorner = (
+                        e.clientX >= rect.right - 40 &&
+                        e.clientX <= rect.right &&
+                        e.clientY >= rect.top &&
+                        e.clientY <= rect.top + 40
+                    );
+
+                    // Get the computed style to check if we're hovering over the ::before element
+                    const computedStyle = window.getComputedStyle(preElement, '::before');
+                    const buttonVisible = computedStyle.getPropertyValue('content') !== 'none';
+
+                    // If clicked in top-right corner or on "Copy" button
+                    if (isTopRightCorner && buttonVisible) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        debugLog('Click on copy button');
+                        // Extract text content from the pre element
+                        let text = preElement.textContent || "";
+
+                        // Create a temporary div to decode HTML entities
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = text;
+                        text = tempDiv.textContent || tempDiv.innerText || "";
+
+                        // Remove thinking tags from the text before copying
+                        text = removeThinkTags(text);
+
+                        // Log the copied text for debugging
+                        debugLog('Copying text:', text);
+
+                        copyToClipboard(text);
+
+                        // Visual feedback
+                        preElement.setAttribute('data-copied', 'true');
+                        setTimeout(() => {
+                            preElement.removeAttribute('data-copied');
                         }, 2000);
                     }
-                    return;
-                }
-
-                // If clicked in top-right corner or on "Copy" button
-                if (isTopRightCorner && buttonVisible) {
-                    debugLog('Click on copy button');
-                    // Extract text content from the pre element
-                    let text = pre.textContent || "";
-
-                    // Create a temporary div to decode HTML entities
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = text;
-                    text = tempDiv.textContent || tempDiv.innerText || "";
-
-                    // Remove thinking tags from the text before copying
-                    text = removeThinkTags(text);
-
-                    // Log the copied text for debugging
-                    debugLog('Copying text:', text);
-
-                    copyToClipboard(text);
-
-                    // Visual feedback
-                    pre.setAttribute('data-copied', 'true');
-                    setTimeout(() => {
-                        pre.removeAttribute('data-copied');
-                    }, 2000);
                 }
             });
-        });
+        }
 
         const codeBlocks = contentContainer.querySelectorAll('pre code');
 
         // No code blocks found, nothing to do
         if (!codeBlocks.length) return;
 
-        // For performance, only initialize Monaco editors if they're visible
-        // or will soon be visible in the viewport
-        const isInViewport = (el) => {
-            const rect = el.getBoundingClientRect();
-            // Element is in viewport or just outside (within 500px)
-            return (
-                rect.top >= -500 &&
-                rect.left >= -100 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + 500 &&
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth) + 100
-            );
-        };
+        // Process code blocks to ensure they have proper styling and copy functionality
+        codeBlocks.forEach(block => {
+            const pre = block.parentNode;
+            const language = block.className.replace('language-', '') || 'plaintext';
+            
+            // Add language as data attribute for styling
+            pre.setAttribute('data-language', language);
+            pre.setAttribute('data-multiline', 'true');
 
-        // Only process visible code blocks immediately
-        const visibleBlocks = Array.from(codeBlocks).filter(block => {
-            // Skip if this block is already processed with Monaco
-            if (block.closest('.monaco-container')) return false;
-            return isInViewport(block);
+            // Get the code content, preserving whitespace and newlines
+            let codeContent = block.innerHTML;
+
+            // Process block content
+            codeContent = codeContent.replace(/<br\s*\/?>/g, '\n');
+            codeContent = decodeHtmlEntities(codeContent);
+
+            // Check for special HTML markers and clean them up
+            const hasHtmlMarkers = codeContent.includes('[HTML_CODE_BLOCK') ||
+                                 codeContent.includes('[HTMLCODEBLOCK');
+
+            if (hasHtmlMarkers) {
+                // Find and extract content between markers
+                let startMarker = -1, endMarker = -1, markerLength = 0;
+
+                if (codeContent.includes('[HTML_CODE_BLOCK_START]')) {
+                    startMarker = codeContent.indexOf('[HTML_CODE_BLOCK_START]');
+                    endMarker = codeContent.indexOf('[HTML_CODE_BLOCK_END]');
+                    markerLength = 22;
+                } else if (codeContent.includes('[HTMLCODEBLOCK]')) {
+                    startMarker = codeContent.indexOf('[HTMLCODEBLOCK]');
+                    endMarker = codeContent.indexOf('[/HTMLCODEBLOCK]');
+                    markerLength = 14;
+                } else if (codeContent.includes('[HTML_CODE_BLOCK]')) {
+                    startMarker = codeContent.indexOf('[HTML_CODE_BLOCK]');
+                    endMarker = codeContent.indexOf('[/HTML_CODE_BLOCK]');
+                    markerLength = 17;
+                }
+
+                if (startMarker !== -1 && endMarker !== -1) {
+                    codeContent = codeContent.substring(startMarker + markerLength, endMarker);
+                }
+            }
+
+            // Clean up any remaining markers
+            codeContent = codeContent
+                .replace(/\[HTMLCODEBLOCKSTART\]/g, '')
+                .replace(/\[HTMLCODEBLOCKEND\]/g, '')
+                .replace(/\[HTML_CODE_BLOCK\]/g, '')
+                .replace(/\[\/HTML_CODE_BLOCK\]/g, '')
+                .replace(/\[HTMLCODEBLOCK\]/g, '')
+                .replace(/\[\/HTMLCODEBLOCK\]/g, '')
+                .replace(/\[HTML_CODE_BLOCK_EXACT\]/g, '')
+                .replace(/\[\/HTML_CODE_BLOCK_EXACT\]/g, '');
+
+            // Update the block content
+            block.textContent = codeContent;
         });
+    }, 50);
+}
 
-        const offscreenBlocks = Array.from(codeBlocks).filter(block => {
-            // Skip if this block is already processed with Monaco
-            if (block.closest('.monaco-container')) return false;
-            return !isInViewport(block);
-        });
-
-        // Process visible blocks with longer delay to avoid UI freeze
-        if (visibleBlocks.length > 0) {
-            setTimeout(() => {
-                // Process one block at a time to avoid blocking the UI
-                processCodeBlocks(visibleBlocks.slice(0, 1));
-
-                // If there are more blocks, schedule them with a delay
-                if (visibleBlocks.length > 1) {
-                    setTimeout(() => {
-                        processCodeBlocks(visibleBlocks.slice(1));
-                    }, 250);
+/**
+ * Converts HTML content to formatted plain text, preserving paragraph breaks and line spacing
+ * @param {HTMLElement|string} content - The HTML element or HTML string to convert
+ * @returns {string} - Formatted plain text with preserved spacing
+ */
+export function htmlToFormattedText(content) {
+    let element;
+    
+    if (typeof content === 'string') {
+        // Create a temporary element to parse the HTML string
+        element = document.createElement('div');
+        element.innerHTML = content;
+    } else if (content instanceof HTMLElement) {
+        // Clone the element to avoid modifying the original
+        element = content.cloneNode(true);
+    } else {
+        return '';
+    }
+    
+    // Remove any thinking/reasoning sections from the clone
+    const thinkSections = element.querySelectorAll('.think, .reasoning-intro, .reasoning-content, .reasoning-step');
+    thinkSections.forEach(section => section.remove());
+    
+    // Function to recursively convert HTML to formatted text
+    function processNode(node) {
+        let result = '';
+        
+        for (let child of node.childNodes) {
+            if (child.nodeType === Node.TEXT_NODE) {
+                // Add text content, preserving whitespace
+                const text = child.textContent;
+                result += text;
+            } else if (child.nodeType === Node.ELEMENT_NODE) {
+                const tagName = child.tagName.toLowerCase();
+                
+                switch (tagName) {
+                    case 'p':
+                        // Paragraphs get double line breaks
+                        result += processNode(child) + '\n\n';
+                        break;
+                    case 'div':
+                        // Divs get single line breaks unless they're empty
+                        const divContent = processNode(child);
+                        if (divContent.trim()) {
+                            result += divContent + '\n';
+                        }
+                        break;
+                    case 'br':
+                        // Line breaks
+                        result += '\n';
+                        break;
+                    case 'h1':
+                    case 'h2':
+                    case 'h3':
+                    case 'h4':
+                    case 'h5':
+                    case 'h6':
+                        // Headers get extra spacing
+                        result += '\n' + processNode(child) + '\n\n';
+                        break;
+                    case 'ul':
+                    case 'ol':
+                        // Lists get spacing before and after
+                        result += '\n' + processNode(child) + '\n';
+                        break;
+                    case 'li':
+                        // List items get bullet points or numbers (simplified to bullets)
+                        result += '• ' + processNode(child) + '\n';
+                        break;
+                    case 'blockquote':
+                        // Blockquotes get indentation
+                        const quoteContent = processNode(child);
+                        result += '\n' + quoteContent.split('\n').map(line => 
+                            line.trim() ? '> ' + line : ''
+                        ).join('\n') + '\n\n';
+                        break;
+                    case 'pre':
+                    case 'code':
+                        // Code blocks preserve formatting
+                        result += processNode(child);
+                        break;
+                    case 'strong':
+                    case 'b':
+                        // Bold text (keep as is for plain text)
+                        result += processNode(child);
+                        break;
+                    case 'em':
+                    case 'i':
+                        // Italic text (keep as is for plain text)
+                        result += processNode(child);
+                        break;
+                    default:
+                        // For other elements, just process their content
+                        result += processNode(child);
+                        break;
                 }
-            }, 200);
+            }
         }
-
-        // Process offscreen blocks with a much longer delay
-        if (offscreenBlocks.length > 0) {
-            setTimeout(() => {
-                processCodeBlocks(offscreenBlocks);
-            }, 800);
-        }
-
-        // Helper function to process code blocks, now processing one at a time
-        function processCodeBlocks(blocks) {
-            if (!blocks || blocks.length === 0) return;
-
-            // Process block by block with delays
-            const processNextBlock = (index) => {
-                if (index >= blocks.length) return;
-
-                const block = blocks[index];
-                const language = block.className.replace('language-', '') || 'plaintext';
-                const monacoContainer = document.createElement('div');
-                monacoContainer.className = 'monaco-container';
-                // Add language as data attribute for styling
-                monacoContainer.setAttribute('data-language', language);
-
-                // Add touch-specific attributes to enable touch scrolling
-                monacoContainer.style.webkitOverflowScrolling = 'touch';
-                monacoContainer.style.touchAction = 'pan-y';
-                monacoContainer.style.overscrollBehavior = 'contain';
-
-                // Add a single touch event handler to prevent parent container from handling touch events
-                // This will let our custom touch handler in the Monaco editor handle the scrolling
-                monacoContainer.addEventListener('touchmove', function(e) {
-                    // If the touch is within the Monaco editor, stop propagation
-                    if (e.target.closest('.monaco-editor') ||
-                        e.target.closest('.monaco-scrollable-element') ||
-                        e.target.closest('.view-lines')) {
-                        e.stopPropagation();
-                    }
-                }, { passive: false });
-
-                // Replace the pre element with our Monaco container
-                block.parentNode.replaceWith(monacoContainer);
-
-                // Transfer the data-has-thinking attribute if it exists
-                const hasThinking = block.parentNode.getAttribute('data-has-thinking');
-                if (hasThinking) {
-                    monacoContainer.setAttribute('data-has-thinking', hasThinking);
-                }
-
-                // Get the code content, preserving whitespace and newlines
-                let codeContent = block.innerHTML;
-
-                // Process block content
-                codeContent = codeContent.replace(/<br\s*\/?>/g, '\n');
-                codeContent = decodeHtmlEntities(codeContent);
-
-                // Check for special HTML markers
-                const hasHtmlMarkers = codeContent.includes('[HTML_CODE_BLOCK') ||
-                                     codeContent.includes('[HTMLCODEBLOCK');
-
-                if (hasHtmlMarkers) {
-                    // Find and extract content between markers
-                    let startMarker = -1, endMarker = -1, markerLength = 0;
-
-                    if (codeContent.includes('[HTML_CODE_BLOCK_START]')) {
-                        startMarker = codeContent.indexOf('[HTML_CODE_BLOCK_START]');
-                        endMarker = codeContent.indexOf('[HTML_CODE_BLOCK_END]');
-                        markerLength = 22;
-                    } else if (codeContent.includes('[HTMLCODEBLOCK]')) {
-                        startMarker = codeContent.indexOf('[HTMLCODEBLOCK]');
-                        endMarker = codeContent.indexOf('[/HTMLCODEBLOCK]');
-                        markerLength = 14;
-                    } else if (codeContent.includes('[HTML_CODE_BLOCK]')) {
-                        startMarker = codeContent.indexOf('[HTML_CODE_BLOCK]');
-                        endMarker = codeContent.indexOf('[/HTML_CODE_BLOCK]');
-                        markerLength = 17;
-                    }
-
-                    if (startMarker !== -1 && endMarker !== -1) {
-                        codeContent = codeContent.substring(startMarker + markerLength, endMarker);
-                    }
-                }
-
-                // Clean up any remaining markers
-                codeContent = codeContent
-                    .replace(/\[HTMLCODEBLOCKSTART\]/g, '')
-                    .replace(/\[HTMLCODEBLOCKEND\]/g, '')
-                    .replace(/\[HTML_CODE_BLOCK\]/g, '')
-                    .replace(/\[\/HTML_CODE_BLOCK\]/g, '')
-                    .replace(/\[HTMLCODEBLOCK\]/g, '')
-                    .replace(/\[\/HTMLCODEBLOCK\]/g, '')
-                    .replace(/\[HTML_CODE_BLOCK_EXACT\]/g, '')
-                    .replace(/\[\/HTML_CODE_BLOCK_EXACT\]/g, '');
-
-                // Store the original content in data attribute for recovery
-                monacoContainer.setAttribute('data-original-content', codeContent);
-
-                // Create the editor container
-                const editorContainer = document.createElement('div');
-                editorContainer.className = 'monaco-editor monaco-touch-scrollable';
-                monacoContainer.appendChild(editorContainer);
-
-                // Map language to Monaco format
-                const languageMap = {
-                    'js': 'javascript',
-                    'jsx': 'javascript',
-                    'ts': 'typescript',
-                    'tsx': 'typescript',
-                    'py': 'python',
-                    'html': 'html',
-                    'css': 'css',
-                    'json': 'json',
-                    'markdown': 'markdown',
-                    'md': 'markdown',
-                    'sh': 'shell',
-                    'bash': 'shell',
-                    'shell': 'shell',
-                    'c': 'cpp',
-                    'cpp': 'cpp',
-                    'csharp': 'csharp',
-                    'cs': 'csharp',
-                    'java': 'java',
-                    'php': 'php',
-                    'ruby': 'ruby',
-                    'go': 'go',
-                    'rust': 'rust',
-                    'sql': 'sql',
-                    'xml': 'xml',
-                    'yaml': 'yaml',
-                    'yml': 'yaml'
-                };
-
-                const monacoLanguage = languageMap[language] || language;
-
-                // Only initialize if the container is still in the DOM
-                if (monacoContainer.isConnected) {
-                    // Use fallback text immediately for better user experience,
-                    // we'll replace it with Monaco later if available
-                    const fallbackText = document.createElement('pre');
-                    fallbackText.className = 'fallback-code';
-                    fallbackText.textContent = codeContent;
-                    monacoContainer.appendChild(fallbackText);
-
-                    // Queue for Monaco initialization
-                    if (!window.pendingMonacoEditors) {
-                        window.pendingMonacoEditors = [];
-                    }
-
-                    window.pendingMonacoEditors.push({
-                        container: monacoContainer,
-                        editorContainer: editorContainer,
-                        language: monacoLanguage,
-                        content: codeContent,
-                        fallbackElement: fallbackText
-                    });
-
-                    // Attempt to initialize with Monaco if it's already loaded
-                    // This code is separated from the main processing flow to avoid blocking
-                    if (window.monaco) {
-                        // Use a minimal delay to avoid blocking the connection closure
-                        queueMicrotask(async () => {
-                            try {
-                                // Remove the fallback first
-                                if (fallbackText && fallbackText.parentNode === monacoContainer) {
-                                    monacoContainer.removeChild(fallbackText);
-                                }
-
-                                // Import and use optimized Monaco editor creation
-                                const { createOptimizedMonacoEditor } = await import('./monaco-performance.js');
-                                const editor = await createOptimizedMonacoEditor(editorContainer, monacoLanguage, codeContent);
-
-                                // Add copy action
-                                editor.addAction({
-                                    id: 'copy-code',
-                                    label: 'Copy Code',
-                                    contextMenuGroupId: 'clipboard',
-                                    run: function() {
-                                        copyToClipboard(editor.getValue());
-                                        monacoContainer.setAttribute('data-copied', 'true');
-                                        setTimeout(() => {
-                                            monacoContainer.removeAttribute('data-copied');
-                                        }, 2000);
-                                    }
-                                });
-
-                                // Add custom copy button
-                                const copyButton = document.createElement('button');
-                                copyButton.className = 'copy-button';
-                                copyButton.innerHTML = '<i class="fas fa-copy"></i>';
-                                copyButton.setAttribute('aria-label', 'Copy code');
-                                copyButton.setAttribute('title', 'Copy code to clipboard');
-                                copyButton.style.zIndex = '30';
-
-                                // Add click event to copy only the code in the editor
-                                copyButton.addEventListener('click', (e) => {
-                                    e.stopPropagation(); // Prevent event bubbling
-                                    e.preventDefault(); // Prevent default behavior
-
-                                    // Copy the code to clipboard
-                                    copyToClipboard(editor.getValue())
-                                        .then(() => {
-                                            // Visual feedback for successful copy
-                                            monacoContainer.setAttribute('data-copied', 'true');
-                                            copyButton.innerHTML = '<i class="fas fa-check"></i>';
-                                            setTimeout(() => {
-                                                monacoContainer.removeAttribute('data-copied');
-                                                copyButton.innerHTML = '<i class="fas fa-copy"></i>';
-                                            }, 2000);
-                                        })
-                                        .catch(err => {
-                                            console.error('Failed to copy code:', err);
-                                            copyButton.innerHTML = '<i class="fas fa-times"></i>';
-                                            setTimeout(() => {
-                                                copyButton.innerHTML = '<i class="fas fa-copy"></i>';
-                                            }, 2000);
-                                        });
-                                });
-
-                                // Add the button to the container
-                                monacoContainer.appendChild(copyButton);
-
-                                // Add scroll arrows using microtask to ensure they're added immediately
-                                queueMicrotask(() => {
-                                    // Check if this container already has scroll arrows
-                                    const hasUpArrow = monacoContainer.querySelector('.monaco-scroll-arrow-up');
-                                    const hasDownArrow = monacoContainer.querySelector('.monaco-scroll-arrow-down');
-
-                                    if (!hasUpArrow) {
-                                        const upArrow = document.createElement('button');
-                                        upArrow.className = 'monaco-scroll-arrow monaco-scroll-arrow-up';
-                                        upArrow.innerHTML = '<i class="fas fa-chevron-up"></i>';
-                                        upArrow.setAttribute('aria-label', 'Scroll up');
-                                        upArrow.addEventListener('click', () => {
-                                            const scrollPosition = editor.getScrollTop();
-                                            const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
-                                            const scrollAmount = lineHeight * 5;
-                                            editor.setScrollTop(Math.max(0, scrollPosition - scrollAmount));
-                                        });
-                                        monacoContainer.appendChild(upArrow);
-                                    }
-
-                                    if (!hasDownArrow) {
-                                        const downArrow = document.createElement('button');
-                                        downArrow.className = 'monaco-scroll-arrow monaco-scroll-arrow-down';
-                                        downArrow.innerHTML = '<i class="fas fa-chevron-down"></i>';
-                                        downArrow.setAttribute('aria-label', 'Scroll down');
-                                        downArrow.addEventListener('click', () => {
-                                            const scrollPosition = editor.getScrollTop();
-                                            const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
-                                            const scrollAmount = lineHeight * 5;
-                                            editor.setScrollTop(scrollPosition + scrollAmount);
-                                        });
-                                        monacoContainer.appendChild(downArrow);
-                                    }
-                                });
-
-                                // Remove this editor from the pending list immediately
-                                if (window.pendingMonacoEditors) {
-                                    window.pendingMonacoEditors = window.pendingMonacoEditors.filter(
-                                        item => item.container !== monacoContainer
-                                    );
-                                }
-                            } catch (error) {
-                                console.error('Error initializing Monaco editor:', error);
-                            }
-                        });
-                    }
-
-                    // Schedule the next block with minimal delay
-                    queueMicrotask(() => {
-                        processNextBlock(index + 1);
-                    });
-                } else {
-                    // If container not connected, move to next block immediately
-                    processNextBlock(index + 1);
-                }
-            };
-
-            // Start processing with the first block
-            processNextBlock(0);
-        }
-    }, 150); // Longer initial delay to ensure other operations complete first
+        
+        return result;
+    }
+    
+    let formattedText = processNode(element);
+    
+    // Clean up excessive line breaks (more than 2 consecutive)
+    formattedText = formattedText.replace(/\n{3,}/g, '\n\n');
+    
+    // Trim leading and trailing whitespace
+    formattedText = formattedText.trim();
+    
+    return formattedText;
 }
 
 /**
@@ -860,10 +912,10 @@ export function processCodeBlocks(content, encode = false) {
                     const markerLength = 22; // Length of [HTML_CODE_BLOCK_START]
                     const rawContent = processedCode.substring(startMarker + markerLength, endMarker);
 
-                    // The key change: PRESERVE the exact content for Monaco
-                    // Don't encode/decode it again
-                    debugLog('Using preserved HTML content for Monaco display');
-                    return '```' + (language || '') + '\n' + '[HTML_CODE_BLOCK_START]' + rawContent + '[HTML_CODE_BLOCK_END]' + '```';
+                    // For display: Return clean content without visible markers
+                    // Monaco Editor will handle HTML properly without needing visible markers
+                    debugLog('Using preserved HTML content for display without visible markers');
+                    return '```' + (language || '') + '\n' + rawContent + '```';
                 }
             }
 
@@ -1164,7 +1216,7 @@ export function formatDate(date) {
 }
 
 /**
- * Refreshes all code blocks in the application to use Monaco Editor
+ * Refreshes all code blocks in the application with basic styling
  * This is useful when switching between chats or after loading saved chats
  */
 export function refreshAllCodeBlocks() {
@@ -1185,23 +1237,24 @@ export function refreshAllCodeBlocks() {
                         const languageClass = classNames.find(cls => cls.startsWith('language-'));
                         const language = languageClass ? languageClass.replace('language-', '') : '';
 
+                        // Add language as data attribute for styling
+                        pre.setAttribute('data-language', language);
+                        pre.setAttribute('data-multiline', 'true');
+
                         // Special handling for HTML code blocks
                         if (language === 'html' || language === 'xml') {
                             let codeContent = codeElement.innerHTML;
 
-                            // If content contains HTML entities but no special markers, add them
+                            // If content contains HTML entities but no special markers, decode them
                             if ((codeContent.includes('&lt;') || codeContent.includes('&gt;')) &&
                                 !codeContent.includes('[HTML_CODE_BLOCK_START]') &&
                                 !codeContent.includes('[HTML_CODE_BLOCK]') &&
                                 !codeContent.includes('[HTMLCODEBLOCK]') &&
                                 !codeContent.includes('[HTML_CODE_BLOCK_EXACT]')) {
 
-                                // Decode HTML entities to prepare content for Monaco
+                                // Decode HTML entities for display
                                 const decodedContent = decodeHtmlEntities(codeContent);
-
-                                // Replace content with decoded version wrapped in special markers
-                                codeElement.innerHTML = '[HTML_CODE_BLOCK_START]' + decodedContent + '[HTML_CODE_BLOCK_END]';
-                                codeContent = codeElement.innerHTML;
+                                codeElement.textContent = decodedContent;
                             }
                         }
 
@@ -1213,67 +1266,9 @@ export function refreshAllCodeBlocks() {
                     }
                 });
 
-                // Initialize Monaco Editor for this message using queueMicrotask
+                // Initialize basic code styling for this message
                 queueMicrotask(() => {
                     initializeCodeMirror(messageEl);
-                });
-            });
-
-            // Add scroll arrows more reliably to any existing Monaco containers
-            queueMicrotask(() => {
-                const monacoContainers = messagesContainer.querySelectorAll('.monaco-container');
-
-                // Process each Monaco container
-                monacoContainers.forEach(container => {
-                    // Find the Monaco editor instance for this container
-                    let editorInstance = null;
-                    if (window.monaco && monaco.editor) {
-                        monaco.editor.getEditors().forEach(ed => {
-                            try {
-                                if (container.contains(ed.getDomNode())) {
-                                    editorInstance = ed;
-                                }
-                            } catch (e) {
-                                // Ignore errors
-                            }
-                        });
-                    }
-
-                    // Add scroll arrows if missing
-                    const hasUpArrow = container.querySelector('.monaco-scroll-arrow-up');
-                    const hasDownArrow = container.querySelector('.monaco-scroll-arrow-down');
-
-                    if (!hasUpArrow) {
-                        const upArrow = document.createElement('button');
-                        upArrow.className = 'monaco-scroll-arrow monaco-scroll-arrow-up';
-                        upArrow.innerHTML = '<i class="fas fa-chevron-up"></i>';
-                        upArrow.setAttribute('aria-label', 'Scroll up');
-                        upArrow.addEventListener('click', () => {
-                            if (editorInstance) {
-                                const scrollPosition = editorInstance.getScrollTop();
-                                const lineHeight = editorInstance.getOption(monaco.editor.EditorOption.lineHeight);
-                                const scrollAmount = lineHeight * 5;
-                                editorInstance.setScrollTop(Math.max(0, scrollPosition - scrollAmount));
-                            }
-                        });
-                        container.appendChild(upArrow);
-                    }
-
-                    if (!hasDownArrow) {
-                        const downArrow = document.createElement('button');
-                        downArrow.className = 'monaco-scroll-arrow monaco-scroll-arrow-down';
-                        downArrow.innerHTML = '<i class="fas fa-chevron-down"></i>';
-                        downArrow.setAttribute('aria-label', 'Scroll down');
-                        downArrow.addEventListener('click', () => {
-                            if (editorInstance) {
-                                const scrollPosition = editorInstance.getScrollTop();
-                                const lineHeight = editorInstance.getOption(monaco.editor.EditorOption.lineHeight);
-                                const scrollAmount = lineHeight * 5;
-                                editorInstance.setScrollTop(scrollPosition + scrollAmount);
-                            }
-                        });
-                        container.appendChild(downArrow);
-                    }
                 });
             });
         }

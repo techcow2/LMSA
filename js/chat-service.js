@@ -15,7 +15,6 @@ let abortController = null;
 let isGenerating = false;
 let isNewTopic = false;
 let isGeneratingTitle = false;
-let reloadScheduledForCodeBlock = false;
 
 // Export state variables only
 export {
@@ -146,7 +145,6 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
 
     // Reset the flags
     isGenerating = true;
-    reloadScheduledForCodeBlock = false;
 
     // Create a new AbortController instance for this request
     abortController = new AbortController();
@@ -369,7 +367,7 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
         // Determine the API URL based on server type
         const apiUrl = getApiUrl();
 
-        // Track whether we've already started initializing Monaco editors
+        // Monaco Editor removed - no need to track initialization
         // to avoid unnecessary repeated initializations during streaming
         let hasInitializedCodeBlocks = false;
 
@@ -570,21 +568,7 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
                                                     debugLog('Complete code block detected outside think tags in first message, preparing for fast reload');
                                                     hasInitializedCodeBlocks = true; // Mark as detected for reload
 
-                                                    // Only save chat and prepare for reload if not already scheduled
-                                                    if (!reloadScheduledForCodeBlock) {
-                                                        reloadScheduledForCodeBlock = true;
-                                                        // Directly set localStorage values for faster execution instead of importing
-                                                        localStorage.setItem('lastActiveChatId', currentChatId);
-                                                        localStorage.setItem('refreshDueToCodeGeneration', 'true');
-                                                        localStorage.setItem('isFirstMessageReload', 'true');
-                                                        localStorage.setItem('monacoLoadStartTime', Date.now().toString());
-                                                        debugLog('Directly saved chat data for immediate reload (first message)');
-
-                                                        // Save chat history in background - don't wait for this
-                                                        queueMicrotask(() => {
-                                                            saveChatHistory();
-                                                        });
-                                                    }
+                                                    // Code block detected - no longer triggering reload
                                                 }
                                             }
                                         }
@@ -679,7 +663,7 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
                                     // and only if we haven't already initialized them
                                     if (hasCodeBlock && aiMessage.includes('```') && aiMessage.lastIndexOf('```') > aiMessage.indexOf('```') + 3 && !hasInitializedCodeBlocks) {
                                         // Just mark that we've detected code blocks but don't initialize yet
-                                        // The Monaco code initialization is deferred until after we close the connection
+                                        // Monaco Editor removed - code initialization no longer needed
                                         hasInitializedCodeBlocks = true;
                                     }
                                     
@@ -746,7 +730,7 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
 
         // Update chat history first but don't wait for UI updates if we're going to reload
         // This makes the reload happen faster
-        if (containsCodeBlocksOutsideThinkTags(aiMessage) && !window.monacoHasErrors) {
+        if (containsCodeBlocksOutsideThinkTags(aiMessage)) {
             // Fast path for code blocks outside think tags - minimal chat update without UI refresh
             await fastUpdateChatHistoryBeforeReload(userMessage, aiMessage, fileContents);
         } else {
@@ -782,33 +766,8 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
                 return;
             }
 
-            // Only trigger reload if not already scheduled
-            if (!reloadScheduledForCodeBlock) {
-                // Don't do a second updateChatHistory - redundant with the one above
-
-                // Immediately trigger reload without any delay or processing
-                debugLog('Code block detected outside think tags - triggering immediate reload');
-
-                // Fast path - set flags directly
-                localStorage.setItem('lastActiveChatId', currentChatId);
-                localStorage.setItem('refreshDueToCodeGeneration', 'true');
-
-                // Set quick-reload flag for first messages
-                if (isFirstMessage) {
-                    localStorage.setItem('isFirstMessageReload', 'true');
-                }
-
-                // Record Monaco load start time for diagnosing issues on next load
-                localStorage.setItem('monacoLoadStartTime', Date.now().toString());
-
-                // Force immediate hard reload
-                window.location.href = window.location.href;
-                return;
-            } else {
-                debugLog('Reload already scheduled for code block - skipping duplicate reload');
-                scrollToBottom(messagesContainer, true);
-                return;
-            }
+            // Code blocks detected - no longer triggering reload, just continue normally
+            scrollToBottom(messagesContainer, true);
         } else {
             scrollToBottom(messagesContainer, true);
         }
@@ -1570,7 +1529,7 @@ export function loadChat(id, isFirstMessageReload = false) {
             });
         }
 
-        // Refresh all code blocks to ensure Monaco Editor is used instead of CodeMirror
+        // Refresh all code blocks to ensure proper styling
         refreshAllCodeBlocks();
 
         // Scroll messages container to bottom after code blocks are refreshed
@@ -2114,19 +2073,21 @@ export function loadChatHistory() {
 
                     // Process code blocks but preserve their exact content
                     if (msg.content && typeof msg.content === 'string' && msg.content.includes('```')) {
-                        // Only do minimal processing of code blocks to preserve their original content
-                        // We'll mark HTML code blocks so they're properly handled in display
-                        msg.content = msg.content.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, language, code) => {
-                            const isHtmlCode = language === 'html' || language === 'xml';
-
-                            if (isHtmlCode && !code.includes('[HTML_CODE_BLOCK_START]') && !code.includes('[HTML_CODE_BLOCK_END]')) {
-                                // If it's HTML and doesn't already have our markers, add them
-                                return '```' + (language || '') + '\n[HTML_CODE_BLOCK_START]' + code + '[HTML_CODE_BLOCK_END]' + '```';
-                            } else {
-                                // For non-HTML or already marked HTML, leave as is
-                                return match;
-                            }
-                        });
+                        // Clean up any visible HTML markers that may have been incorrectly added
+                        // These markers should only be used internally during save/load, not displayed to users
+                        if (msg.content.includes('][HTML_CODE_BLOCK_START]') || 
+                            msg.content.includes('[HTML_CODE_BLOCK_END]') ||
+                            msg.content.includes('[HTML_CODE_BLOCK_START]')) {
+                            
+                            // Clean up various forms of visible markers
+                            msg.content = msg.content.replace(/\]\[HTML_CODE_BLOCK_START\]/g, '');
+                            msg.content = msg.content.replace(/\[HTML_CODE_BLOCK_START\]/g, '');
+                            msg.content = msg.content.replace(/\[HTML_CODE_BLOCK_END\]/g, '');
+                            debugLog('Cleaned up visible HTML markers from message content');
+                        }
+                        
+                        // Only preserve the original content during load - don't add any markers
+                        // HTML markers should only be added during save operations, not load operations
                         debugLog('Preserved original code block content on load');
                     }
                 });
@@ -2464,18 +2425,6 @@ let regenerationAttemptTimer = null;
  */
 export async function regenerateLastResponse(isRetry = false) {
     try {
-        // Reset code block reload scheduling flag
-        reloadScheduledForCodeBlock = false;
-
-        // If this is a retry, don't check isGenerating flag
-        if (!isRetry && isGenerating) {
-            debugLog('Already generating a response, cannot regenerate');
-            return;
-        }
-
-        // Track regeneration attempts
-        regenerationAttemptCount++;
-
         // Clear any existing timer
         if (regenerationAttemptTimer) {
             clearTimeout(regenerationAttemptTimer);
@@ -2817,21 +2766,7 @@ export async function regenerateLastResponse(isRetry = false) {
                                                         debugLog('Complete code block detected outside think tags in first message, preparing for fast reload');
                                                         hasInitializedCodeBlocks = true; // Mark as detected for reload
 
-                                                        // Only save chat and prepare for reload if not already scheduled
-                                                        if (!reloadScheduledForCodeBlock) {
-                                                            reloadScheduledForCodeBlock = true;
-                                                            // Directly set localStorage values for faster execution instead of importing
-                                                            localStorage.setItem('lastActiveChatId', currentChatId);
-                                                            localStorage.setItem('refreshDueToCodeGeneration', 'true');
-                                                            localStorage.setItem('isFirstMessageReload', 'true');
-                                                            localStorage.setItem('monacoLoadStartTime', Date.now().toString());
-                                                            debugLog('Directly saved chat data for immediate reload (first message)');
-
-                                                            // Save chat history in background - don't wait for this
-                                                            queueMicrotask(() => {
-                                                                saveChatHistory();
-                                                            });
-                                                        }
+                                                        // Code block detected - no longer triggering reload
                                                     }
                                                 }
                                             }

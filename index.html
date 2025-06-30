@@ -119,31 +119,10 @@
             });
         };
     </script>
-    <!-- Monaco Editor with CDN configuration -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs/editor/editor.main.min.css">
+    <!-- Simple code highlighting using pre/code -->
     <script>
-        // Track Monaco loading
-        window.monacoLoadStartTime = Date.now();
-        window.monacoLoaded = false;
-        window.monacoHasErrors = false;
-
-        // Configure Monaco's loader to use CDN paths
-        window.MonacoEnvironment = {
-            getWorkerUrl: function(workerId, label) {
-                return `https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs/base/worker/workerMain.min.js`;
-            },
-            baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min'
-        };
-
-        // Simple fallback code highlighting function using pre/code
+        // Simple code highlighting function using pre/code
         window.renderCodeWithFallback = function(container, code, language) {
-            // Skip if this container is already initialized or being initialized with Monaco
-            if (container.getAttribute('data-monaco-initialized') === 'true' ||
-                container.getAttribute('data-monaco-initializing') === 'true') {
-                console.log('Skipping fallback renderer for container that is already being handled by Monaco');
-                return;
-            }
-
             // Clean up any existing content
             while (container.firstChild) {
                 container.removeChild(container.firstChild);
@@ -209,372 +188,7 @@
             return pre;
         };
 
-        // Define the processPendingMonacoEditors function
-        window.processPendingMonacoEditors = function() {
-            if (!window.pendingMonacoEditors || window.pendingMonacoEditors.length === 0) return;
-
-            // Check if Monaco failed to load
-            if (!window.monaco) {
-                console.warn('Monaco not available - using fallback renderer');
-                window.monacoHasErrors = true;
-
-                // Use fallback renderer for all pending editors
-                window.pendingMonacoEditors.forEach(item => {
-                    if (!item || !item.container) return;
-
-                    // Skip if this container is already initialized or being initialized with Monaco
-                    if (item.container.getAttribute('data-monaco-initialized') === 'true' ||
-                        item.container.getAttribute('data-using-fallback') === 'true') {
-                        return;
-                    }
-
-                    try {
-                        // Remove any existing fallback elements to avoid duplication
-                        if (item.fallbackElement && item.fallbackElement.parentNode === item.container) {
-                            item.container.removeChild(item.fallbackElement);
-                        }
-
-                        // Also check for any other fallback elements that might have been added
-                        const existingFallback = item.container.querySelector('.fallback-code');
-                        if (existingFallback) {
-                            item.container.removeChild(existingFallback);
-                        }
-
-                        // Use our fallback renderer
-                        window.renderCodeWithFallback(item.container, item.content, item.language);
-                    } catch (error) {
-                        console.error('Error rendering fallback:', error);
-                    }
-                });
-
-                // Clear pending editors
-                const processedCount = window.pendingMonacoEditors.length;
-                window.pendingMonacoEditors = [];
-                console.log(`Processed ${processedCount} code blocks with fallback renderer`);
-                return;
-            }
-
-            console.log(`Processing ${window.pendingMonacoEditors.length} pending Monaco editors`);
-
-            // Process in batches for better performance
-            const processBatch = (startIdx, batchSize) => {
-                const endIdx = Math.min(startIdx + batchSize, window.pendingMonacoEditors.length);
-
-                for (let i = startIdx; i < endIdx; i++) {
-                    const item = window.pendingMonacoEditors[i];
-                    if (!item || !item.container || !item.editorContainer) continue;
-
-                    try {
-                        // Skip if this container is already initialized or being initialized
-                        if (item.container.getAttribute('data-monaco-initialized') === 'true') {
-                            continue;
-                        }
-
-                        // Mark as being initialized to prevent duplicate initialization
-                        item.container.setAttribute('data-monaco-initializing', 'true');
-
-                        // Remove any fallback elements
-                        if (item.fallbackElement && item.fallbackElement.parentNode === item.container) {
-                            item.container.removeChild(item.fallbackElement);
-                        }
-
-                        // Also check for any other fallback elements that might have been added
-                        const existingFallback = item.container.querySelector('.fallback-code');
-                        if (existingFallback) {
-                            item.container.removeChild(existingFallback);
-                        }
-
-                        // Create Monaco editor
-                        const editor = monaco.editor.create(item.editorContainer, {
-                            value: item.content,
-                            language: item.language,
-                            readOnly: true,
-                            theme: 'vs-dark',
-                            minimap: { enabled: false },
-                            scrollBeyondLastLine: false,
-                            wordWrap: 'on',
-                            automaticLayout: true,
-                            lineNumbers: 'on',
-                            contextmenu: true,
-                            renderWhitespace: 'none',
-                            renderControlCharacters: false,
-                        });
-
-                        // Mark as initialized to prevent duplicate initialization
-                        item.container.setAttribute('data-monaco-initialized', 'true');
-                        item.container.removeAttribute('data-monaco-initializing');
-
-                        // Add copy action
-                        editor.addAction({
-                            id: 'copy-code',
-                            label: 'Copy Code',
-                            contextMenuGroupId: 'clipboard',
-                            run: function() {
-                                // Use the improved copyToClipboard function if available, otherwise fallback
-                                const copyFunction = window.copyToClipboard || function(text) {
-                                    return navigator.clipboard.writeText(text);
-                                };
-
-                                copyFunction(editor.getValue())
-                                    .then(() => {
-                                        item.container.setAttribute('data-copied', 'true');
-                                        setTimeout(() => {
-                                            item.container.removeAttribute('data-copied');
-                                        }, 2000);
-                                    })
-                                    .catch((error) => {
-                                        console.error('Failed to copy code:', error);
-                                    });
-                            }
-                        });
-
-                        // Add scroll arrows
-                        const monacoContainer = item.container;
-                        addScrollArrows(monacoContainer, editor);
-
-                        // Add copy button
-                        addCopyButton(monacoContainer, editor);
-                    } catch (error) {
-                        console.error('Error initializing Monaco editor:', error);
-
-                        // Remove the initialization flags since Monaco failed
-                        item.container.removeAttribute('data-monaco-initialized');
-                        item.container.removeAttribute('data-monaco-initializing');
-
-                        // Use fallback on error only if not already using fallback
-                        if (item.container.getAttribute('data-using-fallback') !== 'true') {
-                            try {
-                                // Clear any partial Monaco initialization
-                                while (item.container.firstChild) {
-                                    item.container.removeChild(item.container.firstChild);
-                                }
-
-                                window.renderCodeWithFallback(item.container, item.content, item.language);
-                            } catch (fallbackError) {
-                                console.error('Fallback renderer also failed:', fallbackError);
-                            }
-                        }
-                    }
-                }
-
-                // Process next batch if there are more editors
-                if (endIdx < window.pendingMonacoEditors.length) {
-                    setTimeout(() => {
-                        processBatch(endIdx, batchSize);
-                    }, 0);
-                } else {
-                    // All editors processed, clear the array
-                    const processedCount = window.pendingMonacoEditors.length;
-                    window.pendingMonacoEditors = [];
-                    console.log(`Processed all ${processedCount} Monaco editors`);
-                }
-            };
-
-            // Helper to add scroll arrows
-            function addScrollArrows(container, editor) {
-                // Only add arrows if not already present
-                if (container.querySelector('.monaco-scroll-arrow-up')) return;
-
-                const upArrow = document.createElement('button');
-                upArrow.className = 'monaco-scroll-arrow monaco-scroll-arrow-up';
-                upArrow.innerHTML = '<i class="fas fa-chevron-up"></i>';
-                upArrow.setAttribute('aria-label', 'Scroll up');
-                upArrow.addEventListener('click', () => {
-                    const scrollPosition = editor.getScrollTop();
-                    const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
-                    const scrollAmount = lineHeight * 5;
-                    editor.setScrollTop(Math.max(0, scrollPosition - scrollAmount));
-                });
-                container.appendChild(upArrow);
-
-                const downArrow = document.createElement('button');
-                downArrow.className = 'monaco-scroll-arrow monaco-scroll-arrow-down';
-                downArrow.innerHTML = '<i class="fas fa-chevron-down"></i>';
-                downArrow.setAttribute('aria-label', 'Scroll down');
-                downArrow.addEventListener('click', () => {
-                    const scrollPosition = editor.getScrollTop();
-                    const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
-                    const scrollAmount = lineHeight * 5;
-                    editor.setScrollTop(scrollPosition + scrollAmount);
-                });
-                container.appendChild(downArrow);
-            }
-
-            // Helper to add copy button
-            function addCopyButton(container, editor) {
-                // Remove any existing copy button to avoid duplicates
-                const existingButton = container.querySelector('.copy-button');
-                if (existingButton) {
-                    existingButton.remove();
-                }
-
-                // Create a new copy button
-                const copyButton = document.createElement('button');
-                copyButton.className = 'copy-button';
-                copyButton.innerHTML = '<i class="fas fa-copy"></i>';
-                copyButton.setAttribute('aria-label', 'Copy code');
-                copyButton.setAttribute('title', 'Copy code to clipboard');
-
-                // Make sure the button is visible and clickable
-                copyButton.style.position = 'absolute';
-                copyButton.style.top = '0.5rem';
-                copyButton.style.right = '0.5rem';
-                copyButton.style.zIndex = '30';
-                copyButton.style.pointerEvents = 'auto';
-
-                // Add click event to copy only the code in the editor
-                copyButton.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent event bubbling
-                    e.preventDefault(); // Prevent default behavior
-
-                    // Get the code from the editor
-                    const code = editor.getValue();
-
-                    // Copy the code to clipboard
-                    // Use the improved copyToClipboard function if available, otherwise fallback
-                    const copyFunction = window.copyToClipboard || function(text) {
-                        return navigator.clipboard.writeText(text);
-                    };
-
-                    copyFunction(code)
-                        .then(() => {
-                            // Visual feedback for successful copy
-                            container.setAttribute('data-copied', 'true');
-                            copyButton.innerHTML = '<i class="fas fa-check"></i>';
-                            setTimeout(() => {
-                                container.removeAttribute('data-copied');
-                                copyButton.innerHTML = '<i class="fas fa-copy"></i>';
-                            }, 2000);
-                        })
-                        .catch(err => {
-                            console.error('Failed to copy code:', err);
-                            copyButton.innerHTML = '<i class="fas fa-times"></i>';
-                            setTimeout(() => {
-                                copyButton.innerHTML = '<i class="fas fa-copy"></i>';
-                            }, 2000);
-                        });
-                });
-
-                // Add the button to the container
-                container.appendChild(copyButton);
-
-                // Log that the button was added
-                console.log('Copy button added to Monaco editor');
-            }
-
-            // Start processing with the first batch
-            processBatch(0, 5);
-        };
-
-        // Load Monaco editor asynchronously
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set a flag that Monaco is loading
-            window.monacoLoading = true;
-
-            // Initialize empty array for pending editors
-            window.pendingMonacoEditors = window.pendingMonacoEditors || [];
-
-            // Add global error handler for script loading
-            window.addEventListener('error', function(e) {
-                if (e.filename && e.filename.includes('monaco')) {
-                    console.error('Monaco load error:', e);
-                    window.monacoHasErrors = true;
-
-                    // If we have pending editors and Monaco failed, use fallback
-                    if (window.pendingMonacoEditors && window.pendingMonacoEditors.length > 0) {
-                        window.processPendingMonacoEditors();
-                    }
-                }
-            }, true);
-
-            // Try to load Monaco
-            try {
-                // Load Monaco's loader first
-                const loaderScript = document.createElement('script');
-                loaderScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs/loader.min.js';
-
-                loaderScript.onload = function() {
-                    try {
-                        // Now properly configure require
-                        require.config({
-                            paths: {
-                                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs'
-                            }
-                        });
-
-                        // Load editor main module
-                        require(['vs/editor/editor.main'], function() {
-                            window.monacoLoading = false;
-                            window.monacoLoaded = true;
-                            console.log('Monaco editor loaded successfully');
-
-                            // Process any pending editors
-                            if (window.processPendingMonacoEditors) {
-                                window.processPendingMonacoEditors();
-                            }
-                        }, function(error) {
-                            console.error('Failed to load Monaco:', error);
-                            window.monacoHasErrors = true;
-                            window.monacoLoading = false;
-
-                            // Use fallback renderer if Monaco fails to load
-                            if (window.pendingMonacoEditors && window.pendingMonacoEditors.length > 0) {
-                                window.processPendingMonacoEditors();
-                            }
-                        });
-                    } catch (error) {
-                        console.error('Error configuring Monaco:', error);
-                        window.monacoHasErrors = true;
-                        window.monacoLoading = false;
-                    }
-                };
-
-                loaderScript.onerror = function(error) {
-                    console.error('Failed to load Monaco loader script:', error);
-                    window.monacoHasErrors = true;
-                    window.monacoLoading = false;
-
-                    // Use fallback renderer if Monaco loader fails
-                    if (window.pendingMonacoEditors && window.pendingMonacoEditors.length > 0) {
-                        window.processPendingMonacoEditors();
-                    }
-                };
-
-                document.head.appendChild(loaderScript);
-            } catch (error) {
-                console.error('Critical error loading Monaco:', error);
-                window.monacoHasErrors = true;
-                window.monacoLoading = false;
-            }
-
-            // Set up a fallback in case Monaco doesn't load
-            setTimeout(function() {
-                if (!window.monaco && window.pendingMonacoEditors && window.pendingMonacoEditors.length > 0) {
-                    console.log('Monaco failed to load within timeout, using fallback renderer');
-                    window.monacoHasErrors = true;
-                    window.monacoLoading = false;
-                    window.processPendingMonacoEditors();
-                }
-            }, 8000); // 8 second timeout
-        });
-    </script>
-
-    <script>
-        // Initialize pending Monaco editors when Monaco is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if Monaco is already loaded
-            if (window.monaco) {
-                window.processPendingMonacoEditors();
-            }
-
-            // Set up an observer to detect when monaco becomes available
-            let monacoCheckInterval = setInterval(function() {
-                if (window.monaco) {
-                    clearInterval(monacoCheckInterval);
-                    window.processPendingMonacoEditors();
-                }
-            }, 50); // Faster check interval
-        });
+        // Monaco Editor removed - using fallback code highlighting only
     </script>
     <script>
         tailwind.config = {
@@ -795,17 +409,17 @@
                         <i class="fas fa-robot text-xl header-icon"></i>
                     </span>
                 </button>
-                <button id="help-icon-button" class="p-2 rounded-md focus:outline-none header-btn" data-priority="4" aria-label="Help" title="Open help">
-                    <span class="icon-wrapper">
-                        <svg class="w-5 h-5 header-icon" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18z"></path>
-                        </svg>
-                    </span>
-                </button>
-                <button id="refresh-button" class="p-2 rounded-md focus:outline-none header-btn" data-priority="5" aria-label="Refresh Model" title="Refresh model from LM Studio">
+                <button id="refresh-button" class="p-2 rounded-md focus:outline-none header-btn" data-priority="4" aria-label="Refresh Model" title="Refresh model from LM Studio">
                     <span class="icon-wrapper">
                         <svg class="w-5 h-5 header-icon" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </span>
+                </button>
+                <button id="new-chat-header-button" class="p-2 rounded-md focus:outline-none header-btn" data-priority="5" aria-label="New Chat" title="Start a new chat">
+                    <span class="icon-wrapper">
+                        <svg class="w-5 h-5 header-icon" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
                     </span>
                 </button>
@@ -1046,26 +660,42 @@
 
                 <!-- Empty message modal -->
                 <div id="empty-message-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden" aria-labelledby="empty-message-title" role="dialog" aria-modal="true">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <i class="fas fa-exclamation-circle"></i>
+                    <div class="bg-darkSecondary p-6 rounded-lg w-96 max-w-[90%] shadow-lg modal-content">
+                        <div class="flex justify-between items-center mb-4">
                             <h3 id="empty-message-title" class="modal-title">Empty Message</h3>
-                        </div>
-                        <div class="modal-body">
-                            Please enter a message before sending.
-                        </div>
-                        <div class="modal-footer">
-                            <button class="close-modal" aria-label="Close modal">
-                                <i class="fas fa-times mr-2"></i>Close
+                            <button class="close-modal text-gray-400 hover:text-white focus:outline-none transition-colors duration-300">
+                                <i class="fas fa-times"></i>
                             </button>
-                            <div class="modal-body">
-                                Please enter a message before sending.
-                            </div>
-                            <div class="modal-footer">
-                                <button class="close-modal" aria-label="Close modal">
-                                    <i class="fas fa-times mr-2"></i>Close
-                                </button>
-                            </div>
+                        </div>
+                        <p class="mb-6 text-gray-300">Please enter a message or attach a file before sending.</p>
+                        <div class="flex justify-end">
+                            <button class="close-modal bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                                OK
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Upload Error Modal -->
+                <div id="image-upload-error-modal" class="fixed inset-0 bg-black/70 dark:bg-black/70 light:bg-gray-900/50 backdrop-blur-sm flex items-center justify-center hidden z-[2050]" aria-labelledby="image-upload-error-title" role="dialog" aria-modal="true">
+                    <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] dark:from-[#0a192f] dark:to-[#0d1f3d] light:from-[#f8fafc] light:to-[#f1f5f9] p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-blue-900/30 dark:border-blue-900/30 light:border-blue-200 overflow-hidden animate-modal-in">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 id="image-upload-error-title" class="text-xl font-bold flex items-center modal-title text-blue-400 dark:text-blue-400 light:text-blue-600">
+                                <i class="fas fa-info-circle mr-3 text-blue-500 dark:text-blue-500 light:text-blue-600"></i>
+                                Image Upload Not Supported
+                            </h3>
+                            <button id="close-image-upload-error-modal" class="text-gray-400 hover:text-white dark:text-gray-400 dark:hover:text-white light:text-gray-600 light:hover:text-gray-800 focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-900/20 dark:hover:bg-blue-900/20 light:hover:bg-blue-200/50">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="mb-6">
+                            <p class="text-gray-300 dark:text-gray-300 light:text-gray-700 mb-4">The current model doesn't support image attachments. Only vision language models can process images.</p>
+                            <p class="text-gray-400 dark:text-gray-400 light:text-gray-600 text-sm">You can still upload text files, documents (PDF, DOCX), and code files with the current model.</p>
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button id="image-upload-error-ok" class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 light:bg-blue-500 light:hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50">
+                                OK
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1226,7 +856,7 @@
                                 <div class="toggle-dot"></div>
                             </div>
                         </div>
-                        <p class="text-xs text-gray-400 mt-1">When enabled, disables automatic scrolling to the bottom of the chat when new messages arrive.</p>
+                        <p class="text-xs text-gray-400 mt-1">When enabled, disables automatic scrolling to the bottom of the chat when touching input field.</p>
                     </div>
 
 
@@ -1691,7 +1321,7 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="version-badge bg-white/10 px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300">Version 5.3</p>
+                    <p class="text-sm font-medium text-blue-300">Version 5.4</p>
                 </div>
             </div>
 
@@ -1711,19 +1341,16 @@
                         <a href="#" id="official-website-link" class="professional-button flex items-center justify-center w-full h-[48px] gap-3">
                             <i class="fas fa-globe text-sm"></i>
                             <span>Visit Official Website</span>
-                            <i class="fas fa-external-link-alt text-xs opacity-75"></i>
                         </a>
 
                         <a href="#" id="rate-app-link" class="professional-button flex items-center justify-center w-full h-[48px] gap-3">
                             <i class="fas fa-star text-sm"></i>
                             <span>Rate us on Google Play</span>
-                            <i class="fab fa-google-play text-sm"></i>
                         </a>
 
                         <a href="#" id="dev-website-link" class="professional-button flex items-center justify-center w-full h-[48px] gap-3">
                             <i class="fas fa-code text-sm"></i>
                             <span>Visit IslandApps</span>
-                            <i class="fas fa-external-link-alt text-xs opacity-75"></i>
                         </a>
                     </div>
 
@@ -1919,7 +1546,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-blue-400 font-extrabold">What's New</span>
-                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">5.3</span></span>
+                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">5.4</span></span>
                     </div>
                 </h2>
                 <button id="close-whats-new" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:rotate-90 transform">
@@ -2200,6 +1827,7 @@
     <script type="module" src="about.js"></script>
     <script type="module" src="help.js"></script>
     <script type="module" src="empty-message-modal.js"></script>
+    <script type="module" src="image-upload-error-modal.js"></script>
     <script type="module" src="delete-all-chats.js"></script>
     <script type="module" src="confirmation-modal-fix.js"></script>
     <script type="module" src="character-continuation-modal.js"></script>

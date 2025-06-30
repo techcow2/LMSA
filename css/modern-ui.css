@@ -2351,12 +2351,7 @@ input:checked + .toggle-switch {
   border-color: var(--toggle-active-border);
 }
 
-/* Monaco Editor Enhancement */
-.monaco-editor {
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: var(--modern-shadow);
-}
+/* Monaco Editor removed */
 
 /* Code Block Enhancement */
 code {

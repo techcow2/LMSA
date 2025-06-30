@@ -392,6 +392,14 @@ export function initializeFileUpload() {
     localFileInput.addEventListener('change', async (event) => {
         console.log('File upload input change event triggered');
         await handleFileSelection(event);
+        
+        // Always clear the file input after processing to ensure change event fires next time
+        // This is especially important for the case where user selects same file multiple times
+        setTimeout(() => {
+            if (event.target && 'value' in event.target) {
+                event.target.value = '';
+            }
+        }, 100);
     });
     
     // Reset the uploaded files state
@@ -995,6 +1003,12 @@ The PDF was successfully loaded and has ${pdf.numPages} pages, but contains no e
 async function handleFileSelection(event) {
     console.log('handleFileSelection called with event:', event);
     
+    // Defensive programming: ensure event and event.target exist
+    if (!event || !event.target) {
+        console.error('Invalid event or event.target in handleFileSelection');
+        return;
+    }
+    
     const files = event.target.files;
     if (!files || files.length === 0) {
         console.log('No files selected');
@@ -1007,6 +1021,47 @@ async function handleFileSelection(event) {
     const allowedExtensions = await getAllowedFileExtensions();
     const allowedMimeTypes = await getAllowedMimeTypes();
     const visionModelLoaded = await isVisionModel();
+
+    // Check if any files are images that would be rejected due to non-vision model
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
+    const imageMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    
+    const rejectedImageFiles = Array.from(files).filter(file => {
+        const fileName = file.name.toLowerCase();
+        const isImage = imageExtensions.some(ext => fileName.endsWith(ext)) || 
+                       imageMimeTypes.some(type => file.type.startsWith(type));
+        return isImage && !visionModelLoaded;
+    });
+
+    // If there are rejected image files, show the modal
+    if (rejectedImageFiles.length > 0) {
+        console.log('Image files rejected due to non-vision model:', rejectedImageFiles.map(f => f.name));
+        
+        // File input will be cleared by the event listener to ensure change event fires next time
+        
+        // Show the image upload error modal
+        if (window.showImageUploadErrorModal) {
+            window.showImageUploadErrorModal();
+        } else {
+            // Fallback to dynamic import if global function is not available
+            import('../image-upload-error-modal.js').then(module => {
+                if (module.showImageUploadErrorModal) {
+                    module.showImageUploadErrorModal();
+                }
+            }).catch(error => {
+                console.error('Failed to import image upload error modal:', error);
+                // Fallback to basic error message
+                import('./ui-manager.js').then(uiModule => {
+                    if (typeof uiModule.appendMessage === 'function') {
+                        uiModule.appendMessage('error', 'Image uploads are not supported with the current model. Please load a vision language model to upload images.');
+                    }
+                }).catch(error => {
+                    console.error('Failed to import ui-manager.js:', error);
+                });
+            });
+        }
+        return;
+    }
 
     // Filter files to only include allowed types
     const validFiles = Array.from(files).filter(file => {

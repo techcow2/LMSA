@@ -225,9 +225,7 @@ body.preview-mode {
 }
 
 /* Ensure code blocks in reasoning models are visible */
-.ai[data-has-thinking="true"] pre,
-.ai[data-has-thinking="true"] .monaco-container,
-.ai[data-has-thinking="true"] .monaco-editor {
+.ai[data-has-thinking="true"] pre {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -1382,7 +1380,7 @@ header button:active {
 #sidebar-toggle,
 #model-toggle-button,
 #settings-icon-button,
-#help-icon-button,
+#new-chat-header-button,
 #refresh-button {
     -webkit-tap-highlight-color: transparent;
     outline: none !important;
@@ -5195,6 +5193,306 @@ body.light-theme #about-modal #open-help-link:hover {
         max-width: 80%; /* Limit width relative to screen */
         padding: 2rem; /* More padding for better spacing */
         border-radius: 1.5rem; /* Larger border radius for tablets */
+    }
+}
+
+/* Mobile-specific About modal improvements */
+@media (max-width: 767px) {
+    #about-modal .modal-content {
+        width: 95%; /* Use more screen width on mobile */
+        max-width: 380px; /* Prevent it from getting too wide on larger mobile screens */
+        margin: 1rem; /* Add margin for better spacing */
+        border-radius: 1rem; /* Slightly smaller border radius for mobile */
+    }
+
+    /* Header section adjustments */
+    #about-modal .relative.p-6.pb-4 {
+        padding: 1.5rem 1.5rem 1rem; /* Reduce top/side padding, maintain bottom spacing */
+    }
+
+    /* Icon size adjustment for mobile */
+    #about-modal .w-16.h-16 {
+        width: 3.5rem; /* 56px - slightly smaller than default 64px */
+        height: 3.5rem;
+    }
+
+    /* Title adjustments */
+    #about-modal #about-title {
+        font-size: 1.75rem; /* Slightly smaller than default 2xl */
+        margin-bottom: 0.5rem;
+    }
+
+    /* Version badge adjustments */
+    #about-modal .version-badge {
+        padding: 0.5rem 1rem; /* Slightly more compact */
+        margin-top: 0.75rem;
+    }
+
+    #about-modal .version-badge p {
+        font-size: 0.875rem; /* Slightly smaller text */
+    }
+
+    /* Main content padding */
+    #about-modal .p-6.pt-4 {
+        padding: 1.25rem 1.5rem 1.5rem; /* Reduce padding for mobile */
+    }
+
+    /* Company info section */
+    #about-modal .flex.flex-col.items-center.justify-center.mb-6 {
+        margin-bottom: 1.5rem; /* Reduce bottom margin */
+    }
+
+    #about-modal .text-center.text-gray-300.mb-4 {
+        margin-bottom: 1rem; /* Reduce margin between copyright and buttons */
+        font-size: 0.9rem; /* Slightly smaller text */
+    }
+
+    /* Professional buttons adjustments */
+    #about-modal .professional-button {
+        height: 44px; /* Slightly smaller height for mobile */
+        font-size: 0.9rem; /* Slightly smaller text */
+        padding: 0 1rem; /* Adjust horizontal padding */
+    }
+
+    #about-modal .space-y-3 {
+        gap: 0.75rem; /* Slightly reduce spacing between buttons */
+    }
+
+    /* Help section adjustments */
+    #about-modal .mt-5.pt-4 {
+        margin-top: 1.25rem;
+        padding-top: 1rem;
+    }
+
+    #about-modal .text-center.text-gray-400 {
+        font-size: 0.875rem; /* Smaller help text */
+        line-height: 1.5;
+    }
+
+    /* Close button positioning */
+    #about-modal #close-about {
+        right: 0.75rem;
+        top: 0.75rem;
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+/* Extra small mobile screens */
+@media (max-width: 480px) {
+    #about-modal .modal-content {
+        width: 92%; /* Use even more screen width */
+        margin: 0.75rem;
+    }
+
+    /* Further reduce padding on very small screens */
+    #about-modal .relative.p-6.pb-4 {
+        padding: 1.25rem 1.25rem 0.75rem;
+    }
+
+    #about-modal .p-6.pt-4 {
+        padding: 1rem 1.25rem 1.25rem;
+    }
+
+    /* Smaller icon for very small screens */
+    #about-modal .w-16.h-16 {
+        width: 3rem; /* 48px */
+        height: 3rem;
+    }
+
+    /* Compact title */
+    #about-modal #about-title {
+        font-size: 1.5rem;
+    }
+
+    /* More compact buttons */
+    #about-modal .professional-button {
+        height: 40px;
+        font-size: 0.85rem;
+    }
+
+    /* Tighter spacing */
+    #about-modal .space-y-3 {
+        gap: 0.5rem;
+    }
+
+    /* Reduce margins */
+    #about-modal .flex.flex-col.items-center.justify-center.mb-6 {
+        margin-bottom: 1.25rem;
+    }
+
+    #about-modal .mt-5.pt-4 {
+        margin-top: 1rem;
+        padding-top: 0.75rem;
+    }
+}
+
+/* Very small screens (like iPhone SE) */
+@media (max-width: 375px) {
+    #about-modal .modal-content {
+        width: 90%;
+        margin: 0.5rem;
+    }
+
+    /* Ultra-compact layout */
+    #about-modal .relative.p-6.pb-4 {
+        padding: 1rem 1rem 0.5rem;
+    }
+
+    #about-modal .p-6.pt-4 {
+        padding: 0.75rem 1rem 1rem;
+    }
+
+    /* Even smaller elements */
+    #about-modal .w-16.h-16 {
+        width: 2.75rem; /* 44px */
+        height: 2.75rem;
+    }
+
+    #about-modal #about-title {
+        font-size: 1.375rem;
+    }
+
+    #about-modal .version-badge {
+        padding: 0.375rem 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    #about-modal .version-badge p {
+        font-size: 0.8125rem;
+    }
+
+    /* Ultra-compact buttons */
+    #about-modal .professional-button {
+        height: 38px;
+        font-size: 0.8rem;
+    }
+
+    /* Minimal spacing */
+    #about-modal .space-y-3 {
+        gap: 0.375rem;
+    }
+
+    /* Reduce all margins */
+    #about-modal .flex.flex-col.items-center.justify-center.mb-6 {
+        margin-bottom: 1rem;
+    }
+
+    #about-modal .text-center.text-gray-300.mb-4 {
+        margin-bottom: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    #about-modal .mt-5.pt-4 {
+        margin-top: 0.75rem;
+        padding-top: 0.5rem;
+    }
+
+    #about-modal .text-center.text-gray-400 {
+        font-size: 0.8125rem;
+    }
+}
+
+/* Mobile landscape orientation adjustments */
+@media (max-width: 767px) and (orientation: landscape) and (max-height: 500px) {
+    #about-modal .modal-content {
+        max-height: 85vh; /* Ensure modal fits in landscape */
+        overflow-y: auto; /* Allow scrolling if needed */
+        width: 85%; /* Use less width in landscape */
+        max-width: 450px; /* But don't make it too wide */
+    }
+
+    /* More compact layout for landscape */
+    #about-modal .relative.p-6.pb-4 {
+        padding: 1rem 1.5rem 0.75rem;
+    }
+
+    #about-modal .p-6.pt-4 {
+        padding: 0.75rem 1.5rem 1rem;
+    }
+
+    /* Smaller icon for landscape */
+    #about-modal .w-16.h-16 {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    /* Compact title for landscape */
+    #about-modal #about-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    /* Compact version badge */
+    #about-modal .version-badge {
+        padding: 0.25rem 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    /* Reduce all vertical spacing */
+    #about-modal .flex.flex-col.items-center.justify-center.mb-6 {
+        margin-bottom: 1rem;
+    }
+
+    #about-modal .text-center.text-gray-300.mb-4 {
+        margin-bottom: 0.75rem;
+    }
+
+    #about-modal .space-y-3 {
+        gap: 0.5rem;
+    }
+
+    #about-modal .mt-5.pt-4 {
+        margin-top: 0.75rem;
+        padding-top: 0.5rem;
+    }
+
+    /* Smaller buttons for landscape */
+    #about-modal .professional-button {
+        height: 36px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Touch interaction improvements for mobile */
+@media (max-width: 767px) {
+    /* Ensure adequate touch targets */
+    #about-modal .professional-button {
+        min-height: 44px; /* iOS recommended touch target size */
+        touch-action: manipulation; /* Prevent double-tap zoom */
+    }
+
+    #about-modal #close-about {
+        min-width: 44px;
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+
+    /* Improve touch feedback */
+    #about-modal .professional-button:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+
+    #about-modal #close-about:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+    }
+
+    /* Prevent text selection on touch */
+    #about-modal * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    /* Allow text selection for help link */
+    #about-modal #open-help-link {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
     }
 }
 

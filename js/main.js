@@ -245,17 +245,7 @@ async function initializeApp() {
                 handleScroll(messagesContainer);
             }
 
-            // Refresh Monaco editors if they exist
-            if (typeof monaco !== 'undefined') {
-                try {
-                    const editors = monaco.editor.getEditors();
-                    editors.forEach(editor => {
-                        editor.layout();
-                    });
-                } catch (e) {
-                    // Ignore errors if Monaco is not fully initialized
-                }
-            }
+            // Monaco Editor removed - no need to refresh editors
         }, 100); // 100ms debounce time for better performance
     });
 

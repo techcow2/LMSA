@@ -773,19 +773,6 @@ function displayPotentialModels(models) {
         // Clear the list
         availableModelsList.innerHTML = '';
 
-        // Add a note about models needing to be loaded
-        const noteElement = document.createElement('div');
-        noteElement.className = 'p-4 mb-5 rounded-xl border border-yellow-500/30 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 shadow-md';
-        noteElement.innerHTML = `
-            <div class="flex items-start">
-                <div class="icon-wrapper mr-3 flex-shrink-0 flex items-center justify-center rounded-full bg-yellow-500/20 w-8 h-8 text-yellow-400 shadow-sm">
-                    <i class="fas fa-exclamation-triangle text-sm"></i>
-                </div>
-                <p class="text-yellow-300 text-sm">No model is currently loaded. Click "Load" on any model below to start using it.</p>
-            </div>
-        `;
-        availableModelsList.appendChild(noteElement);
-
         // Add a section title
         const titleElement = document.createElement('div');
         titleElement.className = 'mb-4 pb-2 border-b border-white/10 flex items-center';
@@ -886,7 +873,7 @@ function displayNoModelsLoaded() {
                     <i class="fas fa-exclamation-triangle text-sm"></i>
                 </div>
                 <div class="flex-1 min-w-0 current-model-name-container">
-                    <span class="break-words current-model-name">No model loaded - select a model below to load it</span>
+                    <span class="break-words current-model-name">No model loaded</span>
                 </div>
             </div>
         `;

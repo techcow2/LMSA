@@ -2,10 +2,11 @@
 import { checkAndShowWelcomeMessage } from './js/ui-manager.js';
 import { hideSettingsModal } from './js/settings-modal-manager.js';
 import { showExternalSiteModal } from './external-site-confirmation-modal.js';
+import { handleNewChatButtonClick } from './character-continuation-modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const helpBtn = document.getElementById('help-btn');
-    const helpIconBtn = document.getElementById('help-icon-button');
+    const newChatHeaderBtn = document.getElementById('new-chat-header-button');
     const helpModal = document.getElementById('help-modal');
     const closeHelpBtn = document.getElementById('close-help');
     const tutorialVideoBtn = document.getElementById('tutorial-video-btn');
@@ -175,10 +176,10 @@ Thank you for your help!
         helpBtn.addEventListener('click', openHelpModal);
     }
 
-    // Help icon button in header - ensure this listener works regardless of other elements
-    if (helpIconBtn) {
-        helpIconBtn.addEventListener('click', openHelpModal);
-        console.log('Help icon button event listener attached');
+    // New chat header button - triggers new chat functionality
+    if (newChatHeaderBtn) {
+        newChatHeaderBtn.addEventListener('click', handleNewChatButtonClick);
+        console.log('New chat header button event listener attached');
     }
 
     // Settings help button - closes Settings modal and opens Help modal

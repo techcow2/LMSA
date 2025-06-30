@@ -4,7 +4,7 @@ import {
     chatForm, userInput, clearChatButton, newChatButton, settingsButton,
     closeSettingsButton, closeSettingsXButton, settingsModal, welcomeMessage, messagesContainer,
     sidebarToggle, closeSidebarButton, confirmActionButton, cancelActionButton,
-    helpButton, helpIconButton, whatsNewButton, aboutButton, stopButton, contextMenu, copyTextButton,
+    helpButton, newChatHeaderButton, whatsNewButton, aboutButton, stopButton, contextMenu, copyTextButton,
     regenerateTextButton, exitButton, refreshButton, modelToggleButton, loadedModelDisplay,
     settingsIconButton, newTopicButton, sendButton, sendContextMenu, newTopicMenuButton, scrollToBottomMenuButton,
     modelButton, importExportGroupButton, importExportContainer, charactersButton, activeCharacterDisplay,
@@ -45,6 +45,7 @@ import { closeSidebarExport } from './export-import.js';
 import { showModelModal } from './model-manager.js';
 import { showWhatsNewModal } from './whats-new.js';
 import { showCreateCharacterModal } from './character-manager.js';
+import { handleNewChatButtonClick } from '../character-continuation-modal.js';
 import { debugLog, debugError, formatDate } from './utils.js';
 import { closeApplication, copyToClipboard, sanitizeInput, scrollToBottom, handleScroll, ensureCursorVisible } from './utils.js';
 
@@ -601,48 +602,29 @@ export function initializeEventHandlers() {
         });
     }
 
-    // Help icon button
-    if (helpIconButton) {
-        const showHelpModal = () => {
-            const helpModal = document.getElementById('help-modal');
-            if (helpModal) {
-                helpModal.classList.remove('hidden');
-                const modalContent = helpModal.querySelector('.modal-content');
-                if (modalContent) {
-                    modalContent.classList.add('animate-modal-in');
-
-                    // Reset scroll position to top
-                    const scrollableContent = helpModal.querySelector('.overflow-y-auto');
-                    if (scrollableContent) {
-                        scrollableContent.scrollTop = 0;
-                    }
-
-                    setTimeout(() => {
-                        modalContent.classList.remove('animate-modal-in');
-                    }, 300);
-                }
-            }
-
-            // Remove focus to prevent the button from staying highlighted
-            if (helpIconButton) {
-                helpIconButton.blur();
-            }
-        };
-
-        helpIconButton.addEventListener('click', showHelpModal);
+    // New chat header button
+    if (newChatHeaderButton) {
+        newChatHeaderButton.addEventListener('click', handleNewChatButtonClick);
 
         // Add touch event handlers to prevent highlight on mobile
-        helpIconButton.addEventListener('touchstart', (e) => {
+        newChatHeaderButton.addEventListener('touchstart', (e) => {
             // Prevent default touch highlight
             e.preventDefault();
         }, { passive: false });
 
-        helpIconButton.addEventListener('touchend', (e) => {
+        newChatHeaderButton.addEventListener('touchend', (e) => {
             // Prevent default behavior that might cause highlight
             e.preventDefault();
-            // Show help modal
-            showHelpModal();
+            // Trigger new chat functionality
+            handleNewChatButtonClick();
         }, { passive: false });
+
+        // Remove focus to prevent the button from staying highlighted
+        newChatHeaderButton.addEventListener('click', () => {
+            if (newChatHeaderButton) {
+                newChatHeaderButton.blur();
+            }
+        });
     }
 
     // About button

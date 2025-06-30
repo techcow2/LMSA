@@ -16,14 +16,7 @@ export async function initializeTouchHandlers() {
         : handleTouchMove;
 
     function handleTouchMove(e) {
-        // Check if the touch is within a Monaco editor component
-        const isMonacoElement = e.target.closest('.monaco-container') !== null ||
-                               e.target.closest('.monaco-editor') !== null ||
-                               e.target.closest('.monaco-scrollable-element') !== null ||
-                               e.target.closest('.lines-content') !== null ||
-                               e.target.closest('.view-lines') !== null ||
-                               e.target.closest('.view-line') !== null ||
-                               e.target.closest('.view-overlays') !== null;
+        // Monaco Editor removed - no need to check for Monaco elements
 
         // Check if the touch is within other scrollable containers
         const isScrollableContainer = e.target.closest('#messages') !== null ||
@@ -36,7 +29,7 @@ export async function initializeTouchHandlers() {
                                      e.target.closest('.file-previews') !== null;
 
         // If not in any scrollable container, prevent default behavior
-        if (!isMonacoElement && !isScrollableContainer) {
+        if (!isScrollableContainer) {
             e.preventDefault();
         }
     }
@@ -47,19 +40,7 @@ export async function initializeTouchHandlers() {
     // Allow scrolling within the messages container
     if (messagesContainer) {
         messagesContainer.addEventListener('touchmove', function(e) {
-            // Check if the touch is within a Monaco editor component
-            const isMonacoElement = e.target.closest('.monaco-container') !== null ||
-                                   e.target.closest('.monaco-editor') !== null ||
-                                   e.target.closest('.monaco-scrollable-element') !== null ||
-                                   e.target.closest('.lines-content') !== null ||
-                                   e.target.closest('.view-lines') !== null ||
-                                   e.target.closest('.view-line') !== null ||
-                                   e.target.closest('.view-overlays') !== null;
-
-            // If the touch is within a Monaco editor, let the Monaco editor handle it
-            if (isMonacoElement) {
-                return;
-            }
+            // Monaco Editor removed - no special handling needed
 
             // For other elements, allow the messages container to scroll
             e.stopPropagation();

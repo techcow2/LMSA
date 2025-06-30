@@ -4,7 +4,7 @@ import {
     loadingIndicator, sendButton, stopButton, loadedModelDisplay,
     activeCharacterDisplay
 } from './dom-elements.js';
-import { basicSanitizeInput, sanitizeInput, initializeCodeMirror, scrollToBottom, copyToClipboard, debugLog, debugError, processCodeBlocks, decodeHtmlEntities } from './utils.js';
+import { basicSanitizeInput, sanitizeInput, initializeCodeMirror, scrollToBottom, copyToClipboard, debugLog, debugError, processCodeBlocks, decodeHtmlEntities, htmlToFormattedText } from './utils.js';
 import { getHideThinking } from './settings-manager.js';
 import { getActiveCharacter } from './character-manager.js';
 
@@ -656,35 +656,6 @@ export function appendMessage(sender, message, files = null, isStreaming = false
                 copyButton.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
                 copyButton.title = 'Copy this message';
                 copyButton.addEventListener('click', () => {
-                    // Get content from originalContent if available, otherwise from the content container
-                    let contentToCopy = messageElement.originalContent;
-
-                    if (!contentToCopy) {
-                        // Fallback: get content from the message content container
-                        const contentContainer = messageElement.querySelector('.message-content');
-                        if (contentContainer) {
-                            contentToCopy = contentContainer.textContent || contentContainer.innerText || '';
-                        } else {
-                            contentToCopy = messageElement.textContent || messageElement.innerText || '';
-                        }
-                    }
-
-                    // Create a function to extract text content only (no HTML) from an element
-                    const getTextContent = (element) => {
-                        if (!element) return '';
-                        
-                        // Create a document fragment to work with
-                        const tempDiv = document.createElement('div');
-                        tempDiv.innerHTML = element.innerHTML;
-                        
-                        // Remove all think sections from the clone before extracting text
-                        const thinkSections = tempDiv.querySelectorAll('.think, .reasoning-intro, .reasoning-content, .reasoning-step');
-                        thinkSections.forEach(section => section.remove());
-                        
-                        // Get the text content
-                        return tempDiv.textContent.trim();
-                    };
-                    
                     let contentWithoutThinking = '';
                     
                     // APPROACH 1: Try to find the visible-after-think div, which is specifically created
@@ -693,43 +664,66 @@ export function appendMessage(sender, message, files = null, isStreaming = false
                     const visibleAfterThinkElement = messageContentElement?.querySelector('.visible-after-think');
                     
                     if (visibleAfterThinkElement && visibleAfterThinkElement.textContent.trim()) {
-                        contentWithoutThinking = visibleAfterThinkElement.textContent.trim();
-                        debugLog('Using visible-after-think element for copy content');
+                        // Use the new htmlToFormattedText function to preserve formatting
+                        contentWithoutThinking = htmlToFormattedText(visibleAfterThinkElement);
+                        debugLog('Using visible-after-think element for copy content with formatting');
                     } 
-                    // APPROACH 2: If no visible-after-think element found, try to get text content
+                    // APPROACH 2: If no visible-after-think element found, use the message content element
                     // while excluding all thinking-related elements
                     else if (messageContentElement) {
-                        contentWithoutThinking = getTextContent(messageContentElement);
-                        debugLog('Using filtered message content for copy content');
+                        // Use the new htmlToFormattedText function to preserve formatting
+                        contentWithoutThinking = htmlToFormattedText(messageContentElement);
+                        debugLog('Using filtered message content for copy content with formatting');
                     }
                     // APPROACH 3: Fallback to regex-based extraction from originalContent if needed
                     else {
                         debugLog('Falling back to regex extraction for copy content');
+                        let contentToCopy = messageElement.originalContent;
+
+                        if (!contentToCopy) {
+                            // Fallback: get content from the message content container
+                            const contentContainer = messageElement.querySelector('.message-content');
+                            if (contentContainer) {
+                                contentToCopy = contentContainer.innerHTML || '';
+                            } else {
+                                contentToCopy = messageElement.innerHTML || '';
+                            }
+                        }
+                        
                         // Try to find content after the last </think> tag in the raw content
                         const lastThinkTagIndex = contentToCopy.lastIndexOf('</think>');
                         const lastEncodedThinkTagIndex = contentToCopy.lastIndexOf('&lt;/think&gt;');
                         
                         if (lastThinkTagIndex !== -1 || lastEncodedThinkTagIndex !== -1) {
                             // Get text after the last think tag
+                            let afterThinkContent;
                             if (lastThinkTagIndex > lastEncodedThinkTagIndex) {
-                                contentWithoutThinking = contentToCopy.substring(lastThinkTagIndex + 8).trim();
+                                afterThinkContent = contentToCopy.substring(lastThinkTagIndex + 8).trim();
                             } else {
-                                contentWithoutThinking = contentToCopy.substring(lastEncodedThinkTagIndex + 14).trim();
+                                afterThinkContent = contentToCopy.substring(lastEncodedThinkTagIndex + 14).trim();
                             }
+                            // Convert HTML to formatted text
+                            contentWithoutThinking = htmlToFormattedText(afterThinkContent);
                         } else {
                             // If no think tags found, copy the message but remove any think sections
-                            contentWithoutThinking = contentToCopy
+                            const cleanedContent = contentToCopy
                                 .replace(/<think>[\s\S]*?<\/think>/g, '')
                                 .replace(/&lt;think&gt;[\s\S]*?&lt;\/think&gt;/g, '')
                                 .trim();
+                            // Convert HTML to formatted text
+                            contentWithoutThinking = htmlToFormattedText(cleanedContent);
                         }
                     }
                     
                     // Make sure we have content to copy
                     if (!contentWithoutThinking) {
                         // Last resort: just get the visible text directly from the message content
-                        contentWithoutThinking = messageContentElement ? messageContentElement.textContent.trim() : contentToCopy.trim();
-                        debugLog('Using fallback text content for copy');
+                        if (messageContentElement) {
+                            contentWithoutThinking = htmlToFormattedText(messageContentElement);
+                        } else {
+                            contentWithoutThinking = messageElement.textContent?.trim() || '';
+                        }
+                        debugLog('Using fallback content for copy');
                     }
 
                     // Store original button state
@@ -997,26 +991,28 @@ export function refreshAllMessages() {
             // Pre-process code blocks to ensure HTML entities are properly handled before Monaco initialization
             const contentContainer = messageEl.querySelector('.message-content');
             if (contentContainer) {
-                const codeBlocks = contentContainer.querySelectorAll('pre code');
-                codeBlocks.forEach(block => {
-                    // For HTML code blocks, make sure they're properly marked for Monaco editor
-                    if (block.className.includes('language-html') || block.className.includes('language-xml')) {
-                        let codeContent = block.innerHTML;
+                // Check if the message content is already handled by the new HTML detection system
+                const hasHtmlCodeContainer = contentContainer.querySelector('.html-code-container');
+                
+                if (!hasHtmlCodeContainer) {
+                    const codeBlocks = contentContainer.querySelectorAll('pre code');
+                    codeBlocks.forEach(block => {
+                        // For HTML code blocks, make sure they're properly marked for Monaco editor
+                        if (block.className.includes('language-html') || block.className.includes('language-xml')) {
+                            let codeContent = block.innerHTML;
 
-                        // If content contains HTML entities but lacks the special markers, add them
-                        if ((codeContent.includes('&lt;') || codeContent.includes('&gt;')) &&
-                            !codeContent.includes('[HTML_CODE_BLOCK_START]') &&
-                            !codeContent.includes('[HTML_CODE_BLOCK]') &&
-                            !codeContent.includes('[HTMLCODEBLOCK]')) {
-
-                            // Decode HTML entities to prepare for Monaco display
-                            const decodedContent = decodeHtmlEntities(codeContent);
-
-                            // Wrap with markers so Monaco knows this is HTML content
-                            block.innerHTML = '[HTML_CODE_BLOCK_START]' + decodedContent + '[HTML_CODE_BLOCK_END]';
+                            // Clean up any visible HTML markers that shouldn't be displayed
+                            if (codeContent.includes('[HTML_CODE_BLOCK_START]') || codeContent.includes('[HTML_CODE_BLOCK_END]')) {
+                                codeContent = codeContent.replace(/\[HTML_CODE_BLOCK_START\]/g, '');
+                                codeContent = codeContent.replace(/\[HTML_CODE_BLOCK_END\]/g, '');
+                                block.innerHTML = codeContent;
+                            }
+                            
+                            // Monaco Editor will handle HTML code blocks properly without visible markers
+                            // The markers should only be used internally, never displayed to users
                         }
-                    }
-                });
+                    });
+                }
             }
 
             initializeCodeMirror(messageEl);
@@ -1039,35 +1035,6 @@ export function refreshAllMessages() {
                     copyButton.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
                     copyButton.title = 'Copy this message';
                     copyButton.addEventListener('click', () => {
-                        // Get content from originalContent if available, otherwise from the content container
-                        let contentToCopy = messageEl.originalContent;
-
-                        if (!contentToCopy) {
-                            // Fallback: get content from the message content container
-                            const contentContainer = messageEl.querySelector('.message-content');
-                            if (contentContainer) {
-                                contentToCopy = contentContainer.textContent || contentContainer.innerText || '';
-                            } else {
-                                contentToCopy = messageEl.textContent || messageEl.innerText || '';
-                            }
-                        }
-
-                        // Create a function to extract text content only (no HTML) from an element
-                        const getTextContent = (element) => {
-                            if (!element) return '';
-                            
-                            // Create a document fragment to work with
-                            const tempDiv = document.createElement('div');
-                            tempDiv.innerHTML = element.innerHTML;
-                            
-                            // Remove all think sections from the clone before extracting text
-                            const thinkSections = tempDiv.querySelectorAll('.think, .reasoning-intro, .reasoning-content, .reasoning-step');
-                            thinkSections.forEach(section => section.remove());
-                            
-                            // Get the text content
-                            return tempDiv.textContent.trim();
-                        };
-                        
                         let contentWithoutThinking = '';
                         
                         // APPROACH 1: Try to find the visible-after-think div, which is specifically created
@@ -1076,43 +1043,66 @@ export function refreshAllMessages() {
                         const visibleAfterThinkElement = messageContentElement?.querySelector('.visible-after-think');
                         
                         if (visibleAfterThinkElement && visibleAfterThinkElement.textContent.trim()) {
-                            contentWithoutThinking = visibleAfterThinkElement.textContent.trim();
-                            debugLog('Using visible-after-think element for copy content');
+                            // Use the new htmlToFormattedText function to preserve formatting
+                            contentWithoutThinking = htmlToFormattedText(visibleAfterThinkElement);
+                            debugLog('Using visible-after-think element for copy content with formatting');
                         } 
-                        // APPROACH 2: If no visible-after-think element found, try to get text content
+                        // APPROACH 2: If no visible-after-think element found, use the message content element
                         // while excluding all thinking-related elements
                         else if (messageContentElement) {
-                            contentWithoutThinking = getTextContent(messageContentElement);
-                            debugLog('Using filtered message content for copy content');
+                            // Use the new htmlToFormattedText function to preserve formatting
+                            contentWithoutThinking = htmlToFormattedText(messageContentElement);
+                            debugLog('Using filtered message content for copy content with formatting');
                         }
                         // APPROACH 3: Fallback to regex-based extraction from originalContent if needed
                         else {
                             debugLog('Falling back to regex extraction for copy content');
+                            let contentToCopy = messageEl.originalContent;
+
+                            if (!contentToCopy) {
+                                // Fallback: get content from the message content container
+                                const contentContainer = messageEl.querySelector('.message-content');
+                                if (contentContainer) {
+                                    contentToCopy = contentContainer.innerHTML || '';
+                                } else {
+                                    contentToCopy = messageEl.innerHTML || '';
+                                }
+                            }
+                            
                             // Try to find content after the last </think> tag in the raw content
                             const lastThinkTagIndex = contentToCopy.lastIndexOf('</think>');
                             const lastEncodedThinkTagIndex = contentToCopy.lastIndexOf('&lt;/think&gt;');
                             
                             if (lastThinkTagIndex !== -1 || lastEncodedThinkTagIndex !== -1) {
                                 // Get text after the last think tag
+                                let afterThinkContent;
                                 if (lastThinkTagIndex > lastEncodedThinkTagIndex) {
-                                    contentWithoutThinking = contentToCopy.substring(lastThinkTagIndex + 8).trim();
+                                    afterThinkContent = contentToCopy.substring(lastThinkTagIndex + 8).trim();
                                 } else {
-                                    contentWithoutThinking = contentToCopy.substring(lastEncodedThinkTagIndex + 14).trim();
+                                    afterThinkContent = contentToCopy.substring(lastEncodedThinkTagIndex + 14).trim();
                                 }
+                                // Convert HTML to formatted text
+                                contentWithoutThinking = htmlToFormattedText(afterThinkContent);
                             } else {
                                 // If no think tags found, copy the message but remove any think sections
-                                contentWithoutThinking = contentToCopy
+                                const cleanedContent = contentToCopy
                                     .replace(/<think>[\s\S]*?<\/think>/g, '')
                                     .replace(/&lt;think&gt;[\s\S]*?&lt;\/think&gt;/g, '')
                                     .trim();
+                                // Convert HTML to formatted text
+                                contentWithoutThinking = htmlToFormattedText(cleanedContent);
                             }
                         }
                         
                         // Make sure we have content to copy
                         if (!contentWithoutThinking) {
                             // Last resort: just get the visible text directly from the message content
-                            contentWithoutThinking = messageContentElement ? messageContentElement.textContent.trim() : contentToCopy.trim();
-                            debugLog('Using fallback text content for copy');
+                            if (messageContentElement) {
+                                contentWithoutThinking = htmlToFormattedText(messageContentElement);
+                            } else {
+                                contentWithoutThinking = messageEl.textContent?.trim() || '';
+                            }
+                            debugLog('Using fallback content for copy');
                         }
 
                         // Store original button state

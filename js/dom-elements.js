@@ -33,7 +33,7 @@ export const helpButton = document.getElementById('help-btn');
 export const whatsNewButton = document.getElementById('whats-new-btn');
 export const aboutButton = document.getElementById('about-btn');
 export const modelButton = document.getElementById('model-btn');
-export const helpIconButton = document.getElementById('help-icon-button');
+export const newChatHeaderButton = document.getElementById('new-chat-header-button');
 
 // Character elements
 export const charactersButton = document.getElementById('characters-btn');
