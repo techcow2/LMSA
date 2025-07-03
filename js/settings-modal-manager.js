@@ -834,6 +834,7 @@ function initializeSystemPromptOverlay() {
     const editButton = document.getElementById('edit-system-prompt-btn');
     const cancelButton = document.getElementById('cancel-system-prompt-edit');
     const saveButton = document.getElementById('save-system-prompt-edit');
+    const closeButton = document.getElementById('close-system-prompt-overlay');
     const editor = document.getElementById('system-prompt-editor');
     const hiddenTextarea = document.getElementById('system-prompt');
     const previewDiv = document.getElementById('system-prompt-preview');
@@ -851,46 +852,73 @@ function initializeSystemPromptOverlay() {
 
 
 
-    // Function to detect mobile keyboard visibility (original for system prompt overlay)
+    // Function to detect mobile keyboard visibility with improved handling
     function setupMobileKeyboardDetection() {
         if (!window.matchMedia('(max-width: 480px)').matches) {
             return; // Only apply on mobile devices
         }
 
-        let initialViewportHeight = window.innerHeight;
         let keyboardVisible = false;
+        let initialViewportHeight = window.innerHeight;
+        let resizeTimeout;
 
         function handleViewportChange() {
-            const currentHeight = window.innerHeight;
-            const heightDifference = initialViewportHeight - currentHeight;
-
-            // Consider keyboard visible if viewport height decreased by more than 150px
-            const shouldShowKeyboard = heightDifference > 150;
-
-            if (shouldShowKeyboard !== keyboardVisible) {
-                keyboardVisible = shouldShowKeyboard;
-
-                if (keyboardVisible) {
-                    overlay.classList.add('keyboard-visible');
-                } else {
-                    overlay.classList.remove('keyboard-visible');
-                }
+            // Clear any existing timeout
+            if (resizeTimeout) {
+                clearTimeout(resizeTimeout);
             }
+
+            // Add a small delay to ensure we get the final viewport size
+            resizeTimeout = setTimeout(() => {
+                const currentHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+                const heightDifference = initialViewportHeight - currentHeight;
+
+                // Consider keyboard visible if viewport height decreased by more than 150px
+                const shouldShowKeyboard = heightDifference > 150;
+
+                if (shouldShowKeyboard !== keyboardVisible) {
+                    keyboardVisible = shouldShowKeyboard;
+
+                    if (keyboardVisible) {
+                        overlay.classList.add('keyboard-visible');
+                        // Use the full available height without gaps
+                        overlay.style.height = `${currentHeight}px`;
+                        overlay.style.position = 'fixed';
+                        overlay.style.top = '0';
+                        overlay.style.left = '0';
+                        overlay.style.right = '0';
+                        overlay.style.bottom = 'auto';
+                    } else {
+                        overlay.classList.remove('keyboard-visible');
+                        // Reset to default positioning
+                        overlay.style.height = '';
+                        overlay.style.position = '';
+                        overlay.style.top = '';
+                        overlay.style.left = '';
+                        overlay.style.right = '';
+                        overlay.style.bottom = '';
+                    }
+                }
+            }, 100);
         }
 
-        // Listen for viewport changes
-        window.addEventListener('resize', handleViewportChange);
-
-        // Also listen for visual viewport changes (better support on newer browsers)
+        // Use Visual Viewport API if available (better for mobile)
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', handleViewportChange);
+        } else {
+            // Fallback to window resize
+            window.addEventListener('resize', handleViewportChange);
         }
 
         // Clean up function
         return function cleanup() {
-            window.removeEventListener('resize', handleViewportChange);
+            if (resizeTimeout) {
+                clearTimeout(resizeTimeout);
+            }
             if (window.visualViewport) {
                 window.visualViewport.removeEventListener('resize', handleViewportChange);
+            } else {
+                window.removeEventListener('resize', handleViewportChange);
             }
         };
     }
@@ -915,12 +943,15 @@ function initializeSystemPromptOverlay() {
             // Focus the editor after the overlay is visible
             editor.focus();
 
-            // Add a class to indicate the overlay is active (for potential animations)
-            overlay.classList.add('active');
-        }, 50);
+                    // Add a class to indicate the overlay is active (for potential animations)
+        overlay.classList.add('active');
+    }, 50);
 
-        // Disable scrolling on body
-        document.body.style.overflow = 'hidden';
+    // Add keyboard event listener
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Disable scrolling on body
+    document.body.style.overflow = 'hidden';
 
         // Adjust textarea height based on content
         adjustTextareaHeight();
@@ -953,8 +984,13 @@ function initializeSystemPromptOverlay() {
     function hideOverlay() {
         // Remove active class first (for animations if needed)
         overlay.classList.remove('active');
+        overlay.classList.remove('keyboard-visible');
 
-
+        // Clean up keyboard detection
+        if (overlay._keyboardCleanup) {
+            overlay._keyboardCleanup();
+            overlay._keyboardCleanup = null;
+        }
 
         // Use a small timeout to allow for potential exit animations
         setTimeout(() => {
@@ -963,10 +999,19 @@ function initializeSystemPromptOverlay() {
 
             // Reset any inline styles
             editor.style.height = '';
+            overlay.style.height = '';
+            overlay.style.position = '';
+            overlay.style.top = '';
+            overlay.style.left = '';
+            overlay.style.right = '';
+            overlay.style.bottom = '';
         }, 50);
 
         // Re-enable scrolling
         document.body.style.overflow = '';
+
+        // Remove keyboard event listener
+        document.removeEventListener('keydown', handleKeyDown);
     }
 
     // Function to save the edited content
@@ -1038,6 +1083,26 @@ function initializeSystemPromptOverlay() {
     saveButton.addEventListener('click', function(e) {
         e.preventDefault();
         saveChanges();
+    });
+
+    closeButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        hideOverlay();
+    });
+
+    // Handle ESC key to close modal
+    function handleKeyDown(e) {
+        if (e.key === 'Escape' && !overlay.classList.contains('hidden')) {
+            e.preventDefault();
+            hideOverlay();
+        }
+    }
+
+    // Handle backdrop click to close modal
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            hideOverlay();
+        }
     });
 
     // Setup clear button event listener (the button is inside the overlay)

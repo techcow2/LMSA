@@ -12,6 +12,9 @@
     padding: 1rem;
     overflow-y: auto;
     opacity: 0.95;
+    /* Use dynamic viewport units for better mobile support */
+    height: 100vh;
+    height: 100dvh;
 }
 
 #system-prompt-overlay.active {
@@ -161,6 +164,33 @@
 #clear-system-prompt-btn:active {
     transform: translateY(0);
     box-shadow: none;
+}
+
+/* Close button styling */
+#close-system-prompt-overlay {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    color: var(--modal-text);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+#close-system-prompt-overlay:hover {
+    background-color: var(--sidebar-item-hover);
+    color: var(--modal-title);
+    transform: translateY(-1px);
+}
+
+#close-system-prompt-overlay:active {
+    transform: translateY(0);
+    background-color: var(--settings-label-bg);
 }
 
 /* Responsive adjustments for mobile and small tablets */
@@ -332,6 +362,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        min-width: 32px;
+        min-height: 32px;
     }
 }
 
@@ -512,18 +544,52 @@
 /* Keyboard visible state adjustments */
 @media (max-width: 480px) {
     #system-prompt-overlay.keyboard-visible {
-        height: 100vh;
-        padding-bottom: 0;
+        /* Height and positioning will be set dynamically by JavaScript */
+        padding: 0.75rem;
+        align-items: stretch;
+        justify-content: flex-start;
+        padding-top: max(0.75rem, env(safe-area-inset-top));
+        padding-bottom: 0.75rem;
+        /* Ensure no gaps */
+        margin: 0;
     }
 
     #system-prompt-overlay.keyboard-visible .bg-darkSecondary {
-        max-height: 50vh;
-        padding-bottom: 0.25rem;
+        height: calc(100% - 1.5rem);
+        max-height: none;
+        margin: 0;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        /* Ensure it takes full available space */
+        flex: 1;
     }
 
     #system-prompt-overlay.keyboard-visible #system-prompt-editor {
-        max-height: 25vh;
-        min-height: 60px;
+        flex: 1;
+        min-height: 150px;
+        max-height: none;
+        resize: none;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 1rem;
+    }
+
+    /* Ensure buttons remain visible and accessible */
+    #system-prompt-overlay.keyboard-visible .flex.justify-between:last-child {
+        flex-shrink: 0;
+        margin-top: 0;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Header adjustments for keyboard visible state */
+    #system-prompt-overlay.keyboard-visible .flex.justify-between:first-child {
+        flex-shrink: 0;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
     }
 }
 
