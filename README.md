@@ -18,7 +18,7 @@
 🎉 **Latest Update: Version 5.5** - Now Available!
 
 ### New Features & Improvements
-- **Fixed Character Display Issues**: Resolved broken characters display bug (thank you [teneykio](https://github.com/teneykio) for the report)
+- **Fixed Character Display Issues**: Resolved broken character feature bug (thank you [teneykio](https://github.com/teneykio) for the report)
 - **Enhanced Side Menu**: Made improvements to the side menu for better visibility of the saved chats list
 - **Streamlined User Experience**: Removed the "What's New" menu feature that would force it to show every time the app loads
 - **Improved Data Caching**: Enhanced the way the app caches data to improve how updates are implemented through the Play Store
