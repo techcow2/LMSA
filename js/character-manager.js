@@ -806,15 +806,15 @@ export function ensureCharacterInSystemPrompt() {
     import('./settings-manager.js').then(module => {
         const currentSystemPrompt = module.getSystemPrompt();
 
+        // Get the active character first
+        const activeCharacter = getActiveCharacter();
+
         // Check if the system prompt already contains character information
-        if (currentSystemPrompt && (currentSystemPrompt.includes(`You are ${activeCharacter.name}`) || 
+        if (currentSystemPrompt && activeCharacter && (currentSystemPrompt.includes(`You are ${activeCharacter.name}`) || 
                                    currentSystemPrompt.includes(`speak as ${activeCharacter.name} would`))) {
             console.log('System prompt already contains character information');
             return;
         }
-
-        // Get the active character
-        const activeCharacter = getActiveCharacter();
 
         // If there's no active character data, we can't restore the character information
         if (!activeCharacter) {

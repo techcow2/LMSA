@@ -72,7 +72,7 @@ body.light-theme .character-gallery-header {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding-top: 0.5rem; /* Add padding above the title */
+    padding-top: 1.2rem; /* Increased padding above the title */
     letter-spacing: -0.02em;
     position: relative;
 }
@@ -96,7 +96,7 @@ body.light-theme .character-gallery-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.6rem 1rem;
+    padding: 0.6rem 1.2rem; /* Increased horizontal padding */
     border-radius: 0.75rem;
     font-weight: 500;
     cursor: pointer;
@@ -107,6 +107,17 @@ body.light-theme .character-gallery-header {
     position: relative;
     overflow: hidden;
     box-shadow: var(--modern-shadow-sm);
+    white-space: nowrap; /* Prevent text wrapping */
+    text-overflow: ellipsis; /* Add ellipsis for very long text */
+}
+
+/* Button text display logic */
+.button-text-short {
+    display: none; /* Hidden by default */
+}
+
+.button-text-full {
+    display: inline; /* Shown by default */
 }
 
 .character-gallery-create-btn {
@@ -136,8 +147,9 @@ body.light-theme .character-gallery-back-btn {
 .character-gallery-back-btn i,
 .character-gallery-create-btn i,
 .character-gallery-import-btn i {
-    margin-right: 0.5rem;
+    margin-right: 0.6rem; /* Increased spacing for better visual balance */
     transition: transform 0.2s ease;
+    flex-shrink: 0; /* Prevent icon from shrinking */
 }
 
 .character-gallery-back-btn:hover,
@@ -511,8 +523,6 @@ body.light-theme .character-card.touch-active {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.03));
 }
 
-
-
 .character-card-image {
     height: 200px;
     width: 100%;
@@ -855,8 +865,17 @@ body.light-theme .character-card-delete-btn {
     .character-gallery-create-btn,
     .character-gallery-import-btn,
     .character-gallery-back-btn {
-        font-size: 0.9rem;
-        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem; /* Good padding for tablet screens */
+        min-height: 44px; /* Ensure minimum touch target size */
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+
+    .character-gallery-back-btn i,
+    .character-gallery-create-btn i,
+    .character-gallery-import-btn i {
+        margin-right: 0.5rem; /* Good spacing for tablet screens */
+        flex-shrink: 0; /* Prevent icon from shrinking */
     }
 
     /* Adjust container position for mobile */
@@ -966,9 +985,60 @@ body.light-theme .character-card-delete-btn {
     }
 
     .character-gallery-header {
+        padding: 0.75rem; /* Reduced padding for small screens */
+        flex-direction: column; /* Stack title and buttons vertically */
+        align-items: stretch; /* Stretch items to full width */
+        gap: 0.75rem; /* Add gap between title and buttons */
         padding-top: 1rem; /* Simplified padding */
         background: linear-gradient(to right, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.95));
         z-index: 5; /* Ensure consistent z-index across screen sizes */
+    }
+
+    .character-gallery-title {
+        font-size: 1.25rem;
+        width: 100%;
+        margin-bottom: 0; /* Remove bottom margin since we use gap */
+        padding-top: 1.5rem; /* Increased padding above the title */
+        justify-content: center; /* Center the title */
+    }
+
+    .character-gallery-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.5rem; /* Reduced gap between buttons */
+        flex-wrap: nowrap; /* Prevent wrapping to keep buttons on same row */
+    }
+
+    .character-gallery-back-btn,
+    .character-gallery-create-btn,
+    .character-gallery-import-btn {
+        flex: 1; /* Equal width distribution */
+        justify-content: center;
+        padding: 0.75rem 0.5rem; /* Better padding for small screens */
+        font-size: 0.8rem; /* Slightly smaller font */
+        min-height: 44px; /* Maintain touch target size */
+        max-width: none; /* Remove max-width restriction */
+        overflow: hidden; /* Hide overflow */
+        text-overflow: ellipsis; /* Add ellipsis for long text */
+    }
+
+    /* Switch to shorter text on small screens */
+    .button-text-full {
+        display: none;
+    }
+
+    .button-text-short {
+        display: inline;
+    }
+
+
+
+    .character-gallery-back-btn i,
+    .character-gallery-create-btn i,
+    .character-gallery-import-btn i {
+        margin-right: 0.4rem; /* Compact spacing for small screens */
+        font-size: 0.9rem; /* Slightly smaller icons */
+        flex-shrink: 0; /* Prevent icon from shrinking */
     }
 
     /* Adjust container position for small screens */
@@ -976,31 +1046,9 @@ body.light-theme .character-card-delete-btn {
         top: 45px; /* Even smaller header on small screens */
         height: calc(100% - 45px);
     }
-}
 
     body.light-theme .character-gallery-header {
         background: linear-gradient(to right, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.95));
-    }
-
-    .character-gallery-title {
-        font-size: 1.25rem;
-        width: 100%;
-        margin-bottom: 0.75rem;
-        padding-top: 0.75rem; /* Increase padding for mobile */
-    }
-
-    .character-gallery-actions {
-        width: 100%;
-        justify-content: space-between;
-        margin-top: 0.5rem; /* Add some space between title and buttons */
-    }
-
-    .character-gallery-back-btn,
-    .character-gallery-create-btn,
-    .character-gallery-import-btn {
-        flex: 1;
-        justify-content: center;
-        padding: 0.75rem 0.5rem;
     }
 
     .character-card {
@@ -1062,8 +1110,31 @@ body.light-theme .character-card-delete-btn {
 /* Extra small screens */
 @media (max-width: 360px) {
     .character-gallery-header {
+        padding: 0.5rem; /* Further reduced padding */
+        gap: 0.5rem; /* Smaller gap */
         padding-top: 0.75rem; /* Simplified padding for very small screens */
         z-index: 5; /* Ensure consistent z-index across all screen sizes */
+    }
+
+    .character-gallery-title {
+        font-size: 1.1rem; /* Smaller title */
+        padding-top: 1rem; /* Increased padding above the title */
+    }
+
+    .character-gallery-back-btn,
+    .character-gallery-create-btn,
+    .character-gallery-import-btn {
+        padding: 0.6rem 0.4rem; /* Better compact padding */
+        font-size: 0.75rem; /* Smaller font size */
+        min-height: 42px; /* Good touch target size */
+    }
+
+    .character-gallery-back-btn i,
+    .character-gallery-create-btn i,
+    .character-gallery-import-btn i {
+        margin-right: 0.35rem; /* Better minimal spacing */
+        font-size: 0.85rem; /* Smaller icons */
+        flex-shrink: 0; /* Prevent icon from shrinking */
     }
 
     /* Adjust container position for very small screens */
@@ -1126,77 +1197,6 @@ body.light-theme .character-card-delete-btn {
     #character-gallery-empty-create-btn i {
         font-size: 0.9rem;
         margin-right: 0.5rem;
-    }
-}
-
-    .character-gallery-title {
-        font-size: 1.1rem;
-        padding-top: 1rem; /* More padding for very small screens */
-    }
-
-    .character-gallery-back-btn,
-    .character-gallery-create-btn,
-    .character-gallery-import-btn {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.85rem;
-        min-height: 36px;
-    }
-
-    .character-card-image {
-        height: 180px;
-    }
-
-    .character-card-content {
-        padding: 1.25rem 1rem;
-    }
-
-    .character-card-btn,
-    .character-card-indicator {
-        width: 3.25rem;
-        height: 3.25rem;
-    }
-
-    .character-gallery-empty i {
-        font-size: 3.5rem;
-    }
-
-    .character-gallery-empty p {
-        font-size: 1.1rem;
-        margin-bottom: 1.25rem;
-    }
-
-    .character-gallery-empty-container {
-        padding: 2.25rem 1.75rem;
-        width: 90%;
-        max-width: 360px;
-    }
-
-    .character-gallery-empty-icon-container {
-        width: 90px;
-        height: 90px;
-        margin-bottom: 1.5rem;
-    }
-
-    .character-gallery-empty i {
-        font-size: 3rem;
-    }
-
-    .character-gallery-empty p {
-        font-size: 1.25rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .character-gallery-empty-description {
-        font-size: 0.95rem !important;
-        margin-bottom: 1.75rem !important;
-        max-width: 280px;
-    }
-
-    #character-gallery-empty-create-btn {
-        padding: 0.6rem 1.1rem;
-        font-size: 0.9rem;
-        min-width: 200px;
-        min-height: 40px;
     }
 }
 

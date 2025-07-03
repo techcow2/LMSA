@@ -1347,6 +1347,22 @@ export function clearRefreshDueToCodeGenerationFlag() {
     debugLog('Cleared refresh due to code generation flag');
 }
 
+/**
+ * Adds hardware acceleration CSS properties to an element for smoother animations
+ * @param {HTMLElement} element - The element to add hardware acceleration to
+ */
+export function addHardwareAcceleration(element) {
+    if (!element) return;
+    
+    // Apply CSS properties that enable hardware acceleration
+    element.style.transform = 'translateZ(0)';
+    element.style.willChange = 'transform, opacity';
+    element.style.backfaceVisibility = 'hidden';
+    element.style.webkitBackfaceVisibility = 'hidden';
+    element.style.perspective = '1000px';
+    element.style.webkitPerspective = '1000px';
+}
+
 // Add the toggle function for reasoning visibility to the window object
 // This needs to be global to be callable from the onclick attribute
 if (typeof window !== 'undefined') {

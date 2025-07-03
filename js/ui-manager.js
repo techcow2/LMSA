@@ -1646,6 +1646,7 @@ export function initializeCollapsibleSections() {
 
             // Check if this is the options section header
             const isOptionsSection = header.closest('.sidebar-section.collapsible');
+            const isCharactersSection = header.closest('.sidebar-section.characters-section');
             const isCurrentlyActive = header.classList.contains('active');
 
             // Toggle active class on header
@@ -1658,7 +1659,7 @@ export function initializeCollapsibleSections() {
             // Toggle show class
             content.classList.toggle('show');
 
-            // Handle chat history visibility for options section
+            // Handle chat history visibility for options section only
             if (isOptionsSection && chatHistorySection) {
                 if (!isCurrentlyActive) {
                     // Options section is being expanded - hide chat history
@@ -1669,21 +1670,31 @@ export function initializeCollapsibleSections() {
                 }
             }
 
-            // Close other sections
+            // Close other sections (but allow characters section and options section to coexist)
             sectionHeaders.forEach(otherHeader => {
                 if (otherHeader !== header) {
-                    otherHeader.classList.remove('active');
-                    const otherContent = otherHeader.nextElementSibling;
-                    if (otherContent && otherContent.classList.contains('collapsible-content')) {
-                        otherContent.classList.remove('show');
+                    const otherIsOptionsSection = otherHeader.closest('.sidebar-section.collapsible');
+                    const otherIsCharactersSection = otherHeader.closest('.sidebar-section.characters-section');
+                    
+                    // Only close if it's not a coexisting section
+                    if (!((isOptionsSection && otherIsCharactersSection) || (isCharactersSection && otherIsOptionsSection))) {
+                        otherHeader.classList.remove('active');
+                        const otherContent = otherHeader.nextElementSibling;
+                        if (otherContent && otherContent.classList.contains('collapsible-content')) {
+                            otherContent.classList.remove('show');
+                        }
                     }
                 }
             });
 
-            // If any other section was closed and it was the options section, show chat history
-            if (!isOptionsSection) {
+            // Update chat history visibility based on current state
+            if (chatHistorySection) {
                 const optionsHeader = document.querySelector('.sidebar-section.collapsible .section-header');
-                if (optionsHeader && !optionsHeader.classList.contains('active') && chatHistorySection) {
+                const optionsIsActive = optionsHeader && optionsHeader.classList.contains('active');
+                
+                if (optionsIsActive) {
+                    chatHistorySection.classList.add('chat-history-hidden');
+                } else {
                     chatHistorySection.classList.remove('chat-history-hidden');
                 }
             }

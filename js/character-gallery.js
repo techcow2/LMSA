@@ -15,7 +15,7 @@ import {
     getActiveCharacter,
     handleCharacterCardUpload
 } from './character-manager.js';
-import { debugLog, debugError, formatDate } from './utils.js';
+import { debugLog, debugError, formatDate, addHardwareAcceleration } from './utils.js';
 import { createNewChat } from './chat-service.js';
 import { checkAndShowWelcomeMessage } from './ui-manager.js';
 import { appendMessage } from './ui-manager.js';
@@ -358,13 +358,6 @@ function updateCharacterGallery() {
         } else {
             // All characters processed
             debugLog('Character gallery updated with ' + sortedCharacters.length + ' characters');
-
-            // Setup lazy loading for character images
-            // Use a small timeout to ensure the DOM is fully updated before setting up lazy loading
-            setTimeout(() => {
-                setupLazyLoading('.character-card-image img');
-                debugLog('Lazy loading setup for character images');
-            }, 50);
         }
     }
 

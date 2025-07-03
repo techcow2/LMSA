@@ -5702,20 +5702,7 @@ body.light-theme #whats-new-modal .text-xs.text-blue-300\/80 {
     color: #3b82f6;
 }
 
-/* Light theme styles for the toggle in What's New modal */
-body.light-theme #whats-new-modal .toggle-container {
-    background-color: rgba(203, 213, 225, 0.5);
-    border-color: rgba(148, 163, 184, 0.5);
-}
 
-body.light-theme #whats-new-modal .toggle-dot {
-    background: linear-gradient(to bottom, #f8fafc, #e2e8f0);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-body.light-theme #whats-new-modal label span {
-    color: #334155;
-}
 
 body.light-theme #whats-new-modal .bg-gradient-to-b.from-\[\#0a192f\]\/95.to-\[\#0c1e36\]\/95 {
     background: linear-gradient(to bottom, rgba(248, 250, 252, 0.95), rgba(241, 245, 249, 0.95));
@@ -6191,95 +6178,9 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
     transition: all 0.3s ease;
 }
 
-#whats-new-modal .toggle-switch {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(55, 65, 81, 0.7);
-    border-radius: 34px;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    cursor: pointer;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-}
 
-#whats-new-modal .toggle-switch::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), transparent);
-    opacity: 0.5;
-    pointer-events: none;
-}
 
-#whats-new-modal .toggle-dot {
-    position: absolute;
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 2px;
-    background: linear-gradient(to bottom, #ffffff, #f0f0f0);
-    border-radius: 50%;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 2;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
 
-#whats-new-modal .toggle-dot-active {
-    position: absolute;
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 2px;
-    background: linear-gradient(to bottom, #3b82f6, #2563eb);
-    border-radius: 50%;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 1;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    opacity: 0;
-    transform: translateX(0);
-}
-
-#whats-new-modal input[type="checkbox"]:checked + .toggle-switch {
-    background-color: rgba(59, 130, 246, 0.3);
-    border-color: rgba(59, 130, 246, 0.5);
-}
-
-#whats-new-modal input[type="checkbox"]:checked ~ .toggle-dot {
-    transform: translateX(24px);
-    opacity: 0;
-}
-
-#whats-new-modal input[type="checkbox"]:checked ~ .toggle-dot-active {
-    transform: translateX(24px);
-    opacity: 1;
-}
-
-#whats-new-modal .toggle-container:hover .toggle-dot {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-    transform: scale(1.05) translateX(0);
-}
-
-#whats-new-modal .toggle-container:hover input[type="checkbox"]:checked ~ .toggle-dot-active {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-    transform: scale(1.05) translateX(24px);
-}
-
-#whats-new-modal .toggle-container input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 3;
-    cursor: pointer;
-    margin: 0;
-}
 
 /* Professional text styling for What's New modal title */
 .gradient-text {

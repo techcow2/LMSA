@@ -33,7 +33,8 @@ import {
     getChatToDelete,
     saveChatHistory,
     loadChatHistory,
-    updateChatHistoryUI
+    updateChatHistoryUI,
+    addUserMessageToHistory
 } from './chat-service.js';
 import { resetApp, initializeResetAppButton } from './reset-app.js';
 import { getActiveCharacter, getCharactersData } from './character-manager.js';
@@ -1439,6 +1440,14 @@ async function handleChatFormSubmit(e) {
         // Always add the user message to the UI first
         appendMessage('user', message, hasUploadedFiles ? uploadedFiles : null);
 
+        // Add the user message to chat history immediately
+        // This ensures the message exists in history even if generation is cancelled
+        try {
+            await addUserMessageToHistory(message, hasUploadedFiles ? uploadedFiles : []);
+        } catch (error) {
+            debugError('Error adding user message to history:', error);
+        }
+
         // Clear the input field while maintaining height
         userInput.value = '';
 
@@ -2362,8 +2371,15 @@ function handleEditButtonClick(e) {
 
     // Create save button
     const saveButton = document.createElement('button');
-    saveButton.classList.add('bg-blue-600', 'text-white', 'rounded-lg', 'px-3', 'py-1', 'text-sm', 'hover:bg-blue-700', 'transition-colors');
+    saveButton.classList.add('bg-red-600', 'text-white', 'rounded-lg', 'px-3', 'py-1', 'text-sm', 'transition-colors');
     saveButton.textContent = 'Resend';
+    saveButton.classList.add('resend-btn'); // For possible future targeting
+    saveButton.addEventListener('mouseenter', () => {
+        saveButton.style.backgroundColor = '#c0392b'; // Red hover color
+    });
+    saveButton.addEventListener('mouseleave', () => {
+        saveButton.style.backgroundColor = '#e74c3c'; // Red normal color
+    });
 
     // Add buttons to container
     buttonsContainer.appendChild(cancelButton);

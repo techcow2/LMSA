@@ -920,10 +920,11 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
 }
 
 /**
- * Updates the chat history with a new user-AI message pair
- * @param {string} userMessage - The user's message
+ * Updates the chat history with a new AI response
+ * The user message should already be in the history via addUserMessageToHistory
+ * @param {string} userMessage - The user's message (for validation)
  * @param {string} aiMessage - The AI's response
- * @param {Array} fileContents - Optional array of file contents
+ * @param {Array} fileContents - Optional array of file contents (for validation)
  */
 export async function updateChatHistory(userMessage, aiMessage, fileContents = []) {
     // Ensure chatHistoryData is initialized
@@ -963,22 +964,24 @@ export async function updateChatHistory(userMessage, aiMessage, fileContents = [
     // Get a reference to the messages array
     const messages = chatHistoryData[currentChatId].messages;
 
-    // Create user message object
-    const userMsg = { role: 'user', content: userMessage };
-
-    // Store file attachments separately without modifying the user message content
-    if (fileContents && fileContents.length > 0) {
-        debugLog(`Adding ${fileContents.length} files to chat history`);
-        userMsg.files = fileContents;
-        debugLog(`Files added to chat history: ${fileContents.map(f => f.name).join(', ')}`);
-    }
-
-    // Check if we're adding a duplicate message (can happen with regeneration)
+    // Verify the user message is already in the history
     const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
-
-    // Only add the user message if it's not already the last message in the history
-    // This prevents duplicate user messages when regenerating responses
+    
+    // If the last message is not the expected user message, add it
+    // This handles cases where the user message wasn't added via addUserMessageToHistory
     if (!lastMessage || lastMessage.role !== 'user' || lastMessage.content !== userMessage) {
+        debugLog('User message not found in history, adding it now');
+        
+        // Create user message object
+        const userMsg = { role: 'user', content: userMessage };
+
+        // Store file attachments separately without modifying the user message content
+        if (fileContents && fileContents.length > 0) {
+            debugLog(`Adding ${fileContents.length} files to chat history`);
+            userMsg.files = fileContents;
+            debugLog(`Files added to chat history: ${fileContents.map(f => f.name).join(', ')}`);
+        }
+
         messages.push(userMsg);
 
         // Check if this is the first message in the chat and auto-generate title is enabled
@@ -2153,6 +2156,24 @@ export function setAbortController(controller) {
 }
 
 /**
+ * Cleans up incomplete AI responses when generation is cancelled
+ */
+function cleanupIncompleteAIResponse() {
+    // Find the last AI message in the UI
+    const aiMessages = messagesContainer.querySelectorAll('.ai');
+    if (aiMessages.length > 0) {
+        const lastAIMessage = aiMessages[aiMessages.length - 1];
+        const contentContainer = lastAIMessage.querySelector('.message-content');
+        
+        // If the AI message is empty or only contains whitespace, remove it
+        if (contentContainer && (!contentContainer.textContent.trim() || contentContainer.textContent.trim() === '')) {
+            debugLog('Removing empty AI message after cancellation');
+            lastAIMessage.remove();
+        }
+    }
+}
+
+/**
  * Aborts the current AI response generation
  */
 export function abortGeneration() {
@@ -2194,6 +2215,9 @@ export function abortGeneration() {
         if (stopButton && !stopButton.classList.contains('hidden')) {
             toggleSendStopButton(); // Switch back to send button
         }
+
+        // Clean up any incomplete AI responses
+        cleanupIncompleteAIResponse();
 
         // Add a message to indicate generation was stopped
         appendMessage('system', 'Generation stopped by user');
@@ -3182,5 +3206,101 @@ async function fastUpdateChatHistoryBeforeReload(userMessage, aiMessage, fileCon
         debugLog('Fast chat history save complete before reload');
     } catch (error) {
         debugError('Error saving chat history before reload:', error);
+    }
+}
+
+/**
+ * Adds a user message to the chat history immediately
+ * @param {string} userMessage - The user's message
+ * @param {Array} fileContents - Optional array of file contents
+ */
+export async function addUserMessageToHistory(userMessage, fileContents = []) {
+    // Ensure chatHistoryData is initialized
+    if (!chatHistoryData) {
+        chatHistoryData = {};
+    }
+
+    // Initialize chat data structure if it doesn't exist
+    if (!chatHistoryData[currentChatId]) {
+        // Create a proper structure for the chat with messages array and metadata
+        chatHistoryData[currentChatId] = {
+            messages: [],
+            title: null, // Initialize with no title
+            characterId: null // Initialize with no character
+        };
+    }
+
+    // If the chat data is still in the old format (just an array), convert it
+    if (Array.isArray(chatHistoryData[currentChatId])) {
+        // Save the old messages
+        const oldMessages = [...chatHistoryData[currentChatId]]; // Create a proper copy
+        // Get the title if it exists and clean any <think> tags
+        const oldTitle = oldMessages.title ? removeThinkTags(oldMessages.title) : null;
+        // Convert to new format
+        chatHistoryData[currentChatId] = {
+            messages: oldMessages,
+            title: oldTitle,
+            characterId: null // Initialize with no character for old format chats
+        };
+    }
+
+    // Ensure messages array exists
+    if (!chatHistoryData[currentChatId].messages) {
+        chatHistoryData[currentChatId].messages = [];
+    }
+
+    // Get a reference to the messages array
+    const messages = chatHistoryData[currentChatId].messages;
+
+    // Create user message object
+    const userMsg = { role: 'user', content: userMessage };
+
+    // Store file attachments separately without modifying the user message content
+    if (fileContents && fileContents.length > 0) {
+        debugLog(`Adding ${fileContents.length} files to chat history`);
+        userMsg.files = fileContents;
+        debugLog(`Files added to chat history: ${fileContents.map(f => f.name).join(', ')}`);
+    }
+
+    // Check if we're adding a duplicate message (can happen with regeneration)
+    const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
+
+    // Only add the user message if it's not already the last message in the history
+    // This prevents duplicate user messages when regenerating responses
+    if (!lastMessage || lastMessage.role !== 'user' || lastMessage.content !== userMessage) {
+        messages.push(userMsg);
+
+        // Check if this is the first message in the chat and auto-generate title is enabled
+        // Generate title right after adding the user message, before adding AI response
+        if (messages.length === 1 && getAutoGenerateTitles()) {
+            try {
+                // Get the user's first message (which we just added)
+                const firstUserMessage = userMsg.content;
+
+                // Log the message being used for title generation
+                debugLog('Generating title based on user message:', firstUserMessage);
+
+                // Generate a title for the chat based on the user's first message
+                // The generateChatTitle function now ensures the title is clean of <think> tags
+                const title = await generateChatTitle(firstUserMessage);
+                if (title) {
+                    // Double-check that the title is clean of <think> tags before storing
+                    const cleanTitle = removeThinkTags(title);
+                    debugLog('Storing clean title with chat:', cleanTitle);
+
+                    // Store the clean title with the chat
+                    chatHistoryData[currentChatId].title = cleanTitle;
+                }
+            } catch (error) {
+                debugError('Error generating chat title:', error);
+                // If title generation fails, continue without a title
+            }
+        }
+
+        // Save the updated chat history
+        saveChatHistory();
+
+        // Update the UI after saving
+        updateChatHistoryUI();
     }
 }

@@ -270,6 +270,59 @@ body.light-theme .main-menu-section .menu-item:hover {
   background-color: rgba(59, 130, 246, 0.1);
 }
 
+/* Characters Section Styling */
+.sidebar-section.characters-section {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.characters-section .section-header {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  background-color: rgba(30, 41, 59, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  color: var(--text-primary);
+}
+
+.characters-section .section-header:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.characters-section .section-header .fa-chevron-down {
+  transition: transform 0.3s ease;
+}
+
+.characters-section .section-header.active .fa-chevron-down {
+  transform: rotate(180deg);
+}
+
+.characters-section .collapsible-content {
+  padding-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+.characters-section .collapsible-content .menu-item {
+  margin-bottom: 0.25rem;
+}
+
+body.light-theme .sidebar-section.characters-section {
+  border-bottom: 1px solid rgba(203, 213, 225, 0.3);
+}
+
+body.light-theme .characters-section .section-header {
+  background-color: rgba(241, 245, 249, 0.6);
+  border-color: rgba(203, 213, 225, 0.3);
+  color: var(--modern-light-text-primary);
+}
+
+body.light-theme .characters-section .section-header:hover {
+  background-color: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
 /* Create Character Button Styling */
 .create-character-btn {
   width: 28px;

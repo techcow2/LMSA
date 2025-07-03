@@ -1,57 +1,17 @@
 // Import the checkAndShowWelcomeMessage function
 import { checkAndShowWelcomeMessage } from './ui-manager.js';
-import { wasRefreshDueToCodeGeneration, clearRefreshDueToCodeGenerationFlag } from './utils.js';
 
 // DOM Elements
 const whatsNewModal = document.getElementById('whats-new-modal');
 const closeWhatsNewButton = document.getElementById('close-whats-new');
 const gotItButton = document.getElementById('got-it-whats-new');
-const dontShowAgainToggle = document.getElementById('dont-show-again');
 const versionElement = document.getElementById('whats-new-version');
 
 // Local storage keys
-const WHATS_NEW_VERSION = '5.4'; // Updated for Vision Language Model support
-const WHATS_NEW_SEEN_KEY = 'whatsNewSeen';
-const WHATS_NEW_DONT_SHOW_KEY = 'whatsNewDontShow';
-
-
+const WHATS_NEW_VERSION = '5.5'; // Updated for Vision Language Model support
 
 // Flag to track if the modal has been shown in the current session
 let modalShownInCurrentSession = false;
-
-/**
- * Loads the user's preference for the "Don't show again" toggle
- */
-function loadPreferences() {
-    if (dontShowAgainToggle) {
-        const dontShow = localStorage.getItem(WHATS_NEW_DONT_SHOW_KEY) === 'true';
-        dontShowAgainToggle.checked = dontShow;
-
-        // Update toggle appearance based on checked state
-        updateToggleAppearance();
-    }
-}
-
-/**
- * Updates the toggle appearance based on its checked state
- */
-function updateToggleAppearance() {
-    if (!dontShowAgainToggle) return;
-
-    const toggleContainer = dontShowAgainToggle.closest('.toggle-container');
-    if (!toggleContainer) return;
-
-    const toggleDot = toggleContainer.querySelector('.toggle-dot');
-    const toggleDotActive = toggleContainer.querySelector('.toggle-dot-active');
-
-    if (dontShowAgainToggle.checked) {
-        if (toggleDotActive) toggleDotActive.style.opacity = '1';
-        if (toggleDot) toggleDot.style.opacity = '0';
-    } else {
-        if (toggleDotActive) toggleDotActive.style.opacity = '0';
-        if (toggleDot) toggleDot.style.opacity = '1';
-    }
-}
 
 /**
  * Shows the What's New modal with smooth transition
@@ -64,9 +24,6 @@ export function showWhatsNewModal(forceShow = false) {
     }
 
     if (whatsNewModal) {
-        // Load the user's preference for the "Don't show again" toggle
-        loadPreferences();
-
         // Set the version number in the UI
         if (versionElement) {
             versionElement.textContent = WHATS_NEW_VERSION;
@@ -165,9 +122,6 @@ function hideWhatsNewModal() {
                         });
                     }
 
-                    // Save the user's preference if they chose not to show again
-                    savePreferences();
-
                     // Remove resize event listener when modal is hidden
                     window.removeEventListener('resize', adjustModalHeight);
 
@@ -181,49 +135,11 @@ function hideWhatsNewModal() {
             setTimeout(() => {
                 whatsNewModal.classList.remove('fade-out');
                 whatsNewModal.classList.add('hidden');
-                savePreferences();
                 window.removeEventListener('resize', adjustModalHeight);
                 checkAndShowWelcomeMessage();
             }, 300);
         }
     }
-}
-
-/**
- * Saves the user's preferences to local storage
- */
-function savePreferences() {
-    if (dontShowAgainToggle && dontShowAgainToggle.checked) {
-        localStorage.setItem(WHATS_NEW_DONT_SHOW_KEY, 'true');
-        localStorage.setItem(WHATS_NEW_SEEN_KEY, WHATS_NEW_VERSION);
-    } else {
-        localStorage.removeItem(WHATS_NEW_DONT_SHOW_KEY);
-        localStorage.removeItem(WHATS_NEW_SEEN_KEY);
-    }
-}
-
-/**
- * Checks if the modal should be shown
- * @returns {boolean} True if the modal should be shown
- */
-function shouldShowModal() {
-    const dontShow = localStorage.getItem(WHATS_NEW_DONT_SHOW_KEY) === 'true';
-    const lastSeenVersion = localStorage.getItem(WHATS_NEW_SEEN_KEY);
-
-    // Check if refresh was triggered by code generation
-    const isRefreshDueToCode = wasRefreshDueToCodeGeneration();
-
-    // Don't show if refresh was triggered by code generation
-    if (isRefreshDueToCode) {
-        return false;
-    }
-
-    // Show if never seen before or if version is different
-    if (dontShow && lastSeenVersion === WHATS_NEW_VERSION) {
-        return false;
-    }
-
-    return !lastSeenVersion || lastSeenVersion !== WHATS_NEW_VERSION;
 }
 
 /**
@@ -303,15 +219,6 @@ function setupTouchScrolling() {
  * Initializes the What's New modal functionality
  */
 export function initializeWhatsNew() {
-    // Load the user's preference for the "Don't show again" toggle
-    loadPreferences();
-
-    // Always show the modal unless the user has opted out
-    if (shouldShowModal()) {
-        // Small delay to ensure the app is loaded
-        setTimeout(() => showWhatsNewModal(), 1000);
-    }
-
     // Event listeners
     if (closeWhatsNewButton) {
         closeWhatsNewButton.addEventListener('click', () => {
@@ -323,11 +230,6 @@ export function initializeWhatsNew() {
         gotItButton.addEventListener('click', () => {
             hideWhatsNewModal();
         });
-    }
-
-    // Add event listener for the toggle to update its appearance
-    if (dontShowAgainToggle) {
-        dontShowAgainToggle.addEventListener('change', updateToggleAppearance);
     }
 
     // Close modal when pressing Escape key

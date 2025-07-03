@@ -596,6 +596,11 @@ body.light-theme .character-item {
     color: rgba(59, 130, 246, 0.7);
 }
 
+body.light-theme .character-image-placeholder,
+body.light-theme .character-image-placeholder p {
+    color: #111 !important;
+}
+
 /* Ripple effect for buttons */
 .character-save-btn,
 .character-upload-btn {
