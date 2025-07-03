@@ -136,9 +136,9 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 ## 📥 Download Information
 
 ### Recommended: Google Play Release
-**LMSA - Google Play Version**<br>
-**Publisher:** LMSA Community<br>
-**Updates:** Regular community-driven feature and maintenance updates<br>
+**LMSA - Google Play**<br>
+**Publisher:** IslandApps<br>
+**Updates:** Regular feature, security and maintenance updates<br>
 [**Download Now →**](https://play.google.com/store/apps/details?id=com.lmsa.app)
 
 ## ⚠️ Disclaimer
