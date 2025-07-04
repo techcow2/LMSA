@@ -16,13 +16,55 @@
     <title>LMSA • AI Assistant</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts with optimized loading -->
+    <!-- Google Fonts with optimized loading and memory management -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <script>
+        // Optimized font loading with memory management
+        window.loadFonts = function() {
+            // Only load fonts that are actually needed
+            const fontWeights = ['400', '500', '600']; // Reduced from 300,400,500,600,700
+            const fontFamilies = [
+                'Poppins:wght@' + fontWeights.join(';'),
+                'JetBrains+Mono:wght@400' // Only one weight for monospace
+            ];
+            
+            const fontUrl = `https://fonts.googleapis.com/css2?family=${fontFamilies.join('&family=')}&display=swap`;
+            
+            // Create font stylesheet
+            const fontLink = document.createElement('link');
+            fontLink.rel = 'stylesheet';
+            fontLink.href = fontUrl;
+            fontLink.media = 'print';
+            fontLink.onload = function() {
+                this.media = 'all';
+                console.log('Fonts loaded successfully');
+            };
+            
+            document.head.appendChild(fontLink);
+            
+            // Preload only the most critical font
+            const preloadLink = document.createElement('link');
+            preloadLink.rel = 'preload';
+            preloadLink.href = 'https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecg.woff2';
+            preloadLink.as = 'font';
+            preloadLink.type = 'font/woff2';
+            preloadLink.crossOrigin = 'anonymous';
+            document.head.appendChild(preloadLink);
+        };
+        
+        // Load fonts after critical resources
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(window.loadFonts, 100);
+            });
+        } else {
+            setTimeout(window.loadFonts, 100);
+        }
+    </script>
     <!-- Fallback for browsers that don't support JS-based font loading -->
     <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     </noscript>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/theme-variables.css">
@@ -41,11 +83,76 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </noscript>
     <!-- Marked.js is now lazy-loaded when needed to reduce initial memory footprint -->
-    <!-- JSZip Library for DOCX file processing - moved before Monaco -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous"></script>
+    <!-- JSZip Library for DOCX file processing - now lazy-loaded -->
+    <script>
+        // Lazy load JSZip only when needed
+        window.loadJSZipLibrary = function() {
+            return new Promise((resolve, reject) => {
+                if (window.JSZip) {
+                    resolve(window.JSZip);
+                    return;
+                }
+                
+                if (window._jsZipLoading) {
+                    window._jsZipLoading.then(resolve).catch(reject);
+                    return;
+                }
+                
+                window._jsZipLoading = new Promise((loadResolve, loadReject) => {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+                    script.integrity = 'sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==';
+                    script.crossOrigin = 'anonymous';
+                    script.onload = () => {
+                        console.log('JSZip loaded successfully');
+                        loadResolve(window.JSZip);
+                    };
+                    script.onerror = (e) => {
+                        console.error('Failed to load JSZip:', e);
+                        loadReject(e);
+                    };
+                    document.head.appendChild(script);
+                });
+                
+                window._jsZipLoading.then(resolve).catch(reject);
+            });
+        };
+    </script>
     
-    <!-- Tesseract.js for OCR functionality -->
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.4/dist/tesseract.min.js" crossorigin="anonymous"></script>
+    <!-- Tesseract.js for OCR functionality - now lazy-loaded -->
+    <script>
+        // Lazy load Tesseract only when needed
+        window.loadTesseractLibrary = function() {
+            return new Promise((resolve, reject) => {
+                if (window.Tesseract) {
+                    resolve(window.Tesseract);
+                    return;
+                }
+                
+                if (window._tesseractLoading) {
+                    window._tesseractLoading.then(resolve).catch(reject);
+                    return;
+                }
+                
+                window._tesseractLoading = new Promise((loadResolve, loadReject) => {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@4.1.4/dist/tesseract.min.js';
+                    script.crossOrigin = 'anonymous';
+                    script.onload = () => {
+                        console.log('Tesseract loaded successfully');
+                        loadResolve(window.Tesseract);
+                    };
+                    script.onerror = (e) => {
+                        console.error('Failed to load Tesseract:', e);
+                        loadReject(e);
+                    };
+                    document.head.appendChild(script);
+                });
+                
+                window._tesseractLoading.then(resolve).catch(reject);
+            });
+        };
+    </script>
     
     <!-- PDF.js will be loaded directly when needed -->
     <script>

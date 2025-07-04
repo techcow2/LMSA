@@ -1,31 +1,112 @@
-// DOM Elements
-export const chatContainer = document.getElementById('chat-container');
-export const messagesContainer = document.getElementById('messages');
-export const chatForm = document.getElementById('chat-form');
-export const userInput = document.getElementById('user-input');
-export const serverIpInput = document.getElementById('server-ip');
-export const serverPortInput = document.getElementById('server-port');
-export const systemPromptInput = document.getElementById('system-prompt');
-export const clearChatButton = document.getElementById('clear-chat');
-export const loadingIndicator = document.getElementById('loading-indicator');
-export const sidebar = document.getElementById('sidebar');
-// New topic button is now in the send context menu
-export const newTopicButton = null;
-export const newChatButton = document.getElementById('new-chat');
-export const chatHistory = document.getElementById('chat-history');
-export const settingsButton = document.getElementById('settings-btn');
-export const settingsIconButton = document.getElementById('settings-icon-button');
-export const settingsModal = document.getElementById('settings-modal');
-export const closeSettingsButton = document.getElementById('close-settings');
-export const closeSettingsXButton = document.getElementById('close-settings-x');
-export const welcomeMessage = document.getElementById('welcome-message');
-export const sidebarToggle = document.getElementById('sidebar-toggle');
-export const closeSidebarButton = document.getElementById('close-sidebar');
-export const loadedModelDisplay = document.getElementById('loaded-model');
-export const hideThinkingCheckbox = document.getElementById('hide-thinking');
-export const autoGenerateTitlesCheckbox = document.getElementById('auto-generate-titles');
-export const themeToggleCheckbox = document.getElementById('theme-toggle');
-export const disableAutoScrollCheckbox = document.getElementById('disable-auto-scroll');
+// DOM Elements - Optimized with lazy loading and memory management
+class DOMElementCache {
+    constructor() {
+        this.cache = new Map();
+        this.observers = new Map();
+        this.setupCleanup();
+    }
+    
+    get(id) {
+        if (this.cache.has(id)) {
+            const element = this.cache.get(id);
+            // Check if element is still in DOM
+            if (element && document.contains(element)) {
+                return element;
+            } else {
+                // Element was removed, clean up cache
+                this.cache.delete(id);
+                this.observers.delete(id);
+            }
+        }
+        
+        // Get fresh element
+        const element = document.getElementById(id);
+        if (element) {
+            this.cache.set(id, element);
+            this.observeElement(id, element);
+        }
+        return element;
+    }
+    
+    observeElement(id, element) {
+        if (!window.MutationObserver || this.observers.has(id)) return;
+        
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'childList') {
+                    mutation.removedNodes.forEach((node) => {
+                        if (node === element) {
+                            this.cache.delete(id);
+                            this.observers.delete(id);
+                            observer.disconnect();
+                        }
+                    });
+                }
+            });
+        });
+        
+        observer.observe(document.body, { childList: true, subtree: true });
+        this.observers.set(id, observer);
+    }
+    
+    setupCleanup() {
+        // Clean up cache periodically
+        setInterval(() => {
+            const keysToDelete = [];
+            for (const [id, element] of this.cache) {
+                if (!element || !document.contains(element)) {
+                    keysToDelete.push(id);
+                }
+            }
+            keysToDelete.forEach(id => {
+                this.cache.delete(id);
+                const observer = this.observers.get(id);
+                if (observer) {
+                    observer.disconnect();
+                    this.observers.delete(id);
+                }
+            });
+        }, 60000); // Clean up every minute
+    }
+    
+    clear() {
+        this.cache.clear();
+        this.observers.forEach(observer => observer.disconnect());
+        this.observers.clear();
+    }
+}
+
+const domCache = new DOMElementCache();
+
+// Core elements that are always needed
+export const chatContainer = domCache.get('chat-container');
+export const messagesContainer = domCache.get('messages');
+export const chatForm = domCache.get('chat-form');
+export const userInput = domCache.get('user-input');
+export const loadingIndicator = domCache.get('loading-indicator');
+export const sidebar = domCache.get('sidebar');
+
+// Lazy-loaded elements that may not always be present
+export const serverIpInput = domCache.get('server-ip');
+export const serverPortInput = domCache.get('server-port');
+export const systemPromptInput = domCache.get('system-prompt');
+export const clearChatButton = domCache.get('clear-chat');
+export const newTopicButton = null; // Explicitly null as noted
+export const newChatButton = domCache.get('new-chat');
+export const chatHistory = domCache.get('chat-history');
+export const settingsButton = domCache.get('settings-btn');
+export const settingsIconButton = domCache.get('settings-icon-button');
+export const settingsModal = domCache.get('settings-modal');
+export const closeSettingsButton = domCache.get('close-settings');
+export const closeSettingsXButton = domCache.get('close-settings-x');
+export const welcomeMessage = domCache.get('welcome-message');
+export const sidebarToggle = domCache.get('sidebar-toggle');
+export const closeSidebarButton = domCache.get('close-sidebar');
+export const loadedModelDisplay = domCache.get('loaded-model');
+export const hideThinkingCheckbox = domCache.get('hide-thinking');
+export const autoGenerateTitlesCheckbox = domCache.get('auto-generate-titles');
+export const themeToggleCheckbox = domCache.get('theme-toggle');
+export const disableAutoScrollCheckbox = domCache.get('disable-auto-scroll');
 
 export const refreshButton = document.getElementById('refresh-button');
 export const modelToggleButton = document.getElementById('model-toggle-button');

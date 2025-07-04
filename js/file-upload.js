@@ -1,10 +1,12 @@
 // File Upload functionality
 import { fileUploadInput as importedFileUploadInput } from './dom-elements.js';
 import { appendMessage } from './ui-manager.js';
+import { memoryManager } from './memory-manager.js';
 
 let uploadedFiles = [];
 let uploadedFileIds = []; // Track uploaded file IDs for API requests
 let localFileInput; // Local reference to the file input element
+let processingFiles = new Map(); // Track files being processed to avoid memory leaks
 
 /**
  * Check if the current model is a vision language model
@@ -551,20 +553,22 @@ async function extractDocxText(input) {
  * Dynamically load JSZip library if not already available
  */
 async function loadJSZip() {
-    return new Promise((resolve, reject) => {
+    try {
         if (window.JSZip) {
-            resolve(window.JSZip);
-            return;
+            return window.JSZip;
         }
         
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
-        script.integrity = 'sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==';
-        script.crossOrigin = 'anonymous';
-        script.onload = () => resolve(window.JSZip);
-        script.onerror = () => reject(new Error('Failed to load JSZip'));
-        document.head.appendChild(script);
-    });
+        // Use the lazy loader from index.html
+        if (typeof window.loadJSZipLibrary === 'function') {
+            console.log('Loading JSZip library...');
+            return await window.loadJSZipLibrary();
+        }
+        
+        throw new Error('JSZip lazy loader not available');
+    } catch (error) {
+        console.error('Error loading JSZip:', error);
+        throw error;
+    }
 }
 
 /**
@@ -706,51 +710,44 @@ function preprocessImageForOCR(originalCanvas) {
  * @returns {Promise<Object>} - Tesseract library object
  */
 async function loadTesseract() {
-    return new Promise((resolve, reject) => {
+    try {
         // Check if Tesseract is already loaded and ready
         if (window.Tesseract && typeof window.Tesseract.recognize === 'function') {
             console.log('Tesseract.js already available and ready');
-            resolve(window.Tesseract);
-            return;
+            return window.Tesseract;
         }
         
-        // Check if we're already waiting for Tesseract to initialize
-        if (window._tesseractLoading) {
-            console.log('Tesseract.js already being initialized, waiting for completion...');
-            window._tesseractLoading.then(resolve).catch(reject);
-            return;
-        }
-        
-        console.log('Waiting for Tesseract.js to initialize...');
-        
-        // Mark that we're waiting for Tesseract initialization
-        window._tesseractLoading = new Promise((loadResolve, loadReject) => {
+        // Use the lazy loader from index.html
+        if (typeof window.loadTesseractLibrary === 'function') {
+            console.log('Loading Tesseract library...');
+            const tesseract = await window.loadTesseractLibrary();
+            
+            // Wait for Tesseract to be fully ready
             let attempts = 0;
             const maxAttempts = 100; // 10 seconds max wait
             
-            const checkTesseract = () => {
-                attempts++;
-                
+            while (attempts < maxAttempts) {
                 if (window.Tesseract && typeof window.Tesseract.recognize === 'function') {
                     console.log('Tesseract.js fully initialized and ready');
-                    loadResolve(window.Tesseract);
-                } else if (attempts < maxAttempts) {
-                    if (attempts % 10 === 0) { // Log every second
-                        console.log(`Waiting for Tesseract.js initialization... attempt ${attempts}/${maxAttempts}`);
-                    }
-                    setTimeout(checkTesseract, 100);
-                } else {
-                    console.error('Tesseract.js failed to initialize after maximum attempts');
-                    loadReject(new Error('Tesseract.js failed to initialize after waiting 10 seconds. Make sure the library is properly loaded.'));
+                    return window.Tesseract;
                 }
-            };
+                
+                if (attempts % 10 === 0) { // Log every second
+                    console.log(`Waiting for Tesseract.js initialization... attempt ${attempts}/${maxAttempts}`);
+                }
+                
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
             
-            // Start checking immediately
-            checkTesseract();
-        });
+            throw new Error('Tesseract.js failed to initialize after waiting 10 seconds');
+        }
         
-        window._tesseractLoading.then(resolve).catch(reject);
-    });
+        throw new Error('Tesseract lazy loader not available');
+    } catch (error) {
+        console.error('Error loading Tesseract:', error);
+        throw error;
+    }
 }
 
 /**
@@ -1616,8 +1613,31 @@ export async function uploadFilesToLMStudio(files) {
  * Resets uploaded files
  */
 export function resetUploadedFiles() {
+    // Clean up any blob URLs and object references
+    uploadedFiles.forEach(file => {
+        if (file.objectUrl) {
+            URL.revokeObjectURL(file.objectUrl);
+        }
+        if (file.blob) {
+            file.blob = null;
+        }
+        if (file.arrayBuffer) {
+            file.arrayBuffer = null;
+        }
+        // Track cleanup for memory manager
+        memoryManager.trackFileReference(`file_${file.name}_${Date.now()}`, {
+            element: null,
+            objectUrl: file.objectUrl,
+            blob: file.blob
+        });
+    });
+    
     uploadedFiles = [];
     uploadedFileIds = [];
+    
+    // Clear processing files
+    processingFiles.clear();
+    
     if (localFileInput) {
         localFileInput.value = '';
     }
@@ -1639,6 +1659,8 @@ export function resetUploadedFiles() {
     if (filePreviewsExisting) {
         filePreviewsExisting.parentNode.removeChild(filePreviewsExisting);
     }
+    
+    console.log('Uploaded files reset and memory cleaned up');
 }
 
 /**

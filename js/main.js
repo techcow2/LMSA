@@ -17,6 +17,9 @@ import { initializeWhatsNew } from './whats-new.js';
 import { initializeSettingsModal } from './settings-modal-manager.js';
 import { initializeCharacterManager } from './character-manager.js';
 import { initializeCharacterGallery } from './character-gallery.js';
+import { memoryManager } from './memory-manager.js';
+import { messageCache } from './message-cache.js';
+import { chatHistoryOptimizer } from './chat-history-optimizer.js';
 
 import { updateConfirmationModalTheme, updateExportImportModalsTheme } from '../confirmation-modal-fix.js';
 
@@ -167,6 +170,38 @@ async function initializeApp() {
             ensureWelcomeMessagePosition();
         }
     });
+
+    // Initialize memory optimizations
+    console.log('Initializing memory optimizations...');
+    
+    // Register cleanup callbacks for memory management
+    memoryManager.registerCleanupCallback(() => {
+        // Clean up message cache
+        const cacheStats = messageCache.getStats();
+        if (cacheStats.memoryUtilization > 80) {
+            console.log('High memory usage in message cache, performing cleanup');
+            messageCache.performCleanup();
+        }
+    });
+    
+    memoryManager.registerCleanupCallback(() => {
+        // Clean up chat history optimizer
+        const memoryStats = chatHistoryOptimizer.getMemoryStats();
+        if (memoryStats.compressedDataSize > 10 * 1024 * 1024) { // 10MB
+            console.log('Large compressed data detected, performing cleanup');
+            chatHistoryOptimizer.cleanupOldCompressedData([]);
+        }
+    });
+    
+    // Log memory optimization status
+    console.log('Memory optimizations initialized:');
+    console.log('- External libraries: Lazy loaded');
+    console.log('- Message virtualization: Active');
+    console.log('- Chat history optimization: Active');
+    console.log('- Memory manager: Active');
+    console.log('- Message cache: Active');
+    console.log('- DOM element cache: Active');
+    console.log('- Font optimization: Active');
 
     console.log('LMSA initialization complete');
 }
