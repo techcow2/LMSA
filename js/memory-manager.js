@@ -5,17 +5,51 @@ import { debugLog, debugError } from './utils.js';
 
 class MemoryManager {
     constructor() {
-        this.cleanupInterval = 5 * 60 * 1000; // 5 minutes
-        this.memoryThreshold = 200 * 1024 * 1024; // 200MB threshold
+        // Detect Android WebView
+        this.isAndroidWebView = this.detectAndroidWebView();
+        this.isMobile = this.detectMobile();
+        
+        // Adjust settings based on platform
+        if (this.isAndroidWebView) {
+            this.cleanupInterval = 10 * 60 * 1000; // 10 minutes for Android
+            this.memoryThreshold = 100 * 1024 * 1024; // 100MB threshold for Android
+            this.memoryCheckInterval = 60000; // 1 minute for Android
+        } else if (this.isMobile) {
+            this.cleanupInterval = 7 * 60 * 1000; // 7 minutes for mobile
+            this.memoryThreshold = 150 * 1024 * 1024; // 150MB threshold for mobile
+            this.memoryCheckInterval = 45000; // 45 seconds for mobile
+        } else {
+            this.cleanupInterval = 5 * 60 * 1000; // 5 minutes for desktop
+            this.memoryThreshold = 200 * 1024 * 1024; // 200MB threshold for desktop
+            this.memoryCheckInterval = 30000; // 30 seconds for desktop
+        }
+        
         this.cleanupTimer = null;
         this.memoryObserver = null;
         this.cleanupCallbacks = new Set();
         this.fileReferences = new Map(); // Track file references for cleanup
         this.domObserver = null;
         this.lastMemoryCheck = 0;
-        this.memoryCheckInterval = 30000; // 30 seconds
         
         this.startMemoryMonitoring();
+    }
+    
+    /**
+     * Detect Android WebView
+     * @returns {boolean} - True if running in Android WebView
+     */
+    detectAndroidWebView() {
+        const userAgent = navigator.userAgent;
+        return /Android.*wv\)|; wv/.test(userAgent) || 
+               (userAgent.includes('Android') && userAgent.includes('Version/') && !userAgent.includes('Chrome/'));
+    }
+    
+    /**
+     * Detect mobile device
+     * @returns {boolean} - True if running on mobile
+     */
+    detectMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
     
     /**
@@ -27,15 +61,17 @@ class MemoryManager {
             this.performCleanup();
         }, this.cleanupInterval);
         
-        // Monitor memory usage if available
-        if ('memory' in performance) {
+        // Monitor memory usage if available and not on Android WebView
+        if ('memory' in performance && !this.isAndroidWebView) {
             this.startPerformanceMonitoring();
         }
         
-        // Monitor DOM mutations for cleanup opportunities
-        this.startDOMObserver();
+        // Monitor DOM mutations for cleanup opportunities (lighter on Android)
+        if (!this.isAndroidWebView) {
+            this.startDOMObserver();
+        }
         
-        debugLog('Memory manager started');
+        debugLog(`Memory manager started (Platform: ${this.isAndroidWebView ? 'Android WebView' : this.isMobile ? 'Mobile' : 'Desktop'})`);
     }
     
     /**
@@ -90,33 +126,44 @@ class MemoryManager {
     startDOMObserver() {
         if (!window.MutationObserver) return;
         
+        // Use throttled observer for better performance
+        let observerTimeout = null;
+        
         this.domObserver = new MutationObserver((mutations) => {
-            let shouldCleanup = false;
+            // Throttle mutations processing
+            if (observerTimeout) return;
             
-            mutations.forEach((mutation) => {
-                // Check for removed nodes that might need cleanup
-                if (mutation.removedNodes.length > 0) {
-                    mutation.removedNodes.forEach((node) => {
-                        if (node.nodeType === Node.ELEMENT_NODE) {
-                            this.cleanupRemovedElement(node);
-                            shouldCleanup = true;
-                        }
-                    });
+            observerTimeout = setTimeout(() => {
+                let shouldCleanup = false;
+                
+                mutations.forEach((mutation) => {
+                    // Check for removed nodes that might need cleanup
+                    if (mutation.removedNodes.length > 0) {
+                        mutation.removedNodes.forEach((node) => {
+                            if (node.nodeType === Node.ELEMENT_NODE) {
+                                this.cleanupRemovedElement(node);
+                                shouldCleanup = true;
+                            }
+                        });
+                    }
+                });
+                
+                if (shouldCleanup) {
+                    // Debounce cleanup with longer delay for mobile
+                    clearTimeout(this.domCleanupTimeout);
+                    const delay = this.isMobile ? 3000 : 1000;
+                    this.domCleanupTimeout = setTimeout(() => {
+                        this.performCleanup();
+                    }, delay);
                 }
-            });
-            
-            if (shouldCleanup) {
-                // Debounce cleanup
-                clearTimeout(this.domCleanupTimeout);
-                this.domCleanupTimeout = setTimeout(() => {
-                    this.performCleanup();
-                }, 1000);
-            }
+                
+                observerTimeout = null;
+            }, this.isMobile ? 500 : 100);
         });
         
         this.domObserver.observe(document.body, {
             childList: true,
-            subtree: true
+            subtree: !this.isMobile // Reduce scope on mobile
         });
     }
     
@@ -422,4 +469,4 @@ class MemoryManager {
 export const memoryManager = new MemoryManager();
 
 // Export class for testing
-export { MemoryManager }; 
+export { MemoryManager };

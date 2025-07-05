@@ -1318,28 +1318,11 @@
         }
     }
 
-    /* Specific fix for tablet view */
-    @media (min-width: 768px) {
+    /* Specific fix for smaller tablet view */
+    @media (min-width: 768px) and (max-width: 1023px) {
         #settings-navigation-buttons {
             margin-top: 1.25rem;
             margin-bottom: 1rem;
-        }
-
-        /* Make buttons larger on tablets for better touch targets */
-        #settings-modal button[id^="to-"],
-        #settings-modal button[id^="back-"] {
-            min-height: 50px;
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-        }
-
-        /* Fix for tablet view to prevent right edge from being cut off */
-        #settings-modal .modal-content {
-            width: 90%;
-            max-width: 90%;
-            padding: 1.25rem;
-            box-sizing: border-box;
-            overflow-x: visible;
         }
 
         /* Ensure toggle containers have proper spacing and don't get cut off */
@@ -1565,6 +1548,124 @@
     }
 }
 
+/* Tablet-specific CSS to prevent buttons from being cut off */
+@media (min-width: 600px) and (max-width: 1024px) {
+    /* Settings modal for tablets - optimize for different tablet sizes */
+    #settings-modal .modal-content {
+        width: 85% !important;
+        max-width: 700px !important;
+        padding: 1.5rem !important;
+        box-sizing: border-box !important;
+        margin: 0 auto !important;
+    }
+    
+    /* Ensure content wrapper has proper spacing */
+    #settings-modal #settings-content-wrapper {
+        padding: 1rem 0.75rem !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Navigation buttons - ensure they fit properly */
+    #settings-modal button[id^="to-"],
+    #settings-modal button[id^="back-"],
+    #settings-modal #settings-help-btn {
+        padding: 0.75rem 0.5rem !important;
+        font-size: 0.8rem !important;
+        min-height: 48px !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
+        width: 46% !important;
+        max-width: 46% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    
+    /* Action buttons - prevent cutoff and ensure proper sizing */
+    #settings-modal #edit-system-prompt-btn,
+    #settings-modal #clear-chat,
+    #settings-modal #reset-app,
+    #settings-modal #apply-changes-btn {
+        width: calc(100% - 2rem);
+        max-width: calc(100% - 2rem);
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        min-height: 48px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Button icons - proper sizing */
+    #settings-modal button i {
+        font-size: 0.85rem !important;
+        margin-right: 0.4rem !important;
+        flex-shrink: 0 !important;
+    }
+    
+    /* Button text - prevent overflow */
+    #settings-modal button span {
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        font-size: 0.85rem !important;
+    }
+    
+    /* Navigation button containers - reduce gap to prevent overflow */
+    #settings-modal .navigation-buttons {
+        gap: 0.5rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* Ensure proper spacing for step content */
+    #settings-modal .settings-step {
+        padding: 0 !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Modal content scrolling */
+    #settings-modal .settings-step.active {
+        overflow-y: auto !important;
+        max-height: 70vh !important;
+    }
+    
+    /* Input containers - prevent overflow */
+    #settings-modal .ip-port-container,
+    #settings-modal .flex.justify-between.items-center {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding-right: 0 !important;
+        margin-right: 0 !important;
+    }
+    
+    /* Navigation buttons container - ensure no overflow */
+    #settings-navigation-buttons {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Specific optimization for 1024x1366 screens */
+@media (width: 1024px) and (height: 1366px) {
+    /* Reduce help button size for 1024x1366 screens */
+    #settings-modal #settings-help-btn {
+        padding: 0.6rem 1rem !important;
+        font-size: 0.8rem !important;
+        min-height: 40px !important;
+        border-radius: 0.5rem !important;
+    }
+}
+
 /* Additional viewport-based responsive design */
 @media (max-width: 767px) and (max-height: 600px) {
     /* For small height screens (landscape mobile) */
@@ -1579,5 +1680,60 @@
 
     #settings-modal.keyboard-visible .settings-step.active {
         max-height: calc(100vh - 8rem);
+    }
+}
+
+/* Enhanced tablet support for larger tablets (iPad Pro, etc.) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Larger tablet optimization */
+    #settings-modal .modal-content {
+        width: 80% !important;
+        max-width: 750px !important;
+        padding: 2rem !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Better button sizing for larger tablets - prevent overflow */
+    #settings-modal button[id^="to-"],
+    #settings-modal button[id^="back-"],
+    #settings-modal #settings-help-btn {
+        padding: 1rem 0.75rem !important;
+        font-size: 0.9rem !important;
+        min-height: 52px !important;
+        width: 46% !important;
+        max-width: 46% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+    
+    /* Action buttons for larger tablets */
+    #settings-modal #edit-system-prompt-btn,
+    #settings-modal #clear-chat,
+    #settings-modal #reset-app,
+    #settings-modal #apply-changes-btn {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        min-height: 52px;
+    }
+    
+    /* Navigation button gap - prevent overflow */
+    #settings-modal .navigation-buttons {
+        gap: 0.75rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* Navigation buttons container - ensure no overflow */
+    #settings-navigation-buttons {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        overflow: hidden !important;
     }
 }

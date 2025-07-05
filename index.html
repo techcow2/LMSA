@@ -70,6 +70,78 @@
     <link rel="stylesheet" href="css/theme-variables.css">
     <link rel="stylesheet" href="styles.css?v=20250629231150">
     <link rel="stylesheet" href="css/settings-modal.css">
+    <!-- Tablet-specific overrides to fix buttons being cut off -->
+    <style>
+        /* Reset all buttons in settings modal for tablet view */
+        @media (min-width: 600px) and (max-width: 1024px) {
+            /* Make modal narrower with better spacing */
+            #settings-modal .modal-content {
+                width: 85%;
+                max-width: 600px;
+                padding: 1rem;
+            }
+            
+            /* Ensure content wrapper has proper spacing */
+            #settings-modal #settings-content-wrapper {
+                padding: 0 0.5rem;
+                overflow-y: auto;
+                max-height: 65vh;
+            }
+            
+            /* Fix button text overflow issues */
+            #settings-modal .professional-button {
+                min-width: 0;
+                font-size: 0.875rem;
+                padding: 0.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                box-sizing: border-box;
+            }
+            
+            /* Target specific buttons that were being cut off */
+            #settings-modal #edit-system-prompt-btn,
+            #settings-modal #clear-chat,
+            #settings-modal #reset-app,
+            #settings-modal #close-settings {
+                margin: 0.25rem 0;
+                width: calc(100% - 2rem);
+                max-width: calc(100% - 2rem);
+            }
+            
+            /* Make button text and icons smaller */
+            #settings-modal button i {
+                font-size: 0.875rem;
+                flex-shrink: 0;
+            }
+            
+            #settings-modal button span {
+                font-size: 0.875rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 0 0.25rem;
+            }
+            
+            /* Force all navigation buttons to fit */
+            #settings-navigation-buttons button {
+                width: 46%;
+                max-width: 46%;
+                min-width: 0;
+                padding: 0.5rem 0.25rem;
+                box-sizing: border-box;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            /* Reduce gap between navigation buttons */
+            #settings-modal .navigation-buttons {
+                gap: 0.5rem;
+            }
+        }
+    </style>
     <link rel="stylesheet" href="css/system-prompt-overlay.css">
     <link rel="stylesheet" href="css/code-blocks.css">
     <link rel="stylesheet" href="css/modern-ui.css?v=20250629231150">
@@ -834,7 +906,7 @@
 
     <!-- Settings modal -->
     <div id="settings-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container" aria-labelledby="settings-title" role="dialog" aria-modal="true">
-        <div class="p-6 rounded-lg w-96 max-w-[90%] shadow-lg modal-content border border-white/10">
+        <div class="p-6 rounded-lg shadow-lg modal-content border border-white/10" style="width: 640px; max-width: 95%;">
             <!-- Settings Header -->
             <div class="flex flex-col sticky top-0 z-10 mb-6 pb-1 border-b border-gray-700/30 bg-inherit">
                 <div class="flex justify-between items-center mb-2">
@@ -984,7 +1056,7 @@
             <div id="settings-navigation-buttons" class="lg:hidden mt-5 mb-2">
                 <!-- Connection step buttons -->
                 <div class="flex justify-end navigation-buttons" id="connection-step-buttons">
-                    <button id="to-prompt-step-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                    <button id="to-prompt-step-btn" class="professional-button flex items-center justify-center gap-3 w-[46%] h-[48px]">
                         <i class="fas fa-arrow-right text-sm"></i>
                         <span class="button-text">Next</span>
                     </button>
@@ -992,11 +1064,11 @@
 
                 <!-- Prompt step buttons -->
                 <div class="flex justify-between navigation-buttons hidden" id="prompt-step-buttons">
-                    <button id="back-to-connection-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                    <button id="back-to-connection-btn" class="professional-button flex items-center justify-center gap-3 w-[46%] h-[48px]">
                         <i class="fas fa-arrow-left text-sm"></i>
                         <span class="button-text">Back</span>
                     </button>
-                    <button id="to-options-step-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                    <button id="to-options-step-btn" class="professional-button flex items-center justify-center gap-3 w-[46%] h-[48px]">
                         <i class="fas fa-arrow-right text-sm"></i>
                         <span class="button-text">Next</span>
                     </button>
@@ -1004,11 +1076,11 @@
 
                 <!-- Options step buttons -->
                 <div class="flex justify-between navigation-buttons hidden" id="options-step-buttons">
-                    <button id="back-to-prompt-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                    <button id="back-to-prompt-btn" class="professional-button flex items-center justify-center gap-3 w-[46%] h-[48px]">
                         <i class="fas fa-arrow-left text-sm"></i>
                         <span class="button-text">Back</span>
                     </button>
-                    <button id="to-actions-step-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                    <button id="to-actions-step-btn" class="professional-button flex items-center justify-center gap-3 w-[46%] h-[48px]">
                         <i class="fas fa-arrow-right text-sm"></i>
                         <span class="button-text">Next</span>
                     </button>
@@ -1016,11 +1088,11 @@
 
                 <!-- Actions step buttons -->
                 <div class="flex justify-between navigation-buttons hidden" id="actions-step-buttons">
-                    <button id="back-to-options-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                    <button id="back-to-options-btn" class="professional-button flex items-center justify-center gap-3 w-[46%] h-[48px]">
                         <i class="fas fa-arrow-left text-sm"></i>
                         <span class="button-text">Back</span>
                     </button>
-                    <button id="settings-help-btn" class="professional-button flex items-center justify-center gap-3 w-[48%] h-[48px]">
+                    <button id="settings-help-btn" class="professional-button flex items-center justify-center gap-3 w-[46%] h-[48px]">
                         <i class="fas fa-question-circle text-sm"></i>
                         <span class="button-text">Help</span>
                     </button>

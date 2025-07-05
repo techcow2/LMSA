@@ -11,7 +11,60 @@ class MemoryMonitor {
         this.isMonitoring = false;
         this.monitoringInterval = null;
         this.statsHistory = [];
-        this.maxHistoryLength = 60; // Keep 60 data points (5 minutes at 5-second intervals)
+        this.maxHistoryLength = 50;
+        this.lastCleanupTime = 0;
+        this.cleanupCooldown = 30000; // 30 seconds between cleanups
+        
+        // Platform-specific settings
+        this.isAndroidWebView = this.detectAndroidWebView();
+        this.isMobile = this.detectMobile();
+        
+        // Adjust thresholds based on platform
+        this.memoryThresholds = this.getMemoryThresholds();
+    }
+    
+    /**
+     * Detect if running in Android WebView
+     * @returns {boolean}
+     */
+    detectAndroidWebView() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        return userAgent.includes('android') && 
+               (userAgent.includes('wv') || userAgent.includes('webview'));
+    }
+    
+    /**
+     * Detect if running on mobile device
+     * @returns {boolean}
+     */
+    detectMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+    
+    /**
+     * Get platform-specific memory thresholds
+     * @returns {Object}
+     */
+    getMemoryThresholds() {
+        if (this.isAndroidWebView) {
+            return {
+                cleanup: 100,    // 100MB for Android WebView
+                warning: 150,    // 150MB warning
+                critical: 200    // 200MB critical
+            };
+        } else if (this.isMobile) {
+            return {
+                cleanup: 150,    // 150MB for other mobile
+                warning: 250,    // 250MB warning
+                critical: 300    // 300MB critical
+            };
+        } else {
+            return {
+                cleanup: 250,    // 250MB for desktop
+                warning: 400,    // 400MB warning
+                critical: 500    // 500MB critical
+            };
+        }
     }
     
     /**
@@ -198,14 +251,19 @@ class MemoryMonitor {
         const totalMB = stats.totalEstimated / (1024 * 1024);
         
         // Trigger cleanup if memory usage is high
-        if (totalMB > 250) { // 250MB threshold
-            debugLog(`High memory usage detected: ${totalMB.toFixed(1)}MB`);
+        if (totalMB > this.memoryThresholds.cleanup) {
+            debugLog(`High memory usage detected: ${totalMB.toFixed(1)}MB (threshold: ${this.memoryThresholds.cleanup}MB)`);
             this.triggerMemoryOptimization();
         }
         
         // Warn if memory usage is very high
-        if (totalMB > 400) { // 400MB threshold
-            console.warn(`Very high memory usage: ${totalMB.toFixed(1)}MB - consider refreshing the page`);
+        if (totalMB > this.memoryThresholds.warning) {
+            console.warn(`High memory usage: ${totalMB.toFixed(1)}MB (warning threshold: ${this.memoryThresholds.warning}MB) - consider refreshing the page`);
+        }
+        
+        // Critical memory usage
+        if (totalMB > this.memoryThresholds.critical) {
+            console.error(`Critical memory usage: ${totalMB.toFixed(1)}MB - immediate action required`);
         }
     }
     
@@ -313,11 +371,12 @@ class MemoryMonitor {
      */
     getOptimizationLevel(stats) {
         const totalMB = stats.totalEstimated / (1024 * 1024);
+        const thresholds = this.memoryThresholds;
         
-        if (totalMB < 100) return 'excellent';
-        if (totalMB < 200) return 'good';
-        if (totalMB < 300) return 'moderate';
-        if (totalMB < 400) return 'poor';
+        if (totalMB < thresholds.cleanup * 0.5) return 'excellent';
+        if (totalMB < thresholds.cleanup * 0.8) return 'good';
+        if (totalMB < thresholds.cleanup) return 'moderate';
+        if (totalMB < thresholds.warning) return 'poor';
         return 'critical';
     }
     
@@ -329,24 +388,38 @@ class MemoryMonitor {
     generateRecommendations(stats) {
         const recommendations = [];
         const totalMB = stats.totalEstimated / (1024 * 1024);
+        const thresholds = this.memoryThresholds;
         
-        if (totalMB > 300) {
-            recommendations.push('Consider refreshing the page to reset memory usage');
+        // Platform-specific recommendations
+        if (this.isAndroidWebView) {
+            if (totalMB > thresholds.cleanup * 0.8) {
+                recommendations.push('Android WebView: Consider clearing chat history or refreshing to optimize memory');
+            }
+            if (stats.domElements.messageElements > 50) {
+                recommendations.push('Android WebView: Many messages loaded - scroll to trigger virtualization');
+            }
+        } else {
+            if (totalMB > thresholds.warning) {
+                recommendations.push('Consider refreshing the page to reset memory usage');
+            }
         }
         
-        if (stats.messageCache.memoryUtilization > 80) {
-            recommendations.push('Message cache is nearly full - older messages will be automatically cleaned up');
+        if (stats.messageCache.memoryUtilization > (this.isAndroidWebView ? 60 : 80)) {
+            recommendations.push('Message cache utilization high - older messages will be automatically cleaned up');
         }
         
-        if (stats.localStorage.totalSize > 5 * 1024 * 1024) {
+        const storageThreshold = this.isAndroidWebView ? 2 * 1024 * 1024 : 5 * 1024 * 1024;
+        if (stats.localStorage.totalSize > storageThreshold) {
             recommendations.push('Local storage is large - consider exporting and clearing old chat history');
         }
         
-        if (stats.domElements.messageElements > 100) {
-            recommendations.push('Many messages in DOM - message virtualization is helping optimize display');
+        const domThreshold = this.isAndroidWebView ? 50 : 100;
+        if (stats.domElements.messageElements > domThreshold) {
+            recommendations.push('Message virtualization is helping optimize display performance');
         }
         
-        if (stats.chatHistoryOptimizer.compressedChats === 0 && stats.localStorage.chatHistorySize > 1024 * 1024) {
+        // Skip compression recommendations for Android WebView (performance impact)
+        if (!this.isAndroidWebView && stats.chatHistoryOptimizer.compressedChats === 0 && stats.localStorage.chatHistorySize > 1024 * 1024) {
             recommendations.push('Chat history could benefit from compression optimization');
         }
         
@@ -379,7 +452,13 @@ export const memoryMonitor = new MemoryMonitor();
 // Export class for testing
 export { MemoryMonitor };
 
-// Auto-start monitoring in development mode
+// Auto-start monitoring with platform-specific intervals
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    memoryMonitor.startMonitoring(10000); // 10-second intervals in development
-} 
+    // Development mode with platform-specific intervals
+    const interval = memoryMonitor.isAndroidWebView ? 30000 : 10000; // 30s for Android WebView, 10s for others
+    memoryMonitor.startMonitoring(interval);
+} else {
+    // Production mode with conservative intervals
+    const interval = memoryMonitor.isAndroidWebView ? 60000 : 30000; // 60s for Android WebView, 30s for others
+    memoryMonitor.startMonitoring(interval);
+}

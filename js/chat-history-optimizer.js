@@ -5,12 +5,58 @@ import { debugLog, debugError } from './utils.js';
 
 class ChatHistoryOptimizer {
     constructor() {
-        this.compressionThreshold = 100; // Messages per chat before compression
-        this.maxMessagesInMemory = 50; // Maximum messages to keep in memory per chat
-        this.compressionRatio = 0.7; // Target compression ratio
         this.compressedChats = new Map(); // Store compressed chat data
         this.activeChats = new Set(); // Track recently accessed chats
-        this.maxActiveChatCount = 10; // Maximum number of active chats to keep uncompressed
+        
+        // Platform detection
+        this.isAndroidWebView = this.detectAndroidWebView();
+        this.isMobile = this.detectMobile();
+        
+        // Platform-specific settings
+        this.initializePlatformSettings();
+    }
+    
+    /**
+     * Detect if running in Android WebView
+     * @returns {boolean}
+     */
+    detectAndroidWebView() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        return userAgent.includes('android') && 
+               (userAgent.includes('wv') || userAgent.includes('webview'));
+    }
+    
+    /**
+     * Detect if running on mobile device
+     * @returns {boolean}
+     */
+    detectMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+    
+    /**
+     * Initialize platform-specific settings
+     */
+    initializePlatformSettings() {
+        if (this.isAndroidWebView) {
+            this.compressionThreshold = 25; // Lower threshold for Android WebView
+            this.maxMessagesInMemory = 20; // Fewer messages in memory
+            this.compressionRatio = 0.5; // Less aggressive compression
+            this.maxActiveChatCount = 3; // Fewer active chats
+            this.compressionEnabled = false; // Disable compression for performance
+        } else if (this.isMobile) {
+            this.compressionThreshold = 50; // Moderate threshold for mobile
+            this.maxMessagesInMemory = 30; // Moderate messages in memory
+            this.compressionRatio = 0.6; // Moderate compression
+            this.maxActiveChatCount = 5; // Moderate active chats
+            this.compressionEnabled = true;
+        } else {
+            this.compressionThreshold = 100; // Full threshold for desktop
+            this.maxMessagesInMemory = 50; // Full messages in memory
+            this.compressionRatio = 0.7; // Aggressive compression
+            this.maxActiveChatCount = 10; // More active chats
+            this.compressionEnabled = true;
+        }
     }
     
     /**
@@ -81,6 +127,11 @@ class ChatHistoryOptimizer {
      */
     compressMessages(messages) {
         try {
+            // For Android WebView, skip compression entirely
+            if (!this.compressionEnabled) {
+                return JSON.stringify(messages);
+            }
+            
             // Remove redundant data and compress content
             const compressedMessages = messages.map(msg => {
                 const compressed = {
@@ -358,4 +409,4 @@ class ChatHistoryOptimizer {
 export const chatHistoryOptimizer = new ChatHistoryOptimizer();
 
 // Export class for testing
-export { ChatHistoryOptimizer }; 
+export { ChatHistoryOptimizer };

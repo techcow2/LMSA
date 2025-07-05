@@ -7,13 +7,56 @@ class MessageCache {
     constructor() {
         this.cache = new Map();
         this.accessTimes = new Map();
-        this.maxCacheSize = 100; // Maximum number of cached message sets
-        this.maxMemoryUsage = 50 * 1024 * 1024; // 50MB memory limit
         this.currentMemoryUsage = 0;
-        this.compressionEnabled = true;
-        this.cleanupInterval = 5 * 60 * 1000; // 5 minutes
+        
+        // Platform detection
+        this.isAndroidWebView = this.detectAndroidWebView();
+        this.isMobile = this.detectMobile();
+        
+        // Platform-specific settings
+        this.initializePlatformSettings();
         
         this.startCleanupTimer();
+    }
+    
+    /**
+     * Detect if running in Android WebView
+     * @returns {boolean}
+     */
+    detectAndroidWebView() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        return userAgent.includes('android') && 
+               (userAgent.includes('wv') || userAgent.includes('webview'));
+    }
+    
+    /**
+     * Detect if running on mobile device
+     * @returns {boolean}
+     */
+    detectMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+    
+    /**
+     * Initialize platform-specific settings
+     */
+    initializePlatformSettings() {
+        if (this.isAndroidWebView) {
+            this.maxCacheSize = 25; // Reduced for Android WebView
+            this.maxMemoryUsage = 10 * 1024 * 1024; // 10MB memory limit
+            this.compressionEnabled = false; // Disable compression for performance
+            this.cleanupInterval = 2 * 60 * 1000; // 2 minutes
+        } else if (this.isMobile) {
+            this.maxCacheSize = 50; // Reduced for mobile
+            this.maxMemoryUsage = 25 * 1024 * 1024; // 25MB memory limit
+            this.compressionEnabled = true;
+            this.cleanupInterval = 3 * 60 * 1000; // 3 minutes
+        } else {
+            this.maxCacheSize = 100; // Full cache for desktop
+            this.maxMemoryUsage = 50 * 1024 * 1024; // 50MB memory limit
+            this.compressionEnabled = true;
+            this.cleanupInterval = 5 * 60 * 1000; // 5 minutes
+        }
     }
     
     /**
@@ -372,4 +415,4 @@ class MessageCache {
 export const messageCache = new MessageCache();
 
 // Export class for testing
-export { MessageCache }; 
+export { MessageCache };

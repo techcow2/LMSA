@@ -12,13 +12,56 @@ class MessageVirtualizer {
         this.messageHeight = 100; // Estimated message height
         this.containerHeight = 0;
         this.scrollTop = 0;
-        this.overscan = 3; // Number of messages to render outside visible area
         this.messageElements = new Map(); // Cache for rendered message elements
         this.isScrolling = false;
         this.scrollTimeout = null;
         
+        // Platform detection
+        this.isAndroidWebView = this.detectAndroidWebView();
+        this.isMobile = this.detectMobile();
+        
+        // Platform-specific settings
+        this.initializePlatformSettings();
+        
         this.setupScrollListener();
         this.setupResizeObserver();
+    }
+    
+    /**
+     * Detect if running in Android WebView
+     * @returns {boolean}
+     */
+    detectAndroidWebView() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        return userAgent.includes('android') && 
+               (userAgent.includes('wv') || userAgent.includes('webview'));
+    }
+    
+    /**
+     * Detect if running on mobile device
+     * @returns {boolean}
+     */
+    detectMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+    
+    /**
+     * Initialize platform-specific settings
+     */
+    initializePlatformSettings() {
+        if (this.isAndroidWebView) {
+            this.overscan = 1; // Minimal overscan for Android WebView
+            this.scrollDebounceTime = 100; // Longer debounce for Android WebView
+            this.enableResizeObserver = false; // Disable for performance
+        } else if (this.isMobile) {
+            this.overscan = 2; // Reduced overscan for mobile
+            this.scrollDebounceTime = 50; // Moderate debounce for mobile
+            this.enableResizeObserver = true;
+        } else {
+            this.overscan = 3; // Full overscan for desktop
+            this.scrollDebounceTime = 16; // Fast debounce for desktop (~60fps)
+            this.enableResizeObserver = true;
+        }
     }
     
     /**
@@ -177,11 +220,11 @@ class MessageVirtualizer {
             // Update visible range immediately for smooth scrolling
             this.updateVisibleRange();
             
-            // Debounce rendering for performance
+            // Debounce rendering for performance with platform-specific timing
             this.scrollTimeout = setTimeout(() => {
                 this.renderVisibleMessages();
                 this.isScrolling = false;
-            }, 16); // ~60fps
+            }, this.scrollDebounceTime);
         });
     }
     
@@ -189,7 +232,7 @@ class MessageVirtualizer {
      * Setup resize observer to handle container size changes
      */
     setupResizeObserver() {
-        if (!messagesContainer || !window.ResizeObserver) return;
+        if (!messagesContainer || !window.ResizeObserver || !this.enableResizeObserver) return;
         
         const resizeObserver = new ResizeObserver(() => {
             this.updateVisibleRange();
@@ -260,4 +303,4 @@ class MessageVirtualizer {
 export const messageVirtualizer = new MessageVirtualizer();
 
 // Export class for testing
-export { MessageVirtualizer }; 
+export { MessageVirtualizer };
