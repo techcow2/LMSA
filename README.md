@@ -4,14 +4,13 @@
 ![Version: Current](https://img.shields.io/badge/Version-Current-green)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
 
-<p align="left">
-  <a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
-    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80">
-  </a>
-  <a href="https://github.com/techcow2/LMSA/releases">
-    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" height="80">
-  </a>
-</p>
+<div align="center">
+
+| **Google Play Store** | **GitHub Releases** |
+|:---:|:---:|
+| <a href="https://play.google.com/store/apps/details?id=com.lmsa.app"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="40"></a> | <a href="https://github.com/techcow2/LMSA/releases"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" height="40"></a> |
+
+</div>
 
 ## 🆕 What's New in Version 5.5
 
