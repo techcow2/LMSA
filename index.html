@@ -15,52 +15,12 @@
     <meta name="color-scheme" content="dark light">
     <title>LMSA • AI Assistant</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/tailwind.css">
     <!-- Google Fonts with optimized loading and memory management -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script>
-        // Optimized font loading with memory management
-        window.loadFonts = function() {
-            // Only load fonts that are actually needed
-            const fontWeights = ['400', '500', '600']; // Reduced from 300,400,500,600,700
-            const fontFamilies = [
-                'Poppins:wght@' + fontWeights.join(';'),
-                'JetBrains+Mono:wght@400' // Only one weight for monospace
-            ];
-            
-            const fontUrl = `https://fonts.googleapis.com/css2?family=${fontFamilies.join('&family=')}&display=swap`;
-            
-            // Create font stylesheet
-            const fontLink = document.createElement('link');
-            fontLink.rel = 'stylesheet';
-            fontLink.href = fontUrl;
-            fontLink.media = 'print';
-            fontLink.onload = function() {
-                this.media = 'all';
-                console.log('Fonts loaded successfully');
-            };
-            
-            document.head.appendChild(fontLink);
-            
-            // Preload only the most critical font
-            const preloadLink = document.createElement('link');
-            preloadLink.rel = 'preload';
-            preloadLink.href = 'https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecg.woff2';
-            preloadLink.as = 'font';
-            preloadLink.type = 'font/woff2';
-            preloadLink.crossOrigin = 'anonymous';
-            document.head.appendChild(preloadLink);
-        };
-        
-        // Load fonts after critical resources
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(window.loadFonts, 100);
-            });
-        } else {
-            setTimeout(window.loadFonts, 100);
-        }
+        // Font loading is now handled by CSS @import in modern-ui.css for better performance
     </script>
     <!-- Fallback for browsers that don't support JS-based font loading -->
     <noscript>
@@ -369,20 +329,7 @@
 
         // Monaco Editor removed - using fallback code highlighting only
     </script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#121212',
-                        darkSecondary: '#1e1e1e',
-                        darkTertiary: '#2c2c2c',
-                    },
-                },
-            },
-        }
-    </script>
+
     <style>
         /* Custom animation for the contact form modal */
         @keyframes modalFadeIn {
@@ -932,8 +879,8 @@
                 <!-- Step 1: Connection Settings (always visible first) -->
                 <div id="settings-step-connection" class="settings-step active" data-step-name="Connection">
                     <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1 text-gray-200">
-                            <i class="fas fa-server mr-2 text-blue-400"></i>LM Studio Server Connection:</label>
+                        <h3 class="block text-sm font-medium mb-1 text-gray-200">
+                            <i class="fas fa-server mr-2 text-blue-400"></i>LM Studio Server Connection:</h3>
                         <div class="flex space-x-2 ip-port-container">
                             <div class="flex-grow">
                                 <label for="server-ip" class="block text-xs text-gray-300 mb-1">IP Address</label>
@@ -951,7 +898,7 @@
                 <!-- Step 2: System Prompt -->
                 <div id="settings-step-prompt" class="settings-step hidden" data-step-name="Prompt">
                     <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">
+                        <label for="system-prompt" class="block text-sm font-medium mb-1">
                             <i class="fas fa-comment-dots mr-2 text-blue-400"></i>System Prompt (Optional):</label>
 
                         <!-- Hidden real textarea that holds the actual value -->
@@ -1547,12 +1494,12 @@
             <div class="mb-4">
                 <p class="mb-4" style="color: var(--text-primary);">How would you like to import the chats?</p>
                 <div class="space-y-2">
-                    <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="import-option" value="merge" checked class="text-blue-600 focus:ring-blue-500">
+                    <label for="import-merge" class="flex items-center space-x-2 cursor-pointer">
+                        <input type="radio" id="import-merge" name="import-option" value="merge" checked class="text-blue-600 focus:ring-blue-500">
                         <span style="color: var(--text-primary);">Merge with existing chats</span>
                     </label>
-                    <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="import-option" value="replace" class="text-blue-600 focus:ring-blue-500">
+                    <label for="import-replace" class="flex items-center space-x-2 cursor-pointer">
+                        <input type="radio" id="import-replace" name="import-option" value="replace" class="text-blue-600 focus:ring-blue-500">
                         <span style="color: var(--text-primary);">Replace all existing chats</span>
                     </label>
                 </div>
@@ -1797,7 +1744,7 @@
                         <!-- Right column - Image -->
                         <div class="w-full lg:w-1/3 flex flex-col">
                             <div class="character-form-group">
-                                <label class="character-form-label">Character Image</label>
+                                <h3 class="character-form-label">Character Image</h3>
                                 <div class="character-image-container flex flex-col items-center justify-center bg-black/20 rounded-xl border border-white/10 p-3 min-h-[200px]">
                                     <img id="character-preview-image" class="character-preview hidden max-w-full max-h-[200px] object-contain" alt="Character preview">
                                     <div id="character-image-placeholder" class="character-image-placeholder flex flex-col items-center justify-center w-full h-full min-h-[150px] gap-3">
@@ -1828,7 +1775,7 @@
 
                     <!-- Import Character Card -->
                     <div class="character-form-group mt-6 border-t border-white/10 pt-5">
-                        <label class="character-form-label flex items-center">
+                        <label for="character-card-upload" class="character-form-label flex items-center">
                             <i class="fas fa-file-import mr-2 text-blue-400"></i>
                             Import Character Card
                         </label>
