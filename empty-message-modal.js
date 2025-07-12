@@ -7,14 +7,21 @@ window.isSendButtonLongPressInProgress = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     const emptyMessageModal = document.getElementById('empty-message-modal');
-    const closeModalButton = emptyMessageModal.querySelector('.close-modal');
+    const closeModalButton = emptyMessageModal ? emptyMessageModal.querySelector('.close-modal') : null;
     const chatForm = document.getElementById('chat-form');
     const userInput = document.getElementById('user-input');
+
+    // Early return if essential elements are missing
+    if (!emptyMessageModal || !userInput) {
+        console.warn('Essential elements for empty message modal not found');
+        return;
+    }
 
     // Function to show the modal
     function showEmptyMessageModal() {
         emptyMessageModal.classList.remove('hidden');
         emptyMessageModal.classList.add('active');
+        emptyMessageModal.classList.add('flex');
     }
 
     // Function to hide the modal
@@ -81,14 +88,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Close modal when clicking the close button
-    closeModalButton.addEventListener('click', hideEmptyMessageModal);
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', hideEmptyMessageModal);
+    }
 
     // Close modal when clicking outside
-    emptyMessageModal.addEventListener('click', (e) => {
-        if (e.target === emptyMessageModal) {
-            hideEmptyMessageModal();
-        }
-    });
+    if (emptyMessageModal) {
+        emptyMessageModal.addEventListener('click', (e) => {
+            if (e.target === emptyMessageModal) {
+                hideEmptyMessageModal();
+            }
+        });
+    }
 
     // Close modal when pressing Escape key
     document.addEventListener('keydown', (e) => {

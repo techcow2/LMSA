@@ -1,4 +1,4 @@
-    // Only proceed if sidebar exists and is currently active/visible
+// Only proceed if sidebar exists and is currently active/visible
   // Event Handlers for the application
 import {
     chatForm, userInput, clearChatButton, newChatButton, settingsButton,
@@ -8,7 +8,8 @@ import {
     regenerateTextButton, exitButton, refreshButton, modelToggleButton, loadedModelDisplay,
     settingsIconButton, newTopicButton, sendButton, sendContextMenu, newTopicMenuButton, scrollToBottomMenuButton,
     modelButton, importExportGroupButton, importExportContainer, charactersButton, activeCharacterDisplay,
-    characterGalleryButton, welcomeCharacterGalleryBtn, welcomeModelsBtn, welcomeNewChatBtn, welcomeHelpBtn
+    characterGalleryButton, welcomeCharacterGalleryBtn, welcomeModelsBtn, welcomeNewChatBtn, welcomeHelpBtn,
+    privacySettingsButton, privacySettingsModal, closePrivacySettingsButton, revokeConsentButton
 } from './dom-elements.js';
 import { showSettingsModal, hideSettingsModal } from './settings-modal-manager.js';
 import {
@@ -49,6 +50,7 @@ import { showCreateCharacterModal } from './character-manager.js';
 import { handleNewChatButtonClick } from '../character-continuation-modal.js';
 import { debugLog, debugError, formatDate } from './utils.js';
 import { closeApplication, copyToClipboard, sanitizeInput, scrollToBottom, handleScroll, ensureCursorVisible } from './utils.js';
+import { showAndroidDiagnosticPanel } from './android-diagnostic-panel.js';
 
 let abortController = null;
 let sidebar = document.getElementById('sidebar');
@@ -654,6 +656,7 @@ export function initializeEventHandlers() {
             const aboutModal = document.getElementById('about-modal');
             if (aboutModal) {
                 aboutModal.classList.remove('hidden');
+                aboutModal.classList.add('flex');
                 const modalContent = aboutModal.querySelector('.modal-content');
                 if (modalContent) {
                     modalContent.classList.add('animate-modal-in');
@@ -664,6 +667,69 @@ export function initializeEventHandlers() {
             }
         });
         debugLog('About button event handler attached during initialization');
+    }
+
+    // Privacy Settings button
+    if (privacySettingsButton) {
+        privacySettingsButton.addEventListener('click', () => {
+            debugLog('Privacy Settings button clicked');
+            // Close the sidebar first
+            closeSidebar();
+            
+            // Also close the options container
+            const optionsContainer = document.getElementById('options-container');
+            if (optionsContainer) {
+                optionsContainer.classList.add('hidden');
+                optionsContainer.classList.remove('animate-fade-in');
+            }
+
+            // Show the Privacy Settings modal
+            if (privacySettingsModal) {
+                privacySettingsModal.classList.remove('hidden');
+                privacySettingsModal.classList.add('flex');
+                const modalContent = privacySettingsModal.querySelector('.modal-content');
+                if (modalContent) {
+                    modalContent.classList.add('animate-modal-in');
+                    setTimeout(() => {
+                        modalContent.classList.remove('animate-modal-in');
+                    }, 300);
+                }
+            }
+        });
+    }
+
+    // Close Privacy Settings button (bottom close button)
+    if (closePrivacySettingsButton) {
+        closePrivacySettingsButton.addEventListener('click', () => {
+            debugLog('Close Privacy Settings button clicked');
+            if (privacySettingsModal) {
+                privacySettingsModal.classList.add('hidden');
+            }
+        });
+    }
+
+    // Close Privacy Settings X button (top right X button)
+    const closePrivacySettingsXButton = document.getElementById('close-privacy-settings');
+    if (closePrivacySettingsXButton) {
+        closePrivacySettingsXButton.addEventListener('click', () => {
+            debugLog('Close Privacy Settings X button clicked');
+            if (privacySettingsModal) {
+                privacySettingsModal.classList.add('hidden');
+            }
+        });
+    }
+
+    // Revoke Consent button
+    if (revokeConsentButton) {
+        revokeConsentButton.addEventListener('click', () => {
+            debugLog('Revoke Consent button clicked');
+            // Trigger the Google consent management script
+            if (typeof googlefc !== 'undefined' && googlefc.callbackQueue) {
+                googlefc.callbackQueue.push(googlefc.showRevocationMessage);
+            } else {
+                console.warn('Google Consent Management not available');
+            }
+        });
     }
 
     // Options button for mobile view
@@ -1060,8 +1126,40 @@ export function initializeEventHandlers() {
         let sendButtonLongPressTimer;
         let longPressTriggered = false; // Flag to track if long-press was triggered
 
-        // Function to show the send context menu
+        // Function to show the send context menu or Android diagnostic panel
         const showSendContextMenu = (e) => {
+            // Check if we're on Android and should show diagnostic panel
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            
+            if (isAndroid || isDevelopment) {
+                // Set the flags to indicate long-press was triggered
+                longPressTriggered = true;
+                window.isSendButtonLongPressInProgress = true;
+                
+                // Log for debugging
+                debugLog('Send button long-press detected - showing Android diagnostic panel');
+                
+                // Show Android diagnostic panel
+                try {
+                    showAndroidDiagnosticPanel();
+                } catch (error) {
+                    debugError('Error showing Android diagnostic panel:', error);
+                    // Fall back to context menu if diagnostic panel fails
+                    showRegularContextMenu(e);
+                }
+                
+                // Prevent default and stop propagation to avoid any conflicts
+                e.preventDefault();
+                e.stopPropagation();
+            } else {
+                // Show regular context menu for non-Android devices
+                showRegularContextMenu(e);
+            }
+        };
+        
+        // Function to show the regular send context menu
+        const showRegularContextMenu = (e) => {
             if (sendContextMenu) {
                 // Set the flags to indicate long-press was triggered
                 longPressTriggered = true;
@@ -1788,6 +1886,7 @@ function handleOptionsButtonClick() {
                     const aboutModal = document.getElementById('about-modal');
                     if (aboutModal) {
                         aboutModal.classList.remove('hidden');
+                        aboutModal.classList.add('flex');
                         const modalContent = aboutModal.querySelector('.modal-content');
                         if (modalContent) {
                             modalContent.classList.add('animate-modal-in');

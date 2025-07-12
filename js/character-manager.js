@@ -130,6 +130,7 @@ export function showCreateCharacterModal() {
 
     // Show the modal
     characterModal.classList.remove('hidden');
+    characterModal.classList.add('flex');
 }
 
 /**
@@ -169,6 +170,7 @@ export function showEditCharacterModal(characterId) {
 
     // Show the modal
     characterModal.classList.remove('hidden');
+    characterModal.classList.add('flex');
 }
 
 /**
@@ -267,9 +269,13 @@ function handleCharacterFormSubmit(event) {
 
     // Redirect to character gallery after saving
     // Use a small timeout to ensure the character modal is fully hidden first
+    // and localStorage write is complete
     setTimeout(() => {
         console.log('Redirecting to character gallery after saving character');
-        showCharacterGallery(charactersData);
+        // Use requestAnimationFrame to ensure DOM updates are complete
+        requestAnimationFrame(() => {
+            showCharacterGallery();
+        });
     }, 450); // Slightly longer than the modal hide animation (400ms)
 }
 
@@ -370,6 +376,7 @@ function showDeleteCharacterModal() {
 
     // Show the modal with animation
     deleteCharacterModal.classList.remove('hidden');
+    deleteCharacterModal.classList.add('flex');
 
     // Add animation class
     const modalContent = deleteCharacterModal.querySelector('.modal-content');

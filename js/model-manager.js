@@ -58,6 +58,7 @@ export function showModelModal() {
     if (modelModal) {
         // Force showing the modal regardless of startup state
         modelModal.classList.remove('hidden');
+        modelModal.classList.add('flex');
         const modalContent = modelModal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.classList.add('animate-modal-in');

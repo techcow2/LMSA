@@ -336,6 +336,8 @@ function showFileRemovalModal(filePreview, container) {
         // Show the modal
         console.log('Showing modal, removing hidden class...');
         modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        modal.style.display = 'flex';
         console.log('Modal classes after showing:', modal.className);
         console.log('Modal display style:', window.getComputedStyle(modal).display);
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
@@ -634,4 +636,4 @@ export function cleanupFilePreviewHandlers() {
     });
     
     console.log('File preview handlers cleaned up');
-} 
+}

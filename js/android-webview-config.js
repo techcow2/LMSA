@@ -57,7 +57,17 @@ export const AndroidWebViewConfig = {
         reduceAnimations: true,
         simplifyUI: true,
         disableHeavyEffects: true,
-        optimizeScrolling: true
+        optimizeScrolling: true,
+        disableTransforms: false,
+        disableContextMenu: false
+    },
+    
+    // Android 13+ Specific Settings
+    android13: {
+        disableActionMode: true,
+        preventResourceNotFound: true,
+        disableFloatingActionMode: true,
+        forceCompatibilityMode: true
     }
 };
 
@@ -72,6 +82,26 @@ export function applyAndroidWebViewOptimizations(customConfig = {}) {
         ...customConfig
     };
     
+    // Detect Android version for specific fixes
+    const androidVersion = getAndroidVersion();
+    const isAndroid13Plus = androidVersion >= 13;
+    
+    console.log(`Android version detected: ${androidVersion}, Android 13+: ${isAndroid13Plus}`);
+    
+    // Apply Android 13+ specific error prevention
+    if (isAndroid13Plus) {
+        try {
+            // Prevent androidx.appcompat resource resolution errors
+            preventAppCompatResourceErrors();
+            
+            // Disable problematic WebView features for Android 13
+            disableProblematicFeatures();
+            
+        } catch (error) {
+            console.error('Error applying Android 13+ specific fixes:', error);
+        }
+    }
+    
     // Apply CSS optimizations for Android WebView
     if (config.performance.reduceAnimations) {
         const style = document.createElement('style');
@@ -80,6 +110,44 @@ export function applyAndroidWebViewOptimizations(customConfig = {}) {
             * {
                 -webkit-transform: translateZ(0);
                 transform: translateZ(0);
+            }
+            
+            /* Flexbox compatibility fixes */
+            .flex, [class*="flex"], #chat-container, #messages, #active-character-display {
+                display: -webkit-box !important;
+                display: -webkit-flex !important;
+                display: flex !important;
+            }
+            
+            .flex-col, [class*="flex-col"] {
+                -webkit-box-orient: vertical !important;
+                -webkit-box-direction: normal !important;
+                -webkit-flex-direction: column !important;
+                flex-direction: column !important;
+            }
+            
+            .items-center, [class*="items-center"] {
+                -webkit-box-align: center !important;
+                -webkit-align-items: center !important;
+                align-items: center !important;
+            }
+            
+            .justify-center, [class*="justify-center"] {
+                -webkit-box-pack: center !important;
+                -webkit-justify-content: center !important;
+                justify-content: center !important;
+            }
+            
+            .justify-between, [class*="justify-between"] {
+                -webkit-box-pack: justify !important;
+                -webkit-justify-content: space-between !important;
+                justify-content: space-between !important;
+            }
+            
+            .flex-1, [class*="flex-1"] {
+                -webkit-box-flex: 1 !important;
+                -webkit-flex: 1 !important;
+                flex: 1 !important;
             }
             
             .message {
@@ -98,11 +166,113 @@ export function applyAndroidWebViewOptimizations(customConfig = {}) {
                 -webkit-overflow-scrolling: touch;
                 overflow-scrolling: touch;
             }
+            
+            /* Android 13+ specific fixes */
+            ${isAndroid13Plus ? `
+                /* Prevent context menu crashes */
+                * {
+                    -webkit-user-select: none !important;
+                    -webkit-touch-callout: none !important;
+                }
+                
+                input, textarea, [contenteditable] {
+                    -webkit-user-select: text !important;
+                }
+                
+                /* Disable transforms that cause crashes */
+                ${config.performance.disableTransforms ? `
+                    .message, .chat-item, .settings-item {
+                        transform: none !important;
+                        will-change: auto !important;
+                    }
+                ` : ''}
+            ` : ''}
         `;
         document.head.appendChild(style);
     }
     
     return config;
+}
+
+/**
+ * Get Android version from user agent
+ * @returns {number} Android version number
+ */
+export function getAndroidVersion() {
+    const userAgent = navigator.userAgent;
+    const match = userAgent.match(/Android\s([0-9\.]+)/);
+    if (match && match[1]) {
+        return parseFloat(match[1]);
+    }
+    return 0;
+}
+
+/**
+ * Prevent androidx.appcompat resource resolution errors
+ */
+function preventAppCompatResourceErrors() {
+    // Override problematic resource access methods
+    if (window.WebView && window.WebView.prototype) {
+        const originalAddJavascriptInterface = window.WebView.prototype.addJavascriptInterface;
+        if (originalAddJavascriptInterface) {
+            window.WebView.prototype.addJavascriptInterface = function(obj, name) {
+                try {
+                    return originalAddJavascriptInterface.call(this, obj, name);
+                } catch (error) {
+                    console.warn('Prevented WebView interface error:', error);
+                    return null;
+                }
+            };
+        }
+    }
+    
+    // Add error event listeners to catch and handle crashes
+    window.addEventListener('error', function(event) {
+        if (event.error && event.error.message && 
+            (event.error.message.includes('androidx.appcompat') || 
+             event.error.message.includes('Resource ID') ||
+             event.error.message.includes('NotFoundException'))) {
+            console.warn('Prevented androidx.appcompat related error:', event.error);
+            event.preventDefault();
+            return false;
+        }
+    }, true);
+}
+
+/**
+ * Disable problematic WebView features for Android 13+
+ */
+function disableProblematicFeatures() {
+    // Disable context menu to prevent action mode crashes
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    }, true);
+    
+    // Disable text selection that triggers action mode
+    document.addEventListener('selectstart', function(e) {
+        if (!e.target.matches('input, textarea, [contenteditable]')) {
+            e.preventDefault();
+            return false;
+        }
+    }, true);
+    
+    // Override problematic selection methods
+    if (window.getSelection) {
+        const originalGetSelection = window.getSelection;
+        window.getSelection = function() {
+            try {
+                return originalGetSelection();
+            } catch (error) {
+                console.warn('Prevented selection error:', error);
+                return {
+                    removeAllRanges: function() {},
+                    addRange: function() {},
+                    toString: function() { return ''; }
+                };
+            }
+        };
+    }
 }
 
 /**

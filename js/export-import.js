@@ -476,6 +476,7 @@ export function initializeExportImport() {
     function showImportModal() {
         if (importModal) {
             importModal.classList.remove('hidden');
+            importModal.classList.add('flex');
             const modalContent = importModal.querySelector('.modal-content');
             if (modalContent) {
                 modalContent.classList.add('animate-modal-in');
@@ -786,8 +787,20 @@ export function exportChats() {
     // Get the chat history data
     const chatHistoryData = getChatHistoryData();
 
-    // Create a JSON string from the chat history data
-    const jsonString = JSON.stringify(chatHistoryData, null, 2);
+    // Filter out empty chats (chats with no messages)
+    const filteredChatHistoryData = {};
+    Object.entries(chatHistoryData).forEach(([chatId, chatData]) => {
+        // Handle both old format (array) and new format (object with messages)
+        const messages = Array.isArray(chatData) ? chatData : chatData.messages;
+        
+        // Only include chats that have messages
+        if (messages && messages.length > 0) {
+            filteredChatHistoryData[chatId] = chatData;
+        }
+    });
+
+    // Create a JSON string from the filtered chat history data
+    const jsonString = JSON.stringify(filteredChatHistoryData, null, 2);
 
     // Generate a filename with the current date and time
     const date = new Date();
@@ -847,8 +860,8 @@ export function exportChats() {
         URL.revokeObjectURL(url);
     }
 
-    // Count the number of chats exported
-    const chatCount = Object.keys(chatHistoryData).length;
+    // Count the number of chats exported (only non-empty chats)
+    const chatCount = Object.keys(filteredChatHistoryData).length;
 
     // Show the export success modal if it's available
     if (typeof showExportSuccessModal === 'function') {

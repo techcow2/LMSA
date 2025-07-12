@@ -616,6 +616,7 @@ body.light-theme .character-card.touch-active {
     flex: 1;
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     line-height: 1.5;
@@ -971,6 +972,7 @@ body.light-theme .character-card-delete-btn {
     .character-card-description {
         margin-bottom: 1rem;
         -webkit-line-clamp: 2; /* Show fewer lines on tablet */
+        line-clamp: 2; /* Show fewer lines on tablet */
     }
 }
 

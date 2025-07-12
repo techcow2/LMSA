@@ -8,7 +8,7 @@ const gotItButton = document.getElementById('got-it-whats-new');
 const versionElement = document.getElementById('whats-new-version');
 
 // Local storage keys
-const WHATS_NEW_VERSION = '5.5'; // Updated for Vision Language Model support
+const WHATS_NEW_VERSION = '5.6'; // Updated for Vision Language Model support
 
 // Flag to track if the modal has been shown in the current session
 let modalShownInCurrentSession = false;
@@ -45,6 +45,7 @@ export function showWhatsNewModal(forceShow = false) {
         // Prepare the modal for a smooth entrance
         // First remove hidden class to make the modal visible but transparent
         whatsNewModal.classList.remove('hidden');
+        whatsNewModal.classList.add('flex');
 
         // Force a reflow to ensure the transition works
         void whatsNewModal.offsetWidth;

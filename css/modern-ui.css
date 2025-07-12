@@ -331,8 +331,14 @@ body.light-theme .characters-section .section-header:hover {
   width: 28px;
   height: 28px;
   border-radius: 50%;
+  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   background-color: rgba(59, 130, 246, 0.1);
   color: var(--modern-accent-primary);
@@ -1430,7 +1436,7 @@ body.light-theme #welcome-message {
 @media (min-width: 768px) and (max-width: 1024px) {
   .welcome-content {
     padding: 3rem 2.25rem;
-    max-width: 480px;
+    max-width: 600px; /* Increased from 480px to better utilize tablet width */
   }
 
   .welcome-content .icon-container {
@@ -1623,7 +1629,9 @@ body.light-theme #welcome-message {
   #loaded-model-wrapper:not(.hidden) ~ #chat-container #welcome-message {
     padding-top: var(--loaded-model-height, 35px) !important; /* Remove additional padding */
   }
-}
+/* Fix for at-rule or selector expected error */
+/* Ensure proper CSS rule closure */
+/* End of modern-ui.css */
 
 /* Extra small screens including iPhone SE in portrait mode */
 @media (max-height: 580px) and (max-width: 380px) {
@@ -1716,6 +1724,10 @@ body.light-theme #welcome-message {
   .welcome-content p {
     font-size: 0.85rem !important;
   }
+/* Modern UI Elements */
+.modern-ui {
+  /* Base styles for modern UI components */
+  transition: all 0.3s ease;
 }
 
 /* Small screen optimizations for welcome screen */
@@ -2003,8 +2015,20 @@ body.light-theme #welcome-message {
     height: 0.7rem !important;
     line-height: 0.7rem !important;
   }
+/* Modern UI Elements */
+.header-title {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--modal-title);
+  text-shadow: var(--title-shadow);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+  transition: all 0.3s ease;
 }
 
+/* Extra small screen optimizations */
+@media (max-width: 280px) {
   .welcome-content h1 {
     font-size: 1.15rem !important;
     margin-bottom: 0.35rem !important;

@@ -2,6 +2,7 @@
 // Implements cleanup routines and memory monitoring to optimize RAM usage
 
 import { debugLog, debugError } from './utils.js';
+import { getAndroidVersion } from './android-webview-config.js';
 
 class MemoryManager {
     constructor() {
@@ -11,9 +12,23 @@ class MemoryManager {
         
         // Adjust settings based on platform
         if (this.isAndroidWebView) {
-            this.cleanupInterval = 10 * 60 * 1000; // 10 minutes for Android
-            this.memoryThreshold = 100 * 1024 * 1024; // 100MB threshold for Android
-            this.memoryCheckInterval = 60000; // 1 minute for Android
+            // Get Android version for specific optimizations
+            const androidVersion = getAndroidVersion();
+            const isAndroid13Plus = androidVersion >= 13;
+            
+            if (isAndroid13Plus) {
+                // More aggressive settings for Android 13+ to prevent crashes
+                this.cleanupInterval = 5 * 60 * 1000; // 5 minutes for Android 13+
+                this.memoryThreshold = 80 * 1024 * 1024; // 80MB threshold for Android 13+
+                this.memoryCheckInterval = 30000; // 30 seconds for Android 13+
+                this.enableForceGarbageCollection = true;
+                this.preventMemoryLeaks = true;
+                console.log('Android 13+ detected, using aggressive memory management');
+            } else {
+                this.cleanupInterval = 10 * 60 * 1000; // 10 minutes for older Android
+                this.memoryThreshold = 100 * 1024 * 1024; // 100MB threshold for older Android
+                this.memoryCheckInterval = 60000; // 1 minute for older Android
+            }
         } else if (this.isMobile) {
             this.cleanupInterval = 7 * 60 * 1000; // 7 minutes for mobile
             this.memoryThreshold = 150 * 1024 * 1024; // 150MB threshold for mobile
@@ -30,6 +45,13 @@ class MemoryManager {
         this.fileReferences = new Map(); // Track file references for cleanup
         this.domObserver = null;
         this.lastMemoryCheck = 0;
+        this.enableForceGarbageCollection = false;
+        this.preventMemoryLeaks = false;
+        
+        // Android 13+ specific memory leak prevention
+        if (this.isAndroidWebView && getAndroidVersion() >= 13) {
+            this.initializeAndroid13MemoryFixes();
+        }
         
         this.startMemoryMonitoring();
     }
@@ -165,6 +187,145 @@ class MemoryManager {
             childList: true,
             subtree: !this.isMobile // Reduce scope on mobile
         });
+    }
+    
+    /**
+     * Initialize Android 13+ specific memory fixes
+     */
+    initializeAndroid13MemoryFixes() {
+        console.log('Initializing Android 13+ memory leak prevention...');
+        
+        // Prevent common memory leaks in Android 13 WebView
+        this.preventEventListenerLeaks();
+        this.preventDOMLeaks();
+        this.preventTimerLeaks();
+        
+        // Force garbage collection more frequently
+        if (this.enableForceGarbageCollection) {
+            setInterval(() => {
+                this.forceGC();
+            }, 2 * 60 * 1000); // Every 2 minutes
+        }
+    }
+    
+    /**
+     * Prevent event listener memory leaks
+     */
+    preventEventListenerLeaks() {
+        const originalAddEventListener = EventTarget.prototype.addEventListener;
+        const originalRemoveEventListener = EventTarget.prototype.removeEventListener;
+        const eventListeners = new WeakMap();
+        
+        EventTarget.prototype.addEventListener = function(type, listener, options) {
+            if (!eventListeners.has(this)) {
+                eventListeners.set(this, new Map());
+            }
+            const listeners = eventListeners.get(this);
+            if (!listeners.has(type)) {
+                listeners.set(type, new Set());
+            }
+            listeners.get(type).add(listener);
+            
+            return originalAddEventListener.call(this, type, listener, options);
+        };
+        
+        EventTarget.prototype.removeEventListener = function(type, listener, options) {
+            if (eventListeners.has(this)) {
+                const listeners = eventListeners.get(this);
+                if (listeners.has(type)) {
+                    listeners.get(type).delete(listener);
+                }
+            }
+            return originalRemoveEventListener.call(this, type, listener, options);
+        };
+    }
+    
+    /**
+     * Prevent DOM-related memory leaks
+     */
+    preventDOMLeaks() {
+        // Clean up orphaned DOM references
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'childList') {
+                    mutation.removedNodes.forEach((node) => {
+                        if (node.nodeType === Node.ELEMENT_NODE) {
+                            // Clear any data attributes that might hold references
+                            if (node.dataset) {
+                                Object.keys(node.dataset).forEach(key => {
+                                    delete node.dataset[key];
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+    
+    /**
+     * Prevent timer-related memory leaks
+     */
+    preventTimerLeaks() {
+        const activeTimers = new Set();
+        const originalSetTimeout = window.setTimeout;
+        const originalSetInterval = window.setInterval;
+        const originalClearTimeout = window.clearTimeout;
+        const originalClearInterval = window.clearInterval;
+        
+        window.setTimeout = function(callback, delay, ...args) {
+            const id = originalSetTimeout.call(this, (...args) => {
+                activeTimers.delete(id);
+                return callback(...args);
+            }, delay, ...args);
+            activeTimers.add(id);
+            return id;
+        };
+        
+        window.setInterval = function(callback, delay, ...args) {
+            const id = originalSetInterval.call(this, callback, delay, ...args);
+            activeTimers.add(id);
+            return id;
+        };
+        
+        window.clearTimeout = function(id) {
+            activeTimers.delete(id);
+            return originalClearTimeout.call(this, id);
+        };
+        
+        window.clearInterval = function(id) {
+            activeTimers.delete(id);
+            return originalClearInterval.call(this, id);
+        };
+        
+        // Clean up all timers periodically
+        setInterval(() => {
+            if (activeTimers.size > 50) { // If too many timers
+                console.warn(`High number of active timers detected: ${activeTimers.size}`);
+            }
+        }, 5 * 60 * 1000); // Check every 5 minutes
+    }
+    
+    /**
+     * Force garbage collection (if available)
+     */
+    forceGC() {
+        try {
+            if (window.gc) {
+                window.gc();
+                debugLog('Forced garbage collection');
+            } else if (window.CollectGarbage) {
+                window.CollectGarbage();
+                debugLog('Forced garbage collection (IE)');
+            }
+        } catch (error) {
+            // Ignore errors - GC might not be available
+        }
     }
     
     /**

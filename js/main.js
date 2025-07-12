@@ -20,6 +20,11 @@ import { initializeCharacterGallery } from './character-gallery.js';
 import { memoryManager } from './memory-manager.js';
 import { messageCache } from './message-cache.js';
 import { chatHistoryOptimizer } from './chat-history-optimizer.js';
+import { applyAndroidWebViewOptimizations, isAndroidWebView } from './android-webview-config.js';
+import { initializeAndroidCrashPrevention, isProneToAppCompatCrashes } from './android-crash-prevention.js';
+import { runAndroidCrashTests, quickHealthCheck } from './android-crash-test.js';
+import { initializeDiagnosticMenuItem } from './android-diagnostic-panel.js';
+import { initializeWebViewFlexFixes, startFlexMonitoring } from './webview-flex-fixes.js';
 
 import { updateConfirmationModalTheme, updateExportImportModalsTheme } from '../confirmation-modal-fix.js';
 
@@ -31,6 +36,110 @@ async function initializeApp() {
     setDebugEnabled(false);
 
     console.log('Starting LMSA...');
+    
+    // Apply Android WebView optimizations immediately for Android 13+ compatibility
+    if (isAndroidWebView()) {
+        console.log('Android WebView detected, applying compatibility optimizations...');
+        try {
+            // Initialize crash prevention system first (critical for Android 13+)
+            if (isProneToAppCompatCrashes()) {
+                console.log('Android 13+ detected, initializing crash prevention...');
+                initializeAndroidCrashPrevention();
+            }
+            
+            // Enhanced Android 13+ compatibility settings
+            const android13Config = {
+                memory: {
+                    cleanupThreshold: 80,  // More aggressive cleanup for Android 13
+                    warningThreshold: 120,
+                    criticalThreshold: 150,
+                    monitoringInterval: 45000, // More frequent monitoring
+                    cleanupInterval: 90000,
+                    disablePerformanceMonitoring: true,
+                    disableDOMObserver: true,
+                    reducedCleanupFrequency: true
+                },
+                performance: {
+                    reduceAnimations: true,
+                    simplifyUI: true,
+                    disableHeavyEffects: true,
+                    optimizeScrolling: true,
+                    disableTransforms: true  // Critical for Android 13 stability
+                },
+                features: {
+                    enableCompressionFeatures: false,
+                    enableAdvancedCleanup: false,
+                    disableContextMenu: true  // Prevents androidx.appcompat crashes
+                }
+            };
+            
+            applyAndroidWebViewOptimizations(android13Config);
+            
+            // Initialize WebView flex and layout fixes
+            initializeWebViewFlexFixes();
+            startFlexMonitoring();
+            
+            // Add Android 13 specific CSS fixes
+            const android13Style = document.createElement('style');
+            android13Style.textContent = `
+                /* Android 13 WebView Compatibility Fixes */
+                * {
+                    -webkit-user-select: none !important;
+                    -webkit-touch-callout: none !important;
+                    -webkit-tap-highlight-color: transparent !important;
+                }
+                
+                /* Disable problematic CSS features that cause androidx.appcompat crashes */
+                .message, .chat-item, .settings-item {
+                    transform: none !important;
+                    will-change: auto !important;
+                    backface-visibility: visible !important;
+                }
+                
+                /* Prevent context menu issues */
+                input, textarea, [contenteditable] {
+                    -webkit-user-select: text !important;
+                }
+                
+                /* Optimize scrolling for Android 13 */
+                .messages-container, #chat-history {
+                    -webkit-overflow-scrolling: touch;
+                    overflow-scrolling: touch;
+                    scroll-behavior: auto !important;
+                    overflow-anchor: none !important;
+                    contain: layout style !important;
+                }
+                
+                /* Additional Android 13+ stability fixes */
+                .message-content {
+                    -webkit-touch-callout: none !important;
+                    -webkit-user-select: none !important;
+                    pointer-events: auto !important;
+                }
+            `;
+            document.head.appendChild(android13Style);
+            
+            console.log('Android WebView optimizations applied successfully');
+        
+        // Run diagnostic tests in development mode
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log('Development mode detected, running Android crash prevention tests...');
+            setTimeout(() => {
+                runAndroidCrashTests();
+            }, 2000);
+        } else {
+            // Run quick health check in production
+            setTimeout(() => {
+                 quickHealthCheck();
+             }, 1000);
+         }
+         
+         // Initialize diagnostic menu item for Android devices
+        initializeDiagnosticMenuItem();
+        } catch (error) {
+            console.error('Error applying Android WebView optimizations:', error);
+        }
+    }
 
     // Initialize the model banner state based on localStorage
     initializeModelBannerState();

@@ -237,3 +237,9 @@ export const welcomeModelsBtn = document.getElementById('welcome-models-btn');
 export const welcomeNewChatBtn = document.getElementById('welcome-new-chat-btn');
 export const welcomeHelpBtn = document.getElementById('welcome-help-btn');
 
+// Privacy Settings modal elements
+export const privacySettingsButton = document.getElementById('privacy-settings-btn');
+export const privacySettingsModal = document.getElementById('privacy-settings-modal');
+export const closePrivacySettingsButton = document.getElementById('close-privacy-modal-btn');
+export const revokeConsentButton = document.getElementById('revoke-consent-btn');
+

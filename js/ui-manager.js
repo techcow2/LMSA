@@ -293,6 +293,7 @@ export function showConfirmationModal(message) {
         // Make sure the modal is properly displayed
         confirmationModal.style.display = 'flex';
         confirmationModal.classList.remove('hidden');
+        confirmationModal.classList.add('flex');
         confirmationModal.classList.add('animate-fade-in');
 
         // Add event listeners for the cancel and confirm buttons
@@ -334,6 +335,7 @@ export function showExportConfirmationModal() {
 
     if (exportConfirmationModal) {
         exportConfirmationModal.classList.remove('hidden');
+        exportConfirmationModal.classList.add('flex');
         const modalContent = exportConfirmationModal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.classList.add('animate-modal-in');

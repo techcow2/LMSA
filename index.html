@@ -637,7 +637,13 @@
                         Models
                     </button>
 
-                      <!-- Help & About -->
+                      <!-- Privacy Settings -->
+                    <button id="privacy-settings-btn" class="menu-item w-full text-left">
+                        <i class="fas fa-shield-alt"></i>
+                        Privacy Settings
+                    </button>
+
+                    <!-- Help & About -->
                     <button id="help-btn" class="menu-item w-full text-left">
                         <i class="fas fa-question-circle"></i>
                         Support
@@ -778,7 +784,7 @@
                 </div>
 
                 <!-- Empty message modal -->
-                <div id="empty-message-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden" aria-labelledby="empty-message-title" role="dialog" aria-modal="true">
+                <div id="empty-message-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden" aria-labelledby="empty-message-title" role="dialog" aria-modal="true">
                     <div class="bg-darkSecondary p-6 rounded-lg w-96 max-w-[90%] shadow-lg modal-content">
                         <div class="flex justify-between items-center mb-4">
                             <h3 id="empty-message-title" class="modal-title">Empty Message</h3>
@@ -796,7 +802,7 @@
                 </div>
 
                 <!-- Image Upload Error Modal -->
-                <div id="image-upload-error-modal" class="fixed inset-0 bg-black/70 dark:bg-black/70 light:bg-gray-900/50 backdrop-blur-sm flex items-center justify-center hidden z-[2050]" aria-labelledby="image-upload-error-title" role="dialog" aria-modal="true">
+                <div id="image-upload-error-modal" class="fixed inset-0 bg-black/70 dark:bg-black/70 light:bg-gray-900/50 backdrop-blur-sm items-center justify-center hidden z-[2050]" aria-labelledby="image-upload-error-title" role="dialog" aria-modal="true">
                     <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] dark:from-[#0a192f] dark:to-[#0d1f3d] light:from-[#f8fafc] light:to-[#f1f5f9] p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-blue-900/30 dark:border-blue-900/30 light:border-blue-200 overflow-hidden animate-modal-in">
                         <div class="flex justify-between items-center mb-4">
                             <h3 id="image-upload-error-title" class="text-xl font-bold flex items-center modal-title text-blue-400 dark:text-blue-400 light:text-blue-600">
@@ -820,7 +826,7 @@
                 </div>
 
                 <!-- File removal confirmation modal -->
-                <div id="file-removal-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50" aria-labelledby="file-removal-title" role="dialog" aria-modal="true">
+                <div id="file-removal-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden z-50" aria-labelledby="file-removal-title" role="dialog" aria-modal="true">
                     <div class="modal-content bg-darkSecondary border border-gray-600 rounded-lg p-6 max-w-md mx-4">
                         <div class="flex items-center mb-4">
                             <div class="w-10 h-10 rounded-full flex items-center justify-center mr-3">
@@ -852,7 +858,7 @@
     </div>
 
     <!-- Settings modal -->
-    <div id="settings-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container" aria-labelledby="settings-title" role="dialog" aria-modal="true">
+    <div id="settings-modal" class="fixed inset-0 items-center justify-center hidden modal-container" aria-labelledby="settings-title" role="dialog" aria-modal="true">
         <div class="p-6 rounded-lg shadow-lg modal-content border border-white/10" style="width: 640px; max-width: 95%;">
             <!-- Settings Header -->
             <div class="flex flex-col sticky top-0 z-10 mb-6 pb-1 border-b border-gray-700/30 bg-inherit">
@@ -1010,7 +1016,7 @@
                 </div>
 
                 <!-- Prompt step buttons -->
-                <div class="flex justify-between navigation-buttons hidden" id="prompt-step-buttons">
+                <div class="justify-between navigation-buttons hidden" id="prompt-step-buttons">
                     <button id="back-to-connection-btn" class="professional-button flex items-center justify-center gap-3 w-[46%] h-[48px]">
                         <i class="fas fa-arrow-left text-sm"></i>
                         <span class="button-text">Back</span>
@@ -1022,7 +1028,7 @@
                 </div>
 
                 <!-- Options step buttons -->
-                <div class="flex justify-between navigation-buttons hidden" id="options-step-buttons">
+                <div class="justify-between navigation-buttons hidden" id="options-step-buttons">
                     <button id="back-to-prompt-btn" class="professional-button flex items-center justify-center gap-3 w-[46%] h-[48px]">
                         <i class="fas fa-arrow-left text-sm"></i>
                         <span class="button-text">Back</span>
@@ -1034,7 +1040,7 @@
                 </div>
 
                 <!-- Actions step buttons -->
-                <div class="flex justify-between navigation-buttons hidden" id="actions-step-buttons">
+                <div class="justify-between navigation-buttons hidden" id="actions-step-buttons">
                     <button id="back-to-options-btn" class="professional-button flex items-center justify-center gap-3 w-[46%] h-[48px]">
                         <i class="fas fa-arrow-left text-sm"></i>
                         <span class="button-text">Back</span>
@@ -1097,7 +1103,7 @@
     </div>
 
     <!-- Confirmation modal for delete all chats (deprecated - kept for backward compatibility) -->
-    <div id="delete-all-confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden" role="dialog" aria-modal="true" style="display: none !important; visibility: hidden;">
+    <div id="delete-all-confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden" role="dialog" aria-modal="true" style="display: none !important; visibility: hidden;">
         <div class="bg-darkSecondary p-6 rounded-lg w-96 max-w-[90%] shadow-lg">
             <h2 class="text-xl font-bold mb-4 flex items-center text-red-500">
                 <i class="fas fa-exclamation-triangle mr-2"></i>Confirm Delete All
@@ -1111,7 +1117,7 @@
     </div>
 
     <!-- Confirmation modal -->
-    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden animate-fade-in" aria-labelledby="confirmation-title" role="dialog" aria-modal="true" onclick="if(event.target === this) { document.getElementById('cancel-action').click(); }">
+    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden animate-fade-in" aria-labelledby="confirmation-title" role="dialog" aria-modal="true" onclick="if(event.target === this) { document.getElementById('cancel-action').click(); }">
         <div class="p-6 rounded-lg w-96 max-w-[90%] shadow-lg mx-auto my-auto" style="background-color: var(--bg-secondary); color: var(--text-primary);">
             <h2 id="confirmation-title" class="text-xl font-bold mb-4 flex items-center modal-title">
                 <i class="fas fa-exclamation-triangle mr-2 text-yellow-500"></i>Confirm Action
@@ -1129,7 +1135,7 @@
     </div>
 
     <!-- Clear System Prompt Confirmation Modal -->
-    <div id="clear-system-prompt-modal" class="fixed inset-0 bg-black/80 dark:bg-black/80 light:bg-gray-900/50 backdrop-blur-sm flex items-center justify-center hidden modal-container z-[2100]" aria-labelledby="clear-system-prompt-title" role="dialog" aria-modal="true">
+    <div id="clear-system-prompt-modal" class="fixed inset-0 bg-black/80 dark:bg-black/80 light:bg-gray-900/50 backdrop-blur-sm items-center justify-center hidden modal-container z-[2100]" aria-labelledby="clear-system-prompt-title" role="dialog" aria-modal="true">
         <div class="bg-gradient-to-b from-red-950/95 to-red-900/95 dark:from-[#2d0a0a] dark:to-[#3d0d0d] light:from-red-50 light:to-red-100 p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-red-900/30 dark:border-red-900/30 light:border-red-200 overflow-hidden animate-modal-in">
             <div class="flex justify-between items-center mb-4">
                 <h2 id="clear-system-prompt-title" class="text-xl font-bold flex items-center">
@@ -1165,7 +1171,7 @@
     </div>
 
     <!-- Character Continuation Modal -->
-    <div id="character-continuation-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden modal-container z-50" aria-labelledby="character-continuation-title" role="dialog" aria-modal="true">
+    <div id="character-continuation-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm items-center justify-center hidden modal-container z-50" aria-labelledby="character-continuation-title" role="dialog" aria-modal="true">
         <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-blue-900/30 overflow-hidden animate-modal-in">
             <div class="flex justify-between items-center mb-4">
                 <h2 id="character-continuation-title" class="text-xl font-bold flex items-center modal-title">
@@ -1205,7 +1211,7 @@
     </div>
 
     <!-- Help modal -->
-    <div id="help-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden modal-container" aria-labelledby="help-title" role="dialog" aria-modal="true">
+    <div id="help-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden modal-container" aria-labelledby="help-title" role="dialog" aria-modal="true">
         <div class="p-0 rounded-lg w-[800px] max-w-[95%] max-h-[90vh] shadow-lg overflow-hidden flex flex-col modal-content" style="background: var(--modal-bg);">
             <div class="p-6 pb-4 border-b border-gray-700 sticky top-0 z-10 flex justify-between" style="background: var(--modal-bg);">
                 <h2 id="help-title" class="text-2xl font-bold flex items-center modal-title">
@@ -1311,7 +1317,7 @@
     </div>
 
     <!-- Contact Support Modal -->
-    <div id="contact-form-modal" class="fixed inset-0 bg-black/70 dark:bg-black/70 light:bg-gray-900/50 backdrop-blur-sm flex items-center justify-center hidden modal-container animate-fade-in" aria-labelledby="contact-form-title" role="dialog" aria-modal="true">
+    <div id="contact-form-modal" class="fixed inset-0 bg-black/70 dark:bg-black/70 light:bg-gray-900/50 backdrop-blur-sm items-center justify-center hidden modal-container animate-fade-in" aria-labelledby="contact-form-title" role="dialog" aria-modal="true">
         <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] dark:from-[#0a192f] dark:to-[#0d1f3d] light:from-[#f8fafc] light:to-[#f1f5f9] p-6 rounded-xl w-full max-w-lg mx-auto max-h-[90vh] shadow-2xl overflow-y-auto modal-content animate-modal-in" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
             <div class="flex justify-between items-center mb-6 border-b border-gray-700/60 dark:border-gray-700/60 light:border-gray-200 pb-4 sticky top-0 bg-gradient-to-b from-[#0a192f] to-[#0a192f] dark:from-[#0a192f] dark:to-[#0a192f] light:from-[#f8fafc] light:to-[#f8fafc] z-10">
                 <h2 id="contact-form-title" class="text-2xl font-bold flex items-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">
@@ -1426,7 +1432,7 @@
 
     
     <!-- About modal -->
-    <div id="about-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden modal-container z-50" aria-labelledby="about-title" role="dialog" aria-modal="true">
+    <div id="about-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm items-center justify-center hidden modal-container z-50" aria-labelledby="about-title" role="dialog" aria-modal="true">
         <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] p-0 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-white/10 overflow-hidden animate-modal-in" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
             <!-- Header with app icon and title -->
             <div class="relative p-6 pb-4">
@@ -1440,7 +1446,7 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="version-badge bg-white/10 px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300">Version 5.5</p>
+                    <p class="text-sm font-medium text-blue-300">Version 5.6</p>
                 </div>
             </div>
 
@@ -1486,7 +1492,7 @@
     </div>
 
     <!-- Import modal -->
-    <div id="import-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden modal-container" aria-labelledby="import-title" role="dialog" aria-modal="true">
+    <div id="import-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden modal-container" aria-labelledby="import-title" role="dialog" aria-modal="true">
         <div class="p-6 rounded-lg w-96 max-w-[90%] shadow-lg modal-content" style="background-color: var(--bg-secondary); color: var(--text-primary);">
             <h2 id="import-title" class="text-xl font-bold mb-4 flex items-center">
                 <i class="fas fa-file-import mr-2 text-blue-500"></i>Import Chats
@@ -1521,7 +1527,7 @@
     </div>
 
     <!-- Import Success modal -->
-    <div id="import-success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden modal-container" aria-labelledby="import-success-title" role="dialog" aria-modal="true">
+    <div id="import-success-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden modal-container" aria-labelledby="import-success-title" role="dialog" aria-modal="true">
         <div class="p-6 rounded-lg w-96 max-w-[90%] shadow-lg modal-content" style="background-color: var(--bg-secondary); color: var(--text-primary);">
             <h2 id="import-success-title" class="text-xl font-bold mb-4 flex items-center">
                 <i class="fas fa-check-circle mr-2 text-green-500"></i>Import Successful
@@ -1538,7 +1544,7 @@
     </div>
 
     <!-- Export Confirmation modal -->
-    <div id="export-confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden modal-container" aria-labelledby="export-confirmation-title" role="dialog" aria-modal="true">
+    <div id="export-confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden modal-container" aria-labelledby="export-confirmation-title" role="dialog" aria-modal="true">
         <div class="p-6 rounded-lg w-96 max-w-[90%] shadow-lg modal-content" style="background-color: var(--bg-secondary); color: var(--text-primary);">
             <h2 id="export-confirmation-title" class="text-xl font-bold mb-4 flex items-center">
                 <i class="fas fa-file-export mr-2 text-blue-500"></i>Confirm Export
@@ -1556,7 +1562,7 @@
     </div>
 
     <!-- Export Success modal -->
-    <div id="export-success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden modal-container" aria-labelledby="export-success-title" role="dialog" aria-modal="true">
+    <div id="export-success-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden modal-container" aria-labelledby="export-success-title" role="dialog" aria-modal="true">
         <div class="p-6 rounded-lg w-96 max-w-[90%] shadow-lg modal-content" style="background-color: var(--bg-secondary); color: var(--text-primary);">
             <h2 id="export-success-title" class="text-xl font-bold mb-4 flex items-center">
                 <i class="fas fa-check-circle mr-2 text-green-500"></i>Export Successful
@@ -1576,7 +1582,7 @@
     <input type="file" id="import-chats-input" accept=".json" class="hidden">
 
     <!-- Model modal -->
-    <div id="model-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center hidden modal-container" aria-labelledby="model-title" role="dialog" aria-modal="true">
+    <div id="model-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm items-center justify-center hidden modal-container" aria-labelledby="model-title" role="dialog" aria-modal="true">
         <div class="dark:bg-gradient-to-b dark:from-[#0a192f]/95 dark:via-[#0c1e36]/95 dark:to-[#0a192f]/95 light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-6 rounded-xl w-[800px] max-w-[95%] max-h-[90vh] shadow-2xl overflow-hidden flex flex-col modal-content border border-white/10 dark:border-white/10 light:border-gray-200">
             <div class="flex justify-between items-center mb-5 pb-2 border-b border-white/10 dark:border-white/10 light:border-gray-200/60">
                 <h2 id="model-title" class="text-xl font-bold flex items-center modal-title">
@@ -1629,7 +1635,7 @@
     </div>
 
     <!-- Full Model Name modal -->
-    <div id="full-model-name-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center hidden modal-container" aria-labelledby="full-model-name-title" role="dialog" aria-modal="true">
+    <div id="full-model-name-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm items-center justify-center hidden modal-container" aria-labelledby="full-model-name-title" role="dialog" aria-modal="true">
         <div class="dark:bg-gradient-to-b dark:from-[#0a192f]/95 dark:via-[#0c1e36]/95 dark:to-[#0a192f]/95 light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-6 rounded-xl max-w-[95%] max-h-[90vh] shadow-2xl overflow-hidden flex flex-col modal-content border border-white/10 dark:border-white/10 light:border-gray-200">
             <div class="flex justify-between items-center mb-5 pb-2 border-b border-white/10 dark:border-white/10 light:border-gray-200/60">
                 <h2 id="full-model-name-title" class="text-xl font-bold flex items-center modal-title">
@@ -1653,7 +1659,7 @@
     </div>
 
     <!-- What's New modal -->
-    <div id="whats-new-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center hidden modal-container" aria-labelledby="whats-new-title" role="dialog" aria-modal="true" style="padding: 1.5rem;">
+    <div id="whats-new-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md items-center justify-center hidden modal-container" aria-labelledby="whats-new-title" role="dialog" aria-modal="true" style="padding: 1.5rem;">
         <div class="bg-gradient-to-b from-[#0a192f]/95 via-[#0c1e36]/95 to-[#0a192f]/95 p-4 rounded-2xl shadow-2xl modal-content flex flex-col border border-white/10 overflow-hidden" style="box-shadow: 0 20px 60px -15px rgba(0,0,0,0.7), 0 0 30px rgba(31, 66, 135, 0.2), 0 0 0 1px rgba(255,255,255,0.1) inset;">
             <div class="flex justify-between items-center mb-3 pb-3 border-b border-white/15">
                 <h2 id="whats-new-title" class="text-xl font-bold flex items-center">
@@ -1662,7 +1668,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-blue-400 font-extrabold">What's New</span>
-                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">5.5</span></span>
+                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">5.6</span></span>
                     </div>
                 </h2>
                 <button id="close-whats-new" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:rotate-90 transform">
@@ -1716,7 +1722,7 @@
     </div>
 
     <!-- Character Modal -->
-    <div id="character-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center hidden modal-container" aria-labelledby="character-title" role="dialog" aria-modal="true">
+    <div id="character-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm items-center justify-center hidden modal-container" aria-labelledby="character-title" role="dialog" aria-modal="true">
         <div class="character-modal">
             <div class="character-modal-header">
                 <h2 id="character-title" class="character-modal-title">Create Character</h2>
@@ -1801,7 +1807,7 @@
     </div>
 
     <!-- Delete Character Confirmation Modal -->
-    <div id="delete-character-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden modal-container z-[100]" aria-labelledby="delete-character-title" role="dialog" aria-modal="true">
+    <div id="delete-character-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm items-center justify-center hidden modal-container z-[100]" aria-labelledby="delete-character-title" role="dialog" aria-modal="true">
         <div class="bg-gradient-to-b from-[#2d0a0a] to-[#3d0d0d] p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-red-900/30 overflow-hidden animate-modal-in">
             <div class="flex justify-between items-center mb-4">
                 <h2 id="delete-character-title" class="text-xl font-bold flex items-center">
@@ -1841,6 +1847,58 @@
                 </button>
                 <button id="confirm-delete-character" class="flex-1 py-2.5 px-4 rounded-lg transition-all duration-300 bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white shadow-lg hover:shadow-red-500/20 transform hover:-translate-y-0.5">
                     <i class="fas fa-trash-alt mr-2"></i>Delete Character
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Settings Modal -->
+    <div id="privacy-settings-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm items-center justify-center hidden modal-container z-50" aria-labelledby="privacy-settings-title" role="dialog" aria-modal="true">
+        <div class="bg-gradient-to-b from-[#1e293b] via-[#334155] to-[#1e293b] p-6 rounded-xl w-[480px] max-w-[90%] shadow-2xl modal-content border border-blue-400/30 overflow-hidden animate-modal-in">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="privacy-settings-title" class="text-xl font-bold flex items-center">
+                    <div class="icon-wrapper mr-3 flex items-center justify-center rounded-full bg-blue-500/20 w-10 h-10 text-blue-400">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <span class="text-blue-300 font-semibold">Privacy Settings</span>
+                </h2>
+                <button id="close-privacy-settings" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="mb-6">
+                <!-- Privacy Assurance Message -->
+                <div class="p-4 rounded-lg bg-green-900/20 border border-green-800/30 mb-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-lock text-green-400 mt-0.5 mr-3 flex-shrink-0"></i>
+                        <div>
+                            <h3 class="text-green-300 font-medium mb-2">Your Privacy is Protected</h3>
+                            <p class="text-gray-300 text-sm mb-2">Your chats are <strong>never tracked, monitored, or sent to any server</strong>. All conversations remain completely private and are stored locally on your device only.</p>
+                            <p class="text-gray-400 text-xs">This application operates entirely offline and does not collect or transmit any personal data.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GDPR Compliance Message -->
+                <div class="p-4 rounded-lg bg-blue-900/20 border border-blue-800/30 mb-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-400 mt-0.5 mr-3 flex-shrink-0"></i>
+                        <div>
+                            <h3 class="text-blue-300 font-medium mb-2">GDPR Compliance</h3>
+                            <p class="text-gray-300 text-sm mb-2">This consent management setting is provided to comply with GDPR regulations for users in the European Union regarding advertising and tracking preferences.</p>
+                            <p class="text-gray-400 text-xs">You can revoke consent and update your privacy choices at any time using the button below.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between space-x-4">
+                <button id="close-privacy-modal-btn" class="flex-1 py-2.5 px-4 rounded-lg transition-all duration-300 bg-gray-700/50 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-600/30 hover:border-gray-500/50">
+                    <i class="fas fa-times mr-2"></i>Close
+                </button>
+                <button id="revoke-consent-btn" class="flex-1 py-2.5 px-4 rounded-lg transition-all duration-300 bg-gradient-to-r from-orange-700 to-orange-600 hover:from-orange-600 hover:to-orange-500 text-white shadow-lg hover:shadow-orange-500/20 transform hover:-translate-y-0.5">
+                    <i class="fas fa-user-shield mr-2"></i>Revoke Consent
                 </button>
             </div>
         </div>
@@ -1917,14 +1975,14 @@
             // Function to detect if device is a tablet
             function isTablet() {
                 // Enhanced tablet detection that handles edge cases better
-                // Lowered threshold to 601px to match CSS breakpoint and handle more tablet sizes
+                // Use 768px as the primary threshold for tablet detection
 
                 // First check for explicit tablet indicators in user agent
                 const isExplicitTablet = /iPad|Tablet/i.test(navigator.userAgent);
 
-                // Check screen dimensions - use 601px to match CSS breakpoint
-                // This ensures consistency between CSS and JS logic
-                const hasTabletDimensions = window.innerWidth >= 601;
+                // Check screen dimensions - use 768px as the main tablet threshold
+                // This ensures tablets get proper full-width layout by default
+                const hasTabletDimensions = window.innerWidth >= 768;
 
                 // Additional check for common tablet aspect ratios and sizes
                 const screenWidth = window.innerWidth;
@@ -1943,7 +2001,7 @@
 
                 // Consider it a tablet if:
                 // 1. It's explicitly a tablet, OR
-                // 2. It has tablet-like dimensions, OR
+                // 2. It has tablet-like dimensions (>=768px), OR
                 // 3. It matches common tablet sizes, OR
                 // 4. Testing mode is enabled
                 return isExplicitTablet || hasTabletDimensions || isCommonTabletSize || forceTablet;
@@ -1967,11 +2025,12 @@
                     // Do nothing, preview-mode is already removed
                 } else {
                     // No saved preference - use defaults based on device
-                    if (!isTabletDevice) {
-                        // For phones - default to mobile view
-                        document.body.classList.add('preview-mode');
-                    }
-                    // For tablets - default to tablet view (no preview-mode class)
+                if (!isTabletDevice) {
+                    // For phones - default to mobile view
+                    document.body.classList.add('preview-mode');
+                }
+                // For tablets - default to tablet view (no preview-mode class)
+                // This ensures tablets use full width without the 480px constraint
                 }
 
                 // Control visibility of the preview toggle button
@@ -2359,7 +2418,7 @@
     </script>
 
     <!-- Model loading modal -->
-    <div id="model-loading-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container animate-fade-in" style="z-index: 2200;" aria-labelledby="model-loading-title" role="dialog" aria-modal="true">
+    <div id="model-loading-modal" class="fixed inset-0 items-center justify-center hidden modal-container animate-fade-in" style="z-index: 2200;" aria-labelledby="model-loading-title" role="dialog" aria-modal="true">
         <div class="relative dark:bg-gradient-to-b dark:from-[#1e293b] dark:via-[#334155] dark:to-[#1e293b] light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-10 rounded-2xl w-[550px] max-w-[90%] shadow-2xl overflow-hidden flex flex-col modal-content border border-blue-400/50 dark:border-blue-400/50 light:border-blue-400/30 backdrop-blur-sm">
             <!-- Animated background gradient -->
             <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 animate-pulse-slow rounded-2xl"></div>

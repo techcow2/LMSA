@@ -35,6 +35,7 @@ export function showSettingsModal() {
 
     // Remove hidden class first to start the transition
     settingsModal.classList.remove('hidden');
+    settingsModal.classList.add('flex');
 
     // Prevent scrolling of the body
     document.body.style.overflow = 'hidden';
@@ -354,16 +355,28 @@ export function initializeSettingsModalNavigation() {
         // Show the appropriate button container based on current step
         switch (currentStep) {
             case 'connection':
-                if (connectionButtons) connectionButtons.classList.remove('hidden');
+                if (connectionButtons) {
+                    connectionButtons.classList.remove('hidden');
+                    connectionButtons.classList.add('flex');
+                }
                 break;
             case 'prompt':
-                if (promptButtons) promptButtons.classList.remove('hidden');
+                if (promptButtons) {
+                    promptButtons.classList.remove('hidden');
+                    promptButtons.classList.add('flex');
+                }
                 break;
             case 'options':
-                if (optionsButtons) optionsButtons.classList.remove('hidden');
+                if (optionsButtons) {
+                    optionsButtons.classList.remove('hidden');
+                    optionsButtons.classList.add('flex');
+                }
                 break;
             case 'actions':
-                if (actionsButtons) actionsButtons.classList.remove('hidden');
+                if (actionsButtons) {
+                    actionsButtons.classList.remove('hidden');
+                    actionsButtons.classList.add('flex');
+                }
                 break;
         }
     }
