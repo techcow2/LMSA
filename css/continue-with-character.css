@@ -1,0 +1,41 @@
+/* Continue with Character Feature Styles */
+
+/* Make the active character display more flexible */
+#active-character-display {
+    /* Only apply flex display when not hidden */
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: transparent; /* Make it transparent to match the background above it */
+    border-bottom: none; /* Remove border to avoid visible line */
+    width: 100%; /* Ensure it doesn't stretch beyond its container */
+    box-sizing: border-box; /* Include padding in width calculation */
+    max-width: 100%; /* Prevent overflow */
+    justify-content: flex-start; /* Align to the left */
+}
+
+/* Ensure hidden state is respected */
+#active-character-display.hidden {
+    display: none !important;
+}
+
+/* Style the container for badge */
+#active-character-display > div {
+    width: 100%;
+    display: flex; /* Removed !important to respect parent's hidden state */
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 100%; /* Prevent overflow */
+}
+
+/* Style the character badge */
+.character-badge {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto; /* Don't grow, don't shrink, auto basis */
+}
+
+/* Fix for Character Continuation Modal text in light theme */
+body.light-theme #character-continuation-modal p.text-gray-300 {
+    color: #1e293b !important; /* Dark text for light theme */
+}

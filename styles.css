@@ -31,8 +31,8 @@ body.preview-mode {
     border-right: 1px solid #2c3e50;
 }
 
-/* Default tablet/desktop layout - ensure tablets get full width */
-@media (min-width: 768px) {
+/* Default tablet/desktop layout */
+@media (min-width: 769px) {
     body:not(.preview-mode) {
         width: 100%;
         max-width: 100%;
@@ -40,52 +40,8 @@ body.preview-mode {
     }
 }
 
-/* Tablet-specific layout fixes to prevent empty gaps */
-@media (min-width: 768px) and (max-width: 1024px) {
-    body:not(.preview-mode) {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-    }
-    
-    /* Ensure main container uses full width */
-    .flex.flex-col.h-screen {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-    
-    /* Ensure chat container uses full width */
-    #chat-container {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-    
-    /* Ensure welcome message uses full width */
-    #welcome-message {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-    
-    /* Ensure messages container uses full width */
-    #messages {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-    
-    /* Ensure header uses full width */
-    header {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-}
-
 #chat-container {
-    display: -webkit-box;
-    display: -webkit-flex;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
     flex-direction: column;
     height: 100vh;
     height: -webkit-fill-available; /* Fix for iOS Safari */
@@ -95,16 +51,9 @@ body.preview-mode {
 }
 
 #messages {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
     flex-grow: 1;
     overflow-y: auto;
-    display: -webkit-box;
-    display: -webkit-flex;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
     flex-direction: column; /* Changed from column-reverse to column for chronological order */
     padding-bottom: 1rem;
     overscroll-behavior: contain; /* Prevent body scroll when reaching top/bottom */
@@ -178,14 +127,8 @@ body.preview-mode {
 
 /* Topic boundary marker */
 .topic-boundary {
-    display: -webkit-box;
-    display: -webkit-flex;
     display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
     align-items: center;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
     justify-content: center;
     margin: 1.5rem 0;
     position: relative;
@@ -224,11 +167,7 @@ body.preview-mode {
     border-bottom: 1px solid #2a3f5f;
     padding-bottom: 0.5rem;
     text-transform: uppercase;
-    display: -webkit-box;
-    display: -webkit-flex;
     display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
     align-items: center;
     gap: 0.5rem;
 }
@@ -293,14 +232,8 @@ body.preview-mode {
 }
 
 #welcome-message {
-    display: -webkit-box;
-    display: -webkit-flex;
     display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
     align-items: center;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
     justify-content: center;
     height: 100%;
     text-align: center;
@@ -7360,8 +7293,6 @@ body.light-theme #full-model-name-modal #full-model-name {
 /* Improve visibility and contrast for the trash icon */
 .trash-icon-container:hover {
     /* Hover styles are handled in JavaScript for better control */
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
 }
 
 /* Active state for better feedback */
@@ -7372,8 +7303,6 @@ body.light-theme #full-model-name-modal #full-model-name {
 /* Focus styles for keyboard navigation */
 .trash-icon-container:focus-visible {
     /* Focus styles are handled in JavaScript for better control */
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
 }
 
 /* Ensure action wrapper doesn't interfere with chat item layout */
@@ -7402,8 +7331,6 @@ body.light-theme #full-model-name-modal #full-model-name {
 /* Ensure trash icon container works well in both light and dark themes */
 body.light-theme .trash-icon-container:hover {
     /* Hover styles are handled in JavaScript */
-    background-color: rgba(239, 68, 68, 0.1);
-    transition: background-color 0.2s ease;
 }
 
 body.light-theme .trash-icon-container:focus {
@@ -7838,83 +7765,4 @@ body.light-theme #model-loading-modal .w-20.h-0\.5 {
     #model-loading-modal #model-loading-message {
         font-size: 0.9rem;
     }
-}
-
-/* Privacy Settings Modal Light Theme Support */
-body.light-theme #privacy-settings-modal {
-    background: rgba(15, 23, 42, 0.75);
-}
-
-body.light-theme #privacy-settings-modal .modal-content {
-    background: linear-gradient(to bottom, #f8fafc, #f1f5f9, #f8fafc) !important;
-    border: 1px solid rgba(59, 130, 246, 0.3) !important;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
-
-body.light-theme #privacy-settings-modal .text-blue-300 {
-    color: #1e40af !important;
-}
-
-body.light-theme #privacy-settings-modal .text-gray-300 {
-    color: #374151 !important;
-}
-
-body.light-theme #privacy-settings-modal .text-gray-400 {
-    color: #6b7280 !important;
-}
-
-body.light-theme #privacy-settings-modal .text-green-300 {
-    color: #059669 !important;
-}
-
-body.light-theme #privacy-settings-modal .text-green-400 {
-    color: #10b981 !important;
-}
-
-body.light-theme #privacy-settings-modal .text-blue-400 {
-    color: #2563eb !important;
-}
-
-body.light-theme #privacy-settings-modal .bg-green-900\/20 {
-    background: rgba(34, 197, 94, 0.1) !important;
-}
-
-body.light-theme #privacy-settings-modal .border-green-800\/30 {
-    border-color: rgba(34, 197, 94, 0.3) !important;
-}
-
-body.light-theme #privacy-settings-modal .bg-blue-900\/20 {
-    background: rgba(59, 130, 246, 0.1) !important;
-}
-
-body.light-theme #privacy-settings-modal .border-blue-800\/30 {
-    border-color: rgba(59, 130, 246, 0.3) !important;
-}
-
-body.light-theme #privacy-settings-modal .bg-blue-500\/20 {
-    background: rgba(59, 130, 246, 0.2) !important;
-}
-
-body.light-theme #privacy-settings-modal .bg-gray-700\/50 {
-    background: rgba(107, 114, 128, 0.2) !important;
-}
-
-body.light-theme #privacy-settings-modal .hover\:bg-gray-700:hover {
-    background: rgba(107, 114, 128, 0.3) !important;
-}
-
-body.light-theme #privacy-settings-modal .text-gray-300 {
-    color: #374151 !important;
-}
-
-body.light-theme #privacy-settings-modal .hover\:text-white:hover {
-    color: #1f2937 !important;
-}
-
-body.light-theme #privacy-settings-modal .border-gray-600\/30 {
-    border-color: rgba(107, 114, 128, 0.4) !important;
-}
-
-body.light-theme #privacy-settings-modal .hover\:border-gray-500\/50:hover {
-    border-color: rgba(107, 114, 128, 0.6) !important;
 }

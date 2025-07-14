@@ -72,7 +72,7 @@ function createExternalSiteModal() {
     
     // Create the modal element
     const modalHTML = `
-    <div id="external-site-modal" class="fixed inset-0 ${isLightTheme ? 'bg-slate-500 bg-opacity-50' : 'bg-black bg-opacity-70'} items-center justify-center hidden animate-fade-in z-[99999]" aria-labelledby="external-site-title" role="dialog" aria-modal="true">
+    <div id="external-site-modal" class="fixed inset-0 ${isLightTheme ? 'bg-slate-500 bg-opacity-50' : 'bg-black bg-opacity-70'} flex items-center justify-center hidden animate-fade-in z-[1060]" aria-labelledby="external-site-title" role="dialog" aria-modal="true">
         <div class="relative p-6 rounded-lg w-96 max-w-[90%] shadow-xl mx-auto my-auto border ${isLightTheme ? 'border-blue-500/40' : 'border-blue-500/30'}" 
             style="background: ${isLightTheme ? 'linear-gradient(to bottom, #f8fafc, #f1f5f9)' : 'linear-gradient(to bottom, #0f172a, #0c1836)'}; 
                   color: ${isLightTheme ? '#1e293b' : 'var(--text-primary)'}; 
@@ -166,16 +166,13 @@ function createExternalSiteModal() {
 
 // Function to show the external site confirmation modal
 export function showExternalSiteModal(url) {
-    console.log('showExternalSiteModal called with URL:', url);
     const externalSiteModal = document.getElementById('external-site-modal');
     if (!externalSiteModal) {
-        console.log('External site modal not found, creating it');
         createExternalSiteModal();
     }
     
     // Store the URL to be opened if confirmed
     pendingExternalUrl = url;
-    console.log('Pending external URL set to:', pendingExternalUrl);
     
     // Get the modal again in case it was just created
     const modal = document.getElementById('external-site-modal');
@@ -191,7 +188,6 @@ export function showExternalSiteModal(url) {
         }
         
         modal.classList.remove('hidden');
-        modal.classList.add('flex');
         modal.style.display = 'flex';
         
         // Add CSS for ripple effect if not already present
@@ -440,4 +436,4 @@ document.addEventListener('themeChanged', () => {
             modal.classList.add('bg-black', 'bg-opacity-70');
         }
     }
-});
+}); 

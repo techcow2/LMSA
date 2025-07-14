@@ -73,8 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Ensure clean state before showing
         imageUploadErrorModal.classList.remove('hidden');
-        imageUploadErrorModal.classList.add('active', 'flex');
-        imageUploadErrorModal.style.display = 'flex';
+        imageUploadErrorModal.classList.add('active');
         
         // Add animation classes
         const modalContent = imageUploadErrorModal.querySelector('.modal-content');
@@ -232,8 +231,7 @@ export function showImageUploadErrorModal() {
         
         // Ensure clean state before showing
         modal.classList.remove('hidden');
-        modal.classList.add('active', 'flex');
-        modal.style.display = 'flex';
+        modal.classList.add('active');
         
         // Add animation classes
         if (modalContent) {
@@ -250,4 +248,4 @@ export function showImageUploadErrorModal() {
         
         console.log('Image upload error modal shown');
     }
-}
+} 

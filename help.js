@@ -1,291 +1,311 @@
-// Import necessary functions
-import { showExternalSiteModal } from './external-site-confirmation-modal.js';
-import { initializeSettingsModal, hideSettingsModal } from './js/settings-modal-manager.js';
+// Import required functions
 import { checkAndShowWelcomeMessage } from './js/ui-manager.js';
-import { showCharacterContinuationModal, handleNewChatButtonClick } from './character-continuation-modal.js';
+import { hideSettingsModal } from './js/settings-modal-manager.js';
+import { showExternalSiteModal } from './external-site-confirmation-modal.js';
+import { handleNewChatButtonClick } from './character-continuation-modal.js';
 
-// Use both DOMContentLoaded and a fallback with setTimeout to ensure DOM is ready
-function initializeHelpEventListeners() {
-    console.log('Initializing help event listeners...');
-    
-    const initHelp = () => {
-        console.log('DOM ready, initializing help functionality...');
-        
-        const helpBtn = document.getElementById('help-btn');
-        const newChatHeaderBtn = document.getElementById('new-chat-header-button');
-        const settingsHelpBtn = document.getElementById('settings-help-btn');
-        const helpModal = document.getElementById('help-modal');
-        const closeHelpBtn = document.getElementById('close-help');
-        const modalContent = helpModal ? helpModal.querySelector('.modal-content') : null;
-        const tutorialVideoBtn = document.getElementById('tutorial-video-btn');
-        const supportArticlesBtn = document.getElementById('support-articles-btn');
-        const openSettingsLink = document.getElementById('open-settings-link');
-        const settingsModal = document.getElementById('settings-modal');
-        const needMoreHelpLink = document.getElementById('need-more-help-link');
-        const contactFormModal = document.getElementById('contact-form-modal');
-        const contactFormModalContent = contactFormModal ? contactFormModal.querySelector('.modal-content') : null;
-        const closeContactFormBtn = document.getElementById('close-contact-form');
-        const sendSupportEmailBtn = document.getElementById('send-support-email-btn');
+document.addEventListener('DOMContentLoaded', () => {
+    const helpBtn = document.getElementById('help-btn');
+    const newChatHeaderBtn = document.getElementById('new-chat-header-button');
+    const helpModal = document.getElementById('help-modal');
+    const closeHelpBtn = document.getElementById('close-help');
+    const tutorialVideoBtn = document.getElementById('tutorial-video-btn');
+    const supportArticlesBtn = document.getElementById('support-articles-btn');
+    const settingsHelpBtn = document.getElementById('settings-help-btn');
+    const sidebarElement = document.getElementById('sidebar');
+    const modalContent = helpModal ? helpModal.querySelector('.modal-content') : null;
+    const openSettingsLink = document.getElementById('open-settings-link');
+    const settingsModal = document.getElementById('settings-modal');
 
-        console.log('Tutorial video button:', tutorialVideoBtn);
-        console.log('Support articles button:', supportArticlesBtn);
+    // Contact support modal elements
+    const needMoreHelpLink = document.getElementById('need-more-help-link');
+    const contactFormModal = document.getElementById('contact-form-modal');
+    const closeContactFormBtn = document.getElementById('close-contact-form');
+    const contactFormModalContent = contactFormModal ? contactFormModal.querySelector('.modal-content') : null;
+    const openEmailSupportBtn = document.getElementById('open-email-support');
 
-        // Function to close sidebar
-        function closeSidebar() {
-            const sidebarElement = document.getElementById('sidebar');
-            const sidebarToggle = document.getElementById('sidebar-toggle');
-            const mainContent = document.getElementById('main-content');
+    // Function to generate email support link
+    function generateSupportEmail() {
+        const supportEmail = 'help@techray.on.spiceworks.com';
+        const subject = 'LMSA App Technical Support';
 
-            if (sidebarElement && sidebarToggle && mainContent) {
-                sidebarElement.classList.remove('sidebar-open');
-                sidebarToggle.classList.remove('sidebar-open');
-                mainContent.classList.remove('sidebar-open');
+        // Create a user-friendly email template with simple questions
+        const emailBody = `Hello LMSA Support Team,
 
-                // Collapse all sections when sidebar is closed
-                const sectionHeaders = sidebarElement.querySelectorAll('.section-header');
-                const chatHistorySection = sidebarElement.querySelector('.sidebar-section:last-child');
-                sectionHeaders.forEach(header => {
-                    header.classList.remove('active');
-                    const content = header.nextElementSibling;
-                    if (content && content.classList.contains('collapsible-content')) {
-                        content.classList.remove('show');
-                    }
-                });
+I need help with the LMSA app. Please see my information below:
 
-                // Ensure chat history is visible when sidebar is closed
-                if (chatHistorySection) {
-                    chatHistorySection.classList.remove('chat-history-hidden');
-                }
-            }
-        }
+1. What device are you using? (phone, tablet, etc.)
+   Answer:
 
-        // Function to close help modal
-        function closeHelpModal() {
-            if (helpModal && modalContent) {
-                modalContent.classList.add('animate-modal-out');
-                setTimeout(() => {
-                    helpModal.classList.add('hidden');
-                    modalContent.classList.remove('animate-modal-out');
+2. What problem are you having?
+   Answer:
 
-                    // Check if welcome message should be shown
-                    checkAndShowWelcomeMessage();
-                }, 300);
-            }
-        }
+3. When did this problem start?
+   Answer:
 
-        // Function to open help modal
-        function openHelpModal() {
-            if (helpModal && modalContent) {
-                // Close the sidebar first
-                closeSidebar();
-                // Show the help modal
-                helpModal.classList.remove('hidden');
-                helpModal.classList.add('flex');
-                modalContent.classList.add('animate-modal-in');
+4. Does this happen every time you use the app?
+   Answer:
 
-                // Reset scroll position to top
-                const scrollableContent = helpModal.querySelector('.overflow-y-auto');
-                if (scrollableContent) {
-                    scrollableContent.scrollTop = 0;
-                }
+5. Have you tried closing and reopening the app?
+   Answer:
 
-                setTimeout(() => {
-                    modalContent.classList.remove('animate-modal-in');
-                }, 300);
-            }
-        }
+6. Any other details you think might help:
+   Answer:
 
-        // Function to open contact support modal
-        function openContactFormModal() {
-            if (contactFormModal && contactFormModalContent) {
-                // Close the help modal first
-                closeHelpModal();
-                // Show the contact support modal
-                contactFormModal.classList.remove('hidden');
-                contactFormModal.classList.add('flex');
-                contactFormModalContent.classList.add('animate-modal-in');
-                // Use a slightly longer duration for a smoother effect
-                setTimeout(() => {
-                    contactFormModalContent.classList.remove('animate-modal-in');
-                }, 400);
-            }
-        }
+📷 SCREENSHOT: If possible, please attach a screenshot of the issue. This helps us understand the problem much faster!
 
-        // Function to close contact support modal
-        function closeContactFormModal() {
-            if (contactFormModal && contactFormModalContent) {
-                contactFormModalContent.classList.add('animate-modal-out');
-                setTimeout(() => {
-                    contactFormModal.classList.add('hidden');
-                    contactFormModalContent.classList.remove('animate-modal-out');
+Thank you for your help!
 
-                    // Check if welcome message should be shown
-                    checkAndShowWelcomeMessage();
-                }, 300);
-            }
-        }
+[Your Name]`;
 
-        // Event listeners
-        if (helpBtn) {
-            helpBtn.addEventListener('click', openHelpModal);
-        }
+        // Encode the email components for URL
+        const encodedSubject = encodeURIComponent(subject);
+        const encodedBody = encodeURIComponent(emailBody);
 
-        // New chat header button - triggers new chat functionality
-        if (newChatHeaderBtn) {
-            newChatHeaderBtn.addEventListener('click', handleNewChatButtonClick);
-            console.log('New chat header button event listener attached');
-        }
+        // Create the mailto link
+        const mailtoLink = `mailto:${supportEmail}?subject=${encodedSubject}&body=${encodedBody}`;
 
-        // Settings help button - closes Settings modal and opens Help modal
-        if (settingsHelpBtn) {
-            settingsHelpBtn.addEventListener('click', () => {
-                // First close the settings modal
-                const settingsModal = document.getElementById('settings-modal');
-                if (settingsModal) {
-                    // Close the settings modal using the imported function
-                    hideSettingsModal();
-
-                    // Wait a short time for the settings modal to close before opening help
-                    setTimeout(() => {
-                        openHelpModal();
-                    }, 100);
-                } else {
-                    // If settings modal isn't found, just open help modal
-                    openHelpModal();
-                }
-            });
-            console.log('Settings help button event listener attached');
-        }
-
-        // Only proceed with other modal functionality if required elements exist
-        console.log('=== MODAL ELEMENT DEBUG ===');
-        console.log('helpModal exists:', !!helpModal);
-        console.log('helpModal element:', helpModal);
-        console.log('closeHelpBtn exists:', !!closeHelpBtn);
-        console.log('closeHelpBtn element:', closeHelpBtn);
-        console.log('Document ready state:', document.readyState);
-        console.log('Trying to find elements again...');
-        const helpModalCheck = document.getElementById('help-modal');
-        const closeHelpBtnCheck = document.getElementById('close-help');
-        console.log('helpModal re-check:', helpModalCheck);
-        console.log('closeHelpBtn re-check:', closeHelpBtnCheck);
-        console.log('=== END MODAL DEBUG ===');
-        if (helpModal && closeHelpBtn) {
-            console.log('Modal elements found, setting up event listeners');
-            if (closeHelpBtn) {
-                closeHelpBtn.addEventListener('click', closeHelpModal);
-                console.log('Close help button event listener attached');
-            }
-
-            // Tutorial video button event listener
-            console.log('Checking tutorial video button:', !!tutorialVideoBtn);
-            if (tutorialVideoBtn) {
-                console.log('Tutorial video button found, attaching event listener');
-                tutorialVideoBtn.addEventListener('click', () => {
-                    console.log('Tutorial video button clicked');
-                    // Open YouTube video directly
-                    const youtubeUrl = 'https://www.youtube.com/watch?v=qoXfa6In5BM&pp=ygUMbG1zYSBhbmRyb2lk';
-                    window.open(youtubeUrl, '_blank');
-                });
-            } else {
-                console.error('Tutorial video button not found in DOM');
-            }
-
-            // Support Articles button event listener
-            console.log('Checking support articles button:', !!supportArticlesBtn);
-            if (supportArticlesBtn) {
-                console.log('Support articles button found, attaching event listener');
-                supportArticlesBtn.addEventListener('click', () => {
-                    console.log('Support articles button clicked');
-                    // Open support articles directly
-                    const supportUrl = 'https://lmsa.app/support.html';
-                    window.open(supportUrl, '_blank');
-                });
-            } else {
-                console.error('Support articles button not found in DOM');
-            }
-
-            // Settings link event listener
-            if (openSettingsLink && settingsModal) {
-                openSettingsLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    // Close help modal
-                    closeHelpModal();
-
-                    // Show the settings modal using classes instead of inline styles
-                    settingsModal.classList.remove('hidden');
-                    settingsModal.classList.add('show');
-                    settingsModal.classList.remove('hide');
-
-                    // Only set minimal inline styles that don't conflict with our CSS
-                    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-
-                    const settingsModalContent = settingsModal.querySelector('.modal-content');
-                    if (settingsModalContent) {
-                        settingsModalContent.classList.add('animate-modal-in');
-                        setTimeout(() => {
-                            settingsModalContent.classList.remove('animate-modal-in');
-                        }, 300);
-                    }
-                });
-            }
-
-            // Need more help link event listener
-            if (needMoreHelpLink) {
-                needMoreHelpLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    openContactFormModal();
-                });
-            }
-        }
-
-        // Contact form modal event listeners
-        if (contactFormModal && closeContactFormBtn) {
-            closeContactFormBtn.addEventListener('click', closeContactFormModal);
-
-            // Close modal when clicking outside
-            contactFormModal.addEventListener('click', (e) => {
-                if (e.target === contactFormModal) {
-                    closeContactFormModal();
-                }
-            });
-
-            // Close modal when pressing Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !contactFormModal.classList.contains('hidden')) {
-                    closeContactFormModal();
-                }
-            });
-        }
-
-        // Send support email button event listener
-        if (sendSupportEmailBtn) {
-            sendSupportEmailBtn.addEventListener('click', () => {
-                // Generate support email link
-                const subject = encodeURIComponent('LMSA Support Request');
-                const body = encodeURIComponent('Hello LMSA Support Team,\n\nI need assistance with:\n\n[Please describe your issue here]\n\nDevice Information:\n- Device: [Your device model]\n- Android Version: [Your Android version]\n- LMSA Version: [App version if known]\n\nThank you for your help!');
-                const emailLink = `mailto:support@lmsa.app?subject=${subject}&body=${body}`;
-                
-                // Open email client
-                window.location.href = emailLink;
-                
-                // Close the contact form modal
-                closeContactFormModal();
-            });
-        }
-    };
-
-    // Try to initialize immediately if DOM is already loaded
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initHelp);
-    } else {
-        // DOM is already loaded
-        initHelp();
+        return mailtoLink;
     }
 
-    // Also try with a small delay as a fallback
-    setTimeout(initHelp, 100);
-}
+    // Function to close sidebar
+    function closeSidebar() {
+        if (sidebarElement) {
+            sidebarElement.classList.add('hidden');
+            sidebarElement.classList.remove('active');
+            document.body.classList.remove('sidebar-open');
 
-// Call the initialization function
-initializeHelpEventListeners();
+            // Also close the options container
+            const optionsContainer = document.getElementById('options-container');
+            if (optionsContainer) {
+                optionsContainer.classList.add('hidden');
+                optionsContainer.classList.remove('animate-fade-in');
+            }
+
+            // Remove the sidebar overlay
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            if (sidebarOverlay) {
+                sidebarOverlay.classList.remove('active');
+                sidebarOverlay.classList.add('hidden');
+            }
+
+            // Collapse all sections when sidebar is closed
+            const sectionHeaders = sidebarElement.querySelectorAll('.section-header');
+            const chatHistorySection = sidebarElement.querySelector('.sidebar-section:last-child');
+            sectionHeaders.forEach(header => {
+                header.classList.remove('active');
+                const content = header.nextElementSibling;
+                if (content && content.classList.contains('collapsible-content')) {
+                    content.classList.remove('show');
+                }
+            });
+
+            // Ensure chat history is visible when sidebar is closed
+            if (chatHistorySection) {
+                chatHistorySection.classList.remove('chat-history-hidden');
+            }
+        }
+    }
+
+    // Function to close help modal
+    function closeHelpModal() {
+        if (helpModal && modalContent) {
+            modalContent.classList.add('animate-modal-out');
+            setTimeout(() => {
+                helpModal.classList.add('hidden');
+                modalContent.classList.remove('animate-modal-out');
+
+                // Check if welcome message should be shown
+                checkAndShowWelcomeMessage();
+            }, 300);
+        }
+    }
+
+    // Function to open help modal
+    function openHelpModal() {
+        if (helpModal && modalContent) {
+            // Close the sidebar first
+            closeSidebar();
+            // Show the help modal
+            helpModal.classList.remove('hidden');
+            modalContent.classList.add('animate-modal-in');
+
+            // Reset scroll position to top
+            const scrollableContent = helpModal.querySelector('.overflow-y-auto');
+            if (scrollableContent) {
+                scrollableContent.scrollTop = 0;
+            }
+
+            setTimeout(() => {
+                modalContent.classList.remove('animate-modal-in');
+            }, 300);
+        }
+    }
+
+    // Function to open contact support modal
+    function openContactFormModal() {
+        if (contactFormModal && contactFormModalContent) {
+            // Close the help modal first
+            closeHelpModal();
+            // Show the contact support modal
+            contactFormModal.classList.remove('hidden');
+            contactFormModalContent.classList.add('animate-modal-in');
+            // Use a slightly longer duration for a smoother effect
+            setTimeout(() => {
+                contactFormModalContent.classList.remove('animate-modal-in');
+            }, 400);
+        }
+    }
+
+    // Function to close contact support modal
+    function closeContactFormModal() {
+        if (contactFormModal && contactFormModalContent) {
+            contactFormModalContent.classList.add('animate-modal-out');
+            setTimeout(() => {
+                contactFormModal.classList.add('hidden');
+                contactFormModalContent.classList.remove('animate-modal-out');
+
+                // Check if welcome message should be shown
+                checkAndShowWelcomeMessage();
+            }, 300);
+        }
+    }
+
+    // Event listeners
+    if (helpBtn) {
+        helpBtn.addEventListener('click', openHelpModal);
+    }
+
+    // New chat header button - triggers new chat functionality
+    if (newChatHeaderBtn) {
+        newChatHeaderBtn.addEventListener('click', handleNewChatButtonClick);
+        console.log('New chat header button event listener attached');
+    }
+
+    // Settings help button - closes Settings modal and opens Help modal
+    if (settingsHelpBtn) {
+        settingsHelpBtn.addEventListener('click', () => {
+            // First close the settings modal
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) {
+                // Close the settings modal using the imported function
+                hideSettingsModal();
+
+                // Wait a short time for the settings modal to close before opening help
+                setTimeout(() => {
+                    openHelpModal();
+                }, 100);
+            } else {
+                // If settings modal isn't found, just open help modal
+                openHelpModal();
+            }
+        });
+        console.log('Settings help button event listener attached');
+    }
+
+    // Only proceed with other modal functionality if required elements exist
+    if (helpModal && closeHelpBtn) {
+        if (closeHelpBtn) {
+            closeHelpBtn.addEventListener('click', closeHelpModal);
+        }
+
+        // Tutorial video button event listener
+        if (tutorialVideoBtn) {
+            tutorialVideoBtn.addEventListener('click', () => {
+                // Show confirmation modal before opening YouTube video
+                const youtubeUrl = 'https://www.youtube.com/watch?v=qoXfa6In5BM&pp=ygUMbG1zYSBhbmRyb2lk';
+                showExternalSiteModal(youtubeUrl);
+            });
+        }
+
+        // Support Articles button event listener
+        if (supportArticlesBtn) {
+            supportArticlesBtn.addEventListener('click', () => {
+                // Show confirmation modal before opening support articles
+                const supportUrl = 'https://lmsa.app/support.html';
+                showExternalSiteModal(supportUrl);
+            });
+        }
+
+        // Settings link event listener
+        if (openSettingsLink && settingsModal) {
+            openSettingsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Close help modal
+                closeHelpModal();
+
+                // Show the settings modal using classes instead of inline styles
+                settingsModal.classList.remove('hidden');
+                settingsModal.classList.add('show');
+                settingsModal.classList.remove('hide');
+
+                // Only set minimal inline styles that don't conflict with our CSS
+                document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+
+                const settingsModalContent = settingsModal.querySelector('.modal-content');
+                if (settingsModalContent) {
+                    settingsModalContent.classList.add('animate-modal-in');
+                    setTimeout(() => {
+                        settingsModalContent.classList.remove('animate-modal-in');
+                    }, 300);
+                }
+            });
+        }
+
+        // Need more help link event listener
+        if (needMoreHelpLink) {
+            needMoreHelpLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                openContactFormModal();
+            });
+        }
+
+        // Close modal when clicking outside - REMOVED
+        // helpModal.addEventListener('click', (e) => {
+        //     if (e.target === helpModal) {
+        //         closeHelpModal();
+        //     }
+        // });
+
+        // Close modal with Escape key - REMOVED
+        // document.addEventListener('keydown', (e) => {
+        //     if (e.key === 'Escape' && !helpModal.classList.contains('hidden')) {
+        //         closeHelpModal();
+        //     }
+        // });
+    } else {
+        console.warn('Some help modal elements are missing in the DOM');
+    }
+
+    // Contact support modal event listeners
+    if (contactFormModal && closeContactFormBtn) {
+        closeContactFormBtn.addEventListener('click', closeContactFormModal);
+
+        // Add email support button handler
+        if (openEmailSupportBtn) {
+            openEmailSupportBtn.addEventListener('click', () => {
+                const emailLink = generateSupportEmail();
+
+                // Try to open the email link
+                try {
+                    window.location.href = emailLink;
+                } catch (error) {
+                    console.error('Error opening email client:', error);
+                    // Fallback: copy email address to clipboard if available
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText('help@techray.on.spiceworks.com').then(() => {
+                            alert('Email address copied to clipboard: help@techray.on.spiceworks.com');
+                        }).catch(() => {
+                            alert('Please email us at: help@techray.on.spiceworks.com');
+                        });
+                    } else {
+                        alert('Please email us at: help@techray.on.spiceworks.com');
+                    }
+                }
+            });
+        }
+
+        // Both outside click and Escape key closing functionality removed
+        // The modal can now only be closed using the X button
+    }
+});
