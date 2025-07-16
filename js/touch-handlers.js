@@ -121,7 +121,7 @@ export async function initializeTouchHandlers() {
             // Scroll to bottom when user interacts with input field (only if auto-scroll is not disabled)
             const disableAutoScroll = localStorage.getItem('disableAutoScroll') === 'true';
             if (!disableAutoScroll) {
-                scrollToBottom(messagesContainer, true);
+                scrollToBottom(messagesContainer);
             }
         }
 

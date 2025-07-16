@@ -699,8 +699,7 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
                                         hasInitializedCodeBlocks = true;
                                     }
                                     
-                                    // Scroll to bottom during streaming
-                                    scrollToBottom(messagesContainer, true);
+                                    // Auto-scroll during streaming removed per user request
                                 }
                             }
                         } catch (error) {
@@ -794,14 +793,14 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
                         refreshAllCodeBlocks();
                     });
                 }
-                scrollToBottom(messagesContainer, true);
+                // Auto-scroll after streaming removed per user request
                 return;
             }
 
             // Code blocks detected - no longer triggering reload, just continue normally
-            scrollToBottom(messagesContainer, true);
+            // Auto-scroll after streaming removed per user request
         } else {
-            scrollToBottom(messagesContainer, true);
+            // Auto-scroll after streaming removed per user request
         }
     } catch (error) {
         // Clean up timeouts on error
@@ -1567,8 +1566,7 @@ export function loadChat(id, isFirstMessageReload = false) {
         // Refresh all code blocks to ensure proper styling
         refreshAllCodeBlocks();
 
-        // Scroll messages container to bottom after code blocks are refreshed
-        scrollToBottom(messagesContainer, true);
+        // Auto-scroll after loading chat removed per user request
     }, 350); // Wait slightly longer than the welcome message transition (300ms)
 }
 
@@ -1631,9 +1629,7 @@ export function lazyLoadMessages(messages, startIndex, chunkSize = 10) {
             lazyLoadMessages(messages, endIndex, chunkSize);
         }, 0);
     } else {
-        // Scroll to bottom after all messages are loaded
-        // Force scroll to bottom to ensure messages are visible
-        scrollToBottom(messagesContainer, true);
+        // Auto-scroll after loading messages removed per user request
     }
 }
 
@@ -2913,8 +2909,7 @@ export async function regenerateLastResponse(isRetry = false) {
                                             hasInitializedCodeBlocks = true;
                                         }
 
-                                        // Scroll to bottom during streaming
-                                        scrollToBottom(messagesContainer, true);
+                                        // Auto-scroll during streaming removed per user request
                                     }
                                 }
                             } catch (error) {
@@ -2977,7 +2972,7 @@ export async function regenerateLastResponse(isRetry = false) {
                 }, 100);
             }
 
-            scrollToBottom(messagesContainer, true);
+            // Auto-scroll after regeneration removed per user request
 
         // Update chat history: remove messages after the last user message and add new AI response
         if (Array.isArray(chatHistoryData[currentChatId])) {

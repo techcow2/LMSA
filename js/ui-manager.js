@@ -560,7 +560,7 @@ export function appendMessage(sender, message, files = null, isStreaming = false
                 }
 
                 initializeCodeMirror(lastMessage);
-                scrollToBottom(messagesContainer, isStreaming);
+                // Auto-scroll during streaming removed per user request
             }
             return lastMessage;
         }
@@ -789,8 +789,7 @@ export function appendMessage(sender, message, files = null, isStreaming = false
     // Initialize code highlighting for the new message
     initializeCodeMirror(messageElement);
 
-    // Scroll to the bottom of the chat
-    scrollToBottom(messagesContainer, isStreaming);
+    // Auto-scroll when adding new messages removed per user request
 
     return messageElement;
 }
