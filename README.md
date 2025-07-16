@@ -17,13 +17,16 @@
 🎉 **Latest Update: Version 5.9** - Now Available!
 
 ### New Features & Improvements
+- **Fixed Photo Attachments for Gemma Models**: Resolved issue where some users could not attach photos to Gemma models (thank you [toiletman74](https://github.com/toiletman74) for the report)
+
+### Previous Updates (Version 5.8)
 - **Fixed Character Display Issues**: Resolved broken character feature bug (thank you [teneykio](https://github.com/teneykio) for the report)
 - **Enhanced Side Menu**: Made improvements to the side menu for better visibility of the saved chats list
 - **Streamlined User Experience**: Removed the "What's New" menu feature that would force it to show every time the app loads
 - **Improved Data Caching**: Enhanced the way the app caches data to improve how updates are implemented through the Play Store
 - **Mobile UI Enhancements**: Made minor UI improvements for smaller mobile screens
 
-### Previous Updates
+### Earlier Updates
 - **Vision Language Model Support**: Added full support for vision language models (VLMs). You can now upload and analyze images alongside text, enabling multimodal conversations with AI models that can understand and discuss visual content.
 - **Fixed PDF File Attachments**: Resolved the issue where PDF files weren't allowed as attachments. You can now upload and analyze PDF documents seamlessly with your AI models.
 
