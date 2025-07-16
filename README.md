@@ -18,6 +18,7 @@
 
 ### New Features & Improvements
 - **Fixed Photo Attachments for Gemma Models**: Resolved issue where some users could not attach photos to Gemma models (thank you [toiletman74](https://github.com/toiletman74) for the report)
+- **Removed the autoscroll feature**: Some users were complaining that the auto scroll feature made it difficult to read messages while text was being generated.
 
 ### Previous Updates (Version 5.8)
 - **Fixed Character Display Issues**: Resolved broken character feature bug (thank you [teneykio](https://github.com/teneykio) for the report)
