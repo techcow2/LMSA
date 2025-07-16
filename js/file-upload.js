@@ -131,7 +131,7 @@ function fallbackNameBasedDetection() {
     const visionIndicators = [
         'vision', 'visual', 'multimodal', 'mm', 'vlm',
         'qwen2-vl', 'qwen2.5-vl', 'llava', 'pixtral',
-        'gemma-3', 'gemma3', 'phi-3.5-vision', 'minicpm-v',
+        'gemma-3', 'gemma3', 'gemma 3', 'phi-3.5-vision', 'minicpm-v',
         'internvl', 'cogvlm', 'blip', 'flamingo'
     ];
     

@@ -12,9 +12,9 @@
 
 </div>
 
-## 🆕 What's New in Version 5.8
+## 🆕 What's New in Version 5.9
 
-🎉 **Latest Update: Version 5.8** - Now Available!
+🎉 **Latest Update: Version 5.9** - Now Available!
 
 ### New Features & Improvements
 - **Fixed Character Display Issues**: Resolved broken character feature bug (thank you [teneykio](https://github.com/teneykio) for the report)
