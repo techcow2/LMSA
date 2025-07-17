@@ -1363,11 +1363,136 @@ export function addHardwareAcceleration(element) {
     element.style.webkitPerspective = '1000px';
 }
 
+
+
+/**
+ * Gets Android API level from user agent
+ */
+function getAndroidApiLevel() {
+    const userAgent = navigator.userAgent;
+    const match = userAgent.match(/Android (\d+)/);
+    return match ? parseInt(match[1]) : 0;
+}
+
+/**
+ * WebView keyboard handling optimized for Android API 35+
+ * Always assumes WebView environment since app runs exclusively in WebView
+ */
+function setupWebViewKeyboardHandler() {
+    const userInput = document.getElementById('user-input');
+    const chatForm = document.getElementById('chat-form');
+    const chatContainer = document.getElementById('chat-container');
+    
+    if (!userInput || !chatForm || !chatContainer) return;
+    
+    const androidApiLevel = getAndroidApiLevel();
+    const isAndroidApi35Plus = androidApiLevel >= 35;
+    
+    console.log(`WebView Environment - Android API: ${androidApiLevel}`);
+    
+    if (isAndroidApi35Plus) {
+        // Enhanced handling for Android API 35+ with Visual Viewport API
+        if (window.visualViewport) {
+            const handleViewportChange = () => {
+                const viewport = window.visualViewport;
+                const heightDiff = window.innerHeight - viewport.height;
+                const isKeyboardVisible = heightDiff > 150; // Keyboard threshold
+                
+                if (isKeyboardVisible) {
+                    // Keyboard is visible - adjust layout dynamically
+                    chatContainer.style.height = `${viewport.height - 80}px`;
+                    chatContainer.style.maxHeight = `${viewport.height - 80}px`;
+                    chatForm.style.bottom = '0px';
+                    chatForm.style.position = 'fixed';
+                    
+                    // Ensure messages scroll to bottom
+                    const messages = document.getElementById('messages');
+                    if (messages) {
+                        messages.scrollTop = messages.scrollHeight;
+                    }
+                    
+                    // Scroll input into view
+                    setTimeout(() => {
+                        userInput.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'end' 
+                        });
+                    }, 100);
+                } else {
+                    // Keyboard is hidden - restore layout
+                    chatContainer.style.height = 'calc(100vh - 80px)';
+                    chatContainer.style.maxHeight = 'calc(100vh - 80px)';
+                    chatForm.style.bottom = '0px';
+                    chatForm.style.position = 'fixed';
+                }
+            };
+            
+            window.visualViewport.addEventListener('resize', handleViewportChange);
+            window.visualViewport.addEventListener('scroll', handleViewportChange);
+        }
+        
+        // Enhanced input focus handling for API 35+
+        userInput.addEventListener('focus', () => {
+            setTimeout(() => {
+                // Force scroll to bottom of page first
+                window.scrollTo(0, document.body.scrollHeight);
+                
+                // Then scroll input into view
+                userInput.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end',
+                    inline: 'nearest'
+                });
+                
+                // Dynamic viewport adjustment
+                if (window.visualViewport) {
+                    const viewport = window.visualViewport;
+                    chatContainer.style.height = `${viewport.height - 80}px`;
+                    chatContainer.style.maxHeight = `${viewport.height - 80}px`;
+                }
+            }, 200);
+        });
+        
+        // Handle input blur - restore layout
+        userInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (window.visualViewport) {
+                    chatContainer.style.height = 'calc(100vh - 80px)';
+                    chatContainer.style.maxHeight = 'calc(100vh - 80px)';
+                }
+            }, 300);
+        });
+    } else {
+        // Standard WebView handling for older Android versions
+        userInput.addEventListener('focus', () => {
+            setTimeout(() => {
+                // Scroll to bottom first
+                window.scrollTo(0, document.body.scrollHeight);
+                
+                // Then scroll input into view
+                userInput.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end',
+                    inline: 'nearest'
+                });
+            }, 300);
+        });
+    }
+    
+    console.log(`WebView keyboard handler setup complete for Android API ${androidApiLevel}`);
+}
+
+export function detectKeyboard() {
+    console.log('Setting up WebView keyboard handling (no detection needed)');
+    setupWebViewKeyboardHandler();
+}
+
 // Add the toggle function for reasoning visibility to the window object
 // This needs to be global to be callable from the onclick attribute
 if (typeof window !== 'undefined') {
-    // Make initializeCodeMirror available in the global scope
+    // Make functions available in the global scope for direct file access
     window.initializeCodeMirror = initializeCodeMirror;
+    window.detectKeyboard = detectKeyboard;
     window.toggleReasoningVisibility = function(toggleElement) {
         const toggleText = toggleElement.querySelector('.toggle-text');
         const thinkContainer = toggleElement.closest('.think');

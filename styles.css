@@ -7291,9 +7291,7 @@ body.light-theme #full-model-name-modal #full-model-name {
 }
 
 /* Improve visibility and contrast for the trash icon */
-.trash-icon-container:hover {
-    /* Hover styles are handled in JavaScript for better control */
-}
+/* Hover styles are handled in JavaScript for better control */
 
 /* Active state for better feedback */
 .trash-icon-container:active {
@@ -7301,9 +7299,7 @@ body.light-theme #full-model-name-modal #full-model-name {
 }
 
 /* Focus styles for keyboard navigation */
-.trash-icon-container:focus-visible {
-    /* Focus styles are handled in JavaScript for better control */
-}
+/* Focus styles are handled in JavaScript for better control */
 
 /* Ensure action wrapper doesn't interfere with chat item layout */
 .chat-item {
@@ -7329,9 +7325,7 @@ body.light-theme #full-model-name-modal #full-model-name {
 }
 
 /* Ensure trash icon container works well in both light and dark themes */
-body.light-theme .trash-icon-container:hover {
-    /* Hover styles are handled in JavaScript */
-}
+/* Hover styles are handled in JavaScript */
 
 body.light-theme .trash-icon-container:focus {
     background-color: rgba(239, 68, 68, 0.1);
@@ -7764,5 +7758,216 @@ body.light-theme #model-loading-modal .w-20.h-0\.5 {
     
     #model-loading-modal #model-loading-message {
         font-size: 0.9rem;
+    }
+}
+
+/* Modern Virtual Keyboard Detection Styles */
+/* Uses VirtualKeyboard API environment variables with fallbacks */
+
+
+
+/* WebView-optimized mobile layout for Android API 35+ */
+@media (max-width: 768px) {
+    html {
+        height: 100%;
+        /* Prevent zoom on input focus in WebView */
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+    }
+    
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        /* Improve WebView performance */
+        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
+    }
+    
+    #chat-container {
+        height: calc(100vh - 80px); /* Default height */
+        max-height: calc(100vh - 80px);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        /* Smooth transitions for WebView */
+        transition: height 0.2s ease-out;
+        position: relative;
+    }
+    
+    #messages {
+        flex: 1;
+        overflow-y: auto;
+        padding-bottom: 1rem;
+        scroll-behavior: smooth;
+        /* WebView scroll optimization */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    #chat-form {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background-color: var(--bg-primary);
+        border-top: 1px solid var(--border-color);
+        z-index: 9999;
+        padding: 0.75rem;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        /* Ensure form stays above keyboard in WebView */
+        transform: translateZ(0);
+        will-change: transform;
+    }
+    
+    /* Enhanced input styling for WebView */
+    #user-input {
+        flex: 1;
+        font-size: 16px !important; /* Prevent zoom in WebView */
+        min-height: 40px;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        resize: none;
+        outline: none;
+        /* WebView-specific optimizations */
+        appearance: none;
+        -webkit-appearance: none;
+        -webkit-user-select: text;
+        user-select: text;
+        /* Prevent input zoom */
+        transform: translateZ(0);
+    }
+    
+    #send-button {
+        flex-shrink: 0;
+        height: 40px;
+        width: 40px;
+        border-radius: 8px;
+        /* Ensure button stays clickable */
+        touch-action: manipulation;
+    }
+    
+    /* Enhanced focus behavior for WebView */
+    #user-input:focus {
+        font-size: 16px !important;
+        scroll-margin-bottom: 100px;
+        /* Additional WebView focus handling */
+        -webkit-user-select: text;
+        user-select: text;
+    }
+    
+    /* WebView-specific viewport adjustments */
+    @supports (height: env(keyboard-inset-height)) {
+        #chat-container {
+            height: calc(100vh - env(keyboard-inset-height, 0px) - 80px);
+            max-height: calc(100vh - env(keyboard-inset-height, 0px) - 80px);
+        }
+        
+        #chat-form {
+            bottom: env(keyboard-inset-height, 0px);
+        }
+    }
+}
+
+/* Fallback for older browsers using env() variables */
+@supports (height: env(keyboard-inset-height)) {
+    @media (max-width: 768px) {
+        #chat-container {
+            height: calc(100vh - env(keyboard-inset-height, 0px));
+            max-height: calc(100vh - env(keyboard-inset-height, 0px));
+        }
+        
+        #chat-form {
+            bottom: env(keyboard-inset-height, 0px);
+            position: fixed;
+            left: 0;
+            right: 0;
+        }
+    }
+}
+
+
+
+/* Mobile-specific keyboard adjustments */
+@media (max-width: 768px) {
+    @supports (height: env(keyboard-inset-height)) {
+        #messages {
+            /* More aggressive height adjustment on mobile with modern API */
+            max-height: calc(100vh - env(keyboard-inset-height, 0px) - 140px);
+            padding-bottom: 0.5rem;
+        }
+        
+        #chat-form {
+            /* Ensure proper positioning on mobile */
+            background-color: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
+            padding: 0.5rem;
+            bottom: env(keyboard-inset-height, 0px);
+        }
+    }
+}
+
+/* Android API 35+ Keyboard Workaround - Input field moves below header when focused */
+@media (max-width: 768px) {
+    /* When input is focused, move it to just below the header */
+    body.input-focused #chat-form {
+        position: fixed !important;
+        top: 80px !important; /* Just below header */
+        left: 0 !important;
+        right: 0 !important;
+        bottom: auto !important;
+        z-index: 10000 !important;
+        background-color: var(--bg-primary) !important;
+        border-top: 1px solid var(--border-color) !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    /* Adjust messages container when input is focused */
+    body.input-focused #messages {
+        padding-top: 140px !important; /* Make room for the repositioned input */
+        transition: padding-top 0.3s ease !important;
+    }
+    
+    /* Ensure header stays visible */
+    body.input-focused header {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 9999 !important;
+        background-color: var(--header-bg) !important;
+        border-bottom: 1px solid var(--header-border) !important;
+    }
+    
+    /* Adjust chat container when input is focused */
+    body.input-focused #chat-container {
+        padding-top: 80px !important; /* Account for fixed header */
+        transition: padding-top 0.3s ease !important;
+    }
+    
+    /* Ensure smooth transitions */
+    #chat-form {
+        transition: all 0.3s ease;
+    }
+    
+    #messages {
+        transition: padding-top 0.3s ease;
+    }
+    
+    header {
+        transition: all 0.3s ease;
+    }
+    
+    #chat-container {
+        transition: padding-top 0.3s ease;
     }
 }

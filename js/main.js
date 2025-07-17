@@ -10,7 +10,7 @@ import { initializeChatHistoryTouchHandler } from './chat-history-touch-handler.
 import { initializeSettingsModalTouchHandler } from './settings-modal-touch-handler.js';
 import { initializeSidebarTouchHandler } from './sidebar-touch-handler.js';
 import { initializeFilePreviewTouchHandler } from './file-preview-touch-handler.js';
-import { handleScroll, setDebugEnabled, wasRefreshDueToCodeGeneration, getLastActiveChatId, clearRefreshDueToCodeGenerationFlag } from './utils.js';
+import { handleScroll, setDebugEnabled, wasRefreshDueToCodeGeneration, getLastActiveChatId, clearRefreshDueToCodeGenerationFlag, detectKeyboard } from './utils.js';
 import { initializeExportImport } from './export-import.js';
 import { initializeModelManager } from './model-manager.js';
 import { initializeWhatsNew } from './whats-new.js';
@@ -111,6 +111,9 @@ async function initializeApp() {
     initializeSettingsModalTouchHandler();
     initializeSidebarTouchHandler();
     initializeFilePreviewTouchHandler();
+    
+    // Initialize keyboard detection for Android API 35 compatibility
+    detectKeyboard();
     
     initializeFileUpload();
     initializeModelManager();

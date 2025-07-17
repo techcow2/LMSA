@@ -1,4 +1,4 @@
-    // Only proceed if sidebar exists and is currently active/visible
+// Only proceed if sidebar exists and is currently active/visible
   // Event Handlers for the application
 import {
     chatForm, userInput, clearChatButton, newChatButton, settingsButton,
@@ -344,12 +344,21 @@ export function initializeEventHandlers() {
 
         // Handle focus events to ensure cursor visibility when focusing the input field
         userInput.addEventListener('focus', function(e) {
+            // Android API 35+ keyboard workaround - move input below header
+            document.body.classList.add('input-focused');
+            
             // When focusing, move cursor to end for better UX
             const length = e.target.value.length;
             e.target.setSelectionRange(length, length);
             // Then ensure cursor is visible
             scrollInputToEnd(e.target);
             ensureCursorVisible(e.target);
+        });
+        
+        // Handle blur events to remove the input-focused class
+        userInput.addEventListener('blur', function(e) {
+            // Remove the input-focused class when input loses focus
+            document.body.classList.remove('input-focused');
         });
 
         // Handle touchend events for mobile devices
