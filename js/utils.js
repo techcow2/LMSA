@@ -1411,13 +1411,7 @@ function setupWebViewKeyboardHandler() {
                         messages.scrollTop = messages.scrollHeight;
                     }
                     
-                    // Scroll input into view
-                    setTimeout(() => {
-                        userInput.scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'end' 
-                        });
-                    }, 100);
+                    // Removed input scrollIntoView to prevent moving input to top
                 } else {
                     // Keyboard is hidden - restore layout
                     chatContainer.style.height = 'calc(100vh - 80px)';
@@ -1431,20 +1425,10 @@ function setupWebViewKeyboardHandler() {
             window.visualViewport.addEventListener('scroll', handleViewportChange);
         }
         
-        // Enhanced input focus handling for API 35+
+        // Enhanced input focus handling for API 35+ (removed input repositioning)
         userInput.addEventListener('focus', () => {
             setTimeout(() => {
-                // Force scroll to bottom of page first
-                window.scrollTo(0, document.body.scrollHeight);
-                
-                // Then scroll input into view
-                userInput.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'end',
-                    inline: 'nearest'
-                });
-                
-                // Dynamic viewport adjustment
+                // Dynamic viewport adjustment only
                 if (window.visualViewport) {
                     const viewport = window.visualViewport;
                     chatContainer.style.height = `${viewport.height - 80}px`;
@@ -1463,19 +1447,9 @@ function setupWebViewKeyboardHandler() {
             }, 300);
         });
     } else {
-        // Standard WebView handling for older Android versions
+        // Standard WebView handling for older Android versions (removed input repositioning)
         userInput.addEventListener('focus', () => {
-            setTimeout(() => {
-                // Scroll to bottom first
-                window.scrollTo(0, document.body.scrollHeight);
-                
-                // Then scroll input into view
-                userInput.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'end',
-                    inline: 'nearest'
-                });
-            }, 300);
+            // Input focus handling without repositioning
         });
     }
     

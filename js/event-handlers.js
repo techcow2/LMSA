@@ -344,9 +344,6 @@ export function initializeEventHandlers() {
 
         // Handle focus events to ensure cursor visibility when focusing the input field
         userInput.addEventListener('focus', function(e) {
-            // Android API 35+ keyboard workaround - move input below header
-            document.body.classList.add('input-focused');
-            
             // When focusing, move cursor to end for better UX
             const length = e.target.value.length;
             e.target.setSelectionRange(length, length);
@@ -355,10 +352,9 @@ export function initializeEventHandlers() {
             ensureCursorVisible(e.target);
         });
         
-        // Handle blur events to remove the input-focused class
+        // Handle blur events
         userInput.addEventListener('blur', function(e) {
-            // Remove the input-focused class when input loses focus
-            document.body.classList.remove('input-focused');
+            // Input blur handling
         });
 
         // Handle touchend events for mobile devices
