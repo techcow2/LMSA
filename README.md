@@ -12,15 +12,15 @@
 
 </div>
 
-## 🆕 What's New in Version 5.9
+## 🆕 What's New in Version 6.1
 
-🎉 **Latest Update: Version 5.9** - Now Available!
+🎉 **Latest Update: Version 6.1** - Now Available!
 
 ### New Features & Improvements
 - **Fixed Photo Attachments for Gemma Models**: Resolved issue where some users could not attach photos to Gemma models (thank you [toiletman74](https://github.com/toiletman74) for the report)
 - **Removed the autoscroll feature**: Some users were complaining that the auto scroll feature made it difficult to read messages while text was being generated.
 
-### Previous Updates (Version 5.8)
+### Previous Updates (Version 6.1)
 - **Fixed Character Display Issues**: Resolved broken character feature bug (thank you [teneykio](https://github.com/teneykio) for the report)
 - **Enhanced Side Menu**: Made improvements to the side menu for better visibility of the saved chats list
 - **Streamlined User Experience**: Removed the "What's New" menu feature that would force it to show every time the app loads
