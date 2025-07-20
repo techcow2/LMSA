@@ -115,6 +115,11 @@ export async function initializeTouchHandlers() {
         function handleInputInteraction(e) {
             e.stopPropagation();
 
+            // Hide welcome message when user interacts with input field
+            import('./ui-manager.js').then(module => {
+                module.hideWelcomeMessage();
+            });
+
             // Ensure messagesContainer exists
             if (!messagesContainer) return;
 

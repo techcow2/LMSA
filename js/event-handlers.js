@@ -338,12 +338,22 @@ export function initializeEventHandlers() {
 
         // Handle click events to ensure cursor visibility when clicking within text
         userInput.addEventListener('click', function(e) {
+            // Hide welcome message when user clicks on input field
+            import('./ui-manager.js').then(module => {
+                module.hideWelcomeMessage();
+            });
+            
             // Ensure cursor is visible when clicking to position cursor
             ensureCursorVisible(e.target);
         });
 
         // Handle focus events to ensure cursor visibility when focusing the input field
         userInput.addEventListener('focus', function(e) {
+            // Hide welcome message when user focuses on input field
+            import('./ui-manager.js').then(module => {
+                module.hideWelcomeMessage();
+            });
+            
             // When focusing, move cursor to end for better UX
             const length = e.target.value.length;
             e.target.setSelectionRange(length, length);
@@ -359,6 +369,11 @@ export function initializeEventHandlers() {
 
         // Handle touchend events for mobile devices
         userInput.addEventListener('touchend', function(e) {
+            // Hide welcome message when user touches input field
+            import('./ui-manager.js').then(module => {
+                module.hideWelcomeMessage();
+            });
+            
             // Ensure cursor is visible after touch interaction
             setTimeout(() => {
                 ensureCursorVisible(e.target);
