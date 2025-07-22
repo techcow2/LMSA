@@ -1,0 +1,21 @@
+{
+  "name": "lmsa",
+  "version": "1.0.0",
+  "description": "LM Studio Assistant - A modern interface for AI chat interactions",
+  "main": "index.html",
+  "scripts": {
+    "build-css": "tailwindcss -i ./src/input.css -o ./css/tailwind.css --watch",
+    "build-css-prod": "tailwindcss -i ./src/input.css -o ./css/tailwind.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  },
+  "keywords": [
+    "ai",
+    "chat",
+    "assistant",
+    "lm-studio"
+  ],
+  "author": "",
+  "license": "ISC"
+}

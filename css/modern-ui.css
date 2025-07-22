@@ -1620,7 +1620,7 @@ body.light-theme #welcome-message {
   #loaded-model-wrapper:not(.hidden) ~ #chat-container #welcome-message {
     padding-top: var(--loaded-model-height, 35px) !important; /* Remove additional padding */
   }
-}
+/* Ensure proper CSS syntax by removing stray closing brace */
 
 /* Extra small screens including iPhone SE in portrait mode */
 @media (max-height: 580px) and (max-width: 380px) {
@@ -1697,21 +1697,6 @@ body.light-theme #welcome-message {
     justify-content: center !important;
     padding-top: 0 !important;
     overflow: visible !important; /* Prevent clipping */
-  }
-}
-
-  #welcome-footer {
-    margin-top: 1rem !important;
-    padding-top: 0.5rem !important;
-    font-size: 0.7rem !important;
-  }
-
-  .welcome-content h1 {
-    font-size: 1.25rem !important;
-  }
-
-  .welcome-content p {
-    font-size: 0.85rem !important;
   }
 }
 
@@ -2000,7 +1985,6 @@ body.light-theme #welcome-message {
     height: 0.7rem !important;
     line-height: 0.7rem !important;
   }
-}
 
   .welcome-content h1 {
     font-size: 1.15rem !important;
@@ -2015,7 +1999,7 @@ body.light-theme #welcome-message {
   .welcome-content .mb-8 {
     margin-bottom: 0.75rem !important;
   }
-}
+/* Remove stray closing brace */
 
 /* Additional welcome content margin adjustments */
 @media (max-width: 320px) {
@@ -3613,4 +3597,42 @@ body.light-theme #settings-help-btn.professional-button:hover {
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
     inset 0 -1px 0 rgba(0, 0, 0, 0.15),
     0 0 0 2px rgba(245, 158, 11, 0.5);
+}
+
+/* Generating Indicator Styles */
+.generating-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0.5rem 0;
+  transition: all 0.3s ease;
+}
+
+.generating-indicator i {
+  color: var(--modern-accent-primary);
+  animation: spin 1s linear infinite;
+}
+
+/* Light theme variant */
+body.light-theme .generating-indicator {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.15);
+  color: var(--modern-light-text-secondary);
+}
+
+/* Spin animation for the loading icon */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

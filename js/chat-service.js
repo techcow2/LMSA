@@ -150,9 +150,24 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
     abortController = new AbortController();
     const signal = abortController.signal;
 
-    // Prepare the content container for the AI message
+    // Prepare the content container for the AI message with loading text
     const aiMessageElement = appendMessage('ai', '');
+    
+    // Create and add the loading indicator as DOM elements
     const contentContainer = aiMessageElement.querySelector('.message-content');
+    if (contentContainer) {
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'generating-indicator';
+        
+        const spinnerIcon = document.createElement('i');
+        spinnerIcon.className = 'fas fa-circle-notch fa-spin mr-2';
+        
+        const loadingText = document.createTextNode('Generating response...');
+        
+        loadingDiv.appendChild(spinnerIcon);
+        loadingDiv.appendChild(loadingText);
+        contentContainer.appendChild(loadingDiv);
+    }
 
     // If we couldn't find a container, log error and stop
     if (!contentContainer) {
@@ -2566,9 +2581,24 @@ export async function regenerateLastResponse(isRetry = false) {
         showLoadingIndicator();
         toggleSendStopButton();
 
-        // Prepare the content container for the AI message
+        // Prepare the content container for the AI message with loading text
         const aiMessageElement = appendMessage('ai', '');
+        
+        // Create and add the loading indicator as DOM elements
         const contentContainer = aiMessageElement.querySelector('.message-content');
+        if (contentContainer) {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'generating-indicator';
+            
+            const spinnerIcon = document.createElement('i');
+            spinnerIcon.className = 'fas fa-circle-notch fa-spin mr-2';
+            
+            const loadingText = document.createTextNode('Generating response...');
+            
+            loadingDiv.appendChild(spinnerIcon);
+            loadingDiv.appendChild(loadingText);
+            contentContainer.appendChild(loadingDiv);
+        }
 
         // If we couldn't find a container, log error and stop
         if (!contentContainer) {
@@ -3266,36 +3296,51 @@ export async function addUserMessageToHistory(userMessage, fileContents = []) {
         messages.push(userMsg);
 
         // Check if this is the first message in the chat and auto-generate title is enabled
-        // Generate title right after adding the user message, before adding AI response
+        // Generate title asynchronously in the background to avoid blocking UI updates
         if (messages.length === 1 && getAutoGenerateTitles()) {
-            try {
-                // Get the user's first message (which we just added)
-                const firstUserMessage = userMsg.content;
-
-                // Log the message being used for title generation
-                debugLog('Generating title based on user message:', firstUserMessage);
-
-                // Generate a title for the chat based on the user's first message
-                // The generateChatTitle function now ensures the title is clean of <think> tags
-                const title = await generateChatTitle(firstUserMessage);
-                if (title) {
-                    // Double-check that the title is clean of <think> tags before storing
-                    const cleanTitle = removeThinkTags(title);
-                    debugLog('Storing clean title with chat:', cleanTitle);
-
-                    // Store the clean title with the chat
-                    chatHistoryData[currentChatId].title = cleanTitle;
-                }
-            } catch (error) {
-                debugError('Error generating chat title:', error);
-                // If title generation fails, continue without a title
-            }
+            // Start title generation in the background without awaiting
+            generateChatTitleAsync(userMsg.content, currentChatId);
         }
 
-        // Save the updated chat history
+        // Save the updated chat history immediately
         saveChatHistory();
 
         // Update the UI after saving
         updateChatHistoryUI();
+    }
+}
+
+/**
+ * Generates a chat title asynchronously in the background
+ * @param {string} firstUserMessage - The user's first message
+ * @param {string} chatId - The chat ID to update
+ */
+async function generateChatTitleAsync(firstUserMessage, chatId) {
+    try {
+        // Log the message being used for title generation
+        debugLog('Generating title asynchronously based on user message:', firstUserMessage);
+
+        // Generate a title for the chat based on the user's first message
+        // The generateChatTitle function now ensures the title is clean of <think> tags
+        const title = await generateChatTitle(firstUserMessage);
+        if (title) {
+            // Double-check that the title is clean of <think> tags before storing
+            const cleanTitle = removeThinkTags(title);
+            debugLog('Storing clean title with chat:', cleanTitle);
+
+            // Store the clean title with the chat (check if chat still exists)
+            if (chatHistoryData[chatId]) {
+                chatHistoryData[chatId].title = cleanTitle;
+                
+                // Save the updated chat history
+                saveChatHistory();
+                
+                // Update the UI to reflect the new title
+                updateChatHistoryUI();
+            }
+        }
+    } catch (error) {
+        debugError('Error generating chat title asynchronously:', error);
+        // If title generation fails, continue without a title
     }
 }
