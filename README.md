@@ -18,7 +18,7 @@
 
 ### New Features & Improvements
 - **Welcome Screen Input Focus**: Clears the welcome screen content when the input field is in focus, providing a cleaner user experience.
-- **CSS CDN Fix**: Resolved an issue where the CSS was using a development build CDN, ensuring proper styling and performance.
+- **CSS CDN Fix**: Resolved an issue where Tailwind was using a development build CDN, ensuring proper styling and performance.
 - **Auto-Generate Titles Stability**: Fixed a problem where the app appeared to fail when the auto-generate titles setting was enabled, even though content generation would start afterward.
 
 ### Previous Updates (Version 6.1)
