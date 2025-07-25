@@ -72,7 +72,7 @@ function createExternalSiteModal() {
     
     // Create the modal element
     const modalHTML = `
-    <div id="external-site-modal" class="fixed inset-0 ${isLightTheme ? 'bg-slate-500 bg-opacity-50' : 'bg-black bg-opacity-70'} items-center justify-center hidden animate-fade-in z-[1060]" aria-labelledby="external-site-title" role="dialog" aria-modal="true">
+    <div id="external-site-modal" class="fixed inset-0 ${isLightTheme ? 'bg-slate-500 bg-opacity-50' : 'bg-black bg-opacity-70'} flex items-center justify-center hidden animate-fade-in z-[1060]" aria-labelledby="external-site-title" role="dialog" aria-modal="true">
         <div class="relative p-6 rounded-lg w-96 max-w-[90%] shadow-xl mx-auto my-auto border ${isLightTheme ? 'border-blue-500/40' : 'border-blue-500/30'}" 
             style="background: ${isLightTheme ? 'linear-gradient(to bottom, #f8fafc, #f1f5f9)' : 'linear-gradient(to bottom, #0f172a, #0c1836)'}; 
                   color: ${isLightTheme ? '#1e293b' : 'var(--text-primary)'}; 
@@ -436,4 +436,4 @@ document.addEventListener('themeChanged', () => {
             modal.classList.add('bg-black', 'bg-opacity-70');
         }
     }
-});
+}); 
