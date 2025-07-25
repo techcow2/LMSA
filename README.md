@@ -4,30 +4,29 @@
 ![Version: Current](https://img.shields.io/badge/Version-Current-green)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
 
-<div align="left">
+<p align="left">
+  <a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
+    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80">
+  </a>
+  <a href="https://github.com/techcow2/LMSA/releases">
+    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" height="80">
+  </a>
+</p>
 
-| **Google Play Store** | **GitHub Releases** |
-|:---:|:---:|
-| <a href="https://play.google.com/store/apps/details?id=com.lmsa.app"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" style="width:160px; height:auto;"></a> | <a href="https://github.com/techcow2/LMSA/releases"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" style="width:45px; height:auto;"></a> |
+## 🆕 What's New in Version 5.5
 
-</div>
-
-## 🆕 What's New in Version 6.2
-
-🎉 **Latest Update: Version 6.2** - Now Available!
+🎉 **Latest Update: Version 5.5** - Now Available!
 
 ### New Features & Improvements
-- **Welcome Screen Input Focus**: Clears the welcome screen content when the input field is in focus, providing a cleaner user experience.
-- **CSS CDN Fix**: Resolved an issue where Tailwind was using a development build CDN, ensuring proper styling and performance.
-- **Auto-Generate Titles Stability**: Fixed a problem where the app appeared to fail when the auto-generate titles setting was enabled, even though content generation would start afterward.
+- **Fixed Character Display Issues**: Resolved broken character feature bug (thank you [teneykio](https://github.com/teneykio) for the report)
+- **Enhanced Side Menu**: Made improvements to the side menu for better visibility of the saved chats list
+- **Streamlined User Experience**: Removed the "What's New" menu feature that would force it to show every time the app loads
+- **Improved Data Caching**: Enhanced the way the app caches data to improve how updates are implemented through the Play Store
+- **Mobile UI Enhancements**: Made minor UI improvements for smaller mobile screens
 
-### Previous Updates (Version 6.1)
-- **Fixed Photo Attachments for Gemma Models**: Resolved issue where some users could not attach photos to Gemma models (thank you [toiletman74](https://github.com/toiletman74) for the report)
-- **Removed the autoscroll feature**: Some users were complaining that the auto scroll feature made it difficult to read messages while text was being generated.
-
-
-
-
+### Previous Updates
+- **Vision Language Model Support**: Added full support for vision language models (VLMs). You can now upload and analyze images alongside text, enabling multimodal conversations with AI models that can understand and discuss visual content.
+- **Fixed PDF File Attachments**: Resolved the issue where PDF files weren't allowed as attachments. You can now upload and analyze PDF documents seamlessly with your AI models.
 
 ---
 
@@ -137,11 +136,6 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 ## 📥 Download Information
 
 ### Recommended: Google Play Release
-
-<a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
-  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" style="width:160px; height:auto;">
-</a>
-
 **LMSA - Google Play**<br>
 **Publisher:** IslandApps<br>
 **Updates:** Regular feature, security and maintenance updates<br>
