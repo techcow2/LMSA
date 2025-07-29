@@ -1,0 +1,29 @@
+// Main application entry point
+// This file has been refactored into a modular structure
+// All functionality is now imported from the js/ directory
+
+// Import the main module which initializes everything
+import './js/main.js';
+
+// Add event listeners for the sidebar overlay
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    if (sidebarOverlay) {
+        // Click event for desktop
+        sidebarOverlay.addEventListener('click', function() {
+            // Import the toggleSidebar function dynamically
+            import('./js/ui-manager.js').then(module => {
+                module.toggleSidebar();
+            });
+        });
+
+        // Touch event for tablets and mobile
+        sidebarOverlay.addEventListener('touchend', function(e) {
+            e.preventDefault(); // Prevent any default behavior
+            // Import the toggleSidebar function dynamically
+            import('./js/ui-manager.js').then(module => {
+                module.toggleSidebar();
+            });
+        }, { passive: false });
+    }
+});

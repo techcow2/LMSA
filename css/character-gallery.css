@@ -1,0 +1,1293 @@
+/* Character Gallery Styles */
+/* Hide the file input element */
+#character-gallery-import-input.hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.character-gallery-container {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    /* Fixed for better mobile positioning */
+    top: 0;
+    left: 0;
+    background-color: var(--bg-primary);
+    background-image:
+        radial-gradient(circle at 20% 25%, rgba(59, 130, 246, 0.05) 0%, transparent 30%),
+        radial-gradient(circle at 80% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 40% 80%, rgba(168, 85, 247, 0.05) 0%, transparent 35%);
+    z-index: 30;
+    /* Reduced z-index to be below header (z-index: 100) and hamburger menu */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+    touch-action: pan-y;
+    /* Allow vertical scrolling */
+    overscroll-behavior: contain;
+    /* Prevent scroll chaining */
+    -webkit-tap-highlight-color: transparent;
+    /* Remove default mobile tap highlight */
+    scroll-behavior: smooth;
+    /* Enable smooth scrolling */
+    /* will-change removed - only apply during actual animations */
+    user-select: none;
+    /* Prevent text selection during scrolling */
+    /* Transition properties for smooth animations */
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+    /* Ensure clicks work properly */
+    top: 60px;
+    /* Add space for the header */
+    height: calc(100% - 60px);
+    /* Adjust height to account for header */
+}
+
+.character-gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    background: rgba(15, 23, 42, 0.8);
+    background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.8));
+    z-index: 10;
+    /* Reduced z-index to ensure it doesn't interfere with hamburger menu */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+body.light-theme .character-gallery-header {
+    background: rgba(248, 250, 252, 0.8);
+    background: linear-gradient(to right, rgba(248, 250, 252, 0.9), rgba(241, 245, 249, 0.8));
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.character-gallery-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--modal-title);
+    text-shadow: var(--title-shadow);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-top: 1.2rem;
+    /* Increased padding above the title */
+    letter-spacing: -0.02em;
+    position: relative;
+}
+
+.character-gallery-title i {
+    color: var(--title-accent);
+    padding: 0.25rem;
+    /* Add some padding around the icon */
+    font-size: 1.75rem;
+    text-shadow: var(--title-shadow);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.character-gallery-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.character-gallery-back-btn,
+.character-gallery-create-btn,
+.character-gallery-import-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.2rem;
+    /* Increased horizontal padding */
+    border-radius: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.95rem;
+    min-height: 40px;
+    /* Minimum touch target size */
+    min-width: 44px;
+    /* Minimum touch target size */
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--modern-shadow-sm);
+    white-space: nowrap;
+    /* Prevent text wrapping */
+    text-overflow: ellipsis;
+    /* Add ellipsis for very long text */
+}
+
+/* Button text display logic */
+.button-text-short {
+    display: none;
+    /* Hidden by default */
+}
+
+.button-text-full {
+    display: inline;
+    /* Shown by default */
+}
+
+.character-gallery-create-btn {
+    background: var(--modern-gradient-primary);
+    color: white;
+    border: none;
+}
+
+.character-gallery-import-btn {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    border: none;
+}
+
+.character-gallery-back-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.light-theme .character-gallery-back-btn {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--modern-light-text-primary);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.character-gallery-back-btn i,
+.character-gallery-create-btn i,
+.character-gallery-import-btn i {
+    margin-right: 0.6rem;
+    /* Increased spacing for better visual balance */
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+    /* Prevent icon from shrinking */
+}
+
+.character-gallery-back-btn:hover,
+.character-gallery-create-btn:hover,
+.character-gallery-import-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--modern-shadow-md);
+}
+
+.character-gallery-back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+body.light-theme .character-gallery-back-btn:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+.character-gallery-back-btn:hover i {
+    transform: translateX(-2px);
+}
+
+.character-gallery-create-btn:hover i {
+    transform: rotate(90deg);
+}
+
+.character-gallery-import-btn:hover i {
+    transform: translateX(-2px) translateY(2px);
+}
+
+.character-gallery-back-btn:active,
+.character-gallery-create-btn:active,
+.character-gallery-import-btn:active,
+.character-gallery-back-btn.touch-active,
+.character-gallery-create-btn.touch-active,
+.character-gallery-import-btn.touch-active {
+    transform: translateY(1px);
+    box-shadow: var(--modern-shadow-sm);
+}
+
+/* Add shimmer effect to create and import buttons */
+.character-gallery-create-btn::before,
+.character-gallery-import-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.character-gallery-create-btn:hover::before,
+.character-gallery-import-btn:hover::before {
+    transform: translateX(100%);
+}
+
+.character-gallery-content {
+    padding: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+    touch-action: pan-y;
+    /* Allow vertical scrolling */
+    overscroll-behavior: contain;
+    /* Prevent scroll chaining */
+    scroll-behavior: smooth;
+    /* Enable smooth scrolling */
+}
+
+.character-gallery-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 300px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 2rem;
+}
+
+.character-gallery-empty-icon-container {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.75rem;
+    position: relative;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+.character-gallery-empty-icon-container::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.15));
+    z-index: -1;
+    opacity: 0.5;
+    filter: blur(8px);
+}
+
+.character-gallery-empty i {
+    font-size: 3.5rem;
+    opacity: 0.9;
+    background: var(--modern-gradient-secondary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+body.light-theme .character-gallery-empty-icon-container {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.05));
+    border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.character-gallery-empty p {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    max-width: 300px;
+    line-height: 1.4;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+.character-gallery-empty-description {
+    font-size: 1rem !important;
+    margin-bottom: 2rem !important;
+    max-width: 320px;
+    line-height: 1.5;
+    font-weight: 400 !important;
+    color: var(--text-secondary) !important;
+    opacity: 0.9;
+}
+
+body.light-theme .character-gallery-empty p {
+    color: var(--modern-light-text-primary);
+}
+
+body.light-theme .character-gallery-empty-description {
+    color: var(--modern-light-text-secondary) !important;
+}
+
+.character-gallery-empty-container {
+    background: linear-gradient(165deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1.5rem;
+    padding: 3rem;
+    max-width: 420px;
+    width: 90%;
+    box-shadow:
+        var(--modern-shadow-md),
+        0 0 20px rgba(59, 130, 246, 0.05),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.character-gallery-empty-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(59, 130, 246, 0.3),
+            transparent);
+}
+
+.character-gallery-empty-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+        radial-gradient(circle at 20% 25%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 75%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+body.light-theme .character-gallery-empty-container::after {
+    background-image:
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+        radial-gradient(circle at 20% 25%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 75%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
+}
+
+body.light-theme .character-gallery-empty-container {
+    background: linear-gradient(165deg, rgba(248, 250, 252, 0.9), rgba(241, 245, 249, 0.95));
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow:
+        var(--modern-shadow-md),
+        0 0 20px rgba(59, 130, 246, 0.03),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+}
+
+body.light-theme .character-gallery-empty-container::before {
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(59, 130, 246, 0.2),
+            transparent);
+}
+
+/* Enhanced styling for the empty state create button */
+#character-gallery-empty-create-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.25rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    box-shadow:
+        0 4px 12px rgba(37, 99, 235, 0.3),
+        0 2px 4px rgba(37, 99, 235, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    min-height: 44px;
+    min-width: 220px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s ease-out;
+    letter-spacing: 0.01em;
+}
+
+#character-gallery-empty-create-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0) 100%);
+}
+
+#character-gallery-empty-create-btn i {
+    font-size: 1rem;
+    margin-right: 0.75rem;
+    margin-bottom: 0;
+    opacity: 1;
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    -webkit-text-fill-color: initial;
+    filter: none;
+    transition: transform 0.2s ease-out;
+}
+
+#character-gallery-empty-create-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 6px 16px rgba(37, 99, 235, 0.35),
+        0 3px 6px rgba(37, 99, 235, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    background: linear-gradient(135deg, #4f8df9, #2b6ff2);
+}
+
+#character-gallery-empty-create-btn:hover i {
+    transform: rotate(90deg);
+}
+
+#character-gallery-empty-create-btn:active {
+    transform: translateY(1px);
+    box-shadow:
+        0 2px 8px rgba(37, 99, 235, 0.25),
+        0 1px 3px rgba(37, 99, 235, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, #3575e7, #1d56d6);
+}
+
+body.light-theme #character-gallery-empty-create-btn {
+    box-shadow:
+        0 4px 12px rgba(37, 99, 235, 0.2),
+        0 2px 4px rgba(37, 99, 235, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.character-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    touch-action: pan-y;
+    /* Allow vertical scrolling */
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+    padding: 0.25rem;
+    /* Add slight padding to prevent edge buttons from being cut off */
+}
+
+.character-card {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.25rem;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    box-shadow: var(--modern-shadow-md);
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    /* Remove default mobile tap highlight */
+}
+
+body.light-theme .character-card {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.01));
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.character-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--modern-gradient-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.character-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--modern-shadow-lg);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.character-card:hover::after {
+    opacity: 1;
+}
+
+.character-card:active,
+.character-card.touch-active {
+    transform: scale(0.98);
+    box-shadow: var(--modern-shadow);
+    border-color: var(--modern-accent-primary);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+}
+
+body.light-theme .character-card:active,
+body.light-theme .character-card.touch-active {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.03));
+}
+
+.character-card-image {
+    height: 200px;
+    width: 100%;
+    background: linear-gradient(135deg, var(--modern-accent-primary), var(--modern-accent-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.character-card-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom,
+            transparent 70%,
+            rgba(0, 0, 0, 0.3) 100%);
+    z-index: 1;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.character-card:hover .character-card-image::before {
+    opacity: 0.5;
+}
+
+.character-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.character-card:hover .character-card-image img {
+    transform: scale(1.08);
+}
+
+.character-card-image i {
+    font-size: 3.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    z-index: 1;
+}
+
+.character-card-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+.character-card-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    position: relative;
+    display: inline-block;
+}
+
+.character-card-name::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 2rem;
+    height: 2px;
+    background: var(--modern-gradient-primary);
+    opacity: 0.7;
+    transition: width 0.3s ease;
+}
+
+.character-card:hover .character-card-name::after {
+    width: 100%;
+}
+
+.character-card-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.25rem;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+}
+
+.character-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+}
+
+.character-card-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right,
+            rgba(59, 130, 246, 0.2),
+            transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.character-card:hover .character-card-footer::before {
+    opacity: 1;
+}
+
+body.light-theme .character-card-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.character-card-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.character-card-date::before {
+    content: '\f017';
+    /* Font Awesome clock icon */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 400;
+    margin-right: 0.4rem;
+    font-size: 0.7rem;
+    opacity: 0.7;
+}
+
+.character-card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.character-card-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1.1rem;
+    margin: 0 0.1rem;
+    /* Minimum touch target size */
+    min-width: 44px;
+    min-height: 44px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--modern-shadow-sm);
+}
+
+body.light-theme .character-card-btn {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .character-card-export-btn {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: rgb(37, 99, 235);
+}
+
+body.light-theme .character-card-delete-btn {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: rgb(220, 38, 38);
+}
+
+.character-card-btn:hover {
+    background-color: var(--modern-accent-primary);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: var(--modern-shadow-md);
+}
+
+.character-card-btn:active,
+.character-card-btn.touch-active {
+    transform: scale(0.95);
+    background-color: var(--modern-accent-primary);
+    color: white;
+    box-shadow: var(--modern-shadow-sm);
+}
+
+.character-card-btn.active {
+    background: var(--modern-gradient-primary);
+    color: white;
+    box-shadow: var(--modern-shadow-md);
+}
+
+/* Character card indicator (non-interactive) */
+.character-card-indicator {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    color: white;
+    font-size: 1.1rem;
+    margin: 0 0.1rem;
+    min-width: 44px;
+    min-height: 44px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--modern-shadow-sm);
+    background: var(--modern-gradient-primary);
+    pointer-events: none;
+    /* Make it non-interactive */
+}
+
+.character-card-indicator.hidden {
+    display: none;
+}
+
+/* Export button styling */
+.character-card-export-btn {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: rgb(59, 130, 246);
+}
+
+.character-card-export-btn:hover {
+    background-color: rgb(59, 130, 246);
+    color: white;
+}
+
+/* Delete button styling */
+.character-card-delete-btn {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: rgb(239, 68, 68);
+}
+
+.character-card-delete-btn:hover {
+    background-color: rgb(239, 68, 68);
+    color: white;
+}
+
+/* Tooltip for buttons */
+.character-card-btn::before {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    padding: 0.4rem 0.6rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 0.75rem;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.character-card-btn:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Add ripple effect for touch feedback */
+.character-card-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%, -50%);
+    transform-origin: 50% 50%;
+}
+
+.character-card-btn.touch-active::after {
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0) translate(-50%, -50%);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(20, 20) translate(-50%, -50%);
+        opacity: 0;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .character-gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.25rem;
+    }
+
+    .character-card-image {
+        height: 150px;
+    }
+
+    .character-gallery-header {
+        padding: 1rem;
+        flex-wrap: wrap;
+        padding-top: 1rem;
+        /* Removed extra padding since container is now positioned below header */
+        background: linear-gradient(to right, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        /* Reduced z-index to ensure it doesn't interfere with hamburger menu on mobile */
+    }
+
+    .character-gallery-actions {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .character-gallery-create-btn,
+    .character-gallery-import-btn,
+    .character-gallery-back-btn {
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem;
+        /* Good padding for tablet screens */
+        min-height: 44px;
+        /* Ensure minimum touch target size */
+        white-space: nowrap;
+        /* Prevent text wrapping */
+    }
+
+    .character-gallery-back-btn i,
+    .character-gallery-create-btn i,
+    .character-gallery-import-btn i {
+        margin-right: 0.5rem;
+        /* Good spacing for tablet screens */
+        flex-shrink: 0;
+        /* Prevent icon from shrinking */
+    }
+
+    /* Adjust container position for mobile */
+    .character-gallery-container {
+        top: 50px;
+        /* Slightly smaller header on mobile */
+        height: calc(100% - 50px);
+    }
+
+    body.light-theme .character-gallery-header {
+        background: linear-gradient(to right, rgba(248, 250, 252, 0.95), rgba(241, 245, 249, 0.9));
+    }
+
+    .character-gallery-content {
+        padding: 1.25rem;
+        -webkit-overflow-scrolling: touch;
+        /* Ensure smooth scrolling on iOS */
+        touch-action: pan-y;
+        /* Allow vertical scrolling */
+        overscroll-behavior: contain;
+        /* Prevent scroll chaining */
+    }
+
+    .character-gallery-container {
+        /* Enhance touch scrolling on mobile */
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+        overscroll-behavior: contain;
+    }
+
+    .character-card-actions {
+        gap: 0.75rem;
+    }
+
+    .character-card-btn,
+    .character-card-indicator {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.75rem;
+        min-width: 44px;
+        /* Minimum touch target size */
+        min-height: 44px;
+        /* Minimum touch target size */
+    }
+
+    /* Hide tooltips on mobile */
+    .character-card-btn::before {
+        display: none;
+    }
+}
+
+/* Tablet-specific adjustments (768px-1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    /* Adjust grid for tablets to prevent buttons from being cut off */
+    .character-gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.25rem;
+    }
+
+    /* Ensure character cards have enough space for buttons */
+    .character-card {
+        min-width: 0;
+        /* Allow cards to shrink below content size */
+        width: 100%;
+    }
+
+    /* Adjust content padding for better spacing */
+    .character-card-content {
+        padding: 1.25rem 1rem;
+    }
+
+    /* Adjust footer layout for tablets */
+    .character-card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .character-card-date {
+        margin-bottom: 0.75rem;
+    }
+
+    /* Make action buttons container take full width */
+    .character-card-actions {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 0.4rem;
+        /* Reduce gap between buttons */
+    }
+
+    /* Slightly smaller buttons on tablets to fit all in a row */
+    .character-card-btn,
+    .character-card-indicator {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1rem;
+        margin: 0;
+        /* Remove margin to prevent overflow */
+    }
+
+    /* Ensure description doesn't push content too far */
+    .character-card-description {
+        margin-bottom: 1rem;
+        -webkit-line-clamp: 2;
+        /* Show fewer lines on tablet */
+        line-clamp: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .character-gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .character-card-image {
+        height: 200px;
+    }
+
+    .character-gallery-header {
+        padding: 0.75rem;
+        /* Reduced padding for small screens */
+        flex-direction: column;
+        /* Stack title and buttons vertically */
+        align-items: stretch;
+        /* Stretch items to full width */
+        gap: 0.75rem;
+        /* Add gap between title and buttons */
+        padding-top: 1rem;
+        /* Simplified padding */
+        background: linear-gradient(to right, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.95));
+        z-index: 5;
+        /* Ensure consistent z-index across screen sizes */
+    }
+
+    .character-gallery-title {
+        font-size: 1.25rem;
+        width: 100%;
+        margin-bottom: 0;
+        /* Remove bottom margin since we use gap */
+        padding-top: 1.5rem;
+        /* Increased padding above the title */
+        justify-content: center;
+        /* Center the title */
+    }
+
+    .character-gallery-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.5rem;
+        /* Reduced gap between buttons */
+        flex-wrap: nowrap;
+        /* Prevent wrapping to keep buttons on same row */
+    }
+
+    .character-gallery-back-btn,
+    .character-gallery-create-btn,
+    .character-gallery-import-btn {
+        flex: 1;
+        /* Equal width distribution */
+        justify-content: center;
+        padding: 0.75rem 0.5rem;
+        /* Better padding for small screens */
+        font-size: 0.8rem;
+        /* Slightly smaller font */
+        min-height: 44px;
+        /* Maintain touch target size */
+        max-width: none;
+        /* Remove max-width restriction */
+        overflow: hidden;
+        /* Hide overflow */
+        text-overflow: ellipsis;
+        /* Add ellipsis for long text */
+    }
+
+    /* Switch to shorter text on small screens */
+    .button-text-full {
+        display: none;
+    }
+
+    .button-text-short {
+        display: inline;
+    }
+
+
+
+    .character-gallery-back-btn i,
+    .character-gallery-create-btn i,
+    .character-gallery-import-btn i {
+        margin-right: 0.4rem;
+        /* Compact spacing for small screens */
+        font-size: 0.9rem;
+        /* Slightly smaller icons */
+        flex-shrink: 0;
+        /* Prevent icon from shrinking */
+    }
+
+    /* Adjust container position for small screens */
+    .character-gallery-container {
+        top: 45px;
+        /* Even smaller header on small screens */
+        height: calc(100% - 45px);
+    }
+
+    body.light-theme .character-gallery-header {
+        background: linear-gradient(to right, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.95));
+    }
+
+    .character-card {
+        box-shadow: var(--modern-shadow-lg);
+        transform: none !important;
+        /* Prevent hover transform on mobile */
+    }
+
+    .character-card:hover {
+        transform: none !important;
+        /* Prevent hover transform on mobile */
+    }
+
+    .character-card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .character-card-date {
+        margin-bottom: 0.75rem;
+    }
+
+    .character-card-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    /* Increase touch target size on small screens */
+    .character-card-btn,
+    .character-card-indicator {
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 1.2rem;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .character-card-indicator {
+        background: var(--modern-gradient-primary);
+    }
+
+    .character-card-delete-btn {
+        background-color: rgba(239, 68, 68, 0.15);
+        color: rgb(239, 68, 68);
+    }
+
+    body.light-theme .character-card-btn {
+        background-color: rgba(0, 0, 0, 0.08);
+    }
+
+    body.light-theme .character-card-export-btn {
+        background-color: rgba(59, 130, 246, 0.1);
+        color: rgb(37, 99, 235);
+    }
+
+    body.light-theme .character-card-delete-btn {
+        background-color: rgba(239, 68, 68, 0.1);
+        color: rgb(220, 38, 38);
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+    .character-gallery-header {
+        padding: 0.5rem;
+        /* Further reduced padding */
+        gap: 0.5rem;
+        /* Smaller gap */
+        padding-top: 0.75rem;
+        /* Simplified padding for very small screens */
+        z-index: 5;
+        /* Ensure consistent z-index across all screen sizes */
+    }
+
+    .character-gallery-title {
+        font-size: 1.1rem;
+        /* Smaller title */
+        padding-top: 1rem;
+        /* Increased padding above the title */
+    }
+
+    .character-gallery-back-btn,
+    .character-gallery-create-btn,
+    .character-gallery-import-btn {
+        padding: 0.6rem 0.4rem;
+        /* Better compact padding */
+        font-size: 0.75rem;
+        /* Smaller font size */
+        min-height: 42px;
+        /* Good touch target size */
+    }
+
+    .character-gallery-back-btn i,
+    .character-gallery-create-btn i,
+    .character-gallery-import-btn i {
+        margin-right: 0.35rem;
+        /* Better minimal spacing */
+        font-size: 0.85rem;
+        /* Smaller icons */
+        flex-shrink: 0;
+        /* Prevent icon from shrinking */
+    }
+
+    /* Adjust container position for very small screens */
+    .character-gallery-container {
+        top: 40px;
+        /* Smallest header on very small screens */
+        height: calc(100% - 40px);
+    }
+
+    /* Optimize empty state for very small screens */
+    .character-gallery-empty {
+        padding: 1.5rem 1rem;
+        min-height: 250px;
+    }
+
+    .character-gallery-empty-container {
+        padding: 1.75rem 1.25rem;
+        width: 95%;
+        max-width: 300px;
+    }
+
+    .character-gallery-empty-icon-container {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1.25rem;
+    }
+
+    .character-gallery-empty-icon-container::before {
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        filter: blur(5px);
+    }
+
+    .character-gallery-empty i {
+        font-size: 2.75rem;
+    }
+
+    .character-gallery-empty p {
+        font-size: 1.1rem;
+        margin-bottom: 0.4rem;
+        max-width: 220px;
+    }
+
+    .character-gallery-empty-description {
+        font-size: 0.85rem !important;
+        margin-bottom: 1.5rem !important;
+        max-width: 240px;
+        line-height: 1.4;
+    }
+
+    #character-gallery-empty-create-btn {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.85rem;
+        min-width: 180px;
+        min-height: 38px;
+        border-radius: 0.7rem;
+    }
+
+    #character-gallery-empty-create-btn i {
+        font-size: 0.9rem;
+        margin-right: 0.5rem;
+    }
+}
+
+/* Animation */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
