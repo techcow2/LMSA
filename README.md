@@ -28,6 +28,15 @@
 - **Vision Language Model Support**: Added full support for vision language models (VLMs). You can now upload and analyze images alongside text, enabling multimodal conversations with AI models that can understand and discuss visual content.
 - **Fixed PDF File Attachments**: Resolved the issue where PDF files weren't allowed as attachments. You can now upload and analyze PDF documents seamlessly with your AI models.
 
+## 🆕 What's New in Version 6.2
+
+🎉 **Latest Update: Version 6.2** - Now Available!
+
+### New Features & Improvements
+- **Disabled Auto-scroll Feature**: Temporarily disabled the auto-scroll feature to improve chat experience
+- **Fixed Keyboard Overlap Issue**: Resolved an issue where the keyboard was overlapping UI elements on certain devices
+- **Removed Scroll to Bottom Option**: Temporarily removed the scroll to bottom option from the press and hold menu
+
 ---
 
 ## 📸 Screenshots
