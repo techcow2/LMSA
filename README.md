@@ -18,7 +18,7 @@
 🎉 **Latest Update: Version 6.2** - Now Available!
 
 ### New Features & Improvements
-- **Disabled Auto-scroll Feature**: Temporarily disabled the auto-scroll feature to improve chat experience
+- **Disabled Auto-scroll Feature**: Disabled the auto-scroll feature to improve chat experience
 - **Fixed Keyboard Overlap Issue**: Resolved an issue where the keyboard was overlapping UI elements on certain devices
 - **Removed Scroll to Bottom Option**: Temporarily removed the scroll to bottom option from the press and hold menu
 
