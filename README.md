@@ -13,22 +13,7 @@
   </a>
 </p>
 
-## 🆕 What's New in Version 5.5
-
-🎉 **Latest Update: Version 5.5** - Now Available!
-
-### New Features & Improvements
-- **Fixed Character Display Issues**: Resolved broken character feature bug (thank you [teneykio](https://github.com/teneykio) for the report)
-- **Enhanced Side Menu**: Made improvements to the side menu for better visibility of the saved chats list
-- **Streamlined User Experience**: Removed the "What's New" menu feature that would force it to show every time the app loads
-- **Improved Data Caching**: Enhanced the way the app caches data to improve how updates are implemented through the Play Store
-- **Mobile UI Enhancements**: Made minor UI improvements for smaller mobile screens
-
-### Previous Updates
-- **Vision Language Model Support**: Added full support for vision language models (VLMs). You can now upload and analyze images alongside text, enabling multimodal conversations with AI models that can understand and discuss visual content.
-- **Fixed PDF File Attachments**: Resolved the issue where PDF files weren't allowed as attachments. You can now upload and analyze PDF documents seamlessly with your AI models.
-
-## 🆕 What's New in Version 6.2
+## 🆕 What's New
 
 🎉 **Latest Update: Version 6.2** - Now Available!
 
@@ -36,6 +21,10 @@
 - **Disabled Auto-scroll Feature**: Temporarily disabled the auto-scroll feature to improve chat experience
 - **Fixed Keyboard Overlap Issue**: Resolved an issue where the keyboard was overlapping UI elements on certain devices
 - **Removed Scroll to Bottom Option**: Temporarily removed the scroll to bottom option from the press and hold menu
+
+### Previous Updates
+- **Vision Language Model Support**: Added full support for vision language models (VLMs). You can now upload and analyze images alongside text, enabling multimodal conversations with AI models that can understand and discuss visual content.
+- **Fixed PDF File Attachments**: Resolved the issue where PDF files weren't allowed as attachments. You can now upload and analyze PDF documents seamlessly with your AI models.
 
 ---
 
