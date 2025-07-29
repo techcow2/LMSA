@@ -28,7 +28,6 @@ export function resetApp() {
         localStorage.removeItem('temperature');
             localStorage.removeItem('hideThinking');
     localStorage.removeItem('autoGenerateTitles');
-    localStorage.removeItem('disableAutoScroll');
         localStorage.removeItem('lightThemeEnabled');
     
 

@@ -114,15 +114,7 @@ export async function initializeTouchHandlers() {
         // Function to handle all input field interactions
         function handleInputInteraction(e) {
             e.stopPropagation();
-
-            // Ensure messagesContainer exists
-            if (!messagesContainer) return;
-
-            // Scroll to bottom when user interacts with input field (only if auto-scroll is not disabled)
-            const disableAutoScroll = localStorage.getItem('disableAutoScroll') === 'true';
-            if (!disableAutoScroll) {
-                scrollToBottom(messagesContainer, true);
-            }
+            // Remove auto-scroll when touching input field
         }
 
         // Add event listeners for all interaction types

@@ -2130,6 +2130,11 @@ button {
     -webkit-backdrop-filter: blur(8px);
 }
 
+/* Hide the Scroll to Bottom option in the send context menu */
+#scroll-to-bottom-menu-button {
+    display: none !important;
+}
+
 /* Light theme styles for send context menu */
 body.light-theme #send-context-menu {
     background: linear-gradient(to bottom, #f8fafc, #f1f5f9);

@@ -1008,13 +1008,7 @@ export function initializeEventHandlers() {
             fileUploadInput.click();
             debugLog('Paperclip button clicked, opening file selector');
 
-            // Scroll to bottom when user clicks on the paperclip button (only if auto-scroll is not disabled)
-            if (messagesContainer) {
-                const disableAutoScroll = localStorage.getItem('disableAutoScroll') === 'true';
-                if (!disableAutoScroll) {
-                    scrollToBottom(messagesContainer);
-                }
-            }
+            // Remove auto-scroll when clicking paperclip button
         });
 
         // Improved touch event handling for mobile
@@ -1022,13 +1016,7 @@ export function initializeEventHandlers() {
             // Add a visual indicator that the button is being pressed
             paperclipButton.classList.add('active');
 
-            // Scroll to bottom when user taps on the paperclip button (only if auto-scroll is not disabled)
-            if (messagesContainer) {
-                const disableAutoScroll = localStorage.getItem('disableAutoScroll') === 'true';
-                if (!disableAutoScroll) {
-                    scrollToBottom(messagesContainer);
-                }
-            }
+            // Remove auto-scroll when tapping paperclip button
         }, { passive: true });
 
         paperclipButton.addEventListener('touchend', (e) => {
@@ -1173,8 +1161,7 @@ export function initializeEventHandlers() {
                 // Set the flag to indicate a potential long-press is starting
                 window.isSendButtonLongPressInProgress = true;
 
-                // Don't automatically scroll to bottom when long-pressing the send button
-                // We'll only scroll when the user taps the send button normally
+                // Remove auto-scroll during long press
 
                 // Log for debugging
                 debugLog('Send button touchstart - long press detection started on ' + e.target.tagName);
@@ -1321,13 +1308,7 @@ export function initializeEventHandlers() {
                 // Remove focus from the input field
                 userInput.blur();
 
-                // Scroll to bottom when user clicks on the send button (only if auto-scroll is not disabled)
-                if (messagesContainer) {
-                    const disableAutoScroll = localStorage.getItem('disableAutoScroll') === 'true';
-                    if (!disableAutoScroll) {
-                        scrollToBottom(messagesContainer);
-                    }
-                }
+                // Remove auto-scroll when clicking send button
 
                 // Let the form submit naturally by not preventing default
             }

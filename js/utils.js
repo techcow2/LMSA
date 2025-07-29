@@ -947,19 +947,20 @@ export function processCodeBlocks(content, encode = false) {
 export function scrollToBottom(messagesContainer, force = false) {
     if (!messagesContainer) return;
 
-    // Check if auto-scroll is disabled (unless force is true)
-    if (!force) {
-        // Check localStorage directly to avoid circular imports
-        const disableAutoScroll = localStorage.getItem('disableAutoScroll') === 'true';
-        if (disableAutoScroll) {
-            return; // Auto-scroll is disabled, exit early
-        }
+    // Completely disable auto-scrolling during streaming (when force=true is passed)
+    // This allows users to read anywhere in the chat history while responses are streaming
+    if (force) {
+        return;
     }
 
+    // Only allow manual scrolling to bottom (when force=false or not specified)
+    // Check how far we've scrolled from the bottom
+    const distanceFromBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight;
+    
     // Use a more generous threshold (50px) to determine if we're already at the bottom
     // This helps with inconsistent detection across devices
     const bottomThreshold = 50;
-    const isAlreadyAtBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight < bottomThreshold;
+    const isAlreadyAtBottom = distanceFromBottom < bottomThreshold;
 
     // If already at bottom and not forcing, just return
     if (isAlreadyAtBottom && !force) {
@@ -967,7 +968,7 @@ export function scrollToBottom(messagesContainer, force = false) {
     }
 
     // Determine if we should use smooth scrolling based on distance
-    const scrollDistance = messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight;
+    const scrollDistance = distanceFromBottom;
     const useSmooth = scrollDistance < 1000; // Only use smooth scrolling for shorter distances
 
     // Simple scrolling approach
@@ -1000,6 +1001,7 @@ export function scrollToBottom(messagesContainer, force = false) {
     }
 
     // Reset the userHasScrolledUp flag since we've now scrolled to the bottom
+    // This will only happen when we actually scroll to the bottom
     window.userHasScrolledUp = false;
 }
 

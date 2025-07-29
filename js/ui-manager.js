@@ -55,13 +55,7 @@ export function hideWelcomeMessage() {
                 messagesContainer.style.opacity = '1';
                 messagesContainer.style.visibility = 'visible';
 
-                // Scroll to the bottom to ensure messages are visible
-                setTimeout(() => {
-                    messagesContainer.scrollTo({
-                        top: messagesContainer.scrollHeight,
-                        behavior: 'smooth'
-                    });
-                }, 50);
+                // Remove auto-scroll when showing messages
             }
         }, 300); // Match transition duration
     } else if (messagesContainer) {
@@ -71,13 +65,7 @@ export function hideWelcomeMessage() {
         messagesContainer.style.opacity = '1';
         messagesContainer.style.visibility = 'visible';
 
-        // Scroll to the bottom to ensure messages are visible
-        setTimeout(() => {
-            messagesContainer.scrollTo({
-                top: messagesContainer.scrollHeight,
-                behavior: 'smooth'
-            });
-        }, 50);
+        // Remove auto-scroll when showing messages
     }
 }
 
@@ -396,7 +384,7 @@ export function showLoadingIndicator() {
     loadingIndicator.classList.remove('hidden');
     loadingIndicator.classList.add('animate-fade-in');
     messagesContainer.appendChild(loadingIndicator);
-    scrollToBottom(messagesContainer);
+    // Remove auto-scroll when showing loading indicator
 }
 
 /**
@@ -557,7 +545,7 @@ export function appendMessage(sender, message, files = null, isStreaming = false
                 }
 
                 initializeCodeMirror(lastMessage);
-                scrollToBottom(messagesContainer, isStreaming);
+                // Remove auto-scroll during streaming
             }
             return lastMessage;
         }
@@ -786,8 +774,7 @@ export function appendMessage(sender, message, files = null, isStreaming = false
     // Initialize code highlighting for the new message
     initializeCodeMirror(messageElement);
 
-    // Scroll to the bottom of the chat
-    scrollToBottom(messagesContainer, isStreaming);
+    // Remove auto-scroll during streaming
 
     return messageElement;
 }
