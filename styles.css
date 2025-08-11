@@ -62,7 +62,7 @@ body.preview-mode {
     width: 100%;
     position: relative;
     z-index: 1;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.1s ease, visibility 0.1s ease;
     scroll-behavior: smooth; /* Enable smooth scrolling behavior */
 }
 
@@ -81,7 +81,7 @@ body.preview-mode {
     border-radius: 0.75rem;
     line-height: 1.5;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 
 /* Adjust message width on smaller screens */
@@ -203,7 +203,7 @@ body.preview-mode {
     border-left: 3px solid #7cb7ff;
     background-color: var(--settings-label-bg);
     border-radius: 0 8px 8px 0;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
     position: relative;
     font-size: 1em;
     line-height: 1.6;
@@ -246,7 +246,7 @@ body.preview-mode {
     left: 0;
     right: 0;
     bottom: 0;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.1s ease, visibility 0.1s ease;
     z-index: 5; /* Increased to ensure it's above other content but below modals */
     pointer-events: auto; /* Allow button interaction */
     transform: none !important; /* Prevent transform from affecting welcome message */
@@ -325,7 +325,8 @@ body.preview-mode {
 }
 
 #get-started-btn:hover::before {
-    animation: shimmerButton 1s forwards;
+    /* Removed shimmer animation for better performance */
+    opacity: 0.3;
 }
 
 /* Active state for touch feedback */
@@ -426,7 +427,7 @@ body.preview-mode {
 
 /* Welcome screen theme toggle */
 #welcome-theme-toggle {
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 
 #welcome-theme-toggle label {
@@ -457,7 +458,7 @@ body.preview-mode {
     background-color: var(--toggle-bg);
     border: 1px solid var(--toggle-border);
     border-radius: 34px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.1s ease;
     cursor: pointer;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
@@ -470,7 +471,7 @@ body.preview-mode {
     bottom: 3px;
     background-color: var(--toggle-dot);
     border-radius: 50%;
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
     z-index: 2;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
@@ -502,7 +503,7 @@ body.preview-mode {
 /* Icon styles */
 #welcome-theme-toggle .dark-icon,
 #welcome-theme-toggle .light-icon {
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 
 body.light-theme #welcome-theme-toggle .light-icon {
@@ -552,7 +553,7 @@ body.light-theme #welcome-footer p {
     background-image: linear-gradient(to right, rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 1), rgba(44, 62, 80, 0.9));
     overflow: hidden;
     z-index: 10;
-    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: height 0.1s ease;
     /* will-change removed - not needed for static height changes */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     position: sticky !important;
@@ -584,13 +585,8 @@ body.light-theme #loaded-model-wrapper {
     max-height: 100px;
     overflow: hidden;
     visibility: visible;
-    /* Improved transition with cubic-bezier for smoother animation */
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                visibility 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                border-bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Simplified transition for better performance */
+    transition: transform 0.1s ease, opacity 0.1s ease;
     /* No background properties - these are handled by the wrapper */
     background-color: transparent;
     background-image: none;
@@ -618,13 +614,8 @@ body.light-theme #loaded-model {
     transform: translateY(-100%);
     border-bottom: none;
     visibility: hidden;
-    /* Ensure the same transition for hiding as for showing */
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                visibility 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                border-bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Simplified transition for better performance */
+    transition: transform 0.1s ease, opacity 0.1s ease;
 }
 
 /* Loading indicator styles */
@@ -647,7 +638,7 @@ body.light-theme #loaded-model {
 .loading-ellipsis {
     font-size: 1.5rem;
     color: #3498db;
-    animation: ellipsis 1.5s infinite;
+    /* Removed ellipsis animation for better performance */
     display: inline-block;
     white-space: nowrap;
     text-align: left;
@@ -656,11 +647,7 @@ body.light-theme #loaded-model {
     vertical-align: middle;
 }
 
-@keyframes ellipsis {
-    0% { opacity: 0; }
-    50% { opacity: 1; }
-    100% { opacity: 0; }
-}
+/* Ellipsis animation removed for performance */
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
@@ -668,7 +655,8 @@ body.light-theme #loaded-model {
 }
 
 .animate-spin {
-    animation: spin 0.8s linear infinite;
+    /* Removed spin animation for better performance */
+    opacity: 0.8;
 }
 
 .chat-history-wrapper {
@@ -756,7 +744,7 @@ body.light-theme #loaded-model {
 /* Mobile-first sidebar styles */
 #sidebar {
     width: 280px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.1s ease, opacity 0.1s ease;
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.4);
     background-image: var(--sidebar-bg);
     border-right: 1px solid var(--border-color);
@@ -822,7 +810,7 @@ body.light-theme #loaded-model {
     z-index: 40;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.1s ease, visibility 0.1s ease;
 }
 
 #sidebar-overlay.active {
@@ -968,7 +956,7 @@ body.light-theme #loaded-model {
   left: 0;
   right: 0;
   z-index: 1000;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s ease;
   width: 100%;
 }
 
@@ -1265,7 +1253,7 @@ body.light-theme #loaded-model {
 }
 
 .section-header .fa-chevron-down {
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
 }
 
 .section-header.active .fa-chevron-down {
@@ -1404,7 +1392,7 @@ body.light-theme #loaded-model {
 /* Updated styles for send and stop buttons */
 #chat-form button#send-button,
 #chat-form button#stop-button {
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1984,8 +1972,7 @@ h1 {
     /* Don't use transparent fill to maintain accessibility */
     /* Instead use a very subtle effect that's still readable */
     -webkit-text-fill-color: transparent;
-    /* Add a subtle animation */
-    animation: subtle-glow 3s ease-in-out infinite;
+    /* Removed glow animation for better performance */
 }
 
 /* Add a subtle accent underline for the header title */
@@ -2032,7 +2019,7 @@ h1.header-title::after {
 
 /* Smooth transition for hamburger icon transformation */
 #sidebar-toggle svg path {
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 
 /* Scrollbar styles for webkit browsers - hide by default except for specific elements */
@@ -2125,7 +2112,7 @@ button {
     overflow: hidden;
     width: 200px;
     transform-origin: bottom center;
-    animation: menuAppear 0.2s ease-out forwards;
+    /* Removed menuAppear animation for better performance */
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
@@ -2145,18 +2132,7 @@ body.light-theme #send-context-menu {
         0 -1px 0 0 rgba(255, 255, 255, 0.7) inset;
 }
 
-@keyframes menuAppear {
-    from {
-        opacity: 0;
-        transform: translateY(10px) scale(0.95);
-        filter: blur(5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-}
+/* MenuAppear animation removed for performance */
 
 @keyframes menuFadeOut {
     from {
@@ -2173,7 +2149,8 @@ body.light-theme #send-context-menu {
 
 /* Add fade-out animation class */
 #send-context-menu.menu-fade-out {
-    animation: menuFadeOut 0.15s ease-out forwards;
+    /* Removed menuFadeOut animation for better performance */
+    opacity: 0;
 }
 
 /* Add subtle ripple effect for touch feedback */
@@ -2204,7 +2181,7 @@ body.light-theme #send-context-menu {
 }
 
 #send-context-menu button:active::after {
-    animation: ripple 0.6s ease-out;
+    /* Removed ripple animation for better performance */
 }
 
 /* Mobile optimizations */
@@ -2488,7 +2465,7 @@ body.light-theme #send-context-menu .menu-header {
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.1s ease, visibility 0.1s ease;
 }
 
 #empty-message-modal {
@@ -2511,7 +2488,7 @@ body.light-theme #send-context-menu .menu-header {
     max-width: 90%;
     width: 320px;
     transform: scale(0.9);
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
     margin: 0 auto; /* Center horizontally */
 }
 
@@ -2562,7 +2539,7 @@ body.light-theme #send-context-menu .menu-header {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.1s ease;
 }
 
 #empty-message-modal .close-modal:hover {
@@ -2572,7 +2549,7 @@ body.light-theme #send-context-menu .menu-header {
 /* Style for long-press highlight */
 .long-press-highlight {
     background-color: rgba(52, 152, 219, 0.2) !important;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.1s ease;
 }
 
 /* Long-press effect for send button */
@@ -2709,7 +2686,7 @@ body.light-theme #send-context-menu .menu-header {
 
 /* Multi-step settings form styles */
 .settings-step {
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
     opacity: 1;
     transform: translateX(0);
     height: auto;
@@ -2730,7 +2707,7 @@ body.light-theme #send-context-menu .menu-header {
 /* Step indicator styles */
 #settings-step-indicator {
     font-weight: 500;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 
 /* Animation for step transitions */
@@ -2984,7 +2961,7 @@ body.light-theme #send-context-menu .menu-header {
     /* Smartphone-like step navigation for tablets */
     #settings-modal .settings-step {
         padding: 0.5rem 0;
-        transition: all 0.3s ease;
+        transition: all 0.1s ease;
         opacity: 0;
         transform: translateX(100%);
         height: 0;
@@ -3736,7 +3713,7 @@ body.light-theme #clear-system-prompt-modal #close-clear-system-prompt-modal:hov
 }
 
 #confirmation-modal button {
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 
 #confirmation-modal button:hover {
@@ -4013,7 +3990,7 @@ input[type="range"]:disabled::-moz-range-thumb {
     bottom: 0;
     background-color: #374151;
     border-radius: 34px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.1s ease;
     cursor: pointer;
 }
 
@@ -4025,7 +4002,7 @@ input[type="range"]:disabled::-moz-range-thumb {
     bottom: 4px;
     background-color: white;
     border-radius: 50%;
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
     z-index: 2;
 }
 
@@ -5056,7 +5033,7 @@ body.light-theme #whats-new-modal .modal-content {
 
 /* About modal specific styles */
 #about-modal {
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.1s ease, visibility 0.1s ease;
 }
 
 #about-modal .modal-content {
@@ -5719,7 +5696,7 @@ body.light-theme #about-modal .text-blue-400 {
     opacity: 1;
     font-size: 1.25rem;
     filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
 }
 
 #whats-new-modal .feature-item:hover i {
@@ -5734,7 +5711,7 @@ body.light-theme #about-modal .text-blue-400 {
     justify-content: center;
     width: 2.5rem;
     height: 2.5rem;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
     box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.2);
 }
 
@@ -6020,7 +5997,7 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
     padding: 0.75rem 1rem;
     margin-bottom: 0.75rem;
     border-radius: 0.5rem;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
     border: none;
     cursor: pointer;
     display: flex;
@@ -6181,7 +6158,7 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
 
 #import-export-group-btn .fa-caret-down,
 #import-export-group-btn .fa-caret-up {
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
     margin-left: auto;
 }
 
@@ -6340,7 +6317,7 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
     vertical-align: middle;
     width: 48px;
     height: 24px;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 
 
@@ -6911,7 +6888,7 @@ body.light-theme #model-modal #available-models-list .mr-2.font-medium {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -6970,7 +6947,7 @@ body.light-theme #model-modal #current-model .model-name {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -7015,7 +6992,7 @@ body.light-theme #model-modal #current-model .model-name {
     hyphens: auto;
     margin: 0;
     position: relative;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
     border-radius: 0.375rem;
     padding: 0.25rem 0.5rem;
     margin: -0.25rem -0.5rem;
@@ -7762,7 +7739,7 @@ body.light-theme .trash-icon-container:focus {
     word-break: break-all;
     max-width: 100%;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
     color: var(--loading-indicator);
     font-weight: 600;
     background: rgba(59, 130, 246, 0.1);

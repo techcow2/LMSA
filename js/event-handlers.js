@@ -344,6 +344,15 @@ export function initializeEventHandlers() {
 
         // Handle focus events to ensure cursor visibility when focusing the input field
         userInput.addEventListener('focus', function(e) {
+            // Hide welcome screen when user focuses on input field
+            import('./ui-manager.js').then(module => {
+                if (typeof module.hideWelcomeMessage === 'function' && welcomeMessage && welcomeMessage.style.display !== 'none') {
+                    module.hideWelcomeMessage();
+                }
+            }).catch(error => {
+                console.error('Error importing ui-manager module:', error);
+            });
+
             // When focusing, move cursor to end for better UX
             const length = e.target.value.length;
             e.target.setSelectionRange(length, length);
@@ -351,6 +360,18 @@ export function initializeEventHandlers() {
             scrollInputToEnd(e.target);
             ensureCursorVisible(e.target);
         });
+
+        // Handle touchstart events for touch devices to hide welcome screen immediately
+        userInput.addEventListener('touchstart', function(e) {
+            // Hide welcome screen when user touches the input field
+            import('./ui-manager.js').then(module => {
+                if (typeof module.hideWelcomeMessage === 'function' && welcomeMessage && welcomeMessage.style.display !== 'none') {
+                    module.hideWelcomeMessage();
+                }
+            }).catch(error => {
+                console.error('Error importing ui-manager module:', error);
+            });
+        }, { passive: true });
 
         // Handle touchend events for mobile devices
         userInput.addEventListener('touchend', function(e) {
@@ -441,8 +462,22 @@ export function initializeEventHandlers() {
         handleSidebarOutsideClick(e);
     });
 
+    // Prevent multiple rapid touch events
+    let lastTouchTime = 0;
+    
     // Also handle touch events for mobile and tablets
     document.addEventListener('touchend', function(e) {
+        // Prevent rapid-fire touch events
+        const now = Date.now();
+        if (now - lastTouchTime < 100) {
+            console.log('Touch event ignored - too rapid');
+            return;
+        }
+        lastTouchTime = now;
+        
+        // Debug logging
+        console.log('Touch end detected:', e);
+        
         // Only process if this is a simple tap (not scrolling or other complex gestures)
         if (e.changedTouches && e.changedTouches.length === 1) {
             // Get the element at the touch position for more accurate detection
@@ -467,7 +502,8 @@ export function initializeEventHandlers() {
 
             // Check if we're tapping on the sidebar overlay directly
             if (elementAtTouch && elementAtTouch.id === 'sidebar-overlay') {
-                // If tapping directly on the overlay, close the sidebar immediately
+                console.log('Tapping on sidebar overlay - closing sidebar');
+                // If tapping directly on the overlay, use toggleSidebar for consistency
                 toggleSidebar();
                 return;
             }
@@ -1650,7 +1686,7 @@ function handleSidebarOutsideClick(e) {
         // Log for debugging
         console.log('Closing sidebar from outside click/tap');
 
-        // Close the sidebar
+        // Use toggleSidebar (same as X button) for consistent behavior
         toggleSidebar();
     }
 }

@@ -126,7 +126,8 @@ export function initializeCharacterModalTouchHandler() {
 
         // Continue animation if velocity is still significant
         if (Math.abs(scrollVelocity) > MIN_VELOCITY) {
-            setTimeout(momentumScroll, 16);
+            // Use requestAnimationFrame for better performance
+            momentumFrame = requestAnimationFrame(momentumScroll);
         } else {
             momentumFrame = null;
         }

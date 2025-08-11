@@ -145,18 +145,15 @@ async function initializeApp() {
     }
 
     if (messagesContainer) {
-        // Force the scroll position to bottom on startup
-        setTimeout(() => {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            // Then check if the button should be shown (it should remain hidden on startup)
-            handleScroll(messagesContainer);
-        }, 100);
+        // Optimized: Immediate scroll for better performance
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        handleScroll(messagesContainer);
 
-        // Add another check after a longer delay to ensure button state is correct
-        setTimeout(() => {
+        // Optimized: Use requestAnimationFrame for better performance
+        requestAnimationFrame(() => {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             handleScroll(messagesContainer);
-        }, 500);
+        });
     }
 
     // Add window resize event listener

@@ -32,13 +32,13 @@ export function initializeCharacterGalleryTouchHandler() {
     const MIN_VELOCITY = 0.8; // Minimum velocity to continue momentum scrolling
 
     // Add touch event listeners to the character gallery container
-    characterGalleryContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
-    characterGalleryContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
-    characterGalleryContainer.addEventListener('touchend', handleTouchEnd, { passive: false });
-    characterGalleryContainer.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+    characterGalleryContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+    characterGalleryContainer.addEventListener('touchmove', handleTouchMove, { passive: true });
+    characterGalleryContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
+    characterGalleryContainer.addEventListener('touchcancel', handleTouchEnd, { passive: true });
 
     // Add a click event listener to handle direct clicks and taps
-    characterGalleryContainer.addEventListener('click', handleClick, { passive: false });
+    characterGalleryContainer.addEventListener('click', handleClick, { passive: true });
 
     /**
      * Handles the touch start event
@@ -192,7 +192,8 @@ export function initializeCharacterGalleryTouchHandler() {
 
         // Continue animation if velocity is still significant
         if (Math.abs(scrollVelocity) > MIN_VELOCITY) {
-            setTimeout(momentumScroll, 16);
+            // Use requestAnimationFrame for better performance
+            requestAnimationFrame(momentumScroll);
         } else {
             momentumFrame = null;
 
@@ -201,9 +202,8 @@ export function initializeCharacterGalleryTouchHandler() {
             if (Math.abs(scrollVelocity) > 0.1) {
                 scrollVelocity = 0;
                 characterGalleryContainer.style.scrollBehavior = 'auto';
-                setTimeout(() => {
-                    characterGalleryContainer.style.scrollBehavior = 'smooth';
-                }, 50);
+                // Optimized: Remove delay for better performance
+                characterGalleryContainer.style.scrollBehavior = 'smooth';
             }
         }
     }
@@ -229,7 +229,7 @@ export function initializeCharacterGalleryTouchHandler() {
             }
 
             // Don't stop propagation here to allow the container's touch handler to work
-        }, { passive: false });
+        }, { passive: true });
 
         characterGalleryGrid.addEventListener('touchmove', function(e) {
             // If we're scrolling, remove the active state from all cards
@@ -239,21 +239,21 @@ export function initializeCharacterGalleryTouchHandler() {
             }
 
             // Don't stop propagation here to allow the container's touch handler to work
-        }, { passive: false });
+        }, { passive: true });
 
         characterGalleryGrid.addEventListener('touchend', function(e) {
             const cardElements = characterGalleryGrid.querySelectorAll('.character-card.touch-active');
             cardElements.forEach(card => card.classList.remove('touch-active'));
 
             // Don't stop propagation here to allow the container's touch handler to work
-        }, { passive: false });
+        }, { passive: true });
 
         characterGalleryGrid.addEventListener('touchcancel', function(e) {
             const cardElements = characterGalleryGrid.querySelectorAll('.character-card.touch-active');
             cardElements.forEach(card => card.classList.remove('touch-active'));
 
             // Don't stop propagation here to allow the container's touch handler to work
-        }, { passive: false });
+        }, { passive: true });
     }
 
     debugLog('Character gallery touch handler initialized with momentum scrolling');

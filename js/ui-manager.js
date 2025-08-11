@@ -30,9 +30,8 @@ export function showWelcomeMessage() {
     if (messagesContainer) {
         messagesContainer.style.opacity = '0';
         messagesContainer.style.visibility = 'hidden';
-        setTimeout(() => {
-            messagesContainer.style.display = 'none';
-        }, 50);
+        // Optimized: Remove timeout delay for better performance
+        messagesContainer.style.display = 'none';
     }
 }
 
@@ -44,20 +43,18 @@ export function hideWelcomeMessage() {
         welcomeMessage.style.opacity = '0';
         welcomeMessage.style.visibility = 'hidden';
 
-        // Wait for the welcome message to be fully hidden before showing messages container
-        setTimeout(() => {
-            welcomeMessage.style.display = 'none';
+        // Optimized: Remove timeout delay for better performance
+        welcomeMessage.style.display = 'none';
 
-            // Only show messages container after welcome message is hidden
-            if (messagesContainer) {
-                messagesContainer.style.display = 'flex';
-                messagesContainer.style.height = '100%';
-                messagesContainer.style.opacity = '1';
-                messagesContainer.style.visibility = 'visible';
+        // Only show messages container after welcome message is hidden
+        if (messagesContainer) {
+            messagesContainer.style.display = 'flex';
+            messagesContainer.style.height = '100%';
+            messagesContainer.style.opacity = '1';
+            messagesContainer.style.visibility = 'visible';
 
-                // Remove auto-scroll when showing messages
-            }
-        }, 300); // Match transition duration
+            // Remove auto-scroll when showing messages
+        }
     } else if (messagesContainer) {
         // If no welcome message exists, just show the messages container
         messagesContainer.style.display = 'flex';
@@ -94,11 +91,29 @@ export function updateChatHistoryScroll() {
     debugLog('Chat history scroll updated with independent scrolling');
 }
 
+// Prevent multiple rapid toggle calls
+let toggleSidebarTimeout = null;
+
 /**
  * Toggles the sidebar visibility
  */
 export function toggleSidebar() {
     if (!sidebar) return; // Ensure sidebar element exists
+
+    // Prevent multiple rapid calls
+    if (toggleSidebarTimeout) {
+        console.log('toggleSidebar blocked - too rapid');
+        return;
+    }
+
+    // Set a short timeout to prevent rapid calls
+    toggleSidebarTimeout = setTimeout(() => {
+        toggleSidebarTimeout = null;
+    }, 300);
+
+    // Debug logging
+    console.log('toggleSidebar called');
+    console.log('Sidebar classes:', sidebar.className);
 
     // Remove focus from the sidebar toggle button to prevent it from staying highlighted
     const sidebarToggleBtn = document.getElementById('sidebar-toggle');
@@ -108,6 +123,7 @@ export function toggleSidebar() {
 
     const sidebarOverlay = document.getElementById('sidebar-overlay');
     const isOpen = sidebar.classList.contains('active');
+    console.log('Sidebar is open:', isOpen);
     
     // Update hamburger icon based on sidebar state
     updateHamburgerIcon(!isOpen);
@@ -122,9 +138,8 @@ export function toggleSidebar() {
         } else {
             // Closing
             sidebarOverlay.classList.remove('active');
-            setTimeout(() => {
-                sidebarOverlay.classList.add('hidden');
-            }, 300);
+            // Optimized: Immediate hide for better performance
+            sidebarOverlay.classList.add('hidden');
         }
     }
 
@@ -143,6 +158,7 @@ export function toggleSidebar() {
 
     // Add animation for smooth transition
     if (!isOpen) {
+        console.log('Opening sidebar');
         // Opening the sidebar
         sidebar.classList.remove('hidden');
         sidebar.classList.add('active');
@@ -162,16 +178,20 @@ export function toggleSidebar() {
         }
 
         // Update chat history scrolling behavior
-        setTimeout(() => {
-            updateChatHistoryScroll();
-            sidebar.classList.remove('animate-slide-in');
-        }, 300);
+        // Optimized: Immediate execution for better performance
+        updateChatHistoryScroll();
+        sidebar.classList.remove('animate-slide-in');
     } else {
+        console.log('Closing sidebar');
         // Closing the sidebar
         sidebar.classList.add('animate-slide-out');
         sidebar.classList.remove('animate-slide-in');
         document.body.classList.remove('sidebar-open');
-        settingsModal.classList.add('hidden');
+        
+        // Only hide settings modal if it exists and is actually visible
+        if (settingsModal && !settingsModal.classList.contains('hidden')) {
+            settingsModal.classList.add('hidden');
+        }
 
         // Collapse options container when sidebar is closed in mobile or tablet view
         const optionsContainer = document.getElementById('options-container');
@@ -196,16 +216,15 @@ export function toggleSidebar() {
             chatHistorySection.classList.remove('chat-history-hidden');
         }
 
-        // Ensure welcome message stays centered
-        if (welcomeMessage && welcomeMessage.style.display !== 'none') {
+        // Only ensure welcome message position if there are no chat messages  
+        if (welcomeMessage && welcomeMessage.style.display !== 'none' && messagesContainer && messagesContainer.children.length === 0) {
             ensureWelcomeMessagePosition();
         }
 
-        setTimeout(() => {
-            sidebar.classList.remove('active');
-            sidebar.classList.add('hidden');
-            sidebar.classList.remove('animate-slide-out');
-        }, 300);
+        // Optimized: Immediate execution for better performance
+        sidebar.classList.remove('active');
+        sidebar.classList.add('hidden');
+        sidebar.classList.remove('animate-slide-out');
     }
 }
 
@@ -240,21 +259,64 @@ export function updateHamburgerIcon(isOpen) {
 export function closeSidebar() {
     if (!sidebar) return;
     
+    // Only proceed if sidebar is currently open
+    if (sidebar.classList.contains('hidden') || !sidebar.classList.contains('active')) {
+        return;
+    }
+    
     const sidebarOverlay = document.getElementById('sidebar-overlay');
     
-    // Close sidebar
-    sidebar.classList.add('hidden');
-    sidebar.classList.remove('active');
-    document.body.classList.remove('sidebar-open');
+    // Update hamburger icon to show hamburger
+    updateHamburgerIcon(false);
     
-    // Close overlay if it exists
-    if (sidebarOverlay) {
+    // Handle overlay in mobile and tablet view first
+    if (window.innerWidth <= 1024 && sidebarOverlay) {
         sidebarOverlay.classList.remove('active');
         sidebarOverlay.classList.add('hidden');
     }
     
-    // Update hamburger icon to show hamburger
-    updateHamburgerIcon(false);
+    // Add closing animation
+    sidebar.classList.add('animate-slide-out');
+    sidebar.classList.remove('animate-slide-in');
+    document.body.classList.remove('sidebar-open');
+    
+    // Only hide settings modal if it exists and is actually visible
+    if (settingsModal && !settingsModal.classList.contains('hidden')) {
+        settingsModal.classList.add('hidden');
+    }
+
+    // Collapse options container when sidebar is closed in mobile or tablet view
+    const optionsContainer = document.getElementById('options-container');
+    if (optionsContainer && window.innerWidth <= 1024) {
+        optionsContainer.classList.add('hidden');
+        optionsContainer.classList.remove('animate-fade-in');
+    }
+
+    // Collapse all sections when sidebar is closed
+    const sectionHeaders = document.querySelectorAll('.section-header');
+    const chatHistorySection = document.querySelector('.sidebar-section:last-child');
+    sectionHeaders.forEach(header => {
+        header.classList.remove('active');
+        const content = header.nextElementSibling;
+        if (content && content.classList.contains('collapsible-content')) {
+            content.classList.remove('show');
+        }
+    });
+
+    // Ensure chat history is visible when sidebar is closed
+    if (chatHistorySection) {
+        chatHistorySection.classList.remove('chat-history-hidden');
+    }
+
+    // Only ensure welcome message position if there are no chat messages  
+    if (welcomeMessage && welcomeMessage.style.display !== 'none' && messagesContainer && messagesContainer.children.length === 0) {
+        ensureWelcomeMessagePosition();
+    }
+
+    // Complete the closing after animation
+    sidebar.classList.remove('active');
+    sidebar.classList.add('hidden');
+    sidebar.classList.remove('animate-slide-out');
 }
 
 /**
@@ -303,14 +365,13 @@ export function hideConfirmationModal() {
         confirmationModal.classList.add('animate-fade-out');
         confirmationModal.classList.remove('animate-fade-in');
 
-        setTimeout(() => {
-            confirmationModal.classList.add('hidden');
-            confirmationModal.style.display = 'none';
-            confirmationModal.classList.remove('animate-fade-out');
+        // Optimized: Immediate execution for better performance
+        confirmationModal.classList.add('hidden');
+        confirmationModal.style.display = 'none';
+        confirmationModal.classList.remove('animate-fade-out');
 
-            // Check if welcome message should be shown
-            checkAndShowWelcomeMessage();
-        }, 300);
+        // Check if welcome message should be shown
+        checkAndShowWelcomeMessage();
     }
 }
 
@@ -720,7 +781,7 @@ export function appendMessage(sender, message, files = null, isStreaming = false
                         copyButton.innerHTML = '<i class="fas fa-times mr-1"></i> No content';
                         setTimeout(() => {
                             copyButton.innerHTML = originalHTML;
-                        }, 2000);
+                        }, 1000);
                         return;
                     }
 
@@ -730,7 +791,7 @@ export function appendMessage(sender, message, files = null, isStreaming = false
                             copyButton.innerHTML = '<i class="fas fa-check mr-1"></i> Copied!';
                             setTimeout(() => {
                                 copyButton.innerHTML = originalHTML;
-                            }, 2000);
+                            }, 1000);
                         })
                         .catch((error) => {
                             // Error: Show error feedback
@@ -738,7 +799,7 @@ export function appendMessage(sender, message, files = null, isStreaming = false
                             copyButton.innerHTML = '<i class="fas fa-times mr-1"></i> Failed';
                             setTimeout(() => {
                                 copyButton.innerHTML = originalHTML;
-                            }, 2000);
+                            }, 1000);
                         });
                 });
                 controlsContainer.appendChild(copyButton);
@@ -1098,7 +1159,7 @@ export function refreshAllMessages() {
                             copyButton.innerHTML = '<i class="fas fa-times mr-1"></i> No content';
                             setTimeout(() => {
                                 copyButton.innerHTML = originalHTML;
-                            }, 2000);
+                            }, 1000);
                             return;
                         }
 
@@ -1379,10 +1440,18 @@ export function removeVisibleThinkTags() {
  */
 export function ensureWelcomeMessagePosition() {
     if (welcomeMessage) {
+        // Only show welcome message if there are no chat messages
+        const shouldShowWelcome = !messagesContainer || messagesContainer.children.length === 0;
+        
+        if (!shouldShowWelcome) {
+            // Don't make welcome message visible if there are chat messages
+            return;
+        }
+        
         // Force a reflow to ensure proper positioning
         void welcomeMessage.offsetWidth;
 
-        // Make sure welcome message is visible
+        // Make sure welcome message is visible (only if it should be)
         welcomeMessage.style.display = 'flex';
         welcomeMessage.style.visibility = 'visible';
         welcomeMessage.style.opacity = '1';

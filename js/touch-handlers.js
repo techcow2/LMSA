@@ -27,7 +27,7 @@ export async function initializeTouchHandlers() {
         }
     }
 
-    // Prevent default touch behavior except for scrollable containers
+    // Need passive: false for preventDefault() to work properly
     document.body.addEventListener('touchmove', handleTouchMove, { passive: false });
 
     // Allow scrolling within the messages container

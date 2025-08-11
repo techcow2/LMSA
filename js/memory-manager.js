@@ -5,7 +5,7 @@ import { debugLog, debugError } from './utils.js';
 
 class MemoryManager {
     constructor() {
-        this.cleanupInterval = 5 * 60 * 1000; // 5 minutes
+        this.cleanupInterval = 10 * 60 * 1000; // 10 minutes - less frequent for better performance
         this.memoryThreshold = 200 * 1024 * 1024; // 200MB threshold
         this.cleanupTimer = null;
         this.memoryObserver = null;
@@ -13,7 +13,7 @@ class MemoryManager {
         this.fileReferences = new Map(); // Track file references for cleanup
         this.domObserver = null;
         this.lastMemoryCheck = 0;
-        this.memoryCheckInterval = 30000; // 30 seconds
+        this.memoryCheckInterval = 60000; // 1 minute - less frequent memory checks
         
         this.startMemoryMonitoring();
     }
@@ -73,13 +73,14 @@ class MemoryManager {
             }
         };
         
-        // Check memory periodically
-        setInterval(checkMemory, this.memoryCheckInterval);
+        // Check memory less frequently for better performance
+        setInterval(checkMemory, this.memoryCheckInterval * 2);
         
         // Check memory on visibility change
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') {
-                setTimeout(checkMemory, 1000);
+                // Optimized: Use longer delay to reduce CPU usage
+                setTimeout(checkMemory, 3000);
             }
         });
     }
