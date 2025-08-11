@@ -1,5 +1,4 @@
 # 📱 LMSA - LM Studio Android 
-
 ![Status: Open Source](https://img.shields.io/badge/Status-Open%20Source-brightgreen)
 ![Version: Current](https://img.shields.io/badge/Version-Current-green)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
@@ -14,22 +13,23 @@
 </p>
 
 ## 🆕 What's New
-
-🎉 **Latest Update: Version 6.2** - Now Available!
+🎉 **Latest Update: Version 6.5** - Now Available!
 
 ### New Features & Improvements
+- **Added Scroll to Bottom Icon**: Enhanced navigation with a convenient scroll to bottom button for easier chat management
+- **Improved Welcome Screen Behavior**: Welcome screen now intelligently hides when the message input field is in focus for a seamless user experience
+- **Performance Optimization**: Made the app lighter and more responsive with comprehensive performance improvements
+
+### Previous Updates
 - **Disabled Auto-scroll Feature**: Disabled the auto-scroll feature to improve chat experience
 - **Fixed Keyboard Overlap Issue**: Resolved an issue where the keyboard was overlapping UI elements on certain devices
 - **Removed Scroll to Bottom Option**: Temporarily removed the scroll to bottom option from the press and hold menu
-
-### Previous Updates
 - **Vision Language Model Support**: Added full support for vision language models (VLMs). You can now upload and analyze images alongside text, enabling multimodal conversations with AI models that can understand and discuss visual content.
 - **Fixed PDF File Attachments**: Resolved the issue where PDF files weren't allowed as attachments. You can now upload and analyze PDF documents seamlessly with your AI models.
 
 ---
 
 ## 📸 Screenshots
-
 <p align="left">
   <img src="https://github.com/user-attachments/assets/ba437aee-6bc4-4442-948b-777cb34adea8" width="150" style="display:inline-block" />
   <img src="https://github.com/user-attachments/assets/67f86d21-dccb-4f1c-b4c9-ebe22551cac3" width="150" style="display:inline-block" />
@@ -38,7 +38,6 @@
 </p>
 
 ## 📋 What is LMSA?
-
 LMSA (LM Studio Assistant) is an Android front-end application for LM Studio that provides a clean, user-friendly interface to interact with language models on your Android device. It's designed with privacy in mind, offering a tracking-free experience for users who want to leverage the power of large language models on mobile.
 
 ### Key Functionality:
@@ -49,11 +48,9 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 - Customize AI behavior with system prompts and temperature settings
 
 ## 🔓 Project Status
-
 This project has transitioned to **open source** development.
 
 ### Development Information
-
 The project is now community-driven and open source. Development efforts are focused on collaborative community contributions, with regular updates and improvements available through GitHub releases.
 
 ## 🌟 Features Overview
@@ -95,7 +92,6 @@ The project is now community-driven and open source. Development efforts are foc
 - **Advanced Customization** - Adjust temperature, system prompts, and other model parameters directly from your phone
 
 ## 💻 How It Works
-
 1. Start LM Studio on your computer and load your favorite language model (including vision language models)
 2. Activate the server feature in LM Studio (usually on port 1234)
 3. Connect the Android app to your computer using your local network
@@ -109,7 +105,6 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - Customize AI behavior through temperature and system prompt settings
 
 ## 👥 Perfect For
-
 - AI enthusiasts who want to access their models on the go
 - Privacy-conscious users who prefer keeping their data local
 - Developers testing different prompts and model responses
@@ -118,13 +113,11 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - Anyone who wants the convenience of mobile access to powerful AI
 
 ## 🔧 Technical Requirements
-
 - Android 5.0 or higher
 - LM Studio installed and running on a computer with a suitable language model (text or vision)
 - Both devices connected to the same network
 
 ## 🚀 Get Started Today
-
 1. Download and install the app
 2. Start LM Studio and load a model on your computer
 3. Start the LM Studio server
@@ -140,7 +133,6 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 [**Download Now →**](https://play.google.com/store/apps/details?id=com.lmsa.app)
 
 ## ⚠️ Disclaimer
-
 LMSA is a third-party application and is not affiliated with LM Studio or its developers. This app is independently developed to provide an Android front-end interface for interacting with LM Studio. Use of this app is at your own discretion, and the developers of LMSA are not responsible for any issues arising from its use.
 
 ---
