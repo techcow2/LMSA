@@ -48,7 +48,7 @@ import { showWhatsNewModal } from './whats-new.js';
 import { showCreateCharacterModal } from './character-manager.js';
 import { handleNewChatButtonClick } from '../character-continuation-modal.js';
 import { debugLog, debugError, formatDate } from './utils.js';
-import { closeApplication, copyToClipboard, sanitizeInput, scrollToBottom, handleScroll, ensureCursorVisible } from './utils.js';
+import { closeApplication, copyToClipboard, sanitizeInput, scrollToBottom, scrollToBottomManual, handleScroll, ensureCursorVisible } from './utils.js';
 
 let abortController = null;
 let sidebar = document.getElementById('sidebar');
@@ -990,11 +990,21 @@ export function initializeEventHandlers() {
         scrollToBottomMenuButton.addEventListener('click', () => {
             debugLog('Scroll to bottom menu button clicked');
 
-            // Scroll to bottom with force=true to ensure it scrolls all the way
-            scrollToBottom(messagesContainer, true);
+            // Use manual scroll function for menu button too
+            scrollToBottomManual(messagesContainer);
 
             // Hide the context menu after clicking
             hideSendContextMenu();
+        });
+    }
+
+    // Floating scroll to bottom button
+    const scrollToBottomButton = document.getElementById('scroll-to-bottom');
+    if (scrollToBottomButton && messagesContainer) {
+        scrollToBottomButton.addEventListener('click', () => {
+            console.log('Floating scroll to bottom button clicked - manual scroll');
+            debugLog('Floating scroll to bottom button clicked');
+            scrollToBottomManual(messagesContainer);
         });
     }
 

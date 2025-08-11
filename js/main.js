@@ -138,9 +138,10 @@ async function initializeApp() {
         // Explicitly hide the button on startup
         scrollButton.classList.remove('visible', 'show');
         scrollButton.classList.add('hidden');
-        scrollButton.style.opacity = '0';
-        scrollButton.style.visibility = 'hidden';
-        scrollButton.style.pointerEvents = 'none';
+        // Remove any inline styles that might interfere with CSS classes
+        scrollButton.style.opacity = '';
+        scrollButton.style.visibility = '';
+        scrollButton.style.pointerEvents = '';
     }
 
     if (messagesContainer) {

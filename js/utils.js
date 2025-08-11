@@ -968,8 +968,7 @@ export function scrollToBottom(messagesContainer, force = false) {
     }
 
     // Determine if we should use smooth scrolling based on distance
-    const scrollDistance = distanceFromBottom;
-    const useSmooth = scrollDistance < 1000; // Only use smooth scrolling for shorter distances
+    const useSmooth = distanceFromBottom < 1000; // Only use smooth scrolling for shorter distances
 
     // Simple scrolling approach
     if (useSmooth) {
@@ -994,7 +993,7 @@ export function scrollToBottom(messagesContainer, force = false) {
             scrollHeight: messagesContainer.scrollHeight,
             clientHeight: messagesContainer.clientHeight,
             scrollTop: messagesContainer.scrollTop,
-            distance: scrollDistance,
+            distance: distanceFromBottom,
             useSmooth: useSmooth,
             forced: force
         });
@@ -1003,6 +1002,46 @@ export function scrollToBottom(messagesContainer, force = false) {
     // Reset the userHasScrolledUp flag since we've now scrolled to the bottom
     // This will only happen when we actually scroll to the bottom
     window.userHasScrolledUp = false;
+}
+
+/**
+ * Manually scrolls to bottom - always scrolls regardless of current position
+ * This is specifically for user-initiated actions like clicking the scroll button
+ * @param {HTMLElement} messagesContainer - The messages container element
+ */
+export function scrollToBottomManual(messagesContainer) {
+    if (!messagesContainer) return;
+    
+    console.log('Manual scroll to bottom triggered');
+    
+    // Calculate distance for smooth scrolling decision
+    const distanceFromBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight;
+    const useSmooth = distanceFromBottom < 1000;
+    
+    // Always scroll, regardless of current position
+    if (useSmooth) {
+        messagesContainer.scrollTo({
+            top: messagesContainer.scrollHeight,
+            behavior: 'smooth'
+        });
+    } else {
+        // For long distances, first jump most of the way instantly
+        messagesContainer.scrollTop = messagesContainer.scrollHeight - 500;
+        
+        // Then scroll smoothly for the final part
+        messagesContainer.scrollTo({
+            top: messagesContainer.scrollHeight,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Reset the userHasScrolledUp flag since we've now scrolled to the bottom
+    window.userHasScrolledUp = false;
+    
+    // Trigger scroll event to hide the button
+    setTimeout(() => {
+        handleScroll(messagesContainer);
+    }, 100);
 }
 
 /**
@@ -1140,7 +1179,32 @@ export function handleScroll(messagesContainer) {
 
         // Set a flag on the window object that can be checked by other parts of the application
         // This flag indicates whether the user has scrolled up significantly
-        window.userHasScrolledUp = distanceFromBottom >= 300;
+        // Use a smaller threshold (100px) to make the button more responsive
+        window.userHasScrolledUp = distanceFromBottom >= 100;
+
+        // Control scroll-to-bottom button visibility
+        const scrollButton = document.getElementById('scroll-to-bottom');
+        if (scrollButton) {
+            const wasVisible = scrollButton.classList.contains('visible');
+            
+            if (window.userHasScrolledUp) {
+                // Show button when user has scrolled up
+                scrollButton.classList.remove('hidden');
+                scrollButton.classList.add('visible', 'show');
+                if (!wasVisible) {
+                    console.log('Scroll-to-bottom button shown (distance from bottom:', distanceFromBottom + 'px)');
+                }
+            } else {
+                // Hide button when user is at or near bottom
+                scrollButton.classList.remove('visible', 'show');
+                scrollButton.classList.add('hidden');
+                if (wasVisible) {
+                    console.log('Scroll-to-bottom button hidden (distance from bottom:', distanceFromBottom + 'px)');
+                }
+            }
+        } else {
+            console.warn('Scroll-to-bottom button element not found');
+        }
 
         if (isDebugEnabled) {
             debugLog('Scroll position analysis:', {
@@ -1150,7 +1214,8 @@ export function handleScroll(messagesContainer) {
                 distanceFromBottom: distanceFromBottom,
                 totalScrollableHeight: totalScrollableHeight,
                 scrollPercentage: scrollPercentage.toFixed(2) + '%',
-                userHasScrolledUp: window.userHasScrolledUp
+                userHasScrolledUp: window.userHasScrolledUp,
+                buttonVisible: scrollButton ? !scrollButton.classList.contains('hidden') : false
             });
         }
     }

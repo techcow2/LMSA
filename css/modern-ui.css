@@ -1518,6 +1518,34 @@ body.light-theme #welcome-message {
     padding-bottom: 0.5rem !important;
     margin-bottom: 0.5rem !important;
   }
+  
+  /* Fix chat title cutoff on tablet landscape by reducing trash icon size */
+  #chat-history .chat-item .trash-icon-container {
+    min-width: 32px !important;
+    min-height: 32px !important;
+    padding: 6px !important;
+  }
+  
+  #chat-history .chat-item .action-wrapper {
+    margin-left: 0.375rem;
+  }
+}
+
+/* Additional fix for tablet landscape orientation where sidebar is most constrained */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  #chat-history .chat-item .trash-icon-container {
+    min-width: 28px !important;
+    min-height: 28px !important;
+    padding: 4px !important;
+  }
+  
+  #chat-history .chat-item .action-wrapper {
+    margin-left: 0.25rem;
+  }
+  
+  #chat-history .chat-item {
+    padding-right: 0.125rem !important;
+  }
 }
 
 /* Medium-sized screens (iPad Mini, larger phones) */
