@@ -2,8 +2,6 @@
 // This file has been refactored into a modular structure
 // All functionality is now imported from the js/ directory
 
-// Import loading manager first for immediate loading indication
-import { loadingManager } from './loading-manager.js';
 
 // Import the main module which initializes everything
 import './main.js';

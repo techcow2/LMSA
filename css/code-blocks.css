@@ -28,7 +28,7 @@
     z-index: 10 !important;
     font-family: 'Segoe UI', Arial, sans-serif !important;
     opacity: 0.9 !important;
-    transition: all 0.2s ease !important;
+    
 }
 
 .html-code-container:hover::before {
@@ -45,7 +45,7 @@
     content: "Copied!" !important;
     background-color: rgba(16, 185, 129, 0.9) !important;
     border-color: rgba(16, 185, 129, 0.6) !important;
-    animation: copy-button-pulse 0.5s ease !important;
+    
 }
 
 /* HTML Code Line Styling - for displaying HTML code as text */
@@ -179,7 +179,7 @@ pre[data-multiline="true"]::before {
     z-index: 10 !important;
     font-family: 'Segoe UI', Arial, sans-serif !important;
     opacity: 0.9 !important;
-    transition: all 0.2s ease !important;
+    
 }
 
 pre[data-multiline="true"]:hover::before {
@@ -198,21 +198,10 @@ pre[data-multiline="true"][data-copied="true"]::before {
     content: "Copied!" !important;
     background-color: rgba(16, 185, 129, 0.9) !important; /* Green for success */
     border-color: rgba(16, 185, 129, 0.6) !important;
-    animation: copy-button-pulse 0.5s ease !important;
+    
 }
 
 /* Animation for copy button feedback */
-@keyframes copy-button-pulse {
-    0% {
-        transform: scale(1) !important;
-    }
-    50% {
-        transform: scale(1.1) !important;
-    }
-    100% {
-        transform: scale(1) !important;
-    }
-}
 
 /* Language indicator for fallback */
 pre[data-multiline="true"]::after {
@@ -234,34 +223,9 @@ pre[data-multiline="true"]::after {
 /* Enhanced pre/code styling for better readability */
 
         /* Animation for copy button feedback */
-@keyframes copy-button-feedback {
-    0% {
-        transform: scale(1) translateY(0);
-    }
-    50% {
-        transform: scale(1.1) translateY(0);
-    }
-    100% {
-        transform: scale(1) translateY(0);
-    }
-}
 
 /* Container highlight effect is now handled in the Monaco container styles */
 
-@keyframes container-highlight {
-    0% {
-        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.1);
-        border-color: rgba(16, 185, 129, 0.2);
-    }
-    50% {
-        box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
-        border-color: rgba(16, 185, 129, 0.5);
-    }
-    100% {
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-        border-color: rgba(255, 255, 255, 0.1);
-    }
-}
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {

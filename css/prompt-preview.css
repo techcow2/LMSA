@@ -47,43 +47,13 @@
 
 #prompt-preview-area.show {
     display: block !important;
-    animation: slideDown 0.3s ease-out forwards;
 }
 
 #prompt-preview-area.hide {
-    animation: slideUp 0.3s ease-in forwards;
 }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-        max-height: 0;
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-        max-height: 300px;
-    }
-}
 
-@keyframes gentlePulse {
-    0%, 100% { 
-        opacity: 1; 
-    }
-    50% { 
-        opacity: 0.8; 
-    }
-}
 
-@keyframes blink {
-    0%, 50% { 
-        opacity: 1; 
-    }
-    51%, 100% { 
-        opacity: 0; 
-    }
-}
 
 /* Gentle pulse animation removed - using consistent blinking cursor instead */
 
@@ -92,24 +62,11 @@
     content: '|';
     color: #14b8a6; /* Teal color */
     font-weight: 300;
-    animation: blink 1s infinite;
     margin-left: 2px;
 }
 
 
 
-@keyframes slideUp {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-        max-height: 300px;
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-20px);
-        max-height: 0;
-    }
-}
 
 #prompt-preview-text {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -164,7 +121,7 @@
     left: 0;
     color: #14b8a6; /* Teal cursor */
     font-weight: 300;
-    animation: blink 1s infinite; /* Blinking cursor */
+     /* Blinking cursor */
 }
 
 /* The ::after pseudo-element now shows the teal cursor for empty preview */
@@ -174,7 +131,6 @@
 /* blinkPlaceholder keyframes removed - using standard blink animation */
 
 #prompt-preview-text {
-    transition: opacity 0.2s ease-in-out;
 }
 
 /* Smooth text updates */

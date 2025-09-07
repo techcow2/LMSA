@@ -63,7 +63,7 @@ export function showWhatsNewModal(forceShow = false) {
 
             // Animate in with a slight delay for a smoother sequence
             setTimeout(() => {
-                modalContent.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease';
+                modalContent
                 modalContent.style.transform = 'translateY(0)';
                 modalContent.style.opacity = '1';
 
@@ -95,7 +95,7 @@ function hideWhatsNewModal() {
             const featureItems = modalContent.querySelectorAll('.feature-item');
 
             // Apply exit animation to the content
-            modalContent.style.transition = 'transform 0.3s ease-in, opacity 0.3s ease-in';
+            modalContent
             modalContent.style.transform = 'translateY(20px)';
             modalContent.style.opacity = '0';
 
@@ -110,13 +110,13 @@ function hideWhatsNewModal() {
 
                     // Reset the content styles for next time
                     if (modalContent) {
-                        modalContent.style.transition = '';
+                        modalContent
                         modalContent.style.transform = '';
                         modalContent.style.opacity = '';
 
                         // Reset feature item styles
                         featureItems.forEach(item => {
-                            item.style.transition = '';
+                            item
                             item.style.transform = '';
                             item.style.opacity = '';
                         });

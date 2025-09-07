@@ -8,7 +8,6 @@
     background-color: var(--modal-overlay);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    transition: all 0.3s ease;
     padding: 1rem;
     overflow-y: auto;
     opacity: 0.95;
@@ -27,8 +26,6 @@
     border: 1px solid var(--border-color);
     border-radius: 1rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
-    animation: modalFadeIn 0.25s ease-out forwards;
     max-height: 90vh;
     width: 100%;
     max-width: 700px;
@@ -74,7 +71,6 @@
     font-size: 1rem;
     line-height: 1.5;
     padding: 1rem;
-    transition: all 0.2s ease;
     resize: none;
     min-height: 200px;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -97,7 +93,6 @@
 #system-prompt-overlay button {
     border-radius: 0.5rem;
     font-weight: 500;
-    transition: all 0.2s ease;
     padding: 0.625rem 1.25rem;
     display: flex;
     align-items: center;
@@ -177,7 +172,6 @@
     background-color: transparent;
     border: none;
     color: var(--modal-text);
-    transition: all 0.2s ease;
     cursor: pointer;
     flex-shrink: 0;
 }
@@ -623,7 +617,6 @@
     /* Improve touch feedback */
     #system-prompt-overlay button:active {
         transform: scale(0.98);
-        transition: transform 0.1s ease;
     }
 
     /* Prevent text selection on buttons for better touch experience */
@@ -665,13 +658,3 @@
 }
 
 /* Animation for modal appearance */
-@keyframes modalFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}

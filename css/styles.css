@@ -62,7 +62,6 @@ body.preview-mode {
     width: 100%;
     position: relative;
     z-index: 1;
-    transition: opacity 0.1s ease, visibility 0.1s ease;
     scroll-behavior: smooth; /* Enable smooth scrolling behavior */
 }
 
@@ -81,7 +80,6 @@ body.preview-mode {
     border-radius: 0.75rem;
     line-height: 1.5;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.1s ease;
 }
 
 /* Adjust message width on smaller screens */
@@ -179,7 +177,6 @@ body.preview-mode {
     color: #7cb7ff;
     padding: 2px 6px;
     border-radius: 4px;
-    transition: all 0.2s ease;
 }
 
 .reasoning-toggle:hover {
@@ -203,7 +200,6 @@ body.preview-mode {
     border-left: 3px solid #7cb7ff;
     background-color: var(--settings-label-bg);
     border-radius: 0 8px 8px 0;
-    transition: all 0.1s ease;
     position: relative;
     font-size: 1em;
     line-height: 1.6;
@@ -246,7 +242,6 @@ body.preview-mode {
     left: 0;
     right: 0;
     bottom: 0;
-    transition: opacity 0.1s ease, visibility 0.1s ease;
     z-index: 5; /* Increased to ensure it's above other content but below modals */
     pointer-events: auto; /* Allow button interaction */
     transform: none !important; /* Prevent transform from affecting welcome message */
@@ -426,7 +421,6 @@ body.preview-mode {
 
 /* Welcome screen theme toggle */
 #welcome-theme-toggle {
-    transition: all 0.1s ease;
 }
 
 #welcome-theme-toggle label {
@@ -457,7 +451,6 @@ body.preview-mode {
     background-color: var(--toggle-bg);
     border: 1px solid var(--toggle-border);
     border-radius: 34px;
-    transition: background-color 0.1s ease;
     cursor: pointer;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
@@ -470,7 +463,6 @@ body.preview-mode {
     bottom: 3px;
     background-color: var(--toggle-dot);
     border-radius: 50%;
-    transition: transform 0.1s ease;
     z-index: 2;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
@@ -502,7 +494,6 @@ body.preview-mode {
 /* Icon styles */
 #welcome-theme-toggle .dark-icon,
 #welcome-theme-toggle .light-icon {
-    transition: all 0.1s ease;
 }
 
 body.light-theme #welcome-theme-toggle .light-icon {
@@ -552,7 +543,6 @@ body.light-theme #welcome-footer p {
     background-image: linear-gradient(to right, rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 1), rgba(44, 62, 80, 0.9));
     overflow: hidden;
     z-index: 10;
-    transition: height 0.1s ease;
     /* will-change removed - not needed for static height changes */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     position: sticky !important;
@@ -585,7 +575,6 @@ body.light-theme #loaded-model-wrapper {
     overflow: hidden;
     visibility: visible;
     /* Simplified transition for better performance */
-    transition: transform 0.1s ease, opacity 0.1s ease;
     /* No background properties - these are handled by the wrapper */
     background-color: transparent;
     background-image: none;
@@ -614,7 +603,6 @@ body.light-theme #loaded-model {
     border-bottom: none;
     visibility: hidden;
     /* Simplified transition for better performance */
-    transition: transform 0.1s ease, opacity 0.1s ease;
 }
 
 /* Loading indicator styles */
@@ -648,10 +636,6 @@ body.light-theme #loaded-model {
 
 /* Ellipsis animation removed for performance */
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
 
 .animate-spin {
     /* Removed spin animation for better performance */
@@ -700,7 +684,6 @@ body.light-theme #loaded-model {
 
 .chat-item {
     border-radius: 8px;
-    transition: all 0.2s ease;
     margin-bottom: 0.5rem;
     padding: 0.5rem 0.75rem; /* Reduced from 0.75rem 0.875rem */
     background: var(--chat-item-bg);
@@ -743,7 +726,6 @@ body.light-theme #loaded-model {
 /* Mobile-first sidebar styles */
 #sidebar {
     width: 280px;
-    transition: transform 0.1s ease, opacity 0.1s ease;
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.4);
     background-image: var(--sidebar-bg);
     border-right: 1px solid var(--border-color);
@@ -809,7 +791,6 @@ body.light-theme #loaded-model {
     z-index: 40;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.1s ease, visibility 0.1s ease;
 }
 
 #sidebar-overlay.active {
@@ -847,7 +828,6 @@ body.light-theme #loaded-model {
     justify-content: center;
     border-radius: 0.75rem;
     background: transparent;
-    transition: all 0.2s ease;
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
@@ -867,7 +847,6 @@ body.light-theme #loaded-model {
     padding: 0.875rem 1.25rem;
     margin: 0.25rem 0.75rem;
     border-radius: 0.75rem;
-    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     color: var(--sidebar-text);
@@ -891,7 +870,6 @@ body.light-theme #loaded-model {
     border-radius: 0.75rem;
     font-weight: 500;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-    transition: all 0.2s ease;
     -webkit-tap-highlight-color: transparent !important;
     -webkit-touch-callout: none !important;
     -webkit-user-select: none !important;
@@ -955,14 +933,12 @@ body.light-theme #loaded-model {
   left: 0;
   right: 0;
   z-index: 1000;
-  transition: transform 0.1s ease;
   width: 100%;
 }
 
 /* Ensure messages container resizes properly when keyboard is visible */
 .android-webview #messages {
   max-height: calc(100vh - 200px) !important;
-  transition: max-height 0.3s ease;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -1135,7 +1111,6 @@ body.light-theme #loaded-model {
 #sidebar .section-header.touch-dragging {
     background: transparent !important;
     transform: none !important;
-    transition: none !important;
     -webkit-tap-highlight-color: transparent !important;
 }
 
@@ -1153,7 +1128,6 @@ body.light-theme #loaded-model {
     -webkit-tap-highlight-color: transparent !important;
     background-color: transparent !important;
     transform: none !important;
-    transition: none !important;
     pointer-events: auto !important;
 }
 
@@ -1203,7 +1177,6 @@ body.light-theme #loaded-model {
     flex-direction: column;
     min-height: 100px;
     touch-action: auto;
-    transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease;
     overflow: hidden;
 }
 
@@ -1231,12 +1204,10 @@ body.light-theme #loaded-model {
 .collapsible-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
 }
 
 .collapsible-content.show {
     max-height: 1000px;
-    transition: max-height 0.5s ease-in;
 }
 
 /* Section header styles */
@@ -1250,7 +1221,6 @@ body.light-theme #loaded-model {
 }
 
 .section-header .fa-chevron-down {
-    transition: transform 0.1s ease;
 }
 
 .section-header.active .fa-chevron-down {
@@ -1389,7 +1359,6 @@ body.light-theme #loaded-model {
 /* Updated styles for send and stop buttons */
 #chat-form button#send-button,
 #chat-form button#stop-button {
-    transition: all 0.1s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1831,7 +1800,6 @@ header .header-controls {
     outline: none !important;
     position: relative;
     flex-shrink: 0; /* Prevent buttons from shrinking */
-    transition: all 0.2s ease;
 }
 
 /* Prevent any header button from staying highlighted */
@@ -1852,14 +1820,12 @@ header .header-controls {
     justify-content: center;
     width: 24px; /* Default size, overridden by media queries */
     height: 24px;
-    transition: all 0.2s ease;
 }
 
 /* Header icon styling */
 .header-icon {
     color: var(--header-icon);
     stroke: var(--header-icon);
-    transition: all 0.2s ease;
     flex-shrink: 0;
 }
 
@@ -1871,7 +1837,6 @@ button:hover .header-icon {
 
 /* Smooth transitions for dynamic button hiding/showing */
 .header-btn {
-    transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .header-btn.hiding {
@@ -1945,14 +1910,6 @@ header button.header-btn {
     }
 }
 
-@keyframes subtle-glow {
-    0%, 100% {
-        text-shadow: var(--title-shadow);
-    }
-    50% {
-        text-shadow: var(--title-shadow), 0 0 8px rgba(59, 130, 246, 0.2);
-    }
-}
 
 h1 {
     font-size: 1.5rem;
@@ -2016,7 +1973,6 @@ h1.header-title::after {
 
 /* Smooth transition for hamburger icon transformation */
 #sidebar-toggle svg path {
-    transition: all 0.1s ease;
 }
 
 /* Scrollbar styles for webkit browsers - hide by default except for specific elements */
@@ -2131,18 +2087,6 @@ body.light-theme #send-context-menu {
 
 /* MenuAppear animation removed for performance */
 
-@keyframes menuFadeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(10px) scale(0.95);
-        filter: blur(5px);
-    }
-}
 
 /* Add fade-out animation class */
 #send-context-menu.menu-fade-out {
@@ -2151,16 +2095,6 @@ body.light-theme #send-context-menu {
 }
 
 /* Add subtle ripple effect for touch feedback */
-@keyframes ripple {
-    0% {
-        transform: scale(0);
-        opacity: 0.5;
-    }
-    100% {
-        transform: scale(1.5);
-        opacity: 0;
-    }
-}
 
 #send-context-menu button::after {
     content: '';
@@ -2214,7 +2148,6 @@ body.light-theme #send-context-menu {
     border: none;
     color: #e0e0e0;
     cursor: pointer;
-    transition: background-color 0.2s ease;
 }
 
 #send-context-menu button {
@@ -2227,7 +2160,6 @@ body.light-theme #send-context-menu {
     border: none;
     color: #e2e8f0;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     font-weight: 500;
     overflow: hidden;
@@ -2269,7 +2201,6 @@ body.light-theme #send-context-menu button:not(:last-child) {
         rgba(var(--bg-color-rgb, 37, 99, 235), 0) 100%);
     opacity: 0;
     z-index: -1;
-    transition: opacity 0.3s ease, transform 0.5s ease;
     transform: translateX(-100%);
 }
 
@@ -2289,20 +2220,8 @@ body.light-theme #send-context-menu button:not(:last-child) {
 }
 
 /* Touch feedback - pulse effect */
-@keyframes button-pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(var(--bg-color-rgb, 37, 99, 235), 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 10px rgba(var(--bg-color-rgb, 37, 99, 235), 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(var(--bg-color-rgb, 37, 99, 235), 0);
-    }
-}
 
 #send-context-menu button.touch-active {
-    animation: button-pulse 0.8s ease-out;
     background-color: rgba(var(--bg-color-rgb, 37, 99, 235), 0.15);
 }
 
@@ -2336,7 +2255,6 @@ body.light-theme #send-context-menu button:active {
         0 1px 3px rgba(0, 0, 0, 0.2),
         0 0 0 1px rgba(255, 255, 255, 0.1) inset,
         0 0 10px 0 rgba(var(--bg-color-rgb, 37, 99, 235), 0.3);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     border-radius: 50%;
     position: relative;
     z-index: 1;
@@ -2371,35 +2289,8 @@ body.light-theme #send-context-menu .icon-container {
 }
 
 /* Touch feedback for icon containers */
-@keyframes icon-touch-pulse {
-    0% {
-        transform: scale(1);
-        box-shadow:
-            0 4px 6px rgba(0, 0, 0, 0.15),
-            0 1px 3px rgba(0, 0, 0, 0.2),
-            0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-            0 0 0 0 rgba(var(--bg-color-rgb, 37, 99, 235), 0.7);
-    }
-    50% {
-        transform: scale(1.15);
-        box-shadow:
-            0 4px 6px rgba(0, 0, 0, 0.15),
-            0 1px 3px rgba(0, 0, 0, 0.2),
-            0 0 0 1px rgba(255, 255, 255, 0.2) inset,
-            0 0 20px 5px rgba(var(--bg-color-rgb, 37, 99, 235), 0.5);
-    }
-    100% {
-        transform: scale(1);
-        box-shadow:
-            0 4px 6px rgba(0, 0, 0, 0.15),
-            0 1px 3px rgba(0, 0, 0, 0.2),
-            0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-            0 0 0 0 rgba(var(--bg-color-rgb, 37, 99, 235), 0);
-    }
-}
 
 #send-context-menu button.touch-active .icon-container {
-    animation: icon-touch-pulse 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Set specific colors for each button's icon container */
@@ -2462,7 +2353,6 @@ body.light-theme #send-context-menu .menu-header {
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.1s ease, visibility 0.1s ease;
 }
 
 #empty-message-modal {
@@ -2485,7 +2375,6 @@ body.light-theme #send-context-menu .menu-header {
     max-width: 90%;
     width: 320px;
     transform: scale(0.9);
-    transition: transform 0.1s ease;
     margin: 0 auto; /* Center horizontally */
 }
 
@@ -2536,7 +2425,6 @@ body.light-theme #send-context-menu .menu-header {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
-    transition: background-color 0.1s ease;
 }
 
 #empty-message-modal .close-modal:hover {
@@ -2546,14 +2434,12 @@ body.light-theme #send-context-menu .menu-header {
 /* Style for long-press highlight */
 .long-press-highlight {
     background-color: rgba(52, 152, 219, 0.2) !important;
-    transition: background-color 0.1s ease;
 }
 
 /* Long-press effect for send button */
 .long-press-active {
     background-color: #2563eb !important; /* Darker blue */
     transform: scale(0.95);
-    transition: all 0.2s ease;
     position: relative;
     overflow: hidden;
 }
@@ -2567,15 +2453,10 @@ body.light-theme #send-context-menu .menu-header {
     height: 100%;
     width: 0;
     background-color: rgba(255, 255, 255, 0.3);
-    animation: longPressProgress 1.3s linear forwards;
     pointer-events: none; /* Ensure it doesn't interfere with clicks */
     z-index: 1; /* Keep it above the button content but below other elements */
 }
 
-@keyframes longPressProgress {
-    0% { width: 0; }
-    100% { width: 100%; }
-}
 
 /* New styles for the exit button */
 #exit-btn {
@@ -2683,7 +2564,6 @@ body.light-theme #send-context-menu .menu-header {
 
 /* Multi-step settings form styles */
 .settings-step {
-    transition: all 0.1s ease;
     opacity: 1;
     transform: translateX(0);
     height: auto;
@@ -2704,38 +2584,15 @@ body.light-theme #send-context-menu .menu-header {
 /* Step indicator styles */
 #settings-step-indicator {
     font-weight: 500;
-    transition: all 0.1s ease;
 }
 
 /* Animation for step transitions */
-@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
 
-@keyframes slideInLeft {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
 
 .slide-in-right {
-    animation: slideInRight 0.3s forwards;
 }
 
 .slide-in-left {
-    animation: slideInLeft 0.3s forwards;
 }
 
 /* Mobile-specific settings modal adjustments */
@@ -2958,8 +2815,7 @@ body.light-theme #send-context-menu .menu-header {
     /* Smartphone-like step navigation for tablets */
     #settings-modal .settings-step {
         padding: 0.5rem 0;
-        transition: all 0.1s ease;
-        opacity: 0;
+            opacity: 0;
         transform: translateX(100%);
         height: 0;
         overflow: hidden;
@@ -2999,8 +2855,7 @@ body.light-theme #send-context-menu .menu-header {
         justify-content: center;
         flex: 1;
         border-radius: 0.5rem;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     #settings-modal button[id^="to-"] {
@@ -3018,8 +2873,7 @@ body.light-theme #send-context-menu .menu-header {
         justify-content: center;
         flex: 1;
         border-radius: 0.5rem;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     #settings-modal button[id^="to-"]:hover,
@@ -3130,12 +2984,10 @@ body.light-theme #send-context-menu .menu-header {
 
     /* Animation for step transitions */
     #settings-modal .slide-in-right {
-        animation: slideInRight 0.3s forwards;
-    }
+        }
 
     #settings-modal .slide-in-left {
-        animation: slideInLeft 0.3s forwards;
-    }
+        }
 
     /* Improved keyboard handling for tablets */
     #settings-modal .keyboard-visible {
@@ -3150,8 +3002,7 @@ body.light-theme #send-context-menu .menu-header {
         font-size: 1rem; /* Smaller font size */
         width: 100%;
         border-radius: 0.5rem;
-        transition: all 0.2s ease;
-        background-color: #22c55e;
+            background-color: #22c55e;
         box-sizing: border-box; /* Ensure padding is included in width calculation */
         transform: none !important; /* Prevent any transforms that might cause overflow */
     }
@@ -3243,43 +3094,6 @@ body.light-theme #send-context-menu .menu-header {
     }
 
     /* Animation for step transitions */
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-
-    @keyframes slideInLeft {
-        from {
-            transform: translateX(-100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-
-/* Additional fixes for iOS and Android */
-#server-ip:-webkit-autofill,
-#server-port:-webkit-autofill,
-.theme-aware-input:-webkit-autofill,
-#server-ip:-webkit-autofill:hover,
-#server-port:-webkit-autofill:hover,
-.theme-aware-input:-webkit-autofill:hover,
-#server-ip:-webkit-autofill:focus,
-#server-port:-webkit-autofill:focus,
-.theme-aware-input:-webkit-autofill:focus {
-    -webkit-text-fill-color: var(--settings-input-text) !important;
-    -webkit-box-shadow: 0 0 0px 1000px var(--settings-input-bg) inset !important;
-    transition: background-color 5000s ease-in-out 0s !important;
-    caret-color: var(--settings-input-text) !important;
-}
 
 /* Mobile-specific input field improvements */
 @media (max-width: 768px) {
@@ -3528,7 +3342,6 @@ body.light-theme #send-context-menu .menu-header {
     position: absolute;
     top: 1px;
     left: 1px;
-    transition: transform 0.3s ease, background-color 0.3s ease !important;
 }
 
 /* Settings modal toggle switch styles */
@@ -3710,7 +3523,6 @@ body.light-theme #clear-system-prompt-modal #close-clear-system-prompt-modal:hov
 }
 
 #confirmation-modal button {
-    transition: all 0.1s ease;
 }
 
 #confirmation-modal button:hover {
@@ -3718,30 +3530,9 @@ body.light-theme #clear-system-prompt-modal #close-clear-system-prompt-modal:hov
 }
 
 /* Modal animations */
-@keyframes modalFadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
 
-@keyframes modalFadeOut {
-    from {
-        opacity: 1;
-        transform: scale(1);
-    }
-    to {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-}
 
 .modal-container {
-    transition: opacity 0.3s ease, visibility 0.3s ease, background-color 0.3s ease;
     z-index: 1000; /* Ensure modals appear above other content */
     display: flex;
     flex-direction: column;
@@ -3758,7 +3549,6 @@ body.light-theme #clear-system-prompt-modal #close-clear-system-prompt-modal:hov
 }
 
 .modal-content {
-    transition: transform 0.3s ease, opacity 0.3s ease;
     position: relative;
     z-index: 1002; /* Higher than the modal container */
     pointer-events: auto; /* Ensure clicks are registered */
@@ -3872,11 +3662,9 @@ body.light-theme #clear-system-prompt-modal #close-clear-system-prompt-modal:hov
 }
 
 .animate-modal-in {
-    animation: modalFadeIn 0.3s ease forwards;
 }
 
 .animate-modal-out {
-    animation: modalFadeOut 0.3s ease forwards;
 }
 
 /* File upload styling */
@@ -3911,7 +3699,6 @@ body.light-theme .file-previews {
     font-size: 0.9em;
     border: 1px solid #444;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s ease-in-out;
 }
 
 .file-preview i {
@@ -3919,10 +3706,6 @@ body.light-theme .file-previews {
     color: #3498db;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
 /* Range slider styles */
 input[type="range"] {
@@ -3983,7 +3766,6 @@ input[type="range"]:disabled::-moz-range-thumb {
     bottom: 0;
     background-color: #374151;
     border-radius: 34px;
-    transition: background-color 0.1s ease;
     cursor: pointer;
 }
 
@@ -3995,7 +3777,6 @@ input[type="range"]:disabled::-moz-range-thumb {
     bottom: 4px;
     background-color: white;
     border-radius: 50%;
-    transition: transform 0.1s ease;
     z-index: 2;
 }
 
@@ -4083,7 +3864,6 @@ span.visible-content {
 /* Special styling for streaming content container */
 .visible-streaming-content {
     min-height: 1.5em;
-    animation: fadeIn 0.3s ease;
     white-space: normal !important; /* Ensure text wraps properly */
     word-break: break-word !important; /* Allow word breaking for long words */
     word-wrap: break-word !important; /* Legacy property for IE support */
@@ -4107,28 +3887,20 @@ span.visible-content {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    animation: fadeIn 0.3s ease;
 }
 
 .thinking-indicator i {
     color: #7cb7ff;
     font-size: 1.1em;
-    animation: pulse-brain 1.5s ease-in-out infinite;
 }
 
 /* Animation for the brain icon */
-@keyframes pulse-brain {
-    0% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.15); opacity: 1; color: #6cbdff; }
-    100% { transform: scale(1); opacity: 0.8; }
-}
 
 /* Animated thinking text */
 .thinking-indicator::after {
     content: 'Thinking';
     display: inline-block;
     position: relative;
-    animation: thinking-dots 2s infinite steps(4, end);
     overflow: hidden;
     vertical-align: bottom;
     white-space: nowrap;
@@ -4141,13 +3913,6 @@ span.visible-content {
 }
 
 /* Animation for the thinking dots */
-@keyframes thinking-dots {
-    0% { content: 'Thinking'; }
-    25% { content: 'Thinking.'; }
-    50% { content: 'Thinking..'; }
-    75% { content: 'Thinking...'; }
-    100% { content: 'Thinking'; }
-}
 
 /* Add a subtle gradient animation to the background */
 .thinking-indicator::before {
@@ -4160,14 +3925,9 @@ span.visible-content {
     background: linear-gradient(90deg, transparent, rgba(124, 183, 255, 0.1), transparent);
     width: 200%;
     z-index: 0;
-    animation: shimmer-bg 3s linear infinite;
     pointer-events: none;
 }
 
-@keyframes shimmer-bg {
-    0% { transform: translateX(-50%); }
-    100% { transform: translateX(0%); }
-}
 
 .thinking-toggle {
     font-size: 0.85em;
@@ -4176,7 +3936,6 @@ span.visible-content {
     color: #7cb7ff;
     padding: 2px 6px;
     border-radius: 4px;
-    transition: all 0.2s ease;
 }
 
 .thinking-toggle:hover {
@@ -4202,7 +3961,6 @@ span.visible-content {
 /* Message controls container */
 .message-controls {
     opacity: 0;
-    transition: opacity 0.3s ease;
     display: flex;
     justify-content: flex-end;
     margin-top: 8px;
@@ -4224,7 +3982,6 @@ span.visible-content {
     display: flex;
     align-items: center;
     color: #d1d5db; /* Light gray by default */
-    transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     white-space: nowrap;
 }
@@ -4280,7 +4037,6 @@ body.light-theme .copy-btn:hover {
     display: flex;
     align-items: center;
     color: #d1d5db; /* Light gray by default */
-    transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     white-space: nowrap;
     position: relative; /* For focus indicator */
@@ -4296,12 +4052,10 @@ body.window-blurred .regenerate-btn::after {
     height: 6px;
     background-color: rgba(59, 130, 246, 0.5);
     border-radius: 50%;
-    animation: pulse 2s infinite;
 }
 
 /* Visual feedback for clicked state */
 .regenerate-btn.clicked {
-    animation: button-click-feedback 0.3s ease-out;
     background-color: rgba(59, 130, 246, 0.3);
     border-color: rgba(59, 130, 246, 0.7);
 }
@@ -4311,17 +4065,7 @@ body.window-blurred .regenerate-btn::after {
     background-color: rgba(59, 130, 246, 0.3);
 }
 
-@keyframes button-click-feedback {
-    0% { transform: scale(0.95); background-color: rgba(59, 130, 246, 0.5); }
-    50% { transform: scale(1.05); background-color: rgba(59, 130, 246, 0.3); }
-    100% { transform: scale(1); background-color: rgba(59, 130, 246, 0.2); }
-}
 
-@keyframes pulse {
-    0% { opacity: 0.3; }
-    50% { opacity: 1; }
-    100% { opacity: 0.3; }
-}
 
 /* Light theme regenerate button text color */
 body.light-theme .regenerate-btn {
@@ -4353,17 +4097,8 @@ body.light-theme .regenerate-btn:hover {
 
 /* Animation for regenerate button on hover */
 .regenerate-btn:hover i {
-    animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
 
 /* Make the button more touch-friendly on small screens */
 @media (max-width: 480px) {
@@ -4382,13 +4117,12 @@ body.light-theme .regenerate-btn:hover {
 
     /* Fix for endless animation on mobile */
     .regenerate-btn:hover i {
-        animation: none; /* Disable hover animation on mobile */
+        /* Disable hover animation on mobile */
     }
 
     /* Only apply animation when actively pressing */
     .regenerate-btn:active i {
-        animation: spin 1s linear;
-        animation-iteration-count: 1; /* Run only once */
+         /* Run only once */
     }
 
     /* Remove focus styles that might keep the button in "active" state */
@@ -4492,7 +4226,7 @@ body.light-theme .regenerate-btn:hover {
     -ms-user-select: none; /* IE/Edge */
     position: relative;
     overflow: hidden; /* Contain the animation within the button */
-    transition: all 0.15s ease-out; /* Faster transition for more immediate feedback */
+    /* Faster transition for more immediate feedback */
 }
 
 /* Use a pseudo-element for the animation instead of box-shadow */
@@ -4505,20 +4239,9 @@ body.light-theme .regenerate-btn:hover {
     bottom: 0;
     border-radius: inherit; /* Match the button's border radius */
     box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.7); /* Inner shadow instead of outer */
-    animation: pulse-button-inner 0.6s infinite alternate;
     pointer-events: none; /* Make sure it doesn't interfere with clicks */
 }
 
-@keyframes pulse-button-inner {
-    0% {
-        box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.7);
-        background-color: rgba(59, 130, 246, 0.1);
-    }
-    100% {
-        box-shadow: inset 0 0 0 3px rgba(59, 130, 246, 0.9);
-        background-color: rgba(59, 130, 246, 0.2);
-    }
-}
 
 /* Message content container */
 .message-content {
@@ -4548,7 +4271,6 @@ body.light-theme .regenerate-btn:hover {
     display: flex;
     align-items: center;
     color: #d1d5db; /* Light gray by default */
-    transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     white-space: nowrap;
 }
@@ -4615,7 +4337,6 @@ body.light-theme .regenerate-btn:hover {
 /* Edit container styles */
 .edit-container {
     margin-bottom: 10px;
-    animation: fadeIn 0.3s ease;
     position: relative;
     margin-top: 1rem;
 }
@@ -4623,7 +4344,6 @@ body.light-theme .regenerate-btn:hover {
 .edit-textarea {
     min-height: 80px;
     line-height: 1.5;
-    transition: border-color 0.2s ease;
 }
 
 .edit-textarea:focus {
@@ -4650,7 +4370,6 @@ body.light-theme .regenerate-btn:hover {
     z-index: 15;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
     cursor: pointer;
     pointer-events: none; /* Start with no pointer events */
     right: auto; /* Remove right positioning */
@@ -4661,14 +4380,13 @@ body.light-theme .regenerate-btn:hover {
     opacity: 0.7; /* More visible when shown */
     visibility: visible;
     pointer-events: auto; /* Enable pointer events when visible */
-    animation: pulse-subtle 2s infinite;
 }
 
 #scroll-to-bottom.hidden {
     opacity: 0;
     visibility: hidden;
     pointer-events: none; /* Disable pointer events when hidden */
-    animation: none; /* Stop any animations */
+    /* Stop any animations */
 }
 
 #scroll-to-bottom:hover {
@@ -4687,42 +4405,15 @@ body.light-theme .regenerate-btn:hover {
     color: white; /* Ensure icon is white */
 }
 
-@keyframes pulse-subtle {
-    0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.5); }
-    50% { box-shadow: 0 0 0 5px rgba(52, 152, 219, 0.2); }
-    100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
-}
 
 /* Modal animations */
 .animate-modal-in {
-    animation: modalFadeIn 0.3s ease forwards;
 }
 
 .animate-modal-out {
-    animation: modalFadeOut 0.3s ease forwards;
 }
 
-@keyframes modalIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
 
-@keyframes modalOut {
-    from {
-        opacity: 1;
-        transform: scale(1);
-    }
-    to {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-}
 
 /* Import modal styles */
 #import-modal .modal-content {
@@ -4731,7 +4422,6 @@ body.light-theme .regenerate-btn:hover {
 }
 
 #import-status {
-    transition: all 0.3s ease-in-out;
 }
 
 /* Media query for mobile devices */
@@ -4954,7 +4644,6 @@ body.light-theme .regenerate-btn:hover {
 
 /* What's New modal specific styles */
 #whats-new-modal {
-    transition: opacity 0.5s ease, visibility 0.5s ease;
     opacity: 0;
     visibility: hidden;
     backdrop-filter: blur(0px);
@@ -4964,14 +4653,12 @@ body.light-theme .regenerate-btn:hover {
     opacity: 1;
     visibility: visible;
     backdrop-filter: blur(8px);
-    transition: opacity 0.5s ease, visibility 0.5s ease, backdrop-filter 0.6s ease;
 }
 
 #whats-new-modal.fade-out {
     opacity: 0;
     visibility: hidden;
     backdrop-filter: blur(0px);
-    transition: opacity 0.4s ease, visibility 0.4s ease, backdrop-filter 0.3s ease;
 }
 
 #whats-new-modal.hidden {
@@ -4992,7 +4679,6 @@ body.light-theme .regenerate-btn:hover {
     display: flex;
     flex-direction: column;
     cursor: default;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
     border-radius: 1.25rem;
     overflow: hidden;
     transform: translateY(0) scale(1);
@@ -5024,13 +4710,11 @@ body.light-theme #whats-new-modal .modal-content {
 
 /* About modal specific styles */
 #about-modal {
-    transition: opacity 0.1s ease, visibility 0.1s ease;
 }
 
 #about-modal .modal-content {
     transform: translateY(20px);
     opacity: 0;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
 }
 
 #about-modal:not(.hidden) .modal-content {
@@ -5603,13 +5287,11 @@ body.light-theme #about-modal #open-help-link:hover {
     /* Improve touch feedback */
     #about-modal .professional-button:active {
         transform: scale(0.98);
-        transition: transform 0.1s ease;
-    }
+        }
 
     #about-modal #close-about:active {
         transform: scale(0.95);
-        transition: transform 0.1s ease;
-    }
+        }
 
     /* Prevent text selection on touch */
     #about-modal * {
@@ -5628,10 +5310,6 @@ body.light-theme #about-modal #open-help-link:hover {
     }
 }
 
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
 
 #about-modal .version-badge {
     position: relative;
@@ -5646,7 +5324,6 @@ body.light-theme #about-modal #open-help-link:hover {
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    animation: shimmer 2s infinite;
 }
 
 /* Light theme styles for About modal */
@@ -5660,9 +5337,6 @@ body.light-theme #about-modal .text-blue-400 {
     color: #2563eb !important; /* Darker blue for light theme */
 }
 
-@keyframes shimmer {
-    to { left: 100%; }
-}
 
 #whats-new-modal .feature-item {
     position: relative;
@@ -5671,7 +5345,6 @@ body.light-theme #about-modal .text-blue-400 {
     padding: 0.75rem 1rem;
     border-radius: 0.75rem;
     background: rgba(255, 255, 255, 0.06);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     border: 1px solid rgba(59, 130, 246, 0.15);
     box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.1);
 }
@@ -5687,7 +5360,6 @@ body.light-theme #about-modal .text-blue-400 {
     opacity: 1;
     font-size: 1.25rem;
     filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
-    transition: transform 0.1s ease;
 }
 
 #whats-new-modal .feature-item:hover i {
@@ -5702,7 +5374,6 @@ body.light-theme #about-modal .text-blue-400 {
     justify-content: center;
     width: 2.5rem;
     height: 2.5rem;
-    transition: all 0.1s ease;
     box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.2);
 }
 
@@ -5792,7 +5463,6 @@ body.light-theme #whats-new-modal .px-1\.5.py-0\.5.bg-blue-500\/20 {
     letter-spacing: 0.02em;
     box-shadow: 0 8px 15px -5px rgba(37, 99, 235, 0.35);
     transform: translateY(0);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #got-it-whats-new:hover {
@@ -5903,7 +5573,6 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
     position: relative;
     padding: 6px 0;
     opacity: 0.7;
-    transition: opacity 0.3s ease;
 }
 
 .scroll-indicator:hover {
@@ -5911,17 +5580,8 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
 }
 
 .scroll-indicator.bounce .h-1 {
-    animation: bounce 0.5s ease-in-out;
 }
 
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(3px);
-    }
-}
 
 /* Help modal scrollbar styles */
 #help-modal .help-modal-content {
@@ -5988,7 +5648,6 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
     padding: 0.75rem 1rem;
     margin-bottom: 0.75rem;
     border-radius: 0.5rem;
-    transition: all 0.1s ease;
     border: none;
     cursor: pointer;
     display: flex;
@@ -6005,7 +5664,6 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
     border-radius: 0.75rem;
     font-weight: 500;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-    transition: all 0.2s ease;
 }
 
 #new-chat:hover {
@@ -6132,7 +5790,6 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
     overflow: hidden;
     opacity: 0;
     transform: translateY(-10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
     margin-left: 1rem;
     padding-left: 0.5rem;
@@ -6149,7 +5806,6 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
 
 #import-export-group-btn .fa-caret-down,
 #import-export-group-btn .fa-caret-up {
-    transition: transform 0.1s ease;
     margin-left: auto;
 }
 
@@ -6158,34 +5814,12 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
 }
 
 /* Sidebar animation keyframes */
-@keyframes slideIn {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
 
-@keyframes slideOut {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-}
 
 .animate-slide-in {
-    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .animate-slide-out {
-    animation: slideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* Global touch handling for modals */
@@ -6308,7 +5942,6 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
     vertical-align: middle;
     width: 48px;
     height: 24px;
-    transition: all 0.1s ease;
 }
 
 
@@ -6346,7 +5979,6 @@ body.light-theme .gradient-text {
     font-size: 0.85em;
     border: 1px solid rgba(68, 68, 68, 0.5);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
 }
 
 .file-attachment:hover {
@@ -6359,10 +5991,6 @@ body.light-theme .gradient-text {
     color: #3498db;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
 /* File attachment styles */
 .file-attachments {
@@ -6439,7 +6067,6 @@ body.light-theme .gradient-text {
     border-radius: 3px;
     font-size: 10px;
     opacity: 0.7;
-    transition: opacity 0.2s;
 }
 
 .file-preview .remove-file:hover {
@@ -6500,17 +6127,8 @@ body.light-theme .gradient-text {
 }
 
 /* Pulse animation for loading state */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
 
 .animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* Light theme styles for Model modal */
@@ -6650,7 +6268,6 @@ body.light-theme #model-modal #available-models-list .mr-2.font-medium {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.1s ease;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -6667,7 +6284,6 @@ body.light-theme #model-modal #available-models-list .mr-2.font-medium {
     hyphens: auto;
     margin: 0;
     position: relative;
-    transition: color 0.3s ease;
 }
 
 /* Light theme support for current model */
@@ -6690,7 +6306,6 @@ body.light-theme #model-modal #current-model .model-name {
     border-radius: 0.75rem;
     border: 1px solid rgba(255, 255, 255, 0.05);
     margin-bottom: 0.75rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
 
@@ -6709,7 +6324,6 @@ body.light-theme #model-modal #current-model .model-name {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.1s ease;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -6722,7 +6336,6 @@ body.light-theme #model-modal #current-model .model-name {
     border-radius: 50%;
     background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1));
     opacity: 0;
-    transition: opacity 0.3s ease;
 }
 
 #model-modal .model-icon:hover::before {
@@ -6754,7 +6367,6 @@ body.light-theme #model-modal #current-model .model-name {
     hyphens: auto;
     margin: 0;
     position: relative;
-    transition: all 0.1s ease;
     border-radius: 0.375rem;
     padding: 0.25rem 0.5rem;
     margin: -0.25rem -0.5rem;
@@ -6780,7 +6392,6 @@ body.light-theme #model-modal #current-model .model-name {
     font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     gap: 0.375rem;
@@ -6795,7 +6406,6 @@ body.light-theme #model-modal #current-model .model-name {
     inset: 0;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
     opacity: 0;
-    transition: opacity 0.3s ease;
 }
 
 #model-modal .load-model-btn:hover::before {
@@ -7065,7 +6675,6 @@ body.light-theme #about-modal #close-about {
 #full-model-name-modal .modal-content {
     transform: scale(1);
     opacity: 1;
-    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 /* Light theme styles for Full Model Name modal */
@@ -7110,34 +6719,14 @@ body.light-theme #full-model-name-modal #full-model-name {
 }
 
 #full-model-name-modal .modal-content.animate-modal-in {
-    animation: modalFadeIn 0.3s forwards;
+    
 }
 
 #full-model-name-modal .modal-content.animate-modal-out {
-    animation: modalFadeOut 0.3s forwards;
+    
 }
 
-@keyframes modalFadeIn {
-    from {
-        transform: scale(0.95);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
 
-@keyframes modalFadeOut {
-    from {
-        transform: scale(1);
-        opacity: 1;
-    }
-    to {
-        transform: scale(0.95);
-        opacity: 0;
-    }
-}
 
 /* Chat item action wrapper and trash icon improvements for touch */
 .chat-item .action-wrapper {
@@ -7198,7 +6787,6 @@ body.light-theme #full-model-name-modal #full-model-name {
 .trash-icon-container:hover {
     opacity: 0.8;
     transform: scale(1.1);
-    transition: all 0.2s ease;
 }
 
 /* Active state for better feedback */
@@ -7216,7 +6804,6 @@ body.light-theme #full-model-name-modal #full-model-name {
 body.light-theme .trash-icon-container:hover {
     opacity: 0.8;
     transform: scale(1.1);
-    transition: all 0.2s ease;
 }
 
 body.light-theme .trash-icon-container:focus {
@@ -7267,7 +6854,6 @@ body.light-theme .trash-icon-container:focus {
 }
 
 #model-loading-modal .modal-content {
-    animation: modalFadeInScale 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 
         0 32px 64px -12px rgba(0, 0, 0, 0.8),
         0 0 0 1px rgba(59, 130, 246, 0.4),
@@ -7288,7 +6874,6 @@ body.light-theme .trash-icon-container:focus {
 }
 
 .loading-spinner {
-    animation: spin 1.2s linear infinite;
     filter: drop-shadow(0 0 16px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 28px rgba(59, 130, 246, 0.4));
     border-width: 4px;
     border-style: solid;
@@ -7298,159 +6883,46 @@ body.light-theme .trash-icon-container:focus {
 }
 
 .loading-pulse {
-    animation: ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
     border-color: rgba(59, 130, 246, 0.5);
 }
 
 /* Enhanced spinning animations */
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
 
-@keyframes spin-slow {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
 
 .animate-spin-slow {
-    animation: spin-slow 3s linear infinite;
 }
 
 /* Enhanced pulsing animation */
-@keyframes ping {
-    75%, 100% {
-        transform: scale(1.8);
-        opacity: 0;
-    }
-}
 
 /* Slow pulse animation for background */
-@keyframes pulse-slow {
-    0%, 100% {
-        opacity: 0.4;
-    }
-    50% {
-        opacity: 0.9;
-    }
-}
 
 .animate-pulse-slow {
-    animation: pulse-slow 3s ease-in-out infinite;
 }
 
 /* Pulse glow animation for robot icon */
-@keyframes pulse-glow {
-    0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 12px rgba(96, 165, 250, 0.7));
-    }
-    50% {
-        transform: scale(1.05);
-        filter: drop-shadow(0 0 20px rgba(96, 165, 250, 1));
-    }
-}
 
 /* Border glow animation */
-@keyframes border-glow {
-    0%, 100% {
-        opacity: 0.4;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.8;
-        transform: scale(1.02);
-    }
-}
 
 .animate-border-glow {
-    animation: border-glow 4s ease-in-out infinite;
 }
 
 /* Floating particle animations */
-@keyframes float-1 {
-    0%, 100% {
-        transform: translateY(0px) scale(1);
-        opacity: 0.6;
-    }
-    33% {
-        transform: translateY(-10px) scale(1.2);
-        opacity: 1;
-    }
-    66% {
-        transform: translateY(5px) scale(0.8);
-        opacity: 0.8;
-    }
-}
 
-@keyframes float-2 {
-    0%, 100% {
-        transform: translateY(0px) translateX(0px) scale(1);
-        opacity: 0.5;
-    }
-    25% {
-        transform: translateY(-8px) translateX(-3px) scale(1.1);
-        opacity: 0.9;
-    }
-    50% {
-        transform: translateY(-15px) translateX(2px) scale(1.3);
-        opacity: 1;
-    }
-    75% {
-        transform: translateY(-5px) translateX(-1px) scale(0.9);
-        opacity: 0.7;
-    }
-}
 
-@keyframes float-3 {
-    0%, 100% {
-        transform: translateY(0px) rotate(0deg) scale(1);
-        opacity: 0.7;
-    }
-    40% {
-        transform: translateY(-12px) rotate(180deg) scale(1.2);
-        opacity: 1;
-    }
-    80% {
-        transform: translateY(3px) rotate(270deg) scale(0.8);
-        opacity: 0.6;
-    }
-}
 
 .animate-float-1 {
-    animation: float-1 3s ease-in-out infinite;
     box-shadow: 0 0 6px rgba(59, 130, 246, 0.6);
 }
 
 .animate-float-2 {
-    animation: float-2 4s ease-in-out infinite;
     box-shadow: 0 0 8px rgba(147, 51, 234, 0.6);
 }
 
 .animate-float-3 {
-    animation: float-3 3.5s ease-in-out infinite;
     box-shadow: 0 0 6px rgba(96, 165, 250, 0.6);
 }
 
 /* Enhanced modal entrance animation */
-@keyframes modalFadeInScale {
-    0% {
-        opacity: 0;
-        transform: scale(0.9) translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
 
 /* Enhanced text gradient effect */
 .bg-gradient-to-r.from-blue-400.to-purple-400 {
@@ -7488,7 +6960,6 @@ body.light-theme .trash-icon-container:focus {
 #model-loading-modal h2 i.fa-robot {
     color: var(--loading-indicator);
     filter: drop-shadow(0 0 12px rgba(96, 165, 250, 0.7));
-    animation: pulse-glow 2s ease-in-out infinite;
 }
 
 #model-loading-modal #model-loading-message {
@@ -7501,7 +6972,6 @@ body.light-theme .trash-icon-container:focus {
     word-break: break-all;
     max-width: 100%;
     text-align: center;
-    transition: all 0.1s ease;
     color: var(--loading-indicator);
     font-weight: 600;
     background: rgba(59, 130, 246, 0.1);
@@ -7519,7 +6989,6 @@ body.light-theme .trash-icon-container:focus {
     background: linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.15));
     border-radius: inherit;
     opacity: 0.6;
-    animation: pulse-slow 2s ease-in-out infinite;
 }
 
 /* Enhanced light theme support for loading modal */

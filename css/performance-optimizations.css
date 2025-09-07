@@ -6,9 +6,6 @@
 .btn,
 button {
     /* Use transform instead of changing width/height/position */
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
     backface-visibility: hidden;
     perspective: 1000px;
@@ -21,7 +18,7 @@ button {
 
 .header-btn:active {
     transform: translateY(0) scale(0.98);
-    transition-duration: 0.1s;
+    
 }
 
 /* Optimized Modal Animations */
@@ -33,9 +30,6 @@ button {
     transform: translateY(-50px) scale(0.95);
     opacity: 0;
     visibility: hidden;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform, opacity;
 }
 
@@ -51,7 +45,6 @@ button {
 /* Optimized Sidebar Animations - Buttery Smooth */
 #sidebar {
     transform: translateX(-100%);
-    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     will-change: transform;
     backface-visibility: hidden;
     perspective: 1000px;
@@ -70,22 +63,13 @@ button {
 .message {
     transform: translateY(20px);
     opacity: 0;
-    animation: slideInMessage 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes slideInMessage {
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
 
 /* Optimized Loading Animations */
 .loading-indicator {
     transform: scale(0.8);
     opacity: 0;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .loading-indicator.visible {
@@ -97,8 +81,6 @@ button {
 .character-card {
     transform: translateY(10px);
     opacity: 0;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
 }
 
@@ -116,8 +98,6 @@ button {
 .file-preview {
     transform: scale(0.9);
     opacity: 0;
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .file-preview.loaded {
@@ -129,8 +109,6 @@ button {
 .tooltip {
     transform: translateY(10px) scale(0.8);
     opacity: 0;
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
 }
 
@@ -143,8 +121,6 @@ button {
 .scroll-to-bottom {
     transform: translateY(50px) scale(0.8);
     opacity: 0;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .scroll-to-bottom.visible {
@@ -168,8 +144,6 @@ button {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.3);
     transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
 }
 
@@ -178,15 +152,13 @@ button {
     height: 200px;
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
-    transition-duration: 0.1s;
+    
 }
 
 /* Optimized Welcome Message Animation */
 .welcome-message {
     transform: translateY(30px);
     opacity: 0;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .welcome-message.show {
@@ -204,8 +176,6 @@ button {
 
 /* Optimized Chat Input Animation */
 #user-input {
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #user-input:focus {
@@ -217,8 +187,6 @@ button {
 .settings-step {
     transform: translateX(30px);
     opacity: 0;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .settings-step.active {
@@ -231,8 +199,6 @@ button {
 .context-menu {
     transform: translateY(-10px) scale(0.95);
     opacity: 0;
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: top;
 }
 
@@ -252,55 +218,21 @@ button {
 
 /* Optimized fade animations */
 .fade-in {
-    animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .fade-out {
-    animation: fadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-}
 
 /* Optimized spin animation for loading */
 .spin {
-    animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
 
 /* Memory-efficient transitions */
 .efficient-transition {
     /* Only animate transform and opacity for best performance */
-    transition-property: transform, opacity;
-    transition-duration: 0.25s;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Remove will-change after animations complete */
@@ -323,7 +255,6 @@ button {
     .modal,
     #settings-modal,
     #character-gallery {
-        transition-duration: 0.2s;
     }
 }
 
@@ -333,7 +264,6 @@ button {
     .header-btn,
     .btn,
     button {
-        transition: opacity 0.2s ease;
     }
     
     .header-btn:hover {
@@ -352,8 +282,6 @@ button {
     .character-card,
     .welcome-message,
     .settings-step {
-        transition: opacity 0.2s ease;
-        animation: none;
     }
     
     .header-btn:hover,
@@ -378,7 +306,6 @@ button {
     
     @container (max-width: 480px) {
         .character-card {
-            transition-duration: 0.2s;
-        }
+            }
     }
 }

@@ -22,7 +22,6 @@ import { chatHistoryOptimizer } from './chat-history-optimizer.js';
 import { updateConfirmationModalTheme, updateExportImportModalsTheme } from './confirmation-modal-fix.js';
 import { memoryLeakDetector, MemoryUtils } from './memory-leak-detector.js';
 import { performanceMonitor, animationOptimizer } from './performance-optimizer.js';
-import { loadingManager } from './loading-manager.js';
 // Import help.js to ensure help modal buttons work immediately
 import './help.js';
 // Mobile optimizations will be loaded conditionally
@@ -35,8 +34,6 @@ let androidKeyboardHeight = 0;
  * Initializes the application
  */
 async function initializeApp() {
-    // Update loading progress
-    loadingManager.updateProgress('Starting core initialization...', 'core');
     
     // Disable debug logging by default
     setDebugEnabled(false);
@@ -50,31 +47,23 @@ async function initializeApp() {
                         'ontouchstart' in window;
         
         if (isMobile) {
-            loadingManager.updateMobileProgress('detecting');
             
-            loadingManager.updateMobileProgress('loading');
             // Load mobile optimizations asynchronously without blocking
             const mobileInit = await import('./mobile-init-optimizer.js');
             const mobilePerf = await import('./mobile-performance-optimizer.js');
             
-            loadingManager.updateMobileProgress('applying');
             // Apply optimizations but don't block main initialization
             
-            loadingManager.updateMobileProgress('complete');
         } else {
-            loadingManager.updateProgress('Desktop mode - skipping mobile optimizations', 'features');
         }
     } catch (error) {
         console.warn('Mobile optimization failed, continuing with standard init:', error);
-        loadingManager.updateProgress('Mobile optimization failed, continuing...', 'features');
     }
 
     // Initialize Android WebView keyboard fix
-    loadingManager.updateFeatureProgress('android-keyboard');
     initializeAndroidKeyboardFix();
 
     // Initialize the model banner state based on localStorage
-    loadingManager.updateFeatureProgress('model-banner');
     initializeModelBannerState();
 
     // Ensure settings modal is hidden on startup
@@ -95,7 +84,6 @@ async function initializeApp() {
     const aboutButton = document.getElementById('about-btn');
 
     // Load critical settings first
-    loadingManager.updateFeatureProgress('settings');
     loadServerSettings(); // This will also fetch available models
     loadSettings();
     loadChatHistory();
@@ -128,7 +116,6 @@ async function initializeApp() {
     // Make sure file upload is initialized before other components
     // This ensures file upload handlers are ready when event handlers are set up
     try {
-        loadingManager.updateFeatureProgress('file-upload');
         initializeFileUpload();
     } catch (error) {
         console.error('Error initializing file upload:', error);
@@ -138,18 +125,15 @@ async function initializeApp() {
     ensureWelcomeMessagePosition();
 
     // Initialize critical components first
-    loadingManager.updateFeatureProgress('event-handlers');
     initializeEventHandlers();
 
     // Initialize components in a simpler order
-    loadingManager.updateFeatureProgress('touch-handlers');
     initializeTouchHandlers();
     initializeChatHistoryTouchHandler();
     initializeSettingsModalTouchHandler();
     initializeSidebarTouchHandler();
     // File preview touch handler removed
     // File upload already initialized above
-    loadingManager.updateFeatureProgress('model-manager');
     initializeModelManager();
     
     // Update file upload capabilities after model manager is initialized
@@ -160,7 +144,6 @@ async function initializeApp() {
         console.error('Error updating initial file upload capabilities:', error);
     }
     
-    loadingManager.updateFeatureProgress('ui-manager');
     initializeCollapsibleSections();
     initializeSettingsModal();
     
@@ -168,7 +151,6 @@ async function initializeApp() {
     try {
         const { initializeSavedSystemPrompts } = await import('./saved-system-prompts.js');
         initializeSavedSystemPrompts();
-        loadingManager.updateFeatureProgress('saved-prompts');
     } catch (error) {
         console.error('Error initializing saved system prompts:', error);
     }
@@ -236,10 +218,7 @@ async function initializeApp() {
     performanceMonitor.trackDOMUpdate();
     
     // Mobile optimizations are loaded conditionally above
-    loadingManager.updateFeatureProgress('complete');
     
-    // Complete loading process
-    loadingManager.complete();
 
     // Add performance monitoring to window for debugging
     if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {

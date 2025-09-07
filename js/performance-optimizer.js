@@ -306,7 +306,7 @@ export class AnimationOptimizer {
         this.cancelAnimation(element);
         
         // Use CSS transitions for better performance
-        const originalTransition = element.style.transition;
+        const originalTransition = element
         const originalTransform = element.style.transform;
         
         // Build transform string
@@ -315,12 +315,12 @@ export class AnimationOptimizer {
             .join(' ');
         
         // Apply transition
-        element.style.transition = `transform ${duration}ms ${easing}`;
+        element
         element.style.transform = transformString;
         
         // Clean up after animation
         const cleanup = () => {
-            element.style.transition = originalTransition;
+            element
             this.activeAnimations.delete(element);
         };
         

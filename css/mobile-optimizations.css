@@ -34,7 +34,6 @@
     /* Optimize sidebar for mobile */
     #sidebar {
         /* Fast, simple slide animation */
-        transition: transform 0.2s ease-out !important;
         /* Force hardware acceleration */
         transform: translateZ(0);
         will-change: transform;
@@ -47,7 +46,6 @@
     
     /* Faster sidebar animation for mid-tier devices */
     .performance-mode #sidebar {
-        transition: transform 0.15s linear !important;
         background: #1e293b !important;
         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1) !important;
     }
@@ -60,13 +58,11 @@
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
         margin: 0.5rem !important;
         /* Remove complex transitions */
-        transition: none !important;
     }
     
     .section-header,
     .menu-item {
         /* Simplified hover effects */
-        transition: background-color 0.15s ease !important;
     }
     
     /* Remove hover effects that cause repaints on touch devices */
@@ -94,7 +90,6 @@
     /* Optimize input area */
     #user-input {
         /* Reduce complexity */
-        transition: border-color 0.15s ease !important;
         transform: none !important;
     }
     
@@ -107,7 +102,6 @@
     .modal,
     #character-gallery {
         /* Faster modal animations */
-        transition: opacity 0.2s ease-out, visibility 0.2s ease-out !important;
         transform: none !important;
     }
     
@@ -119,12 +113,10 @@
     /* Settings modal gets special handling - don't override its positioning */
     #settings-modal {
         /* Only optimize transition speed, preserve positioning */
-        transition: opacity 0.2s ease-out, visibility 0.2s ease-out !important;
     }
     
     /* Simplify character cards */
     .character-card {
-        transition: opacity 0.2s ease !important;
         transform: none !important;
     }
     
@@ -137,7 +129,6 @@
     .header-btn,
     .btn,
     button {
-        transition: background-color 0.15s ease, opacity 0.15s ease !important;
         transform: none !important;
     }
     
@@ -157,7 +148,6 @@
     /* Optimize loading indicators */
     .loading-indicator {
         /* Simple fade instead of complex animations */
-        transition: opacity 0.2s ease !important;
         transform: none !important;
     }
     
@@ -172,19 +162,15 @@
     .performance-mode *:not(.file-previews):not(.file-preview):not(.file-previews *) {
         /* Emergency optimizations - disable all animations */
         /* Exclude file preview elements to prevent interference */
-        transition: none !important;
-        animation: none !important;
         transform: none !important;
         will-change: auto !important;
     }
     
     /* Keep only essential transitions */
     .performance-mode #sidebar {
-        transition: opacity 0.15s linear !important;
     }
     
     .performance-mode .modal {
-        transition: opacity 0.1s linear !important;
     }
     
     /* Simplify backgrounds */
@@ -244,7 +230,6 @@
     .character-card img,
     .avatar img {
         opacity: 0;
-        transition: opacity 0.3s ease;
     }
     
     .character-card img.loaded,
@@ -261,8 +246,6 @@
 /* Accessibility optimizations for mobile */
 @media (prefers-reduced-motion: reduce) and (max-width: 768px) {
     * {
-        transition: none !important;
-        animation: none !important;
         transform: none !important;
     }
     
@@ -271,7 +254,7 @@
     .btn:active,
     button:active {
         opacity: 0.7;
-        transition: opacity 0.1s ease;
+        
     }
 }
 
@@ -301,7 +284,7 @@
     /* Optimize for landscape mobile */
     #sidebar {
         /* Faster animation in landscape for better UX */
-        transition: transform 0.15s ease-out !important;
+        
     }
     
     /* Reduce vertical spacing in landscape */
@@ -339,7 +322,7 @@
     /* Optimize for Android Chrome */
     .keyboard-visible #sidebar {
         /* Faster sidebar when keyboard is open */
-        transition: transform 0.1s linear !important;
+        
     }
     
     .keyboard-visible .modal {

@@ -9,7 +9,6 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
@@ -60,7 +59,6 @@
     background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='10' cy='10' r='1'/%3E%3Ccircle cx='25' cy='30' r='0.5'/%3E%3Ccircle cx='40' cy='15' r='0.8'/%3E%3Ccircle cx='55' cy='35' r='0.6'/%3E%3Ccircle cx='70' cy='10' r='1'/%3E%3Ccircle cx='85' cy='25' r='0.5'/%3E%3Ccircle cx='92' cy='40' r='0.8'/%3E%3Ccircle cx='15' cy='65' r='0.7'/%3E%3Ccircle cx='32' cy='80' r='0.4'/%3E%3Ccircle cx='50' cy='50' r='1'/%3E%3Ccircle cx='65' cy='70' r='0.6'/%3E%3Ccircle cx='80' cy='85' r='0.7'/%3E%3Ccircle cx='95' cy='55' r='0.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     z-index: -1;
     opacity: 0.8;
-    animation: floatingParticles 120s linear infinite;
 }
 
 /* Modal content with immersive, premium styling */
@@ -91,7 +89,6 @@
     bottom: auto !important;
     transform: none !important;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 1052;
     /* Responsive sizing that works across all devices */
     width: min(750px, calc(100vw - 32px));
@@ -130,7 +127,6 @@
     mask-composite: exclude;
     pointer-events: none;
     opacity: 0.9;
-    animation: gradientBorder 8s linear infinite;
 }
 
 /* Professional settings header with clean styling */
@@ -180,7 +176,6 @@
     box-shadow:
         0 4px 8px rgba(0, 0, 0, 0.15),
         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-    transition: all 0.3s ease;
     z-index: 1;
     transform: rotate(0deg);
 }
@@ -212,66 +207,19 @@
 }
 
 /* Immersive animations for the entire modal */
-@keyframes settingsModalFadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
 
-@keyframes settingsModalFadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
-}
 
-@keyframes modalContentReveal {
-    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
-    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
 
-@keyframes modalContentHide {
-    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
-}
 
-@keyframes shimmer {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
-}
 
-@keyframes gradientBorder {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 300% 50%; }
-}
 
-@keyframes floatingParticles {
-    0% { transform: translateY(0) translateX(0); }
-    25% { transform: translateY(-5px) translateX(5px); }
-    50% { transform: translateY(0) translateX(10px); }
-    75% { transform: translateY(5px) translateX(5px); }
-    100% { transform: translateY(0) translateX(0); }
-}
 
 /* Class to force repaint when theme changes */
 #settings-modal.theme-update {
-    animation: none;
-    transition: none;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
 
-@keyframes glow {
-    0% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3); }
-    50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.5); }
-    100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3); }
-}
 
 /* Premium help button with immersive styling */
 #settings-modal #settings-help-btn {
@@ -286,7 +234,6 @@
     font-weight: 600;
     padding: 0.85rem 1.5rem;
     border-radius: 0.75rem;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -306,7 +253,6 @@
     background: linear-gradient(135deg, rgba(255, 138, 0, 0.5), rgba(230, 60, 0, 0.5));
     filter: blur(15px);
     opacity: 0;
-    transition: opacity 0.3s ease;
     z-index: -1;
     transform: translateY(5px);
 }
@@ -341,7 +287,6 @@
     letter-spacing: 0.03em;
     display: flex;
     align-items: center;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
     font-size: 1rem;
@@ -411,7 +356,6 @@
     background: var(--settings-input-bg);
     color: var(--settings-input-text);
     border: 1px solid var(--settings-input-border);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     border-radius: 0.75rem;
     padding: 1rem 1.2rem;
     box-shadow:
@@ -474,7 +418,7 @@
     background-position: 0.6rem center; /* Moved icon slightly to the right */
     padding-left: 2.4rem; /* Increased left padding to prevent text from overlapping icon */
     background-size: 14px;
-    transition: all 0.2s ease;
+    
     position: relative;
     background-color: var(--settings-input-bg);
     color: var(--settings-input-text);
@@ -499,7 +443,7 @@
     padding-left: 1.7rem; /* Increased left padding */
     padding-right: 0.5rem; /* Increased right padding to prevent text from being cut off */
     background-size: 10px;
-    transition: all 0.2s ease;
+    
     position: relative;
     background-color: var(--settings-input-bg);
     color: var(--settings-input-text);
@@ -604,7 +548,7 @@
     background: rgba(59, 130, 246, 0.15);
     padding: 0.2rem 0.4rem;
     border-radius: 0.3rem;
-    transition: all 0.2s ease;
+    
     display: inline-block;
 }
 
@@ -620,7 +564,6 @@
     border-radius: 1rem;
     width: 50px;
     height: 24px;
-    transition: all 0.3s ease;
     position: relative;
     cursor: pointer;
     box-shadow:
@@ -648,7 +591,7 @@
     height: 100%;
     background: radial-gradient(circle at 30% 50%, var(--toggle-active-border), transparent 50%);
     opacity: 0;
-    transition: opacity 0.4s ease;
+    
     z-index: 1;
 }
 
@@ -660,7 +603,6 @@
     height: 18px;
     background: white;
     border-radius: 50%;
-    transition: all 0.3s ease;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     /* Enhanced appearance for light mode */
     .light-theme & {
@@ -700,7 +642,7 @@
     z-index: 1;
     opacity: 0.8;
     border-radius: 1rem;
-    animation: pulse 2s infinite;
+    
 }
 
 #settings-modal input[type="checkbox"]:checked ~ .toggle-dot {
@@ -754,7 +696,7 @@
     font-weight: 500;
     padding: 0.8rem 1.2rem;
     border-radius: 0.5rem;
-    transition: all 0.2s ease;
+    
     position: relative;
     overflow: hidden;
     color: #ffffff;
@@ -830,7 +772,7 @@
     border-radius: 0.5rem;
     font-weight: 500;
     padding: 0.7rem 1.2rem;
-    transition: all 0.2s ease;
+    
     box-shadow: 0 2px 4px var(--modal-overlay);
     position: relative;
     font-family: 'Segoe UI', system-ui, sans-serif;
@@ -938,7 +880,6 @@
     font-weight: 600;
     padding: 1rem 1.5rem;
     border-radius: 0.75rem;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
     margin-top: 0.75rem; /* Reduced top margin to minimize gap with navigation buttons */
@@ -978,7 +919,7 @@
     border-radius: 0.5rem;
     height: 0.5rem;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
+    
     cursor: pointer;
     position: relative;
     overflow: visible;
@@ -992,7 +933,7 @@
     border-radius: 50%;
     width: 18px;
     height: 18px;
-    transition: all 0.2s ease;
+    
     cursor: pointer;
     position: relative;
     z-index: 3;
@@ -1012,7 +953,7 @@
     border-radius: 50%;
     width: 18px;
     height: 18px;
-    transition: all 0.2s ease;
+    
     cursor: pointer;
     position: relative;
     z-index: 3;
@@ -1032,7 +973,7 @@
     border-radius: 0.3rem;
     margin-left: 0.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
+    
     position: relative;
     display: inline-block;
     min-width: 2rem;
@@ -1122,7 +1063,7 @@
     justify-content: center;
     color: var(--text-primary); /* Use primary text color for better visibility */
     opacity: 0.8; /* Slightly transparent when not hovered */
-    transition: all 0.2s ease;
+    
     cursor: pointer;
     flex-shrink: 0; /* Prevent shrinking */
     margin-left: auto; /* Push to the right */
@@ -1166,7 +1107,6 @@
 
 /* Mobile navigation styles */
 .settings-step {
-    transition: all 0.3s ease;
     min-height: fit-content; /* Ensure content fits without scrolling */
     padding-bottom: 10px; /* Add some padding at the bottom */
 }
@@ -1183,56 +1123,36 @@
 }
 
 .slide-in-right {
-    animation: slideInRight 0.3s forwards;
+    
 }
 
 .slide-in-left {
-    animation: slideInLeft 0.3s forwards;
+    
 }
 
-@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
 
-@keyframes slideInLeft {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
 
 /* Show/hide animations */
 #settings-modal.show {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    animation: settingsModalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    
 }
 
 #settings-modal.show .modal-content {
-    animation: modalContentReveal 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    
 }
 
 #settings-modal.hide {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    animation: settingsModalFadeOut 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    
 }
 
 #settings-modal.hide .modal-content {
-    animation: modalContentHide 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    
 }
 
 #settings-modal.hidden {
@@ -1240,13 +1160,8 @@
 }
 
 /* Animation for modal content */
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: scale(0.95) translateY(10px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-}
 
 .animate-modal-in {
-    animation: modalFadeIn 0.3s ease-out forwards;
 }
 
 /* Navigation buttons container */

@@ -29,7 +29,6 @@
     <link rel="stylesheet" href="css/code-blocks.css">
     <link rel="stylesheet" href="css/performance-optimizations.css">
     <link rel="stylesheet" href="css/mobile-optimizations.css">
-    <link rel="stylesheet" href="css/loading-spinner.css">
     
     <!-- Inline critical mobile CSS for instant loading -->
     <style id="critical-mobile-css">
@@ -44,9 +43,8 @@
             
             /* Fast sidebar animation */
             #sidebar {
-                transition: transform 0.2s ease-out !important;
                 transform: translateZ(0);
-                will-change: transform;
+                will-change: auto;
                 backface-visibility: hidden;
                 background: #1e293b !important;
                 box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1) !important;
@@ -88,7 +86,7 @@
         }
         
         .performance-mode #sidebar {
-            transition: opacity 0.15s linear !important;
+            
         }
     </style>
     
@@ -556,73 +554,16 @@
         }
     </script>
     <style>
-        /* Custom animation for the contact form modal */
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
 
-        @keyframes modalFadeOut {
-            from { opacity: 1; transform: scale(1) translateY(0); }
-            to { opacity: 0; transform: scale(0.95) translateY(10px); }
-        }
 
-        .animate-modal-in {
-            animation: modalFadeIn 0.3s ease-out forwards;
-        }
 
-        .animate-modal-out {
-            animation: modalFadeOut 0.3s ease-in forwards;
-        }
 
-        /* Subtle pulsing animation for the envelope icon */
-        @keyframes subtlePulse {
-            0%, 100% { opacity: 0.9; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-        }
-
-        .animate-pulse-subtle {
-            animation: subtlePulse 2s ease-in-out infinite;
-        }
-
-        /* Wobble animation for the paper plane icon */
-        @keyframes wobble {
-            0%, 100% { transform: translateX(0); }
-            15% { transform: translateX(-5px) rotate(-5deg); }
-            30% { transform: translateX(3px) rotate(3deg); }
-            45% { transform: translateX(-3px) rotate(-2deg); }
-            60% { transform: translateX(2px) rotate(1deg); }
-            75% { transform: translateX(-1px) rotate(-1deg); }
-        }
-
-        .group-hover\:animate-wobble:hover {
-            animation: wobble 0.8s ease-in-out;
-        }
-
-        #contact-form-modal .modal-content {
-            animation: modalFadeIn 0.3s ease-out forwards;
-        }
-
-        #contact-form-modal .modal-content.animate-modal-out {
-            animation: modalFadeOut 0.3s ease-in forwards;
-        }
 
         /* Improved styling for the form container */
         .contact-form-container {
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
         }
 
-        /* Pulse animation for the close button on hover */
-        #close-contact-form:hover {
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-            70% { box-shadow: 0 0 0 6px rgba(59, 130, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-        }
 
         /* Button animations */
         #rate-app-link.active-scale,
@@ -633,57 +574,18 @@
 
         #rate-app-link,
         #official-website-link {
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
         }
 
         /* Pulsing effect for the rating button */
 
-        /* Slow spin animation for icons */
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes shimmerButton {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
-        }
-
-        /* Input glow animation - glows twice */
-        @keyframes inputGlow {
-            0% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3); }
-            25% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.8), 0 0 25px rgba(59, 130, 246, 0.5); }
-            50% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3); }
-            75% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.8), 0 0 25px rgba(59, 130, 246, 0.5); }
-            100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3); }
-        }
 
         .input-glow {
-            animation: inputGlow 2.5s ease-in-out;
             border-color: #3b82f6 !important;
             outline: none;
         }
 
-        .animate-spin-slow {
-            animation: spin-slow 2s linear infinite;
-        }
-        @keyframes ratingPulse {
-            0% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(234, 88, 12, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); }
-        }
-
-        #rate-app-link {
-            animation: ratingPulse 2s infinite;
-        }
-
-        #rate-app-link:hover {
-            animation: none;
-            box-shadow: 0 10px 20px -10px rgba(234, 88, 12, 0.6);
-            transform: translateY(-3px);
-        }
 
         #rate-app-link::before {
             content: '';
@@ -696,13 +598,6 @@
             transform: translateX(-100%);
         }
 
-        #rate-app-link:hover::before {
-            animation: shimmerButton 1s forwards;
-        }
-
-        @keyframes shimmerButton {
-            to { transform: translateX(100%); }
-        }
 
         /* Hide scrollbars but keep content scrollable */
         .overflow-y-auto::-webkit-scrollbar {
@@ -740,27 +635,9 @@
 </head>
 <body class="dark custom-dark-mode" style="min-height: 100vh; min-height: -webkit-fill-available; display: flex; flex-direction: column;">
     
-    <!-- App Loading Overlay -->
-    <div id="app-loading-overlay">
-        <div class="loading-spinner-container">
-            <div class="loading-spinner"></div>
-            <div class="loading-dots">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <div class="loading-text">LMSA</div>
-            <div class="loading-progress" id="loading-progress">Initializing...</div>
-            <div class="loading-stages">
-                <div class="loading-stage" id="stage-core"></div>
-                <div class="loading-stage" id="stage-mobile"></div>
-                <div class="loading-stage" id="stage-features"></div>
-            </div>
-        </div>
-    </div>
     <div class="flex flex-col h-screen app-container" style="min-height: 100vh; min-height: -webkit-fill-available;">
         <!-- Header - Enhanced with modern styling and effects -->
-        <header class="p-4 flex justify-between items-center animate-fade-in">
+        <header class="p-4 flex justify-between items-center">
             <div class="flex items-center flex-shrink-0">
                 <div class="w-10 h-10 mr-3 relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-indigo-700 shadow-xl flex items-center justify-center">
                     <img src="icon.png" alt="LMSA Icon" class="w-7 h-7 relative z-10">
@@ -769,12 +646,12 @@
                 <h1 class="text-2xl font-bold header-title">LMSA</h1>
             </div>
             <div class="flex items-center space-x-1 header-controls">
-                <button id="settings-icon-button" class="p-2 rounded-md focus:outline-none transition-all duration-300 header-btn" data-priority="2" aria-label="Settings" title="Open settings">
+                <button id="settings-icon-button" class="p-2 rounded-md focus:outline-none header-btn" data-priority="2" aria-label="Settings" title="Open settings">
                     <span class="icon-wrapper">
                         <i class="fas fa-cog text-xl header-icon"></i>
                     </span>
                 </button>
-                <button id="model-toggle-button" class="p-2 rounded-md focus:outline-none transition-all duration-300 header-btn" data-priority="3" aria-label="Toggle Model Info" title="Toggle model info display">
+                <button id="model-toggle-button" class="p-2 rounded-md focus:outline-none header-btn" data-priority="3" aria-label="Toggle Model Info" title="Toggle model info display">
                     <span class="icon-wrapper">
                         <i class="fas fa-robot text-xl header-icon"></i>
                     </span>
@@ -816,7 +693,7 @@
 
         <!-- Model display bar with wrapper to prevent background issues -->
         <div id="loaded-model-wrapper">
-            <div id="loaded-model" class="font-bold py-2 px-4 text-center animate-fade-in"></div>
+            <div id="loaded-model" class="font-bold py-2 px-4 text-center"></div>
         </div>
 
         <!-- Sidebar overlay - for closing sidebar when clicking outside on mobile -->
@@ -825,7 +702,7 @@
         <!-- Sidebar - now positioned fixed outside the flex container -->
         <div id="sidebar" class="w-[280px] z-20 hidden shadow-xl overflow-y-auto" style="color: var(--sidebar-text);">
             <div class="relative flex items-center justify-end p-6 border-b sidebar-header" style="border-color: var(--sidebar-border);">
-                <button id="close-sidebar" class="p-2 rounded-full focus:outline-none transition-all duration-200 close-sidebar-btn" style="color: var(--text-muted);" aria-label="Close Sidebar">
+                <button id="close-sidebar" class="p-2 rounded-full focus:outline-none close-sidebar-btn" style="color: var(--text-muted);" aria-label="Close Sidebar">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
@@ -847,7 +724,7 @@
                         <i class="fas fa-cog w-6 mr-3"></i>
                         <span>Options</span>
                     </div>
-                    <i class="fas fa-chevron-down transition-transform duration-200"></i>
+                    <i class="fas fa-chevron-down"></i>
                 </button>
                 <div class="collapsible-content">
                     <!-- Settings -->
@@ -862,7 +739,7 @@
                             <i class="fas fa-exchange-alt"></i>
                             Import/Export
                         </div>
-                        <i class="fas fa-caret-down transition-transform duration-200"></i>
+                        <i class="fas fa-caret-down"></i>
                     </button>
                     <div id="import-export-container" class="hidden">
                         <button id="import-chats-btn" class="menu-item w-full text-left">
@@ -925,8 +802,8 @@
             <div class="flex-1 flex flex-col overflow-hidden" style="transform: none !important; display: flex; flex-direction: column; min-height: 0; background-color: var(--bg-primary);">
                 <!-- Chat container -->
                 <div id="chat-container" class="flex-1 overflow-y-auto p-4 flex flex-col relative">
-                    <div id="welcome-message" class="absolute inset-0 flex items-center justify-center text-center animate-fade-in" style="transform: none !important; left: 0; right: 0; color: var(--text-muted);" onscroll="return false;">
-                        <div class="welcome-content glass-card p-8 sm:p-10 max-w-md mx-auto transform transition-all">
+                    <div id="welcome-message" class="absolute inset-0 flex items-center justify-center text-center" style="transform: none !important; left: 0; right: 0; color: var(--text-muted);" onscroll="return false;">
+                        <div class="welcome-content glass-card p-8 sm:p-10 max-w-md mx-auto">
                             <div class="relative mx-auto mb-4 sm:mb-6 mt-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-xl flex items-center justify-center icon-container" style="width: 5.5rem; height: 5.5rem; min-height: 5rem; min-width: 5rem; padding: 0.75rem;">
                                 <img src="icon.png" alt="LMSA Icon" class="relative z-10 object-contain" style="width: 3.5rem; height: 3.5rem; max-width: 75%; max-height: 75%;">
                                 <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-50"></div>
@@ -996,24 +873,24 @@
                 </div>
 
                 <!-- Input area -->
-                <div class="border-t animate-fade-in" style="position: relative; z-index: 10; border-color: var(--border-color); width: 100%; box-sizing: border-box; margin-top: auto;">
+                <div class="border-t" style="position: relative; z-index: 10; border-color: var(--border-color); width: 100%; box-sizing: border-box; margin-top: auto;">
 
                     <form id="chat-form" class="flex" style="position: relative; background-color: var(--bg-secondary);">
                         <div class="flex-grow relative">
                             <input type="text" id="user-input" class="w-full focus:outline-none" placeholder="Type your message..." aria-label="Type your message" autocomplete="off" style="background-color: var(--input-bg); color: var(--input-text); border: 1px solid var(--input-border);" oninput="this.scrollLeft = this.scrollWidth">
                             <div class="absolute top-1/2 transform -translate-y-1/2">
-                                <button type="button" id="paperclip-button" class="focus:outline-none transition-all duration-300 ease-in-out p-1" style="color: var(--text-muted);">
+                                <button type="button" id="paperclip-button" class="focus:outline-none p-1" style="color: var(--text-muted);">
                                     <i class="fas fa-paperclip"></i>
                                 </button>
                             </div>
                         </div>
-                        <button type="submit" id="send-button" class="bg-blue-600 hover:bg-blue-500 text-white focus:outline-none transition-all duration-300 ease-in-out" aria-label="Send message">
+                        <button type="submit" id="send-button" class="bg-blue-600 hover:bg-blue-500 text-white focus:outline-none" aria-label="Send message">
                             <div class="flex items-center">
                                 <i class="fas fa-paper-plane"></i>
                                 <span class="ml-2 hidden md:inline">Send</span>
                             </div>
                         </button>
-                        <button type="button" id="stop-button" class="bg-red-600 text-white hover:bg-red-700 focus:outline-none transition-all duration-300 ease-in-out hidden">
+                        <button type="button" id="stop-button" class="bg-red-600 text-white hover:bg-red-700 focus:outline-none hidden">
                             <i class="fas fa-stop mr-1"></i><span>Stop</span>
                         </button>
                         <input type="file" id="file-upload-input" class="hidden" multiple>
@@ -1030,13 +907,13 @@
                     <div class="bg-darkSecondary p-6 rounded-lg w-96 max-w-[90%] shadow-lg modal-content">
                         <div class="flex justify-between items-center mb-4">
                             <h3 id="empty-message-title" class="modal-title">Empty Message</h3>
-                            <button class="close-modal text-gray-400 hover:text-white focus:outline-none transition-colors duration-300">
+                            <button class="close-modal text-gray-400 hover:text-white focus:outline-none">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
                         <p class="mb-6 text-gray-300">Please enter a message or attach a file before sending.</p>
                         <div class="flex justify-end">
-                            <button class="close-modal bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                            <button class="close-modal bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
                                 OK
                             </button>
                         </div>
@@ -1045,13 +922,13 @@
 
                 <!-- Image Upload Error Modal -->
                 <div id="image-upload-error-modal" class="fixed inset-0 bg-black/70 dark:bg-black/70 light:bg-gray-900/50 backdrop-blur-sm flex items-center justify-center hidden z-[2050]" aria-labelledby="image-upload-error-title" role="dialog" aria-modal="true">
-                    <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] dark:from-[#0a192f] dark:to-[#0d1f3d] light:from-[#f8fafc] light:to-[#f1f5f9] p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-blue-900/30 dark:border-blue-900/30 light:border-blue-200 overflow-hidden animate-modal-in">
+                    <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] dark:from-[#0a192f] dark:to-[#0d1f3d] light:from-[#f8fafc] light:to-[#f1f5f9] p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-blue-900/30 dark:border-blue-900/30 light:border-blue-200 overflow-hidden">
                         <div class="flex justify-between items-center mb-4">
                             <h3 id="image-upload-error-title" class="text-xl font-bold flex items-center modal-title text-blue-400 dark:text-blue-400 light:text-blue-600">
                                 <i class="fas fa-info-circle mr-3 text-blue-500 dark:text-blue-500 light:text-blue-600"></i>
                                 Image Upload Not Supported
                             </h3>
-                            <button id="close-image-upload-error-modal" class="text-gray-400 hover:text-white dark:text-gray-400 dark:hover:text-white light:text-gray-600 light:hover:text-gray-800 focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-900/20 dark:hover:bg-blue-900/20 light:hover:bg-blue-200/50">
+                            <button id="close-image-upload-error-modal" class="text-gray-400 hover:text-white dark:text-gray-400 dark:hover:text-white light:text-gray-600 light:hover:text-gray-800 focus:outline-none rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-900/20 dark:hover:bg-blue-900/20 light:hover:bg-blue-200/50">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
@@ -1060,7 +937,7 @@
                             <p class="text-gray-400 dark:text-gray-400 light:text-gray-600 text-sm">You can still upload text files, documents (PDF, DOCX), and code files with the current model.</p>
                         </div>
                         <div class="flex justify-end space-x-3">
-                            <button id="image-upload-error-ok" class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 light:bg-blue-500 light:hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50">
+                            <button id="image-upload-error-ok" class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 light:bg-blue-500 light:hover:bg-blue-600 text-white px-6 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50">
                                 OK
                             </button>
                         </div>
@@ -1086,10 +963,10 @@
                         </div>
                         
                         <div class="flex space-x-3">
-                            <button id="cancel-file-removal" class="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                            <button id="cancel-file-removal" class="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
                                 <i class="fas fa-times mr-2"></i>Cancel
                             </button>
-                            <button id="confirm-file-removal" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <button id="confirm-file-removal" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
                                 <i class="fas fa-trash mr-2"></i>Remove
                             </button>
                         </div>
@@ -1100,7 +977,7 @@
     </div>
 
     <!-- Saved System Prompts Modal -->
-    <div id="saved-prompts-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container animate-fade-in" style="z-index: 1060; background: var(--modal-overlay); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);" aria-labelledby="saved-prompts-title" role="dialog" aria-modal="true">
+    <div id="saved-prompts-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container" style="z-index: 1060; background: var(--modal-overlay); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);" aria-labelledby="saved-prompts-title" role="dialog" aria-modal="true">
         <div class="relative dark:bg-gradient-to-b dark:from-[#1e293b] dark:via-[#334155] dark:to-[#1e293b] light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-8 rounded-2xl w-[600px] max-w-[90%] h-[60vh] shadow-2xl overflow-hidden flex flex-col modal-content border border-blue-400/50 dark:border-blue-400/50 light:border-blue-400/30 backdrop-blur-sm">
             <div class="flex justify-between items-center mb-6">
                 <h2 id="saved-prompts-title" class="text-2xl font-bold text-gray-800 dark:text-gray-200">Saved System Prompts</h2>
@@ -1113,7 +990,7 @@
     </div>
 
     <!-- Save System Prompt Modal -->
-    <div id="save-prompt-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container animate-fade-in" style="z-index: 1070; background: var(--modal-overlay); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);" aria-labelledby="save-prompt-title" role="dialog" aria-modal="true">
+    <div id="save-prompt-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container" style="z-index: 1070; background: var(--modal-overlay); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);" aria-labelledby="save-prompt-title" role="dialog" aria-modal="true">
         <div class="relative dark:bg-gradient-to-b dark:from-[#1e293b] dark:via-[#334155] dark:to-[#1e293b] light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-8 rounded-2xl w-[500px] max-w-[90%] shadow-2xl overflow-hidden flex flex-col modal-content border border-blue-400/50 dark:border-blue-400/50 light:border-blue-400/30 backdrop-blur-sm">
             <div class="flex justify-between items-center mb-6">
                 <h2 id="save-prompt-title" class="text-2xl font-bold text-gray-800 dark:text-gray-200">Save System Prompt</h2>
@@ -1135,7 +1012,7 @@
     </div>
 
     <!-- Edit System Prompt Modal -->
-    <div id="edit-prompt-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container animate-fade-in" style="z-index: 1070; background: var(--modal-overlay); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);" aria-labelledby="edit-prompt-title" role="dialog" aria-modal="true">
+    <div id="edit-prompt-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container" style="z-index: 1070; background: var(--modal-overlay); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);" aria-labelledby="edit-prompt-title" role="dialog" aria-modal="true">
         <div class="relative dark:bg-gradient-to-b dark:from-[#1e293b] dark:via-[#334155] dark:to-[#1e293b] light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-8 rounded-2xl w-[500px] max-w-[90%] shadow-2xl overflow-hidden flex flex-col modal-content border border-blue-400/50 dark:border-blue-400/50 light:border-blue-400/30 backdrop-blur-sm">
             <div class="flex justify-between items-center mb-6">
                 <h2 id="edit-prompt-title" class="text-2xl font-bold text-gray-800 dark:text-gray-200">Edit System Prompt</h2>
@@ -1157,7 +1034,7 @@
     </div>
 
     <!-- Delete Prompt Confirmation Modal -->
-    <div id="delete-prompt-confirmation-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container animate-fade-in" style="z-index: 1070; background: var(--modal-overlay); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);" aria-labelledby="delete-prompt-title" role="dialog" aria-modal="true">
+    <div id="delete-prompt-confirmation-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container" style="z-index: 1070; background: var(--modal-overlay); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);" aria-labelledby="delete-prompt-title" role="dialog" aria-modal="true">
         <div class="relative dark:bg-gradient-to-b dark:from-[#1e293b] dark:via-[#334155] dark:to-[#1e293b] light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-8 rounded-2xl w-[500px] max-w-[90%] shadow-2xl overflow-hidden flex flex-col modal-content border border-red-400/50 dark:border-red-400/50 light:border-red-400/30 backdrop-blur-sm">
             <div class="flex justify-between items-center mb-6">
                 <h2 id="delete-prompt-title" class="text-2xl font-bold text-gray-800 dark:text-gray-200">Delete Prompt</h2>
@@ -1189,10 +1066,10 @@
 
                 <!-- Mobile step indicators - moved to their own row -->
                 <div class="flex justify-center space-x-3 py-2 lg:hidden">
-                    <div class="w-8 h-2 rounded-full bg-blue-500 transition-all duration-300" id="step-indicator-1"></div>
-                    <div class="w-8 h-2 rounded-full bg-gray-600 transition-all duration-300" id="step-indicator-2"></div>
-                    <div class="w-8 h-2 rounded-full bg-gray-600 transition-all duration-300" id="step-indicator-3"></div>
-                    <div class="w-8 h-2 rounded-full bg-gray-600 transition-all duration-300" id="step-indicator-4"></div>
+                    <div class="w-8 h-2 rounded-full bg-blue-500" id="step-indicator-1"></div>
+                    <div class="w-8 h-2 rounded-full bg-gray-600" id="step-indicator-2"></div>
+                    <div class="w-8 h-2 rounded-full bg-gray-600" id="step-indicator-3"></div>
+                    <div class="w-8 h-2 rounded-full bg-gray-600" id="step-indicator-4"></div>
                 </div>
             </div>
 
@@ -1250,7 +1127,7 @@
                             <i class="fas fa-sliders-h mr-2 text-blue-400"></i>Temperature: <span id="temperature-value">0.3</span></label>
                         <div class="flex items-center">
                             <input type="range" id="temperature" min="0" max="2" step="0.1" value="0.3" class="w-full bg-darkTertiary text-gray-100 rounded-lg appearance-none cursor-pointer" disabled>
-                            <button id="temperature-lock" class="ml-2 text-gray-100 focus:outline-none p-2 transition-all duration-300" aria-label="Toggle Temperature Lock" title="Temperature is locked (click to unlock)">
+                            <button id="temperature-lock" class="ml-2 text-gray-100 focus:outline-none p-2" aria-label="Toggle Temperature Lock" title="Temperature is locked (click to unlock)">
                                 <i class="fas fa-lock text-red-400"></i>
                             </button>
                         </div>
@@ -1392,13 +1269,11 @@
 
                     if (saveBtn) {
                         saveBtn.addEventListener('mouseover', function() {
-                            this.style.transform = 'translateY(-2px)';
                             this.style.boxShadow = '0 6px 10px rgba(0, 0, 0, 0.15)';
                             this.style.background = 'linear-gradient(to right, #047857, #10b981)';
                         });
 
                         saveBtn.addEventListener('mouseout', function() {
-                            this.style.transform = 'translateY(0)';
                             this.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
                             this.style.background = 'linear-gradient(to right, #059669, #10b981)';
                         });
@@ -1421,24 +1296,24 @@
             </h2>
             <p class="text-gray-300 mb-6">Are you sure you want to delete all chats? This action cannot be undone.</p>
             <div class="flex justify-end space-x-4">
-                <button id="cancel-delete-all" class="bg-gray-600 text-white rounded px-4 py-2 hover:bg-gray-700 transition-colors duration-300">Cancel</button>
-                <button id="confirm-delete-all" class="bg-red-600 text-white rounded px-4 py-2 hover:bg-red-700 transition-colors duration-300">Delete All</button>
+                <button id="cancel-delete-all" class="bg-gray-600 text-white rounded px-4 py-2 hover:bg-gray-700">Cancel</button>
+                <button id="confirm-delete-all" class="bg-red-600 text-white rounded px-4 py-2 hover:bg-red-700">Delete All</button>
             </div>
         </div>
     </div>
 
     <!-- Confirmation modal -->
-    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden animate-fade-in" aria-labelledby="confirmation-title" role="dialog" aria-modal="true" onclick="if(event.target === this) { document.getElementById('cancel-action').click(); }">
+    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden" aria-labelledby="confirmation-title" role="dialog" aria-modal="true" onclick="if(event.target === this) { document.getElementById('cancel-action').click(); }">
         <div class="p-6 rounded-lg w-96 max-w-[90%] shadow-lg mx-auto my-auto" style="background-color: var(--bg-secondary); color: var(--text-primary);">
             <h2 id="confirmation-title" class="text-xl font-bold mb-4 flex items-center modal-title">
                 <i class="fas fa-exclamation-triangle mr-2 text-yellow-500"></i>Confirm Action
             </h2>
             <p id="confirmation-message" class="mb-4"></p>
             <div class="flex justify-end space-x-4">
-                <button id="cancel-action" class="rounded-lg px-4 py-2 focus:outline-none transition-all duration-300 ease-in-out" style="background-color: var(--bg-tertiary); color: var(--text-primary);">
+                <button id="cancel-action" class="rounded-lg px-4 py-2 focus:outline-none" style="background-color: var(--bg-tertiary); color: var(--text-primary);">
                     Cancel
                 </button>
-                <button id="confirm-action" class="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700 focus:outline-none transition-all duration-300 ease-in-out">
+                <button id="confirm-action" class="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700 focus:outline-none">
                     Confirm
                 </button>
             </div>
@@ -1447,7 +1322,7 @@
 
     <!-- Clear System Prompt Confirmation Modal -->
     <div id="clear-system-prompt-modal" class="fixed inset-0 bg-black/80 dark:bg-black/80 light:bg-gray-900/50 backdrop-blur-sm flex items-center justify-center hidden modal-container z-[2100]" aria-labelledby="clear-system-prompt-title" role="dialog" aria-modal="true">
-        <div class="bg-gradient-to-b from-red-950/95 to-red-900/95 dark:from-[#2d0a0a] dark:to-[#3d0d0d] light:from-red-50 light:to-red-100 p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-red-900/30 dark:border-red-900/30 light:border-red-200 overflow-hidden animate-modal-in">
+        <div class="bg-gradient-to-b from-red-950/95 to-red-900/95 dark:from-[#2d0a0a] dark:to-[#3d0d0d] light:from-red-50 light:to-red-100 p-6 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-red-900/30 dark:border-red-900/30 light:border-red-200 overflow-hidden">
             <div class="flex justify-between items-center mb-4">
                 <h2 id="clear-system-prompt-title" class="text-xl font-bold flex items-center">
                     <div class="icon-wrapper mr-3 flex items-center justify-center rounded-full bg-red-500/20 dark:bg-red-500/20 light:bg-red-500/10 w-10 h-10 text-red-400 dark:text-red-400 light:text-red-600">
@@ -1455,7 +1330,7 @@
                     </div>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-300 dark:from-red-400 dark:to-red-300 light:from-red-600 light:to-red-700">Clear System Prompt</span>
                 </h2>
-                <button id="close-clear-system-prompt-modal" class="text-gray-400 hover:text-white dark:text-gray-400 dark:hover:text-white light:text-gray-600 light:hover:text-gray-800 focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center">
+                <button id="close-clear-system-prompt-modal" class="text-gray-400 hover:text-white dark:text-gray-400 dark:hover:text-white light:text-gray-600 light:hover:text-gray-800 focus:outline-none rounded-full w-8 h-8 flex items-center justify-center">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -1471,10 +1346,10 @@
             </div>
 
             <div class="flex justify-between space-x-4">
-                <button id="cancel-clear-system-prompt" class="flex-1 py-2.5 px-4 rounded-lg transition-all duration-300 bg-gray-700/50 hover:bg-gray-700 dark:bg-gray-700/50 dark:hover:bg-gray-700 light:bg-black light:hover:bg-gray-800 text-gray-300 hover:text-white dark:text-gray-300 dark:hover:text-white light:text-white light:hover:text-white border border-gray-600/30 hover:border-gray-500/50 dark:border-gray-600/30 dark:hover:border-gray-500/50 light:border-gray-700 light:hover:border-gray-600">
+                <button id="cancel-clear-system-prompt" class="flex-1 py-2.5 px-4 rounded-lg bg-gray-700/50 hover:bg-gray-700 dark:bg-gray-700/50 dark:hover:bg-gray-700 light:bg-black light:hover:bg-gray-800 text-gray-300 hover:text-white dark:text-gray-300 dark:hover:text-white light:text-white light:hover:text-white border border-gray-600/30 hover:border-gray-500/50 dark:border-gray-600/30 dark:hover:border-gray-500/50 light:border-gray-700 light:hover:border-gray-600">
                     <i class="fas fa-times mr-2 text-gray-300 hover:text-white dark:text-gray-300 dark:hover:text-white light:text-white light:hover:text-white"></i>Cancel
                 </button>
-                <button id="confirm-clear-system-prompt" class="flex-1 py-2.5 px-4 rounded-lg transition-all duration-300 bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 dark:from-red-700 dark:to-red-600 dark:hover:from-red-600 dark:hover:to-red-500 light:from-red-600 light:to-red-500 light:hover:from-red-500 light:hover:to-red-400 text-white shadow-lg hover:shadow-red-500/20 transform hover:-translate-y-0.5">
+                <button id="confirm-clear-system-prompt" class="flex-1 py-2.5 px-4 rounded-lg bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 dark:from-red-700 dark:to-red-600 dark:hover:from-red-600 dark:hover:to-red-500 light:from-red-600 light:to-red-500 light:hover:from-red-500 light:hover:to-red-400 text-white shadow-lg hover:shadow-red-500/20">
                     <i class="fas fa-trash-alt mr-2"></i>Clear Prompt
                 </button>
             </div>
@@ -1490,8 +1365,8 @@
                     <i class="fas fa-question-circle mr-2 text-blue-500"></i>LMSA Help
                 </h2>
                 <div class="flex items-center h-9">
-                    <button id="close-help" class="group w-9 h-9 flex items-center justify-center transition-colors duration-300 focus:outline-none">
-                        <i class="fas fa-times text-lg group-hover:rotate-90 transition-transform duration-300" style="color: var(--modal-text);"></i>
+                    <button id="close-help" class="group w-9 h-9 flex items-center justify-center focus:outline-none">
+                        <i class="fas fa-times text-lg" style="color: var(--modal-text);"></i>
                     </button>
                 </div>
             </div>
@@ -1580,24 +1455,24 @@
 
 
                 <div class="text-center mt-4">
-                    <a href="#" id="need-more-help-link" class="transition-colors duration-200 text-sm font-medium" style="color: var(--text-primary);">Need more help?</a>
+                    <a href="#" id="need-more-help-link" class="text-sm font-medium" style="color: var(--text-primary);">Need more help?</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Contact Support Modal -->
-    <div id="contact-form-modal" class="fixed inset-0 bg-black/70 dark:bg-black/70 light:bg-gray-900/50 backdrop-blur-sm flex items-center justify-center hidden modal-container animate-fade-in" aria-labelledby="contact-form-title" role="dialog" aria-modal="true">
-        <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] dark:from-[#0a192f] dark:to-[#0d1f3d] light:from-[#f8fafc] light:to-[#f1f5f9] p-6 rounded-xl w-full max-w-lg mx-auto max-h-[90vh] shadow-2xl overflow-y-auto modal-content animate-modal-in" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
+    <div id="contact-form-modal" class="fixed inset-0 bg-black/70 dark:bg-black/70 light:bg-gray-900/50 backdrop-blur-sm flex items-center justify-center hidden modal-container" aria-labelledby="contact-form-title" role="dialog" aria-modal="true">
+        <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] dark:from-[#0a192f] dark:to-[#0d1f3d] light:from-[#f8fafc] light:to-[#f1f5f9] p-6 rounded-xl w-full max-w-lg mx-auto max-h-[90vh] shadow-2xl overflow-y-auto modal-content" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
             <div class="flex justify-between items-center mb-6 border-b border-gray-700/60 dark:border-gray-700/60 light:border-gray-200 pb-4 sticky top-0 bg-gradient-to-b from-[#0a192f] to-[#0a192f] dark:from-[#0a192f] dark:to-[#0a192f] light:from-[#f8fafc] light:to-[#f8fafc] z-10">
                 <h2 id="contact-form-title" class="text-2xl font-bold flex items-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">
-                    <div class="mr-3 p-2 bg-blue-500/10 dark:bg-blue-500/10 light:bg-blue-500/20 rounded-full flex items-center justify-center animate-pulse-subtle">
+                    <div class="mr-3 p-2 bg-blue-500/10 dark:bg-blue-500/10 light:bg-blue-500/20 rounded-full flex items-center justify-center">
                         <i class="fas fa-envelope text-blue-400"></i>
                     </div>
                     Contact Support
                 </h2>
-                <button id="close-contact-form" class="text-gray-400 dark:hover:text-white light:hover:text-gray-800 focus:outline-none transition-all duration-300 dark:hover:bg-gray-700/50 light:hover:bg-gray-200/50 rounded-full w-9 h-9 flex items-center justify-center group">
-                    <i class="fas fa-times transform group-hover:rotate-90 transition-transform duration-300"></i>
+                <button id="close-contact-form" class="text-gray-400 dark:hover:text-white light:hover:text-gray-800 focus:outline-none dark:hover:bg-gray-700/50 light:hover:bg-gray-200/50 rounded-full w-9 h-9 flex items-center justify-center group">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
 
@@ -1617,14 +1492,14 @@
                 <div class="mb-6">
                     <button id="open-email-support"
                         class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600
-                        text-white font-medium py-4 px-6 rounded-lg transition-all duration-300
+                        text-white font-medium py-4 px-6 rounded-lg
                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900
-                        shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-0.5 relative overflow-hidden group">
+                        shadow-lg hover:shadow-blue-500/20 relative overflow-hidden group">
                         <span class="relative z-10 flex items-center justify-center">
-                            <i class="fas fa-external-link-alt mr-3 group-hover:animate-pulse"></i>
+                            <i class="fas fa-external-link-alt mr-3"></i>
                             <span class="text-lg">Open Email App</span>
                         </span>
-                        <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-teal-500 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-teal-500 opacity-0 group-hover:opacity-50"></div>
                     </button>
                 </div>
 
@@ -1665,7 +1540,7 @@
                     Email app not working? You can manually email us at:
                 </p>
                 <a href="mailto:support@lmsa.app"
-                   class="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-200 underline decoration-dotted underline-offset-2">
+                   class="text-blue-400 hover:text-blue-300 text-sm font-medium underline decoration-dotted underline-offset-2">
                     support@lmsa.app
                 </a>
             </div>
@@ -1703,20 +1578,20 @@
     
     <!-- About modal -->
     <div id="about-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden modal-container z-50" aria-labelledby="about-title" role="dialog" aria-modal="true">
-        <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] p-0 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-white/10 overflow-hidden animate-modal-in" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
+        <div class="bg-gradient-to-b from-[#0a192f] to-[#0d1f3d] p-0 rounded-xl w-[420px] max-w-[90%] shadow-2xl modal-content border border-white/10 overflow-hidden" style="-webkit-overflow-scrolling: touch; touch-action: auto; overscroll-behavior: contain;">
             <!-- Header with app icon and title -->
             <div class="relative p-6 pb-4">
                 <div class="flex items-center justify-center mb-2">
-                    <img src="icon.png" alt="LMSA Icon" class="w-16 h-16 mb-1 filter drop-shadow-lg animate-pulse-subtle">
+                    <img src="icon.png" alt="LMSA Icon" class="w-16 h-16 mb-1 filter drop-shadow-lg">
                 </div>
                 <h2 id="about-title" class="text-2xl font-bold text-center flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400 mb-1">
                     LMSA
                 </h2>
-                <button id="close-about" class="absolute right-3 top-3 text-gray-400 hover:text-white focus:outline-none transition-all duration-300 hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center">
+                <button id="close-about" class="absolute right-3 top-3 text-gray-400 hover:text-white focus:outline-none hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center">
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="version-badge bg-white/10 px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300">Version 7.2</p>
+                    <p class="text-sm font-medium text-blue-300">Version 7.3</p>
                 </div>
             </div>
 
@@ -1753,7 +1628,7 @@
                     <div class="mt-5 pt-4 border-t border-white/10 w-full">
                         <p class="text-center text-gray-400 flex items-center justify-center">
                             <i class="fas fa-question-circle text-blue-400 mr-2"></i>
-                            Need help? <a href="#" id="open-help-link" class="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200 ml-1.5 underline decoration-dotted underline-offset-2">Open Help Menu</a>
+                            Need help? <a href="#" id="open-help-link" class="text-blue-400 hover:text-blue-300 font-medium ml-1.5 underline decoration-dotted underline-offset-2">Open Help Menu</a>
                         </p>
                     </div>
                 </div>
@@ -1786,10 +1661,10 @@
                 </div>
             </div>
             <div class="flex justify-end space-x-4">
-                <button id="cancel-import" class="rounded-lg px-4 py-2 focus:outline-none transition-all duration-300 ease-in-out" style="background-color: var(--bg-tertiary); color: var(--text-primary);">
+                <button id="cancel-import" class="rounded-lg px-4 py-2 focus:outline-none" style="background-color: var(--bg-tertiary); color: var(--text-primary);">
                     Cancel
                 </button>
-                <button id="confirm-import" class="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 focus:outline-none transition-all duration-300 ease-in-out">
+                <button id="confirm-import" class="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 focus:outline-none">
                     Import
                 </button>
             </div>
@@ -1806,7 +1681,7 @@
                 <p id="import-success-message" class="text-center text-lg" style="color: var(--text-primary);">Successfully imported chats.</p>
             </div>
             <div class="flex justify-center">
-                <button id="close-import-success" class="bg-blue-600 text-white rounded-lg px-6 py-2 hover:bg-blue-700 focus:outline-none transition-all duration-300 ease-in-out">
+                <button id="close-import-success" class="bg-blue-600 text-white rounded-lg px-6 py-2 hover:bg-blue-700 focus:outline-none">
                     Close
                 </button>
             </div>
@@ -1821,10 +1696,10 @@
             </h2>
             <p id="export-confirmation-message" class="mb-4">Are you sure you want to export all your chat history? The exported file will contain all your conversations in unencrypted format.</p>
             <div class="flex justify-end space-x-4">
-                <button id="cancel-export" class="rounded-lg px-4 py-2 focus:outline-none transition-all duration-300 ease-in-out" style="background-color: var(--bg-tertiary); color: var(--text-primary);">
+                <button id="cancel-export" class="rounded-lg px-4 py-2 focus:outline-none" style="background-color: var(--bg-tertiary); color: var(--text-primary);">
                     Cancel
                 </button>
-                <button id="confirm-export" class="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 focus:outline-none transition-all duration-300 ease-in-out">
+                <button id="confirm-export" class="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 focus:outline-none">
                     Export
                 </button>
             </div>
@@ -1841,7 +1716,7 @@
                 <p id="export-success-message" class="text-center text-lg" style="color: var(--text-primary);">Successfully exported chats.</p>
             </div>
             <div class="flex justify-center">
-                <button id="close-export-success" class="bg-blue-600 text-white rounded-lg px-6 py-2 hover:bg-blue-700 focus:outline-none transition-all duration-300 ease-in-out">
+                <button id="close-export-success" class="bg-blue-600 text-white rounded-lg px-6 py-2 hover:bg-blue-700 focus:outline-none">
                     Close
                 </button>
             </div>
@@ -1856,14 +1731,14 @@
         <div class="dark:bg-gradient-to-b dark:from-[#0a192f]/95 dark:via-[#0c1e36]/95 dark:to-[#0a192f]/95 light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-6 rounded-xl w-[800px] max-w-[95%] max-h-[90vh] shadow-2xl overflow-hidden flex flex-col modal-content border border-white/10 dark:border-white/10 light:border-gray-200">
             <div class="flex justify-between items-center mb-5 pb-2 border-b border-white/10 dark:border-white/10 light:border-gray-200/60">
                 <h2 id="model-title" class="text-xl font-bold flex items-center modal-title">
-                    <div id="model-header-icon" class="icon-wrapper mr-3 flex items-center justify-center rounded-full w-9 h-9 text-blue-400 shadow-lg transition-all duration-300">
+                    <div id="model-header-icon" class="icon-wrapper mr-3 flex items-center justify-center rounded-full w-9 h-9 text-blue-400 shadow-lg">
                         <i class="fas fa-info-circle"></i>
                     </div>
                     <div class="flex flex-col">
                         <span class="text-blue-400 font-extrabold">Model Information</span>
                     </div>
                 </h2>
-                <button id="close-model" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:rotate-90 transform">
+                <button id="close-model" class="text-gray-400 hover:text-white focus:outline-none rounded-full w-8 h-8 flex items-center justify-center">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -1891,7 +1766,7 @@
 
                 <div>
                     <div id="available-models-list" class="space-y-3">
-                        <div class="animate-pulse flex space-x-4">
+                        <div class="flex space-x-4">
                             <div class="flex-1 space-y-3 py-1">
                                 <div class="h-4 bg-darkTertiary/50 rounded-full w-3/4"></div>
                                 <div class="h-4 bg-darkTertiary/50 rounded-full w-1/2"></div>
@@ -1916,7 +1791,7 @@
                         <span class="text-blue-400 font-extrabold">Model Name</span>
                     </div>
                 </h2>
-                <button id="close-full-model-name" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:rotate-90 transform">
+                <button id="close-full-model-name" class="text-gray-400 hover:text-white focus:outline-none rounded-full w-8 h-8 flex items-center justify-center">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -1933,7 +1808,7 @@
         <div class="bg-gradient-to-b from-[#0a192f]/95 via-[#0c1e36]/95 to-[#0a192f]/95 p-4 rounded-2xl shadow-2xl modal-content flex flex-col border border-white/10 overflow-hidden" style="box-shadow: 0 20px 60px -15px rgba(0,0,0,0.7), 0 0 30px rgba(31, 66, 135, 0.2), 0 0 0 1px rgba(255,255,255,0.1) inset;">
             <div class="flex justify-between items-center mb-3 pb-3 border-b border-white/15">
                 <h2 id="whats-new-title" class="text-xl font-bold flex items-center">
-                    <div class="icon-wrapper mr-3 flex items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 w-9 h-9 text-darkBg shadow-lg animate-pulse-subtle">
+                    <div class="icon-wrapper mr-3 flex items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 w-9 h-9 text-darkBg shadow-lg">
                         <i class="fas fa-wand-magic-sparkles text-sm"></i>
                     </div>
                     <div class="flex flex-col">
@@ -1941,7 +1816,7 @@
                         <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">7.0</span></span>
                     </div>
                 </h2>
-                <button id="close-whats-new" class="text-gray-400 hover:text-white focus:outline-none transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center hover:rotate-90 transform">
+                <button id="close-whats-new" class="text-gray-400 hover:text-white focus:outline-none rounded-full w-8 h-8 flex items-center justify-center">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -2001,7 +1876,7 @@
 
                 <!-- Footer content -->
                 <div class="flex justify-end items-center pt-3 pb-2 mt-auto bg-gradient-to-b from-[#0a192f]/95 to-[#0c1e36]/95 sticky bottom-0 px-2">
-                    <button id="got-it-whats-new" class="relative overflow-hidden text-white rounded-lg focus:outline-none transition-all duration-300 ease-in-out text-sm px-4 py-2" style="background: linear-gradient(135deg, #1e40af, #3b82f6); box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15); border: none; font-weight: 600; letter-spacing: 0.02em; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px -1px rgba(37, 99, 235, 0.3), 0 4px 8px -1px rgba(37, 99, 235, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)'; this.style.background='linear-gradient(135deg, #2563eb, #60a5fa)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15)'; this.style.background='linear-gradient(135deg, #1e40af, #3b82f6)';">
+                    <button id="got-it-whats-new" class="relative overflow-hidden text-white rounded-lg focus:outline-none text-sm px-4 py-2" style="background: linear-gradient(135deg, #1e40af, #3b82f6); box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15); border: none; font-weight: 600; letter-spacing: 0.02em; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);" onmouseover="this.style.boxShadow='0 6px 12px -1px rgba(37, 99, 235, 0.3), 0 4px 8px -1px rgba(37, 99, 235, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)'; this.style.background='linear-gradient(135deg, #2563eb, #60a5fa)';" onmouseout="this.style.boxShadow='0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15)'; this.style.background='linear-gradient(135deg, #1e40af, #3b82f6)';">
                         <span class="relative z-10 flex items-center">
                             <i class="fas fa-check-circle mr-2"></i>
                             <span>Got it!</span>
@@ -2347,13 +2222,13 @@
         <div class="bg-darkSecondary relative z-[2001]">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-semibold">Edit System Prompt</h2>
-                <button id="close-system-prompt-overlay" class="text-gray-400 hover:text-gray-200 focus:outline-none transition-colors duration-200 p-2 rounded-full hover:bg-gray-700/50" aria-label="Close modal">
+                <button id="close-system-prompt-overlay" class="text-gray-400 hover:text-gray-200 focus:outline-none p-2 rounded-full hover:bg-gray-700/50" aria-label="Close modal">
                     <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
             <textarea id="system-prompt-editor" class="w-full mb-4" placeholder="Enter your system prompt here..."></textarea>
             <div class="flex justify-between items-center">
-                <button id="clear-system-prompt-btn" class="text-red-400 hover:text-red-300 focus:outline-none transition-all duration-300 ease-in-out px-3 py-2 rounded-lg hover:bg-red-900/20 border border-red-800/30 hover:border-red-700/50">
+                <button id="clear-system-prompt-btn" class="text-red-400 hover:text-red-300 focus:outline-none px-3 py-2 rounded-lg hover:bg-red-900/20 border border-red-800/30 hover:border-red-700/50">
                     <i class="fas fa-trash-alt mr-2"></i>Clear
                 </button>
                 <div class="flex space-x-4">
@@ -2471,33 +2346,33 @@
     </script>
 
     <!-- Model loading modal -->
-    <div id="model-loading-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container animate-fade-in" style="z-index: 2200;" aria-labelledby="model-loading-title" role="dialog" aria-modal="true">
+    <div id="model-loading-modal" class="fixed inset-0 flex items-center justify-center hidden modal-container" style="z-index: 2200;" aria-labelledby="model-loading-title" role="dialog" aria-modal="true">
         <div class="relative dark:bg-gradient-to-b dark:from-[#1e293b] dark:via-[#334155] dark:to-[#1e293b] light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-10 rounded-2xl w-[550px] max-w-[90%] shadow-2xl overflow-hidden flex flex-col modal-content border border-blue-400/50 dark:border-blue-400/50 light:border-blue-400/30 backdrop-blur-sm">
             <!-- Animated background gradient -->
-            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 animate-pulse-slow rounded-2xl"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 rounded-2xl"></div>
             
             <!-- Decorative border glow -->
-            <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/30 via-purple-500/20 to-blue-500/30 animate-border-glow"></div>
+            <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/30 via-purple-500/20 to-blue-500/30"></div>
             
             <div class="relative z-10 flex flex-col items-center justify-center text-center">
                 <!-- Enhanced loading spinner section -->
                 <div class="mb-8 relative">
                     <div class="loading-spinner-container relative">
                         <!-- Outer animated ring -->
-                        <div class="absolute inset-0 w-20 h-20 border-2 border-blue-500/30 rounded-full animate-spin-slow"></div>
+                        <div class="absolute inset-0 w-20 h-20 border-2 border-blue-500/30 rounded-full"></div>
                         <!-- Main spinner -->
-                        <div class="loading-spinner w-20 h-20 border-4 border-transparent border-t-blue-500 border-r-blue-400 rounded-full animate-spin shadow-lg"></div>
+                        <div class="loading-spinner w-20 h-20 border-4 border-transparent border-t-blue-500 border-r-blue-400 rounded-full shadow-lg"></div>
                         <!-- Inner pulse ring -->
-                        <div class="loading-pulse absolute inset-2 w-16 h-16 border-2 border-blue-300/40 rounded-full animate-ping"></div>
+                        <div class="loading-pulse absolute inset-2 w-16 h-16 border-2 border-blue-300/40 rounded-full"></div>
                         <!-- Center dot -->
-                        <div class="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                        <div class="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-400 rounded-full"></div>
                     </div>
                     
                     <!-- Floating particles -->
-                    <div class="absolute -top-2 -left-2 w-1 h-1 bg-blue-400 rounded-full animate-float-1"></div>
-                    <div class="absolute -top-1 -right-3 w-1.5 h-1.5 bg-purple-400 rounded-full animate-float-2"></div>
-                    <div class="absolute -bottom-2 -left-1 w-1 h-1 bg-blue-300 rounded-full animate-float-3"></div>
-                    <div class="absolute -bottom-1 -right-2 w-1 h-1 bg-purple-300 rounded-full animate-float-1"></div>
+                    <div class="absolute -top-2 -left-2 w-1 h-1 bg-blue-400 rounded-full"></div>
+                    <div class="absolute -top-1 -right-3 w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
+                    <div class="absolute -bottom-2 -left-1 w-1 h-1 bg-blue-300 rounded-full"></div>
+                    <div class="absolute -bottom-1 -right-2 w-1 h-1 bg-purple-300 rounded-full"></div>
                 </div>
 
                 <!-- Enhanced title with better typography -->
@@ -2505,7 +2380,7 @@
                     <h2 id="model-loading-title" class="text-2xl font-bold mb-2 text-blue-400 dark:text-blue-400 light:text-blue-600">
                         <i class="fas fa-robot mr-3"></i>Loading Model
                     </h2>
-                    <div class="w-20 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full animate-pulse"></div>
+                    <div class="w-20 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
                 </div>
 
                 <!-- Enhanced message with better spacing -->
@@ -2524,9 +2399,9 @@
                 <div class="mt-6 flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-xl border border-blue-500/10 dark:border-blue-500/10 light:border-blue-400/20">
                     <div class="flex items-center text-sm text-gray-400 dark:text-gray-400 light:text-gray-500">
                         <div class="flex space-x-1 mr-3">
-                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
-                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
-                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 300ms;"></div>
+                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
                         </div>
                         <span>This may take a few moments depending on model size</span>
                     </div>
