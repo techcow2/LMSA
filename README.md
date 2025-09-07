@@ -2,7 +2,6 @@
 ![Status: Open Source](https://img.shields.io/badge/Status-Open%20Source-brightgreen)
 ![Version: Current](https://img.shields.io/badge/Version-Current-green)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
-
 <p align="left">
   <a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
     <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80">
@@ -110,7 +109,7 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - Anyone who wants the convenience of mobile access to powerful AI
 
 ## 🔧 Technical Requirements
-- Android 5.0 or higher
+- Android 15 or higher
 - LM Studio installed and running on a computer with a suitable language model (text or vision)
 - Both devices connected to the same network
 
