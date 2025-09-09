@@ -907,9 +907,53 @@ export function exportChats() {
     const formattedTime = `${date.getHours().toString().padStart(2, '0')}-${date.getMinutes().toString().padStart(2, '0')}`;
     const filename = `lmsa-chats-${formattedDate}-${formattedTime}.json`;
 
+    // Count the number of chats and saved system prompts exported
+    const chatCount = Object.keys(exportData.chats).length;
+    const promptCount = exportData.savedSystemPrompts.length;
+
+    // Check if we're in an Android app with native file operations
+    if (window.AndroidFileOps && typeof window.AndroidFileOps.saveFile === 'function') {
+        console.log('Using Android native file saving');
+        
+        // Set up callback for when file is saved
+        window.onFileSaved = function(success) {
+            if (success) {
+                console.log('File saved successfully via Android native interface');
+                // Show the export success modal
+                if (typeof showExportSuccessModal === 'function') {
+                    showExportSuccessModal(chatCount, promptCount);
+                } else if (exportSuccessModal && exportSuccessMessage) {
+                    const chatText = `${chatCount} chat${chatCount !== 1 ? 's' : ''}`;
+                    const promptText = `${promptCount} saved system prompt${promptCount !== 1 ? 's' : ''}`;
+                    exportSuccessMessage.textContent = `Successfully exported ${chatText} and ${promptText}.`;
+                    exportSuccessModal.classList.remove('hidden');
+                    const modalContent = exportSuccessModal.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.classList.add('animate-modal-in');
+                        setTimeout(() => {
+                            modalContent.classList.remove('animate-modal-in');
+                        }, 300);
+                    }
+                }
+            } else {
+                console.log('File save failed or was cancelled');
+                // Could show an error message here if desired
+            }
+            // Clean up the callback
+            delete window.onFileSaved;
+        };
+        
+        // Call the Android native file saving method
+        window.AndroidFileOps.saveFile(jsonString, filename);
+        return;
+    }
+
+    // Fallback for non-Android environments or older Android versions
+    console.log('Using fallback file saving method');
+    
     // Check if we're in an Android WebView
     if (isAndroidWebView() || isMobileDevice()) {
-        // For Android WebView, we need to use a different approach
+        // For Android WebView without native file ops, use the standard approach
         // Create a Blob with the JSON data
         const blob = new Blob([jsonString], { type: 'application/json' });
 
@@ -959,11 +1003,7 @@ export function exportChats() {
         URL.revokeObjectURL(url);
     }
 
-    // Count the number of chats and saved system prompts exported
-    const chatCount = Object.keys(exportData.chats).length;
-    const promptCount = exportData.savedSystemPrompts.length;
-
-    // Show the export success modal if it's available
+    // Show the export success modal for fallback methods (immediate feedback)
     if (typeof showExportSuccessModal === 'function') {
         showExportSuccessModal(chatCount, promptCount);
     } else if (exportSuccessModal && exportSuccessMessage) {
