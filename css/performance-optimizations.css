@@ -255,6 +255,7 @@ button {
     .modal,
     #settings-modal,
     #character-gallery {
+        transition-duration: 0.2s;
     }
 }
 
@@ -264,6 +265,7 @@ button {
     .header-btn,
     .btn,
     button {
+        transition: opacity 0.2s ease;
     }
     
     .header-btn:hover {
@@ -282,6 +284,8 @@ button {
     .character-card,
     .welcome-message,
     .settings-step {
+        transition: none;
+        animation: none;
     }
     
     .header-btn:hover,
@@ -306,6 +310,7 @@ button {
     
     @container (max-width: 480px) {
         .character-card {
-            }
+            transform: none;
+        }
     }
 }

@@ -6,8 +6,8 @@
     align-items: center;
     justify-content: center;
     background-color: var(--modal-overlay);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
     padding: 1rem;
     overflow-y: auto;
     opacity: 0.95;
@@ -20,8 +20,8 @@
     opacity: 1;
 }
 
-/* Editor container with improved styling */
-#system-prompt-overlay .bg-darkSecondary {
+/* Modal content container - now using the proper modal structure */
+#system-prompt-overlay .modal-content {
     background: var(--modal-bg);
     border: 1px solid var(--border-color);
     border-radius: 1rem;
@@ -31,33 +31,31 @@
     max-width: 700px;
     margin: auto;
     position: relative;
+    padding: 2rem;
 }
 
 /* Header styling */
 #system-prompt-overlay .flex.justify-between {
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     transform: none;
     will-change: auto;
 }
 
 #system-prompt-overlay h2 {
     color: var(--modal-title);
-    font-weight: 600;
+    font-weight: 700;
     display: flex;
     align-items: center;
     transform: none;
     will-change: auto;
+    font-size: 1.5rem;
 }
 
-#system-prompt-overlay h2::before {
-    content: '\f044'; /* Edit icon */
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    margin-right: 0.5rem;
+#system-prompt-overlay h2 i {
     color: var(--button-primary-bg);
-    font-size: 0.9em;
+    font-size: 1.25rem;
 }
 
 
@@ -85,23 +83,27 @@
 }
 
 /* Button container */
-#system-prompt-overlay .flex.justify-end {
+#system-prompt-overlay .flex.justify-between:last-child {
     margin-top: 0.5rem;
 }
 
 /* Button styling */
 #system-prompt-overlay button {
-    border-radius: 0.5rem;
+    border-radius: 0.375rem;
     font-weight: 500;
-    padding: 0.625rem 1.25rem;
+    padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 #cancel-system-prompt-edit {
-    background-color: var(--settings-label-bg);
+    background-color: transparent;
     color: var(--modal-text);
+    border-color: var(--border-color);
 }
 
 #cancel-system-prompt-edit:hover {
@@ -109,12 +111,13 @@
 }
 
 #save-system-prompt-edit {
-    background-color: var(--button-primary-bg);
+    background-color: rgb(37, 99, 235);
     color: white;
+    border-color: rgb(37, 99, 235);
 }
 
 #save-system-prompt-edit:hover {
-    background-color: var(--button-primary-hover);
+    background-color: rgb(29, 78, 216);
     transform: translateY(-1px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -124,56 +127,17 @@
     box-shadow: none;
 }
 
-/* Add icons to buttons */
-#cancel-system-prompt-edit::before {
-    content: '\f00d'; /* Times icon */
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    margin-right: 0.5rem;
-}
-
-#save-system-prompt-edit::before {
-    content: '\f0c7'; /* Save icon */
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    margin-right: 0.5rem;
-}
-
-/* Clear button styling in overlay */
-#clear-system-prompt-btn {
-    background-color: transparent;
-    color: var(--text-danger, #ef4444);
-    border: 1px solid var(--border-danger, rgba(239, 68, 68, 0.3));
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-#clear-system-prompt-btn:hover {
-    background-color: var(--bg-danger-hover, rgba(239, 68, 68, 0.1));
-    border-color: var(--border-danger-hover, rgba(239, 68, 68, 0.5));
-    color: var(--text-danger-hover, #dc2626);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
-}
-
-#clear-system-prompt-btn:active {
-    transform: translateY(0);
-    box-shadow: none;
-}
-
 /* Close button styling */
 #close-system-prompt-overlay {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
+    background: transparent;
     border: none;
     color: var(--modal-text);
     cursor: pointer;
-    flex-shrink: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
 }
 
 #close-system-prompt-overlay:hover {
@@ -187,13 +151,53 @@
     background-color: var(--settings-label-bg);
 }
 
+/* Clear button styling in overlay */
+#clear-system-prompt-btn {
+    background-color: transparent;
+    color: rgb(220, 38, 38);
+    border: 1px solid rgb(252, 165, 165);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#clear-system-prompt-btn:hover {
+    background-color: rgb(254, 242, 242);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: rgb(185, 28, 28);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+.dark #clear-system-prompt-btn {
+    color: rgb(248, 113, 113);
+    border-color: rgb(220, 38, 38);
+}
+
+.dark #clear-system-prompt-btn:hover {
+    background-color: rgba(127, 29, 29, 0.2);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: rgb(220, 38, 38);
+}
+
+#clear-system-prompt-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
 /* Responsive adjustments for mobile and small tablets */
 @media (max-width: 768px) {
     #system-prompt-overlay {
         padding: 0.5rem;
     }
 
-    #system-prompt-overlay .bg-darkSecondary {
+    #system-prompt-overlay .modal-content {
         padding: 1rem;
         max-width: 95%;
     }
@@ -221,7 +225,7 @@
 
 /* Tablet-specific enhancements (768px-1024px) */
 @media (min-width: 768px) and (max-width: 1024px) {
-    #system-prompt-overlay .bg-darkSecondary {
+    #system-prompt-overlay .modal-content {
         max-width: 650px;
         width: 90%;
         padding: 1.5rem;
@@ -234,7 +238,7 @@
     }
 
     /* Improve button spacing for tablets */
-    #system-prompt-overlay .flex.justify-end {
+    #system-prompt-overlay .flex.justify-between:last-child {
         margin-top: 1rem;
     }
 
@@ -246,7 +250,7 @@
 
 /* Small mobile devices */
 @media (max-width: 480px) {
-    #system-prompt-overlay .bg-darkSecondary {
+    #system-prompt-overlay .modal-content {
         padding: 0.75rem;
         max-width: 100%;
         margin: 0.5rem;
@@ -291,7 +295,7 @@
         min-height: 100vh;
     }
 
-    #system-prompt-overlay .bg-darkSecondary {
+    #system-prompt-overlay .modal-content {
         padding: 0.5rem;
         max-height: calc(100dvh - 0.5rem);
         overflow-y: auto;
@@ -311,7 +315,7 @@
     }
 
     /* Stack buttons on very small screens */
-    #system-prompt-overlay .flex.justify-end {
+    #system-prompt-overlay .flex.justify-between:last-child {
         flex-direction: column-reverse;
         gap: 6px;
         margin-top: 0.5rem;
@@ -324,6 +328,12 @@
         margin-right: -0.5rem;
         padding-left: 0.5rem;
         padding-right: 0.5rem;
+    }
+
+    #system-prompt-overlay .flex.justify-between:last-child .flex {
+        width: 100%;
+        flex-direction: column;
+        gap: 6px;
     }
 
     #system-prompt-overlay button {
@@ -367,7 +377,7 @@
         padding: 0.5rem;
     }
 
-    #system-prompt-overlay .bg-darkSecondary {
+    #system-prompt-overlay .modal-content {
         padding: 0.75rem;
         max-width: 100%;
         margin: 0.5rem;
@@ -406,7 +416,7 @@
 
 /* Desktop enhancements (larger screens) */
 @media (min-width: 1025px) {
-    #system-prompt-overlay .bg-darkSecondary {
+    #system-prompt-overlay .modal-content {
         max-width: 800px;
         padding: 2rem;
         border-radius: 1.5rem;
@@ -455,7 +465,7 @@
         padding: 0.125rem;
     }
 
-    #system-prompt-overlay .bg-darkSecondary {
+    #system-prompt-overlay .modal-content {
         padding: 0.375rem;
         margin: 0.125rem;
         border-radius: 0.5rem;
@@ -490,7 +500,7 @@
         min-height: 100vh;
     }
 
-    #system-prompt-overlay .bg-darkSecondary {
+    #system-prompt-overlay .modal-content {
         max-height: calc(100dvh - 0.5rem);
         padding: 0.5rem;
         margin: 0.25rem;
@@ -548,7 +558,7 @@
         margin: 0;
     }
 
-    #system-prompt-overlay.keyboard-visible .bg-darkSecondary {
+    #system-prompt-overlay.keyboard-visible .modal-content {
         height: calc(100% - 1.5rem);
         max-height: none;
         margin: 0;
@@ -645,7 +655,7 @@
 
 /* Dark mode specific improvements for small screens */
 @media (max-width: 480px) and (prefers-color-scheme: dark) {
-    #system-prompt-overlay .bg-darkSecondary {
+    #system-prompt-overlay .modal-content {
         /* Ensure good contrast in dark mode */
         border: 1px solid rgba(255, 255, 255, 0.1);
     }

@@ -419,10 +419,6 @@ body.preview-mode {
     }
 }
 
-/* Welcome screen theme toggle */
-#welcome-theme-toggle {
-}
-
 #welcome-theme-toggle label {
     display: flex;
     align-items: center;
@@ -489,11 +485,6 @@ body.preview-mode {
 #welcome-theme-toggle .dark-icon,
 #welcome-theme-toggle .light-icon {
     cursor: pointer;
-}
-
-/* Icon styles */
-#welcome-theme-toggle .dark-icon,
-#welcome-theme-toggle .light-icon {
 }
 
 body.light-theme #welcome-theme-toggle .light-icon {
@@ -1024,6 +1015,8 @@ body.light-theme #loaded-model {
   height: 100vh !important;
 }
 
+/* Android keyboard fix container */
+.android-webview.keyboard-visible #app-container {
   position: fixed;
   height: 100vh !important;
   max-height: 100vh !important;
@@ -1218,9 +1211,6 @@ body.light-theme #loaded-model {
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-user-select: none;
-}
-
-.section-header .fa-chevron-down {
 }
 
 .section-header.active .fa-chevron-down {
@@ -1835,10 +1825,6 @@ button:hover .header-icon {
     stroke: var(--header-icon-hover);
 }
 
-/* Smooth transitions for dynamic button hiding/showing */
-.header-btn {
-}
-
 .header-btn.hiding {
     opacity: 0;
     transform: scale(0.8);
@@ -1969,10 +1955,6 @@ h1.header-title::after {
     height: 24px;
     position: relative;
     z-index: 2;
-}
-
-/* Smooth transition for hamburger icon transformation */
-#sidebar-toggle svg path {
 }
 
 /* Scrollbar styles for webkit browsers - hide by default except for specific elements */
@@ -2288,11 +2270,6 @@ body.light-theme #send-context-menu .icon-container {
         0 0 8px 0 rgba(var(--bg-color-rgb, 37, 99, 235), 0.3);
 }
 
-/* Touch feedback for icon containers */
-
-#send-context-menu button.touch-active .icon-container {
-}
-
 /* Set specific colors for each button's icon container */
 #new-topic-menu-button .icon-container {
     --bg-color-rgb: 5, 150, 105;
@@ -2353,12 +2330,6 @@ body.light-theme #send-context-menu .menu-header {
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-}
-
-#empty-message-modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 #empty-message-modal.active {
@@ -3093,8 +3064,6 @@ body.light-theme #send-context-menu .menu-header {
         font-size: 0.9rem;
     }
 
-    /* Animation for step transitions */
-
 /* Mobile-specific input field improvements */
 @media (max-width: 768px) {
     #server-ip,
@@ -3383,7 +3352,7 @@ body.light-theme #send-context-menu .menu-header {
 
 #clear-system-prompt-modal .modal-content {
     position: relative; /* Create new stacking context */
-    z-index: 2101; /* Higher than the modal container */
+    z-index: 2201; /* Higher than the system prompt overlay (2100) */
     margin: 0 auto; /* Center horizontally */
     background-color: var(--modal-bg, #1a1a1a); /* Fallback for theme support */
     color: var(--modal-text, #ffffff); /* Fallback for theme support */
@@ -3633,6 +3602,7 @@ body.light-theme #clear-system-prompt-modal #close-clear-system-prompt-modal:hov
         width: 100% !important; /* Full width */
     }
 
+    .modal-overlay {
         padding: 0 !important;
         display: flex !important;
         align-items: center !important;
@@ -3647,6 +3617,7 @@ body.light-theme #clear-system-prompt-modal #close-clear-system-prompt-modal:hov
         overflow-x: hidden;
     }
 
+    .modal-overlay .modal-content {
         margin: auto !important; /* Center both horizontally and vertically */
         transform: none !important; /* Prevent any transforms that might affect centering */
     }
@@ -3662,9 +3633,11 @@ body.light-theme #clear-system-prompt-modal #close-clear-system-prompt-modal:hov
 }
 
 .animate-modal-in {
+    animation: modalFadeIn 0.3s ease-out;
 }
 
 .animate-modal-out {
+    animation: modalFadeOut 0.3s ease-in;
 }
 
 /* File upload styling */
@@ -4206,6 +4179,7 @@ body.light-theme .regenerate-btn:hover {
         height: calc(44px + 16px); /* Fixed height: input height + padding */
     }
 
+    #send-button {
         padding: 8px 10px !important;
     }
 

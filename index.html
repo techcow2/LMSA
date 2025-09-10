@@ -86,7 +86,7 @@
         }
         
         .performance-mode #sidebar {
-            
+            transform: none; /* Disable animations in performance mode */
         }
     </style>
     
@@ -1563,7 +1563,7 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="version-badge bg-white/10 px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300">Version 7.3</p>
+                    <p class="text-sm font-medium text-blue-300">Version 8.0</p>
                 </div>
             </div>
 
@@ -2190,22 +2190,24 @@
     </script>
 
     <!-- System prompt edit overlay (fixed position, will be shown/hidden with JavaScript) -->
-    <div id="system-prompt-overlay" class="fixed inset-0 z-[2000] hidden" style="display: none;">
-        <div class="bg-darkSecondary relative z-[2001]">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold">Edit System Prompt</h2>
-                <button id="close-system-prompt-overlay" class="text-gray-400 hover:text-gray-200 focus:outline-none p-2 rounded-full hover:bg-gray-700/50" aria-label="Close modal">
-                    <i class="fas fa-times text-lg"></i>
-                </button>
+    <div id="system-prompt-overlay" class="fixed inset-0 system-prompt-z-2000 hidden modal-container" style="display: none; background: var(--modal-overlay); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);" aria-labelledby="system-prompt-overlay-title" role="dialog" aria-modal="true">
+        <div class="relative dark:bg-gradient-to-b dark:from-[#1e293b] dark:via-[#334155] dark:to-[#1e293b] light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-8 rounded-2xl w-[700px] max-w-[90%] shadow-2xl overflow-hidden flex flex-col modal-content border border-blue-400/50 dark:border-blue-400/50 light:border-blue-400/30 backdrop-blur-sm system-prompt-z-2001">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="system-prompt-overlay-title" class="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                    <i class="fas fa-edit mr-3 text-blue-400"></i>Edit System Prompt
+                </h2>
+                <button id="close-system-prompt-overlay" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl font-bold" aria-label="Close modal">&times;</button>
             </div>
-            <textarea id="system-prompt-editor" class="w-full mb-4" placeholder="Enter your system prompt here..."></textarea>
+            <div class="mb-6 flex-1 flex flex-col">
+                <textarea id="system-prompt-editor" class="flex-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white" placeholder="Enter your system prompt here..."></textarea>
+            </div>
             <div class="flex justify-between items-center">
-                <button id="clear-system-prompt-btn" class="text-red-400 hover:text-red-300 focus:outline-none px-3 py-2 rounded-lg hover:bg-red-900/20 border border-red-800/30 hover:border-red-700/50">
+                <button id="clear-system-prompt-btn" class="px-4 py-2 text-red-600 dark:text-red-400 border border-red-300 dark:border-red-600 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                     <i class="fas fa-trash-alt mr-2"></i>Clear
                 </button>
-                <div class="flex space-x-4">
-                    <button id="cancel-system-prompt-edit">Cancel</button>
-                    <button id="save-system-prompt-edit">Save</button>
+                <div class="flex space-x-3">
+                    <button id="cancel-system-prompt-edit" class="px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Cancel</button>
+                    <button id="save-system-prompt-edit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Save</button>
                 </div>
             </div>
         </div>
@@ -2327,26 +2329,6 @@
             <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/30 via-purple-500/20 to-blue-500/30"></div>
             
             <div class="relative z-10 flex flex-col items-center justify-center text-center">
-                <!-- Enhanced loading spinner section -->
-                <div class="mb-8 relative">
-                    <div class="loading-spinner-container relative">
-                        <!-- Outer animated ring -->
-                        <div class="absolute inset-0 w-20 h-20 border-2 border-blue-500/30 rounded-full"></div>
-                        <!-- Main spinner -->
-                        <div class="loading-spinner w-20 h-20 border-4 border-transparent border-t-blue-500 border-r-blue-400 rounded-full shadow-lg"></div>
-                        <!-- Inner pulse ring -->
-                        <div class="loading-pulse absolute inset-2 w-16 h-16 border-2 border-blue-300/40 rounded-full"></div>
-                        <!-- Center dot -->
-                        <div class="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-400 rounded-full"></div>
-                    </div>
-                    
-                    <!-- Floating particles -->
-                    <div class="absolute -top-2 -left-2 w-1 h-1 bg-blue-400 rounded-full"></div>
-                    <div class="absolute -top-1 -right-3 w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
-                    <div class="absolute -bottom-2 -left-1 w-1 h-1 bg-blue-300 rounded-full"></div>
-                    <div class="absolute -bottom-1 -right-2 w-1 h-1 bg-purple-300 rounded-full"></div>
-                </div>
-
                 <!-- Enhanced title with better typography -->
                 <div class="mb-4">
                     <h2 id="model-loading-title" class="text-2xl font-bold mb-2 text-blue-400 dark:text-blue-400 light:text-blue-600">

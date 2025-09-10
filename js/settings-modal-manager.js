@@ -961,6 +961,7 @@ function initializeSystemPromptOverlay() {
         // Show the overlay with proper display flex for centering
         overlay.classList.remove('hidden');
         overlay.style.display = 'flex';
+        overlay.style.zIndex = '2100'; // Ensure it's above the settings modal
 
             // Setup mobile keyboard detection
             const cleanupKeyboardDetection = setupMobileKeyboardDetection();
@@ -1148,7 +1149,7 @@ function initializeSystemPromptOverlay() {
     });
 
     // Prevent bubbling from the edit dialog
-    overlay.querySelector('.bg-darkSecondary').addEventListener('click', function(e) {
+    overlay.querySelector('.modal-content').addEventListener('click', function(e) {
         e.stopPropagation();
     });
 
@@ -1181,12 +1182,12 @@ function showClearSystemPromptModal() {
     if (modal) {
         modal.classList.remove('hidden');
         modal.style.display = 'flex';
-        modal.style.zIndex = '2100'; // Ensure it's above the system prompt overlay (2000)
+        modal.style.zIndex = '2200'; // Ensure it's above the system prompt overlay (2100)
 
         // Find the modal content and ensure it's also on top
         const modalContent = modal.querySelector('.modal-content');
         if (modalContent) {
-            modalContent.style.zIndex = '2101'; // Higher than the modal background
+            modalContent.style.zIndex = '2201'; // Higher than the modal background
         }
     }
 }
