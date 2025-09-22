@@ -2,6 +2,7 @@
 ![Status: Open Source](https://img.shields.io/badge/Status-Open%20Source-brightgreen)
 ![Version: Current](https://img.shields.io/badge/Version-Current-green)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
+
 <p align="left">
   <a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
     <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80">
@@ -12,12 +13,16 @@
 </p>
 
 ## 🆕 What's New
-🎉 **Latest Update: Version 7.1** - Now Available!
+
+🎉 **Latest Update: Version 8.0** - Now Available!
 
 ### New Features & Improvements
-- **Settings Menu Fix**: Fixed an issue where the settings menu wasn't positioning itself correctly on some devices, ensuring consistent user experience across all device types
+- **Tailwind CSS Migration Complete**: Successfully migrated from Tailwind CDN to local Tailwind installation, resolving major UI inconsistencies and rendering issues across all device types
+- **Enhanced UI Stability**: Improved interface reliability with locally-hosted styling, ensuring consistent visual experience regardless of network conditions
+- **Performance Optimization**: Reduced external dependencies and improved app loading times with local asset management
 
 ### Previous Updates
+- **Version 7.1**: Fixed settings menu positioning issues, ensuring consistent user experience across all device types
 - **Version 7.0**: Performance optimization, system prompts feature, and enhanced compatibility
 - **Version 6.5**: Added scroll to bottom icon, improved welcome screen behavior, and comprehensive performance improvements
 - **Version 5.5**: Added full Vision Language Model (VLM) support for image upload and analysis, enabling multimodal conversations with AI models
@@ -34,6 +39,7 @@
 </p>
 
 ## 📋 What is LMSA?
+
 LMSA (LM Studio Assistant) is an Android front-end application for LM Studio that provides a clean, user-friendly interface to interact with language models on your Android device. It's designed with privacy in mind, offering a tracking-free experience for users who want to leverage the power of large language models on mobile.
 
 ### Key Functionality:
@@ -44,6 +50,7 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 - Customize AI behavior with system prompts and temperature settings
 
 ## 🔓 Project Status
+
 This project has transitioned to **open source** development.
 
 ### Development Information
@@ -88,6 +95,7 @@ The project is now community-driven and open source. Development efforts are foc
 - **Advanced Customization** - Adjust temperature, system prompts, and other model parameters directly from your phone
 
 ## 💻 How It Works
+
 1. Start LM Studio on your computer and load your favorite language model (including vision language models)
 2. Activate the server feature in LM Studio (usually on port 1234)
 3. Connect the Android app to your computer using your local network
@@ -101,6 +109,7 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - Customize AI behavior through temperature and system prompt settings
 
 ## 👥 Perfect For
+
 - AI enthusiasts who want to access their models on the go
 - Privacy-conscious users who prefer keeping their data local
 - Developers testing different prompts and model responses
@@ -109,11 +118,13 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - Anyone who wants the convenience of mobile access to powerful AI
 
 ## 🔧 Technical Requirements
+
 - Android 15 or higher
 - LM Studio installed and running on a computer with a suitable language model (text or vision)
 - Both devices connected to the same network
 
 ## 🚀 Get Started Today
+
 1. Download and install the app
 2. Start LM Studio and load a model on your computer
 3. Start the LM Studio server
@@ -129,6 +140,7 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 [**Download Now →**](https://play.google.com/store/apps/details?id=com.lmsa.app)
 
 ## ⚠️ Disclaimer
+
 LMSA is a third-party application and is not affiliated with LM Studio or its developers. This app is independently developed to provide an Android front-end interface for interacting with LM Studio. Use of this app is at your own discretion, and the developers of LMSA are not responsible for any issues arising from its use.
 
 ---
