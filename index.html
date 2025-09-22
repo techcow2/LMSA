@@ -28,67 +28,7 @@
     <link rel="stylesheet" href="css/system-prompt-overlay.css">
     <link rel="stylesheet" href="css/code-blocks.css">
     <link rel="stylesheet" href="css/performance-optimizations.css">
-    <link rel="stylesheet" href="css/mobile-optimizations.css">
     
-    <!-- Inline critical mobile CSS for instant loading -->
-    <style id="critical-mobile-css">
-        /* Critical mobile performance CSS - loads immediately */
-        @media screen and (max-width: 768px) {
-            /* Immediate mobile optimizations */
-            * {
-                -webkit-tap-highlight-color: transparent !important;
-                -webkit-font-smoothing: auto;
-                text-rendering: auto;
-            }
-            
-            /* Fast sidebar animation */
-            #sidebar {
-                transform: translateZ(0);
-                will-change: auto;
-                backface-visibility: hidden;
-                background: #1e293b !important;
-                box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1) !important;
-            }
-            
-            /* Optimize scrolling immediately */
-            .messages-container, #messages {
-                -webkit-overflow-scrolling: touch;
-                transform: translateZ(0);
-                contain: layout style paint;
-            }
-            
-            /* Remove hover effects on touch devices */
-            .header-btn:hover,
-            .btn:hover,
-            button:hover,
-            .menu-item:hover,
-            .section-header:hover {
-                transform: none !important;
-                box-shadow: none !important;
-            }
-            
-            /* Mobile loading state */
-            
-            .mobile-optimized #loading-indicator {
-                /* Simplified loading indicator for mobile */
-                background: #1e293b !important;
-                border-radius: 0.5rem !important;
-            }
-        }
-        
-        /* Emergency performance mode */
-        .performance-mode *:not(.file-previews):not(.file-preview):not(.file-previews *) {
-            /* Exclude file preview elements to prevent interference */
-            transition: none !important;
-            animation: none !important;
-            transform: none !important;
-            will-change: auto !important;
-        }
-        
-        .performance-mode #sidebar {
-            transform: none; /* Disable animations in performance mode */
-        }
-    </style>
     
     <!-- Font Awesome with optimized loading -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
@@ -1860,6 +1800,39 @@
     </div>
 
 
+
+    <!-- Native Ad Integration for Android -->
+    <script>
+        // Function to insert native ads into the chat
+        window.insertNativeAd = function(adHtml) {
+            try {
+                const chatOutput = document.getElementById('chat-output');
+                if (!chatOutput) return;
+
+                // Create a container for the native ad
+                const adContainer = document.createElement('div');
+                adContainer.className = 'native-ad-message-container';
+                adContainer.innerHTML = adHtml;
+
+                // Find the last message and insert the ad after it
+                const messages = chatOutput.querySelectorAll('.message-container');
+                if (messages.length > 0) {
+                    const lastMessage = messages[messages.length - 1];
+                    lastMessage.parentNode.insertBefore(adContainer, lastMessage.nextSibling);
+                } else {
+                    chatOutput.appendChild(adContainer);
+                }
+
+                // Scroll to show the new ad (smoothly)
+                setTimeout(() => {
+                    adContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+
+            } catch (error) {
+                console.log('Error inserting native ad:', error);
+            }
+        };
+    </script>
 
     <!-- Main application script with module imports -->
     <script type="module" src="js/app.js"></script>

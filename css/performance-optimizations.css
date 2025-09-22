@@ -240,24 +240,6 @@ button {
     will-change: auto;
 }
 
-/* Optimize for mobile performance */
-@media (max-width: 768px) {
-    /* Reduce animation complexity on mobile */
-    .header-btn:hover {
-        transform: translateY(-1px);
-    }
-    
-    .character-card:hover {
-        transform: translateY(-2px) scale(1.01);
-    }
-    
-    /* Reduce transition durations for better mobile performance */
-    .modal,
-    #settings-modal,
-    #character-gallery {
-        transition-duration: 0.2s;
-    }
-}
 
 /* High contrast mode optimizations */
 @media (prefers-contrast: high) {

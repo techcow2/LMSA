@@ -24,7 +24,6 @@ import { memoryLeakDetector, MemoryUtils } from './memory-leak-detector.js';
 import { performanceMonitor, animationOptimizer } from './performance-optimizer.js';
 // Import help.js to ensure help modal buttons work immediately
 import './help.js';
-// Mobile optimizations will be loaded conditionally
 
 // Android WebView keyboard overlap fix
 let initialViewportHeight = window.innerHeight;
@@ -38,27 +37,6 @@ async function initializeApp() {
     // Disable debug logging by default
     setDebugEnabled(false);
 
-    // Try to load mobile optimizations if on mobile device
-    try {
-        const userAgent = navigator.userAgent.toLowerCase();
-        const mobileKeywords = ['mobile', 'android', 'iphone', 'ipad', 'tablet'];
-        const isMobile = mobileKeywords.some(keyword => userAgent.includes(keyword)) ||
-                        window.innerWidth <= 768 ||
-                        'ontouchstart' in window;
-        
-        if (isMobile) {
-            
-            // Load mobile optimizations asynchronously without blocking
-            const mobileInit = await import('./mobile-init-optimizer.js');
-            const mobilePerf = await import('./mobile-performance-optimizer.js');
-            
-            // Apply optimizations but don't block main initialization
-            
-        } else {
-        }
-    } catch (error) {
-        console.warn('Mobile optimization failed, continuing with standard init:', error);
-    }
 
     // Initialize Android WebView keyboard fix
     initializeAndroidKeyboardFix();
@@ -217,7 +195,6 @@ async function initializeApp() {
     // Initialize performance optimizations
     performanceMonitor.trackDOMUpdate();
     
-    // Mobile optimizations are loaded conditionally above
     
 
     // Add performance monitoring to window for debugging
@@ -240,26 +217,8 @@ async function initializeApp() {
             clearInterval(performanceInterval);
             console.log('Performance monitoring stopped');
             
-            // Cleanup mobile optimizer if it exists
-            try {
-                if (typeof mobileOptimizer !== 'undefined' && mobileOptimizer.cleanup) {
-                    mobileOptimizer.cleanup();
-                }
-            } catch (error) {
-                console.warn('Error during mobile optimizer cleanup:', error);
-            }
         }, 5 * 60 * 1000);
         
-        // Add cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            try {
-                if (typeof mobileOptimizer !== 'undefined' && mobileOptimizer.cleanup) {
-                    mobileOptimizer.cleanup();
-                }
-            } catch (error) {
-                // Ignore errors during cleanup
-            }
-        });
     }
 }
 

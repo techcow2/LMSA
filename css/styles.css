@@ -6824,7 +6824,7 @@ body.light-theme .trash-icon-container:focus {
     z-index: 2200; /* Higher than all other modals to ensure it appears on top */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    background: rgba(0, 0, 0, 0.85); /* Darker backdrop for better visibility */
+    background: var(--modal-overlay); /* Use theme-aware overlay color */
 }
 
 #model-loading-modal .modal-content {
@@ -7042,6 +7042,193 @@ body.light-theme #model-loading-modal .w-20.h-0\.5 {
     background: linear-gradient(90deg, #2563eb, #7c3aed) !important;
 }
 
+/* Dark theme support for loading modal */
+body.dark-theme #model-loading-modal,
+body.custom-dark-mode #model-loading-modal,
+body.dark #model-loading-modal {
+    background: var(--modal-overlay);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+body.dark-theme #model-loading-modal .modal-content,
+body.custom-dark-mode #model-loading-modal .modal-content {
+    background: var(--modal-bg);
+    border: 1px solid var(--border-color);
+    box-shadow:
+        0 32px 64px -12px rgba(0, 0, 0, 0.9),
+        0 0 0 1px var(--border-color),
+        0 0 120px rgba(59, 130, 246, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme #model-loading-modal .loading-spinner,
+body.custom-dark-mode #model-loading-modal .loading-spinner {
+    border-color: transparent;
+    border-top-color: var(--loading-indicator);
+    border-right-color: var(--loading-indicator);
+    filter: drop-shadow(0 0 18px rgba(59, 130, 246, 0.4)) drop-shadow(0 0 30px rgba(59, 130, 246, 0.2));
+}
+
+body.dark-theme #model-loading-modal .loading-pulse,
+body.custom-dark-mode #model-loading-modal .loading-pulse {
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+body.dark-theme #model-loading-modal h2,
+body.custom-dark-mode #model-loading-modal h2 {
+    color: var(--modal-title) !important;
+    text-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
+    filter: drop-shadow(0 2px 6px rgba(59, 130, 246, 0.2));
+}
+
+body.dark-theme #model-loading-modal h2 i.fa-robot,
+body.custom-dark-mode #model-loading-modal h2 i.fa-robot {
+    color: var(--loading-indicator) !important;
+    filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.6));
+}
+
+body.dark-theme #model-loading-modal #model-loading-message,
+body.custom-dark-mode #model-loading-modal #model-loading-message {
+    color: var(--modal-text) !important;
+    font-weight: 500;
+}
+
+body.dark-theme #model-loading-modal #model-loading-name,
+body.custom-dark-mode #model-loading-modal #model-loading-name {
+    color: var(--loading-indicator) !important;
+    background: rgba(59, 130, 246, 0.1) !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+
+body.dark-theme #model-loading-modal .text-gray-400,
+body.custom-dark-mode #model-loading-modal .text-gray-400 {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+}
+
+body.dark-theme #model-loading-modal .bg-gradient-to-r.from-blue-400.to-purple-400,
+body.custom-dark-mode #model-loading-modal .bg-gradient-to-r.from-blue-400.to-purple-400 {
+    background: linear-gradient(90deg, var(--loading-indicator), #8b5cf6) !important;
+}
+
+body.dark-theme #model-loading-modal .animate-float-1,
+body.dark-theme #model-loading-modal .animate-float-2,
+body.dark-theme #model-loading-modal .animate-float-3,
+body.custom-dark-mode #model-loading-modal .animate-float-1,
+body.custom-dark-mode #model-loading-modal .animate-float-2,
+body.custom-dark-mode #model-loading-modal .animate-float-3 {
+    background-color: var(--loading-indicator) !important;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4) !important;
+}
+
+body.dark-theme #model-loading-modal .w-1\.5.h-1\.5.bg-blue-400,
+body.custom-dark-mode #model-loading-modal .w-1\.5.h-1\.5.bg-blue-400,
+body.dark #model-loading-modal .w-1\.5.h-1\.5.bg-blue-400 {
+    background-color: var(--loading-indicator) !important;
+    box-shadow: 0 0 6px rgba(59, 130, 246, 0.4) !important;
+}
+
+body.dark-theme #model-loading-modal .animate-border-glow,
+body.custom-dark-mode #model-loading-modal .animate-border-glow,
+body.dark #model-loading-modal .animate-border-glow {
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.1), rgba(59, 130, 246, 0.2)) !important;
+}
+
+body.dark-theme #model-loading-modal .w-20.h-0\.5,
+body.custom-dark-mode #model-loading-modal .w-20.h-0\.5,
+body.dark #model-loading-modal .w-20.h-0\.5 {
+    background: linear-gradient(90deg, var(--loading-indicator), #8b5cf6) !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+/* Override Tailwind utility classes for dark theme compatibility */
+body.dark-theme #model-loading-modal .modal-content,
+body.custom-dark-mode #model-loading-modal .modal-content,
+body.dark #model-loading-modal .modal-content {
+    background: var(--modal-bg) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* Fix main modal container background */
+body.dark-theme #model-loading-modal .modal-content.dark\:bg-gradient-to-b,
+body.custom-dark-mode #model-loading-modal .modal-content.dark\:bg-gradient-to-b,
+body.dark #model-loading-modal .modal-content.dark\:bg-gradient-to-b,
+body.dark-theme #model-loading-modal .relative,
+body.custom-dark-mode #model-loading-modal .relative,
+body.dark #model-loading-modal .relative {
+    background: var(--modal-bg) !important;
+}
+
+/* Override hardcoded text colors */
+body.dark-theme #model-loading-modal .text-blue-400,
+body.dark-theme #model-loading-modal .text-blue-300,
+body.custom-dark-mode #model-loading-modal .text-blue-400,
+body.custom-dark-mode #model-loading-modal .text-blue-300,
+body.dark #model-loading-modal .text-blue-400,
+body.dark #model-loading-modal .text-blue-300 {
+    color: var(--loading-indicator) !important;
+}
+
+body.dark-theme #model-loading-modal .text-gray-300,
+body.dark-theme #model-loading-modal .text-gray-400,
+body.custom-dark-mode #model-loading-modal .text-gray-300,
+body.custom-dark-mode #model-loading-modal .text-gray-400,
+body.dark #model-loading-modal .text-gray-300,
+body.dark #model-loading-modal .text-gray-400 {
+    color: var(--text-secondary) !important;
+}
+
+/* Override hardcoded background gradients and colors */
+body.dark-theme #model-loading-modal .bg-gradient-to-r,
+body.dark-theme #model-loading-modal .bg-gradient-to-br,
+body.custom-dark-mode #model-loading-modal .bg-gradient-to-r,
+body.custom-dark-mode #model-loading-modal .bg-gradient-to-br,
+body.dark #model-loading-modal .bg-gradient-to-r,
+body.dark #model-loading-modal .bg-gradient-to-br {
+    background: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Override model name container styling */
+body.dark-theme #model-loading-modal .model-name-container p,
+body.custom-dark-mode #model-loading-modal .model-name-container p,
+body.dark #model-loading-modal .model-name-container p {
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+    color: var(--loading-indicator) !important;
+}
+
+/* Override info section backgrounds */
+body.dark-theme #model-loading-modal .mt-6.flex,
+body.custom-dark-mode #model-loading-modal .mt-6.flex,
+body.dark #model-loading-modal .mt-6.flex {
+    background: rgba(59, 130, 246, 0.05) !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Override bouncing dots */
+body.dark-theme #model-loading-modal .bg-blue-400,
+body.custom-dark-mode #model-loading-modal .bg-blue-400,
+body.dark #model-loading-modal .bg-blue-400 {
+    background-color: var(--loading-indicator) !important;
+}
+
+/* Override all border colors */
+body.dark-theme #model-loading-modal .border-blue-400\/50,
+body.dark-theme #model-loading-modal .border-blue-400\/30,
+body.dark-theme #model-loading-modal .border-blue-500\/20,
+body.dark-theme #model-loading-modal .border-blue-500\/10,
+body.custom-dark-mode #model-loading-modal .border-blue-400\/50,
+body.custom-dark-mode #model-loading-modal .border-blue-400\/30,
+body.custom-dark-mode #model-loading-modal .border-blue-500\/20,
+body.custom-dark-mode #model-loading-modal .border-blue-500\/10,
+body.dark #model-loading-modal .border-blue-400\/50,
+body.dark #model-loading-modal .border-blue-400\/30,
+body.dark #model-loading-modal .border-blue-500\/20,
+body.dark #model-loading-modal .border-blue-500\/10 {
+    border-color: var(--border-color) !important;
+}
+
 /* Enhanced responsive adjustments for mobile */
 @media (max-width: 768px) {
     #model-loading-modal .modal-content {
@@ -7137,4 +7324,69 @@ body.light-theme #model-loading-modal .w-20.h-0\.5 {
     min-width: 44px;
     min-height: 44px;
     padding: 0.5rem;
+}
+
+/* Native Ad Styling */
+.native-ad-message-container {
+    margin: 16px 0;
+    padding: 0;
+    max-width: 100%;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.native-ad-container {
+    background: var(--message-bg-secondary, #f8f9fa) !important;
+    border: 1px solid var(--border-color, #e9ecef) !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    margin: 8px 16px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.native-ad-container:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-1px) !important;
+}
+
+.native-ad-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent-color, #4285f4);
+    border-radius: 2px 0 0 2px;
+}
+
+/* Dark theme adjustments */
+body.dark-theme .native-ad-container {
+    background: var(--message-bg-user, #2d3748) !important;
+    border-color: var(--border-color, #4a5568) !important;
+    color: var(--text-primary, #e2e8f0) !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .native-ad-container {
+        margin: 8px 8px !important;
+        padding: 12px !important;
+        border-radius: 8px !important;
+    }
+}
+
+/* Fade in animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
