@@ -126,15 +126,6 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - Upload images for vision language models to analyze and discuss
 - Customize AI behavior through temperature and system prompt settings
 
-## 👥 Perfect For
-
-- AI enthusiasts who want to access their models on the go
-- Privacy-conscious users who prefer keeping their data local
-- Developers testing different prompts and model responses
-- Researchers who need to include file content in their AI interactions
-- Visual content creators who want to analyze and discuss images with AI
-- Anyone who wants the convenience of mobile access to powerful AI
-
 ## 🔧 Technical Requirements
 
 - Android 8.0 or higher
