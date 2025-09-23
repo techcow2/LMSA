@@ -689,7 +689,12 @@
                         <i class="fas fa-info-circle"></i>
                         About
                     </button>
-                    
+
+                    <!-- Restore Purchase -->
+                    <button id="restore-purchases-button" class="menu-item w-full text-left" onclick="restorePurchases()">
+                        <i class="fas fa-undo"></i>
+                        Restore Purchase
+                    </button>
 
                 </div>
             </div>
@@ -734,8 +739,6 @@
                                     <i class="fas fa-cog text-sm"></i>
                                     <span>Settings</span>
                                 </button>
-
-
                                 <!-- Models Button - Professional styling -->
                                 <button id="welcome-models-btn" class="professional-button flex items-center justify-center gap-3 w-full h-[48px]">
                                     <i class="fas fa-microchip text-sm"></i>
@@ -744,6 +747,11 @@
 
 
 
+                                <!-- Remove Ads Button - Professional styling -->
+                                <button id="welcome-remove-ads-button" class="professional-button flex items-center justify-center gap-3 w-full h-[48px]" style="display: none;">
+                                    <i class="fas fa-ad text-sm"></i>
+                                    <span>Remove Ads</span>
+                                </button>
                                 <!-- Secondary buttons in a 2-column grid with professional styling -->
                                 <div class="grid grid-cols-2 gap-3 w-full">
                                     <button id="welcome-new-chat-btn" class="professional-button flex items-center justify-center gap-2 w-full h-[48px]">
@@ -2340,3 +2348,91 @@
     <!-- Full Model Name modal -->
 </body>
 </html>
+<div id="settings-step-actions" class="settings-step hidden" data-step-name="Actions">
+    <div class="mb-4">
+        <h3 class="text-sm font-medium mb-3 text-gray-200">
+            <i class="fas fa-bolt mr-2 text-blue-400"></i>Actions:</h3>
+        <button id="clear-chat" class="professional-button flex items-center justify-center gap-3 w-full h-[48px] mb-4">
+            <i class="fas fa-trash-alt text-sm"></i>
+            <span>Clear All Chats</span>
+        </button>
+        <button id="reset-app" class="professional-button flex items-center justify-center gap-3 w-full h-[48px] mb-4">
+            <i class="fas fa-exclamation-triangle text-sm"></i>
+            <span>Reset App</span>
+        </button>
+    </div>
+</div>
+<script>
+function restorePurchases() {
+    // Check if the AndroidBilling interface is available
+    if (window.AndroidBilling && typeof window.AndroidBilling.restorePurchases === 'function') {
+        console.log('Calling AndroidBilling.restorePurchases()');
+        window.AndroidBilling.restorePurchases();
+        // You can optionally show a message to the user, like an alert.
+        alert('Attempting to restore purchases. If you have a valid purchase, your premium status will be updated shortly.');
+    } else {
+        console.log('Billing interface not available. This is not an Android app environment.');
+        alert('This feature is only available in the Android app.');
+    }
+}
+
+// Updated UI function to manage both buttons
+function updateUiForPremium(isPremium) {
+    const welcomeRemoveAdsButton = document.getElementById('welcome-remove-ads-button');
+    const restoreButton = document.getElementById('restore-purchases-button');
+
+    if (isPremium) {
+        if (welcomeRemoveAdsButton) {
+            // Change text and disable the button
+            const buttonText = welcomeRemoveAdsButton.querySelector('span');
+            if (buttonText) {
+                buttonText.textContent = 'Premium Activated';
+            }
+            welcomeRemoveAdsButton.disabled = true;
+            welcomeRemoveAdsButton.style.opacity = '0.7';
+            welcomeRemoveAdsButton.style.cursor = 'default';
+        }
+        // Hide the restore button if the user is already premium
+        if (restoreButton) {
+            restoreButton.style.display = 'none';
+        }
+    } else {
+        if (welcomeRemoveAdsButton) {
+            // Restore original state
+            const buttonText = welcomeRemoveAdsButton.querySelector('span');
+            if (buttonText) {
+                buttonText.textContent = 'Remove Ads';
+            }
+            welcomeRemoveAdsButton.disabled = false;
+            welcomeRemoveAdsButton.style.opacity = '1';
+            welcomeRemoveAdsButton.style.cursor = 'pointer';
+        }
+        // Show the restore button if the user is not premium
+        if (restoreButton) {
+            restoreButton.style.display = 'block';
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Welcome page Remove Ads button functionality
+    const welcomeRemoveAdsButton = document.getElementById('welcome-remove-ads-button');
+
+    if (window.AndroidBilling && typeof window.AndroidBilling.removeAds === 'function') {
+        welcomeRemoveAdsButton.style.display = 'flex';
+        welcomeRemoveAdsButton.addEventListener('click', () => {
+            if (!welcomeRemoveAdsButton.disabled) {
+                window.AndroidBilling.removeAds();
+            }
+        });
+
+        // Check premium status on load if the function exists
+        if (window.AndroidBilling && typeof window.AndroidBilling.checkPremiumStatus === 'function') {
+            const isPremium = window.AndroidBilling.checkPremiumStatus();
+            updateUiForPremium(isPremium);
+        }
+    } else {
+        welcomeRemoveAdsButton.style.display = 'none';
+    }
+});
+</script>
