@@ -53,17 +53,6 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 - Upload and analyze images with vision language models
 - Customize AI behavior with system prompts and temperature settings
 
-## 🔧 Need Help?
-
-Having trouble with LMSA? Visit our **[comprehensive support center](https://lmsa.app/support.html)** for detailed setup guides, troubleshooting steps, and answers to frequently asked questions.
-
-## 🔓 Project Status
-
-This project has transitioned to **open source** development.
-
-### Development Information
-The project is now community-driven and open source. Development efforts are focused on collaborative community contributions, with regular updates and improvements available through GitHub releases.
-
 ## 🌟 Features Overview
 
 ### Privacy & Security
@@ -146,6 +135,10 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 **Publisher:** IslandApps<br>
 **Updates:** Regular feature, security and maintenance updates<br>
 [**Download Now →**](https://play.google.com/store/apps/details?id=com.lmsa.app)
+
+## 🔧 Need Help?
+
+Having trouble with LMSA? Visit our **[comprehensive support center](https://lmsa.app/support.html)** for detailed setup guides, troubleshooting steps, and answers to frequently asked questions.
 
 ## ⚠️ Disclaimer
 
