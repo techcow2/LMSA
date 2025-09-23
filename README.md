@@ -125,22 +125,6 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - LM Studio installed and running on a computer with a suitable language model (text or vision)
 - Both devices connected to the same network
 
-## 🚀 Get Started Today
-
-1. Download and install the app
-2. Start LM Studio and load a model on your computer
-3. Start the LM Studio server
-4. Open the app and enter the server IP and port in Settings
-5. Begin chatting immediately!
-
-## 📥 Download Information
-
-### Recommended: Google Play Release
-**LMSA - Google Play**<br>
-**Publisher:** IslandApps<br>
-**Updates:** Regular feature, security and maintenance updates<br>
-[**Download Now →**](https://play.google.com/store/apps/details?id=com.lmsa.app)
-
 ## 🔧 Need Help?
 
 Having trouble with LMSA? Visit our **[comprehensive support center](https://lmsa.app/support.html)** for detailed setup guides, troubleshooting steps, and answers to frequently asked questions.
