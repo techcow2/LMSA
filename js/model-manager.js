@@ -926,32 +926,7 @@ function displayServerError() {
     }
 
     if (availableModelsList) {
-        // Check current theme
-        const isLightTheme = document.body.classList.contains('light-theme');
-        const textClass = isLightTheme ? 'text-gray-700' : 'text-gray-300';
-        const mutedTextClass = isLightTheme ? 'text-gray-500' : 'text-gray-400';
-
-        const textColor = isLightTheme ? '#374151' : '#d1d5db'; // gray-700 : gray-300
-        const mutedColor = isLightTheme ? '#6b7280' : '#9ca3af'; // gray-500 : gray-400
-
-        availableModelsList.innerHTML = `
-            <div class="p-5 rounded-xl border border-red-500/30 bg-gradient-to-r from-red-500/10 to-pink-500/10 shadow-md">
-                <div class="flex items-start mb-3">
-                    <div class="icon-wrapper mr-3 flex-shrink-0 flex items-center justify-center rounded-full bg-red-500/20 w-8 h-8 text-red-400 shadow-md">
-                        <i class="fas fa-exclamation-circle text-sm"></i>
-                    </div>
-                    <div>
-                        <p class="text-red-400 font-medium">Connection Error</p>
-                        <p class="text-sm mt-1" style="color: ${textColor} !important;">Unable to connect to the LM Studio server. Please check:</p>
-                    </div>
-                </div>
-                <ul class="list-none pl-11 mt-3 space-y-2 text-sm" style="color: ${textColor} !important;">
-                    <li class="flex items-center"><i class="fas fa-circle text-[6px] mr-2" style="color: ${mutedColor} !important;"></i> LM Studio is running and the server is started</li>
-                    <li class="flex items-center"><i class="fas fa-circle text-[6px] mr-2" style="color: ${mutedColor} !important;"></i> The correct IP address and port are set in Settings</li>
-                    <li class="flex items-center"><i class="fas fa-circle text-[6px] mr-2" style="color: ${mutedColor} !important;"></i> "CORS" and "Serve on local network" are enabled in LM Studio</li>
-                </ul>
-            </div>
-        `;
+        availableModelsList.innerHTML = '';
     }
 }
 
