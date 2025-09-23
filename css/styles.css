@@ -891,7 +891,7 @@ body.light-theme #loaded-model {
 
 /* Ensure no browser defaults interfere with our style management */
 #sidebar #new-chat:not(:active):focus,
-#sidebar #new-chat:-webkit-any-link:focus,
+#sidebar #new-chat:link:focus,
 #sidebar #new-chat:-moz-focusring {
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
     transform: none !important;
@@ -934,18 +934,8 @@ body.light-theme #loaded-model {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Visual viewport handling for Android */
-@viewport {
-  width: device-width;
-  zoom: 1.0;
-  interactive-widget: resizes-content;
-}
-
-@-ms-viewport {
-  width: device-width;
-  zoom: 1.0;
-  interactive-widget: resizes-content;
-}
+/* Visual viewport handling for Android - using meta tag instead of deprecated @viewport */
+/* These rules have been moved to meta viewport tag in HTML head */
 
 /* Fix for input fields when keyboard is visible */
 .android-webview #user-input {
@@ -2010,9 +2000,21 @@ h1.header-title::after {
 }
 
 /* Improve focus styles for better accessibility */
-*:focus-visible:not(#settings-modal input, #settings-modal textarea, #settings-modal select, #user-input, #settings-help-btn, #sidebar button, #sidebar .menu-item, #new-chat) {
+*:focus-visible {
     outline: 2px solid #3498db;
     outline-offset: 2px;
+}
+
+/* Exceptions to focus styles */
+#settings-modal input:focus-visible,
+#settings-modal textarea:focus-visible,
+#settings-modal select:focus-visible,
+#user-input:focus-visible,
+#settings-help-btn:focus-visible,
+#sidebar button:focus-visible,
+#sidebar .menu-item:focus-visible,
+#new-chat:focus-visible {
+    outline: none;
 }
 
 /* Prevent text selection on all buttons and improve focus handling */

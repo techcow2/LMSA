@@ -406,6 +406,14 @@ export function initializeEventHandlers() {
             return;
         }
 
+        // Skip this event handler if the target is a modal close button
+        if (e.target.closest('#close-about') ||
+            e.target.closest('#close-settings') ||
+            e.target.closest('#close-settings-x') ||
+            e.target.closest('.modal-close-btn')) {
+            return;
+        }
+
         // Don't handle sidebar clicks if any modal is visible
         const anyModalVisible = document.querySelector('.modal-container:not(.hidden)') ||
                               (settingsModal && settingsModal.style.display === 'flex');
@@ -446,7 +454,11 @@ export function initializeEventHandlers() {
                 elementAtTouch.closest('button') !== null ||
                 elementAtTouch.closest('.menu-item') !== null ||
                 elementAtTouch.closest('#chat-history') !== null ||
-                elementAtTouch.closest('#sidebar') !== null)) {
+                elementAtTouch.closest('#sidebar') !== null ||
+                elementAtTouch.closest('#close-about') ||
+                elementAtTouch.closest('#close-settings') ||
+                elementAtTouch.closest('#close-settings-x') ||
+                elementAtTouch.closest('.modal-close-btn'))) {
                 return;
             }
 

@@ -143,6 +143,7 @@
     color: var(--modal-title);
     text-shadow: var(--title-shadow);
     /* Ensure crisp text rendering */
+    font-smooth: always;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -1073,7 +1074,7 @@
     background: transparent; /* Keep background transparent on hover */
     color: var(--text-primary);
     opacity: 1; /* Full opacity on hover */
-    transform: rotate(90deg) scale(1.1); /* Add slight scale for better hover feedback */
+    /* Removed transform to prevent movement on hover */
 }
 
 #settings-modal #close-settings-x:focus,

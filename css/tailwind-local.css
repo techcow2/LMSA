@@ -32,6 +32,7 @@
 html,
 :host {
   line-height: 1.5; /* 1 */
+  text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
   -moz-tab-size: 4; /* 3 */
   tab-size: 4; /* 3 */
@@ -1058,6 +1059,7 @@ video {
 
 /* Fill Available Support */
 .min-h-\[-webkit-fill-available\] {
+  min-height: 100vh;
   min-height: -webkit-fill-available;
 }
 
@@ -1181,20 +1183,21 @@ video {
   background-color: rgb(30 58 138 / 0.3);
 }
 
-.bg-darkBg\/30 {
-  background-color: rgb(18 18 18 / 0.3);
+/* Alternative classes for opacity variants */
+.bg-darkBg-30 {
+  background-color: rgba(18, 18, 18, 0.3);
 }
 
-.bg-darkBg\/70 {
-  background-color: rgb(18 18 18 / 0.7);
+.bg-darkBg-70 {
+  background-color: rgba(18, 18, 18, 0.7);
 }
 
-.bg-darkTertiary\/30 {
-  background-color: rgb(44 44 44 / 0.3);
+.bg-darkTertiary-30 {
+  background-color: rgba(44, 44, 44, 0.3);
 }
 
-.bg-darkTertiary\/50 {
-  background-color: rgb(44 44 44 / 0.5);
+.bg-darkTertiary-50 {
+  background-color: rgba(44, 44, 44, 0.5);
 }
 
 .bg-gray-100\/70 {

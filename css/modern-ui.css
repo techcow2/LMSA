@@ -39,6 +39,7 @@ body {
   font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
   letter-spacing: -0.011em;
   text-rendering: optimizeLegibility;
+  font-smooth: always;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

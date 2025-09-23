@@ -242,7 +242,7 @@ button {
 
 
 /* High contrast mode optimizations */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: high), (-ms-high-contrast: active) {
     /* Reduce complex animations for better accessibility */
     .header-btn,
     .btn,

@@ -24,6 +24,8 @@ import { memoryLeakDetector, MemoryUtils } from './memory-leak-detector.js';
 import { performanceMonitor, animationOptimizer } from './performance-optimizer.js';
 // Import help.js to ensure help modal buttons work immediately
 import './help.js';
+// Import about.js to ensure about modal buttons work immediately
+import './about.js';
 
 // Android WebView keyboard overlap fix
 let initialViewportHeight = window.innerHeight;

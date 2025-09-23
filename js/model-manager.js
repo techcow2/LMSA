@@ -658,9 +658,16 @@ function displayCurrentModel(modelName) {
  */
 function displayAvailableModels(models, loadedModelId) {
     if (availableModelsList) {
+        const isLightTheme = document.body.classList.contains('light-theme');
+        const textClass = isLightTheme ? 'text-gray-700' : 'text-gray-300';
+        const mutedTextClass = isLightTheme ? 'text-gray-500' : 'text-gray-400';
+        const bgClass = isLightTheme ? 'bg-gray-100' : 'bg-darkBg-70';
+        const borderClass = isLightTheme ? 'border-gray-200' : 'border-white/5';
+
         if (models.length === 0) {
+            const noModelsTextColor = isLightTheme ? '#6b7280' : '#9ca3af'; // gray-500 : gray-400
             availableModelsList.innerHTML = `
-                <div class="p-4 bg-darkBg/70 rounded-xl text-gray-400 border border-white/5 flex items-center">
+                <div class="p-4 ${bgClass} rounded-xl ${borderClass} border flex items-center" style="color: ${noModelsTextColor} !important;">
                     <i class="fas fa-info-circle mr-3 text-blue-400"></i>
                     <span>No models available</span>
                 </div>
@@ -673,14 +680,14 @@ function displayAvailableModels(models, loadedModelId) {
 
         // Add a section title
         const titleElement = document.createElement('div');
-        titleElement.className = 'mb-4 pb-2 border-b border-white/10 flex items-center';
+        titleElement.className = `mb-4 pb-2 border-b ${isLightTheme ? 'border-gray-200' : 'border-white/10'} flex items-center`;
         titleElement.innerHTML = `
             <div class="icon-wrapper mr-3 flex items-center justify-center rounded-full bg-purple-500/20 w-8 h-8 text-purple-400 shadow-md">
                 <i class="fas fa-list-ul text-sm"></i>
             </div>
             <div>
                 <h3 class="text-lg font-semibold text-blue-400">Available Models</h3>
-                <p class="text-gray-400 text-sm">Click "Load" to switch to a different model</p>
+                <p class="text-sm" style="color: ${isLightTheme ? '#6b7280' : '#9ca3af'} !important;">Click "Load" to switch to a different model</p>
             </div>
         `;
         availableModelsList.appendChild(titleElement);
@@ -696,7 +703,12 @@ function displayAvailableModels(models, loadedModelId) {
         models.forEach(model => {
             const modelElement = document.createElement('div');
             modelElement.id = `model-${model.id}`;
-            modelElement.className = 'p-4 bg-darkBg/70 rounded-xl text-white mb-3 border border-white/5 transition-all duration-300 hover:border-blue-500/30 hover:shadow-md';
+            const modelBgClass = isLightTheme ? 'bg-gray-100' : 'bg-darkBg-70';
+            const modelBorderClass = isLightTheme ? 'border-gray-200' : 'border-white/5';
+            const modelTextColor = isLightTheme ? '#1f2937' : '#e5e7eb'; // gray-800 : gray-200
+
+            modelElement.className = `p-4 ${modelBgClass} rounded-xl mb-3 border ${modelBorderClass} transition-all duration-300 hover:border-blue-500/30 hover:shadow-md`;
+            modelElement.style.color = `${modelTextColor} !important`;
 
             const isCurrentModel = model.id === currentLoadedModelId;
 
@@ -760,9 +772,16 @@ function displayAvailableModels(models, loadedModelId) {
  */
 function displayPotentialModels(models) {
     if (availableModelsList) {
+        const isLightTheme = document.body.classList.contains('light-theme');
+        const textClass = isLightTheme ? 'text-gray-700' : 'text-gray-300';
+        const mutedTextClass = isLightTheme ? 'text-gray-500' : 'text-gray-400';
+        const bgClass = isLightTheme ? 'bg-gray-100' : 'bg-darkBg-70';
+        const borderClass = isLightTheme ? 'border-gray-200' : 'border-white/5';
+
         if (models.length === 0) {
+            const noModelsTextColor = isLightTheme ? '#6b7280' : '#9ca3af'; // gray-500 : gray-400
             availableModelsList.innerHTML = `
-                <div class="p-4 bg-darkBg/70 rounded-xl text-gray-400 border border-white/5 flex items-center">
+                <div class="p-4 ${bgClass} rounded-xl ${borderClass} border flex items-center" style="color: ${noModelsTextColor} !important;">
                     <i class="fas fa-info-circle mr-3 text-blue-400"></i>
                     <span>No models available</span>
                 </div>
@@ -775,14 +794,14 @@ function displayPotentialModels(models) {
 
         // Add a section title
         const titleElement = document.createElement('div');
-        titleElement.className = 'mb-4 pb-2 border-b border-white/10 flex items-center';
+        titleElement.className = `mb-4 pb-2 border-b ${isLightTheme ? 'border-gray-200' : 'border-white/10'} flex items-center`;
         titleElement.innerHTML = `
             <div class="icon-wrapper mr-3 flex items-center justify-center rounded-full bg-purple-500/20 w-8 h-8 text-purple-400 shadow-md">
                 <i class="fas fa-list-ul text-sm"></i>
             </div>
             <div>
                 <h3 class="text-lg font-semibold text-blue-400">Available Models</h3>
-                <p class="text-gray-400 text-sm">Select a model to load it</p>
+                <p class="text-sm" style="color: ${isLightTheme ? '#6b7280' : '#9ca3af'} !important;">Select a model to load it</p>
             </div>
         `;
         availableModelsList.appendChild(titleElement);
@@ -791,7 +810,12 @@ function displayPotentialModels(models) {
         models.forEach(model => {
             const modelElement = document.createElement('div');
             modelElement.id = `model-${model.id}`;
-            modelElement.className = 'p-4 bg-darkBg/70 rounded-xl text-white mb-3 border border-white/5 transition-all duration-300 hover:border-blue-500/30 hover:shadow-md';
+            const modelBgClass = isLightTheme ? 'bg-gray-100' : 'bg-darkBg-70';
+            const modelBorderClass = isLightTheme ? 'border-gray-200' : 'border-white/5';
+            const modelTextColor = isLightTheme ? '#1f2937' : '#e5e7eb'; // gray-800 : gray-200
+
+            modelElement.className = `p-4 ${modelBgClass} rounded-xl mb-3 border ${modelBorderClass} transition-all duration-300 hover:border-blue-500/30 hover:shadow-md`;
+            modelElement.style.color = `${modelTextColor} !important`;
 
             modelElement.className = 'model-item';
             modelElement.innerHTML = `
@@ -902,6 +926,14 @@ function displayServerError() {
     }
 
     if (availableModelsList) {
+        // Check current theme
+        const isLightTheme = document.body.classList.contains('light-theme');
+        const textClass = isLightTheme ? 'text-gray-700' : 'text-gray-300';
+        const mutedTextClass = isLightTheme ? 'text-gray-500' : 'text-gray-400';
+
+        const textColor = isLightTheme ? '#374151' : '#d1d5db'; // gray-700 : gray-300
+        const mutedColor = isLightTheme ? '#6b7280' : '#9ca3af'; // gray-500 : gray-400
+
         availableModelsList.innerHTML = `
             <div class="p-5 rounded-xl border border-red-500/30 bg-gradient-to-r from-red-500/10 to-pink-500/10 shadow-md">
                 <div class="flex items-start mb-3">
@@ -910,13 +942,13 @@ function displayServerError() {
                     </div>
                     <div>
                         <p class="text-red-400 font-medium">Connection Error</p>
-                        <p class="text-gray-300 text-sm mt-1">Unable to connect to the LM Studio server. Please check:</p>
+                        <p class="text-sm mt-1" style="color: ${textColor} !important;">Unable to connect to the LM Studio server. Please check:</p>
                     </div>
                 </div>
-                <ul class="list-none pl-11 mt-3 space-y-2 text-gray-300 text-sm">
-                    <li class="flex items-center"><i class="fas fa-circle text-[6px] text-gray-500 mr-2"></i> LM Studio is running and the server is started</li>
-                    <li class="flex items-center"><i class="fas fa-circle text-[6px] text-gray-500 mr-2"></i> The correct IP address and port are set in Settings</li>
-                    <li class="flex items-center"><i class="fas fa-circle text-[6px] text-gray-500 mr-2"></i> "CORS" and "Serve on local network" are enabled in LM Studio</li>
+                <ul class="list-none pl-11 mt-3 space-y-2 text-sm" style="color: ${textColor} !important;">
+                    <li class="flex items-center"><i class="fas fa-circle text-[6px] mr-2" style="color: ${mutedColor} !important;"></i> LM Studio is running and the server is started</li>
+                    <li class="flex items-center"><i class="fas fa-circle text-[6px] mr-2" style="color: ${mutedColor} !important;"></i> The correct IP address and port are set in Settings</li>
+                    <li class="flex items-center"><i class="fas fa-circle text-[6px] mr-2" style="color: ${mutedColor} !important;"></i> "CORS" and "Serve on local network" are enabled in LM Studio</li>
                 </ul>
             </div>
         `;
