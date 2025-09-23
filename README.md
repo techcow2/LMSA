@@ -14,19 +14,45 @@
 
 ## 🆕 What's New
 
-🎉 **Latest Update: Version 8.0** - Now Available!
+🎉 **Latest Update: Version 8.1** - Now Available!
 
 ### New Features & Improvements
+- **Modal UI Fixes**: Resolved minor user interface issues with modal dialogs, improving visual consistency and user interaction across all modal components
+- **Enhanced Modal Behavior**: Improved modal positioning, overlay handling, and responsive design for better user experience on various screen sizes
+- **UI Polish**: Additional refinements to modal animations and styling for smoother visual transitions
+
+## 📋 Version History
+
+### Version 8.0 (Previous Release)
 - **Tailwind CSS Migration Complete**: Successfully migrated from Tailwind CDN to local Tailwind installation, resolving major UI inconsistencies and rendering issues across all device types
 - **Enhanced UI Stability**: Improved interface reliability with locally-hosted styling, ensuring consistent visual experience regardless of network conditions
 - **Performance Optimization**: Reduced external dependencies and improved app loading times with local asset management
 
-### Previous Updates
-- **Version 7.1**: Fixed settings menu positioning issues, ensuring consistent user experience across all device types
-- **Version 7.0**: Performance optimization, system prompts feature, and enhanced compatibility
-- **Version 6.5**: Added scroll to bottom icon, improved welcome screen behavior, and comprehensive performance improvements
-- **Version 5.5**: Added full Vision Language Model (VLM) support for image upload and analysis, enabling multimodal conversations with AI models
-- **Bug Fixes**: Resolved keyboard overlap issues, fixed PDF file attachments, and disabled auto-scroll feature for better chat experience
+### Version 7.1
+- **Settings Menu Positioning**: Fixed settings menu positioning issues, ensuring consistent user experience across all device types
+- **UI Consistency**: Improved interface alignment and responsiveness
+
+### Version 7.0
+- **Performance Optimization**: Enhanced app performance and responsiveness
+- **System Prompts Feature**: Added ability to set custom system prompts for AI interactions
+- **Enhanced Compatibility**: Improved compatibility across different Android versions and device configurations
+
+### Version 6.5
+- **Scroll to Bottom Icon**: Added convenient navigation button for quick movement in long conversations
+- **Welcome Screen Improvements**: Enhanced initial user experience with better welcome screen behavior
+- **Performance Improvements**: Comprehensive optimizations for smoother app operation
+
+### Version 5.5
+- **Vision Language Model Support**: Added full VLM support for image upload and analysis, enabling multimodal conversations with AI models
+- **Multimodal Interactions**: Enhanced capability to combine text, documents, and images in conversations
+
+### Earlier Versions - Bug Fixes & Core Features
+- **Keyboard Overlap Issues**: Resolved interface problems with on-screen keyboard
+- **PDF File Attachments**: Fixed document upload and processing functionality
+- **Auto-scroll Feature**: Disabled automatic scrolling for improved chat experience and user control
+- **Core Chat Functionality**: Established foundational chat interface and LM Studio connectivity
+- **Document Analysis**: Implemented file upload and AI analysis capabilities
+- **Connection Management**: Added server connection configuration and management
 
 ---
 
