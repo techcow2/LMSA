@@ -5872,9 +5872,31 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
 #help-modal .modal-content > div:first-child {
     position: sticky;
     top: 0;
-    background: var(--modal-bg);
+    background: var(--modal-bg) !important;
+    border-bottom-color: var(--border-color) !important;
     z-index: 20;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Ensure help modal header respects dark theme */
+body.dark #help-modal .modal-content > div:first-child,
+body.custom-dark-mode #help-modal .modal-content > div:first-child,
+body.dark-theme #help-modal .modal-content > div:first-child {
+    background: var(--modal-bg) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+/* Ensure contact support modal header respects dark theme */
+#contact-form-modal .modal-content > div:first-child {
+    background: var(--modal-bg) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+body.dark #contact-form-modal .modal-content > div:first-child,
+body.custom-dark-mode #contact-form-modal .modal-content > div:first-child,
+body.dark-theme #contact-form-modal .modal-content > div:first-child {
+    background: var(--modal-bg) !important;
+    border-bottom-color: var(--border-color) !important;
 }
 
 #help-modal .modal-content > div:last-child {
