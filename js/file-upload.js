@@ -8,6 +8,14 @@ let uploadedFileIds = []; // Track uploaded file IDs for API requests
 let localFileInput; // Local reference to the file input element
 let processingFiles = new Map(); // Track files being processed to avoid memory leaks
 
+// Cache for vision model detection to reduce API calls
+let visionModelCache = {
+    modelId: null,
+    isVision: false,
+    timestamp: 0,
+    ttl: 10000 // 10 second cache
+};
+
 /**
  * Check if the current model is a vision language model
  * This now checks actual model capabilities through the LM Studio API
@@ -15,22 +23,32 @@ let processingFiles = new Map(); // Track files being processed to avoid memory 
  */
 export async function isVisionModel() {
     try {
-        
+
         // Check if there's a currently loaded model
         if (!window.currentLoadedModel) {
             return false;
         }
-        
-        // Get server connection details
-        const serverIp = document.getElementById('server-ip')?.value?.trim() || 'localhost';
-        const serverPort = document.getElementById('server-port')?.value?.trim() || '1234';
-        
-        if (!serverIp || !serverPort) {
-            return fallbackNameBasedDetection();
-        }
 
         // Try to get model information from various LM Studio endpoints
         const modelId = window.currentLoadedModel;
+
+        // Check cache first - if same model and cache is still valid
+        const now = Date.now();
+        if (visionModelCache.modelId === modelId &&
+            (now - visionModelCache.timestamp) < visionModelCache.ttl) {
+            console.log('Returning cached vision capability:', visionModelCache.isVision);
+            return visionModelCache.isVision;
+        }
+
+        // Get server connection details
+        const serverIp = document.getElementById('server-ip')?.value?.trim() || 'localhost';
+        const serverPort = document.getElementById('server-port')?.value?.trim() || '1234';
+
+        if (!serverIp || !serverPort) {
+            const result = fallbackNameBasedDetection();
+            updateVisionCache(modelId, result);
+            return result;
+        }
         
         // Method 1: Check model details from /v1/models endpoint
         try {
@@ -48,6 +66,7 @@ export async function isVisionModel() {
                         
                         // Check for vision capabilities in model metadata
                         if (hasVisionCapabilities(currentModel)) {
+                            updateVisionCache(modelId, true);
                             return true;
                         }
                     }
@@ -60,17 +79,18 @@ export async function isVisionModel() {
         try {
             const visionTestResult = await testVisionCapability(serverIp, serverPort, modelId);
             if (visionTestResult !== null) {
+                updateVisionCache(modelId, visionTestResult);
                 return visionTestResult;
             }
         } catch (error) {
         }
 
         // Method 3: Check model info through additional endpoints
+        // REDUCED from 3 to 2 endpoints to minimize log noise
         try {
             const infoEndpoints = [
                 '/v1/internal/model/info',
-                '/v1/model/info',
-                '/v1/models/info'
+                '/v1/model/info'
             ];
 
             for (const endpoint of infoEndpoints) {
@@ -82,8 +102,9 @@ export async function isVisionModel() {
 
                     if (infoResponse.ok) {
                         const infoData = await infoResponse.json();
-                        
+
                         if (hasVisionCapabilities(infoData)) {
+                            updateVisionCache(modelId, true);
                             return true;
                         }
                     }
@@ -95,13 +116,30 @@ export async function isVisionModel() {
         }
 
         // Method 4: Fallback to name-based detection
-        return fallbackNameBasedDetection();
-        
+        const result = fallbackNameBasedDetection();
+        updateVisionCache(modelId, result);
+        return result;
+
     } catch (error) {
         console.error('Error checking vision model capabilities:', error);
         // Fallback to name-based detection on any error
-        return fallbackNameBasedDetection();
+        const result = fallbackNameBasedDetection();
+        if (window.currentLoadedModel) {
+            updateVisionCache(window.currentLoadedModel, result);
+        }
+        return result;
     }
+}
+
+/**
+ * Updates the vision model cache
+ * @param {string} modelId - The model ID
+ * @param {boolean} isVision - Whether the model has vision capabilities
+ */
+function updateVisionCache(modelId, isVision) {
+    visionModelCache.modelId = modelId;
+    visionModelCache.isVision = isVision;
+    visionModelCache.timestamp = Date.now();
 }
 
 /**
@@ -112,7 +150,7 @@ function fallbackNameBasedDetection() {
     if (!window.currentLoadedModel) {
         return false;
     }
-    
+
     const modelName = window.currentLoadedModel.toLowerCase();
     
     // Check if the model name contains vision indicators

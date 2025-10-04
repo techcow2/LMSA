@@ -14,23 +14,26 @@
 
 ## 🆕 What's New
 
-🎉 **Latest Update: Version 8.1** - Now Available!
+🎉 **Latest Update: Version 8.2** - Now Available!
 
-### New Features & Improvements
-- **Modal UI Fixes**: Resolved minor user interface issues with modal dialogs, improving visual consistency and user interaction across all modal components
-- **Enhanced Modal Behavior**: Improved modal positioning, overlay handling, and responsive design for better user experience on various screen sizes
-- **UI Polish**: Additional refinements to modal animations and styling for smoother visual transitions
+### Performance & Optimization
+Version 8.2 delivers a noticeably snappier experience with intelligent caching and optimized server communication that reduces unnecessary network requests by up to 50%. Your LMSA app now responds faster while putting less load on your LM Studio server, resulting in cleaner logs and better overall performance.
 
 ## 📋 Version History
 
-### Version 8.0 (Previous Release)
-- **Tailwind CSS Migration Complete**: Successfully migrated from Tailwind CDN to local Tailwind installation, resolving major UI inconsistencies and rendering issues across all device types
-- **Enhanced UI Stability**: Improved interface reliability with locally-hosted styling, ensuring consistent visual experience regardless of network conditions
-- **Performance Optimization**: Reduced external dependencies and improved app loading times with local asset management
+### Version 8.1
+- **Modal UI Fixes**: Resolved user interface issues with modal dialogs for better visual consistency
+- **Enhanced Modal Behavior**: Improved positioning, overlay handling, and responsive design across all screen sizes
+- **UI Polish**: Refined animations and styling for smoother visual transitions
+
+### Version 8.0
+- **Tailwind CSS Migration**: Migrated to local Tailwind installation, resolving UI inconsistencies across devices
+- **Enhanced Stability**: Improved interface reliability with locally-hosted styling
+- **Performance**: Reduced external dependencies and improved loading times
 
 ### Version 7.1
-- **Settings Menu Positioning**: Fixed settings menu positioning issues, ensuring consistent user experience across all device types
-- **UI Consistency**: Improved interface alignment and responsiveness
+- **Settings Menu**: Fixed positioning issues for consistent experience across all devices
+- **UI Improvements**: Enhanced interface alignment and responsiveness
 
 ---
 

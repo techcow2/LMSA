@@ -10,6 +10,17 @@ let availableModels = [];
 // Add a flag to track if this is the initial startup
 window.isInitialStartup = true;
 
+// Cache for model info to reduce API calls
+let modelInfoCache = {
+    data: null,
+    timestamp: 0,
+    ttl: 5000 // 5 second cache
+};
+
+// Debounce timer for fetchAvailableModels
+let fetchModelsDebounceTimer = null;
+let lastFetchPromise = null;
+
 /**
  * Updates the server URL based on IP and port inputs
  */
@@ -100,16 +111,31 @@ export async function fetchAvailableModels() {
             return [];
         }
 
-        // Add a timeout to the fetch request to prevent long waits
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+        // Check cache first
+        const now = Date.now();
+        if (modelInfoCache.data && (now - modelInfoCache.timestamp) < modelInfoCache.ttl) {
+            console.log('Returning cached model info');
+            return modelInfoCache.data;
+        }
 
-        try {
-            const modelsResponse = await fetch(`http://${ip}:${port}/v1/models`, {
-                signal: controller.signal
-            });
+        // Debounce rapid calls - if a fetch is already in progress, return that promise
+        if (lastFetchPromise) {
+            console.log('Fetch already in progress, returning existing promise');
+            return lastFetchPromise;
+        }
 
-            clearTimeout(timeoutId);
+        // Create the fetch promise
+        lastFetchPromise = (async () => {
+            // Add a timeout to the fetch request to prevent long waits
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+            try {
+                const modelsResponse = await fetch(`http://${ip}:${port}/v1/models`, {
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
 
             if (!modelsResponse.ok) {
                 console.error('Failed to fetch models, server returned:', modelsResponse.status, modelsResponse.statusText);
@@ -153,11 +179,11 @@ export async function fetchAvailableModels() {
             if (!loadedModelInfo) {
                 try {
                     // Try different endpoints that LM Studio might use
+                    // Reduced from 4 to 2 endpoints to minimize log noise
+                    // Keep /v1/internal/model/info as it generates the intentional 400 error that prevents auto-loading
                     const endpoints = [
                         '/v1/internal/model/info',
-                        '/v1/model/info',
-                        '/v1/models/info',
-                        '/v1/models/current'
+                        '/v1/model/info'
                     ];
 
                     for (const endpoint of endpoints) {
@@ -190,18 +216,20 @@ export async function fetchAvailableModels() {
                                 // Don't log errors for expected 400 responses
                             }
                         } catch (endpointError) {
-                            // Don't log the full error, just note that it wasn't available
-                            console.log(`Endpoint ${endpoint} not supported by this LM Studio version`);
+                            // Silently continue - don't log to reduce console noise
                         }
                     }
                 } catch (infoError) {
-                    console.log('Info endpoints not available or no model loaded:', infoError);
+                    // Silently continue - this is expected when endpoints don't exist
                 }
             }
 
-            // Method 3: If we still couldn't detect a loaded model, try making a simple completion request
+            // Method 3: If we still couldn't detect a loaded model through Methods 1 & 2,
+            // try making a simple completion request
+            // IMPORTANT: Skip this method if we already found a model to reduce API calls
             // This will help detect if a model is actually loaded even if the API doesn't report it
-            if (!loadedModelInfo && modelsList.length > 0) {
+            if (!loadedModelInfo && modelsList.length > 0 && !window.currentLoadedModel) {
+                console.log('Methods 1 & 2 failed, attempting Method 3 (test completion)...');
                 try {
                     const controller = new AbortController();
                     const timeoutId = setTimeout(() => controller.abort(), 3000);
@@ -320,6 +348,10 @@ export async function fetchAvailableModels() {
             }
 
             // Return the full model data for UI display
+            // Update cache before returning
+            modelInfoCache.data = modelsList;
+            modelInfoCache.timestamp = Date.now();
+
             return modelsList;
         } catch (fetchError) {
             clearTimeout(timeoutId);
@@ -329,13 +361,20 @@ export async function fetchAvailableModels() {
                 loadedModelDisplay.classList.add('hidden');
             }
             return [];
+        } finally {
+            // Clear the promise reference when done
+            lastFetchPromise = null;
         }
+        })();
+
+        return lastFetchPromise;
     } catch (error) {
         console.error('Unexpected error in fetchAvailableModels:', error);
         availableModels = []; // Ensure availableModels is empty
         if (loadedModelDisplay) {
             loadedModelDisplay.classList.add('hidden');
         }
+        lastFetchPromise = null;
         return [];
     }
 }
