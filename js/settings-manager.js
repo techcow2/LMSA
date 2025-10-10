@@ -13,6 +13,7 @@ let hideThinking = false;
 let autoGenerateTitles = false;
 let lightThemeEnabled = false;
 let reasoningTimeout = 300; // Default 5 minutes for reasoning models (in seconds)
+let defaultModelId = null; // Default model to auto-select when models load
 
 /**
  * Initializes temperature settings
@@ -531,6 +532,7 @@ export function loadSettings() {
     loadAutoGenerateTitlesSetting();
     loadThemeSetting();
     loadReasoningTimeoutSetting();
+    loadDefaultModelSetting();
 
     // Add event listener for the welcome screen toggle
     const welcomeToggle = document.getElementById('welcome-toggle');
@@ -716,4 +718,41 @@ export function getAutoGenerateTitles() {
  */
 export function isUserCreatedPrompt() {
     return isUserCreatedSystemPrompt;
+}
+
+/**
+ * Gets the default model ID
+ * @returns {string|null} - The default model ID or null if not set
+ */
+export function getDefaultModelId() {
+    return defaultModelId;
+}
+
+/**
+ * Sets the default model ID
+ * @param {string|null} modelId - The model ID to set as default, or null to clear
+ */
+export function setDefaultModelId(modelId) {
+    defaultModelId = modelId;
+    if (modelId) {
+        localStorage.setItem('defaultModelId', modelId);
+        debugLog('Default model set to:', modelId);
+    } else {
+        localStorage.removeItem('defaultModelId');
+        debugLog('Default model cleared');
+    }
+}
+
+/**
+ * Loads the default model setting from localStorage
+ */
+export function loadDefaultModelSetting() {
+    const savedDefaultModel = localStorage.getItem('defaultModelId');
+    if (savedDefaultModel) {
+        defaultModelId = savedDefaultModel;
+        debugLog('Loaded default model:', defaultModelId);
+    } else {
+        defaultModelId = null;
+        debugLog('No default model set');
+    }
 }

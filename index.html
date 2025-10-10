@@ -1723,6 +1723,24 @@
         </div>
     </div>
 
+    <!-- Default Model Loaded Success modal -->
+    <div id="default-model-loaded-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm items-center justify-center hidden modal-container" aria-labelledby="default-model-loaded-title" role="dialog" aria-modal="true">
+        <div class="dark:bg-gradient-to-b dark:from-[#0a192f]/95 dark:via-[#0c1e36]/95 dark:to-[#0a192f]/95 light:bg-gradient-to-b light:from-[#f8fafc] light:via-[#f1f5f9] light:to-[#f8fafc] p-6 rounded-xl w-[500px] max-w-[90%] shadow-2xl modal-content">
+            <div class="mb-5">
+                <h2 id="default-model-loaded-title" class="text-xl font-bold modal-title">
+                    <span class="text-green-400 dark:text-green-400 light:text-green-600 font-extrabold">Default Model Loaded</span>
+                </h2>
+            </div>
+            <div class="p-5 bg-darkTertiary-30 dark:bg-darkTertiary-30 light:bg-green-50 rounded-xl shadow-md">
+                <div class="flex items-center mb-3">
+                    <i class="fas fa-star text-yellow-400 dark:text-yellow-400 light:text-yellow-500 mr-2"></i>
+                    <h3 class="text-lg font-semibold text-green-400 dark:text-green-400 light:text-green-600">Ready to Go!</h3>
+                </div>
+                <div id="default-model-loaded-name" class="text-lg font-medium text-white dark:text-white light:text-gray-800 p-4 bg-darkBg-70 dark:bg-darkBg-70 light:bg-white rounded-lg shadow-inner break-all"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- What's New modal -->
     <div id="whats-new-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md items-center justify-center hidden modal-container" aria-labelledby="whats-new-title" role="dialog" aria-modal="true" style="padding: 1.5rem;">
         <div class="bg-gradient-to-b from-[#0a192f]/95 via-[#0c1e36]/95 to-[#0a192f]/95 p-4 rounded-2xl shadow-2xl modal-content flex flex-col border border-white/10 overflow-hidden" style="box-shadow: 0 20px 60px -15px rgba(0,0,0,0.7), 0 0 30px rgba(31, 66, 135, 0.2), 0 0 0 1px rgba(255,255,255,0.1) inset;">
@@ -1733,7 +1751,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-blue-400 font-extrabold">What's New</span>
-                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">7.0</span></span>
+                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">8.3</span></span>
                     </div>
                 </h2>
                 <button id="close-whats-new" class="text-gray-400 hover:text-white focus:outline-none rounded-full w-8 h-8 flex items-center justify-center">
@@ -1745,46 +1763,25 @@
                 <div class="space-y-3">
                     <div class="feature-item">
                         <div class="relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-green-500/10 to-emerald-700/5 rounded-full blur-xl"></div>
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-yellow-500/10 to-amber-700/5 rounded-full blur-xl"></div>
                             <div class="flex items-start relative z-10">
-                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-green-500/20 w-10 h-10 shadow-sm">
-                                    <i class="fas fa-rocket text-green-400"></i>
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-yellow-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-star text-yellow-400"></i>
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center">
-                                        <h3 class="feature-title">Performance Optimization & System Prompts</h3>
-                                        <span class="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full ml-2 font-semibold">Enhanced</span>
+                                        <h3 class="feature-title">Default Model Selection</h3>
+                                        <span class="px-1.5 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full ml-2 font-semibold">New</span>
                                     </div>
                                     <div class="feature-description">
-                                        <p class="mb-3">The app has been fully optimized to run better on more devices with improved performance, reduced memory usage, and enhanced stability across different hardware configurations.</p>
-                                        <p class="mb-3">The character feature has been replaced with the ability to save system prompts, providing a more flexible and powerful way to customize your AI interactions. You can now create, save, and manage multiple system prompts for different use cases.</p>
+                                        <p class="mb-3">You can now set a default model that will automatically load whenever LMSA connects to LM Studio! Simply open the models modal and tap the star icon next to any model to set it as your default.</p>
+                                        <p class="mb-3">Your default model will be saved and automatically selected every time you launch the app, eliminating the need to manually switch models. If a different model is already loaded when you start LMSA, it will automatically switch to your preferred default model.</p>
+                                        <p>This feature provides a more automated experience - just launch the app and your favorite model is ready to go!</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="feature-item">
-                        <div class="relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-indigo-500/10 to-purple-700/5 rounded-full blur-xl"></div>
-                            <div class="flex items-start relative z-10">
-                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-indigo-500/20 w-10 h-10 shadow-sm">
-                                    <i class="fas fa-eye text-indigo-400"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex items-center">
-                                        <h3 class="feature-title">Vision Language Model Support</h3>
-                                        <span class="px-1.5 py-0.5 bg-indigo-500/20 text-indigo-400 text-xs rounded-full ml-2 font-semibold">New</span>
-                                    </div>
-                                    <div class="feature-description">
-                                        <p class="mb-3">The LMSA app is now fully compatible with Vision Language Models (VLMs)! While LM Studio has always supported vision models, LMSA can now seamlessly interface with them, allowing you to attach PNG, JPG, and WebP images to your chat messages.</p>
-                                        <p class="mb-3">This enhanced compatibility bridges the gap between LMSA's interface and LM Studio's vision capabilities, enabling you to have conversations about images, ask questions about visual content, and get AI analysis of your photos and graphics directly within your chats.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
 
                 </div>
             </div>

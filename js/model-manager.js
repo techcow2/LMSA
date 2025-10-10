@@ -16,6 +16,7 @@ import {
 } from './dom-elements.js';
 import { fetchAvailableModels, getAvailableModels, isServerRunning, loadModel as apiLoadModel } from './api-service.js';
 import { checkAndShowWelcomeMessage } from './ui-manager.js';
+import { getDefaultModelId, setDefaultModelId } from './settings-manager.js';
 
 // Flag to track if a model is actually loaded
 let isModelLoaded = false;
@@ -30,6 +31,8 @@ let currentServerPort = '';
 let currentModelFullName = '';
 // Track loading modal display timing
 let loadingModalStartTime = null;
+// Flag to track if we're auto-loading default model on startup
+let isAutoLoadingDefaultModel = false;
 
 /**
  * Initializes the model manager
@@ -216,6 +219,40 @@ async function loadModelInformation() {
                 // A model is loaded
                 isModelLoaded = true;
 
+                // Check if we should switch to default model on startup
+                const defaultModelId = getDefaultModelId();
+                console.log('Default model ID from storage:', defaultModelId);
+                console.log('Currently loaded model ID:', currentlyLoadedModelId);
+                console.log('originalStartupFlag:', originalStartupFlag);
+
+                if (originalStartupFlag && defaultModelId) {
+                    if (defaultModelId !== currentlyLoadedModelId) {
+                        // Default model is different from currently loaded - need to switch
+                        const defaultModelExists = allAvailableModels.find(model => model.id === defaultModelId);
+                        if (defaultModelExists) {
+                            console.log('Switching from', currentlyLoadedModelId, 'to default model:', defaultModelId);
+                            // Set flag to indicate we're auto-loading default model on startup
+                            isAutoLoadingDefaultModel = true;
+                            console.log('Set isAutoLoadingDefaultModel flag to:', isAutoLoadingDefaultModel);
+                            // Load the default model
+                            await loadModel(defaultModelId);
+                            return; // Exit early since we're loading a different model
+                        } else {
+                            console.log('Default model not found in available models:', defaultModelId);
+                        }
+                    } else {
+                        // Default model is already loaded - just show success modal and close models modal
+                        console.log('Default model is already loaded:', currentlyLoadedModelId);
+                        console.log('Auto-closing models modal and showing success notification');
+                        setTimeout(() => {
+                            closeModelModal();
+                            setTimeout(() => {
+                                showDefaultModelLoadedModal(currentlyLoadedModelId);
+                            }, 300);
+                        }, 500);
+                    }
+                }
+
                 // Update the global variable to maintain consistency
                 window.currentLoadedModel = currentlyLoadedModelId;
 
@@ -227,6 +264,25 @@ async function loadModelInformation() {
                 console.log('Models available but none loaded');
                 isModelLoaded = false;
                 window.currentLoadedModel = null;
+
+                // Check if there's a default model set
+                const defaultModelId = getDefaultModelId();
+                if (defaultModelId) {
+                    // Check if the default model is in the available models list
+                    const defaultModelExists = allAvailableModels.find(model => model.id === defaultModelId);
+                    if (defaultModelExists) {
+                        console.log('Auto-loading default model:', defaultModelId);
+                        // Set flag to indicate we're auto-loading default model on startup
+                        isAutoLoadingDefaultModel = true;
+                        console.log('Set isAutoLoadingDefaultModel flag to:', isAutoLoadingDefaultModel);
+                        // Auto-load the default model
+                        await loadModel(defaultModelId);
+                        return; // Exit early since we're loading a model
+                    } else {
+                        console.log('Default model not found in available models:', defaultModelId);
+                    }
+                }
+
                 displayNoModelsLoaded();
                 displayPotentialModels(allAvailableModels);
             } else {
@@ -509,6 +565,11 @@ async function loadModel(modelId) {
             // Re-enable all load buttons
             enableLoadButtons();
 
+            // Reset auto-load flag if it was set
+            if (isAutoLoadingDefaultModel) {
+                isAutoLoadingDefaultModel = false;
+            }
+
             return false;
         }
 
@@ -533,6 +594,27 @@ async function loadModel(modelId) {
         // Re-enable all load buttons
         enableLoadButtons();
 
+        // If this was an auto-load on startup, close models modal and show success modal
+        console.log('Checking isAutoLoadingDefaultModel flag:', isAutoLoadingDefaultModel);
+        if (isAutoLoadingDefaultModel) {
+            console.log('Auto-load complete, closing models modal and showing success modal');
+            console.log('Model loaded:', modelId);
+            // Reset the flag
+            isAutoLoadingDefaultModel = false;
+            // Close the models modal
+            setTimeout(() => {
+                console.log('Closing models modal...');
+                closeModelModal();
+                // Show the success modal
+                setTimeout(() => {
+                    console.log('Showing success modal for:', modelId);
+                    showDefaultModelLoadedModal(modelId);
+                }, 300); // Small delay after closing models modal
+            }, 500); // Small delay to ensure loading modal is hidden
+        } else {
+            console.log('Not auto-loading, skipping auto-close');
+        }
+
         return true;
     } catch (error) {
         console.error('Error loading model:', error);
@@ -549,6 +631,11 @@ async function loadModel(modelId) {
 
         // Re-enable all load buttons
         enableLoadButtons();
+
+        // Reset auto-load flag if it was set
+        if (isAutoLoadingDefaultModel) {
+            isAutoLoadingDefaultModel = false;
+        }
 
         return false;
     }
@@ -711,6 +798,7 @@ function displayAvailableModels(models, loadedModelId) {
             modelElement.style.color = `${modelTextColor} !important`;
 
             const isCurrentModel = model.id === currentLoadedModelId;
+            const isDefaultModel = model.id === getDefaultModelId();
 
             modelElement.className = 'model-item';
             modelElement.innerHTML = `
@@ -721,6 +809,9 @@ function displayAvailableModels(models, loadedModelId) {
                     <div class="model-name">${model.id}</div>
                 </div>
                 <div class="model-actions">
+                    <button class="set-default-btn ${isDefaultModel ? 'default-active' : ''}" data-model-id="${model.id}" title="${isDefaultModel ? 'Remove as default' : 'Set as default'}">
+                        <i class="fas fa-star"></i>
+                    </button>
                     ${isCurrentModel ?
                         '<span class="model-loaded"><i class="fas fa-check-circle"></i>Loaded</span>' :
                         '<button class="load-model-btn"><i class="fas fa-plug"></i>Load</button>'
@@ -761,6 +852,26 @@ function displayAvailableModels(models, loadedModelId) {
                 };
             }
 
+            // Add event listener to the "Set Default" button
+            const setDefaultButton = modelElement.querySelector('.set-default-btn');
+            if (setDefaultButton) {
+                setDefaultButton.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const modelId = setDefaultButton.dataset.modelId;
+                    const currentDefault = getDefaultModelId();
+
+                    if (currentDefault === modelId) {
+                        // Remove as default
+                        setDefaultModelId(null);
+                    } else {
+                        // Set as default
+                        setDefaultModelId(modelId);
+                    }
+
+                    // Refresh the display to update the UI
+                    displayAvailableModels(allAvailableModels, currentLoadedModelId);
+                });
+            }
 
         });
     }
@@ -817,6 +928,8 @@ function displayPotentialModels(models) {
             modelElement.className = `p-4 ${modelBgClass} rounded-xl mb-3 border ${modelBorderClass} transition-all duration-300 hover:border-blue-500/30 hover:shadow-md`;
             modelElement.style.color = `${modelTextColor} !important`;
 
+            const isDefaultModel = model.id === getDefaultModelId();
+
             modelElement.className = 'model-item';
             modelElement.innerHTML = `
                 <div class="model-icon bg-blue-500/20 text-blue-400" data-model-id="${model.id}" title="Click to see full model name">
@@ -826,6 +939,9 @@ function displayPotentialModels(models) {
                     <div class="model-name">${model.id}</div>
                 </div>
                 <div class="model-actions">
+                    <button class="set-default-btn ${isDefaultModel ? 'default-active' : ''}" data-model-id="${model.id}" title="${isDefaultModel ? 'Remove as default' : 'Set as default'}">
+                        <i class="fas fa-star"></i>
+                    </button>
                     <button class="load-model-btn"><i class="fas fa-plug"></i>Load</button>
                 </div>
             `;
@@ -861,6 +977,26 @@ function displayPotentialModels(models) {
                 };
             }
 
+            // Add event listener to the "Set Default" button
+            const setDefaultButton = modelElement.querySelector('.set-default-btn');
+            if (setDefaultButton) {
+                setDefaultButton.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const modelId = setDefaultButton.dataset.modelId;
+                    const currentDefault = getDefaultModelId();
+
+                    if (currentDefault === modelId) {
+                        // Remove as default
+                        setDefaultModelId(null);
+                    } else {
+                        // Set as default
+                        setDefaultModelId(modelId);
+                    }
+
+                    // Refresh the display to update the UI
+                    displayPotentialModels(allAvailableModels);
+                });
+            }
 
         });
     }
@@ -1011,6 +1147,64 @@ function showMobileInstructionsIfNeeded() {
  */
 function closeFullModelNameModal() {
     const modal = document.getElementById('full-model-name-modal');
+    if (modal) {
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.classList.add('animate-modal-out');
+            setTimeout(() => {
+                modalContent.classList.remove('animate-modal-out');
+                modal.classList.add('hidden');
+            }, 300);
+        } else {
+            modal.classList.add('hidden');
+        }
+    }
+}
+
+/**
+ * Shows the default model loaded success modal
+ * @param {string} modelName - The name of the loaded default model
+ */
+function showDefaultModelLoadedModal(modelName) {
+    console.log('showDefaultModelLoadedModal called with:', modelName);
+    const modal = document.getElementById('default-model-loaded-modal');
+    const modelNameDisplay = document.getElementById('default-model-loaded-name');
+
+    console.log('Modal element:', modal);
+    console.log('Model name display element:', modelNameDisplay);
+
+    if (modal && modelNameDisplay) {
+        console.log('Elements found, setting model name and showing modal');
+        // Set the model name
+        modelNameDisplay.textContent = modelName;
+
+        // Show the modal with animation
+        modal.classList.remove('hidden');
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.classList.add('animate-modal-in');
+            setTimeout(() => {
+                modalContent.classList.remove('animate-modal-in');
+            }, 300);
+        }
+
+        // Auto-close after 3 seconds
+        setTimeout(() => {
+            console.log('Auto-closing success modal after 3 seconds');
+            closeDefaultModelLoadedModal();
+        }, 3000);
+    } else {
+        console.error('Could not find modal or modelNameDisplay elements!');
+        if (!modal) console.error('Modal element not found');
+        if (!modelNameDisplay) console.error('Model name display element not found');
+    }
+}
+
+/**
+ * Closes the default model loaded success modal
+ */
+function closeDefaultModelLoadedModal() {
+    const modal = document.getElementById('default-model-loaded-modal');
     if (modal) {
         const modalContent = modal.querySelector('.modal-content');
         if (modalContent) {

@@ -8,7 +8,7 @@ const gotItButton = document.getElementById('got-it-whats-new');
 const versionElement = document.getElementById('whats-new-version');
 
 // Local storage keys
-const WHATS_NEW_VERSION = '7.0'; // Updated for Performance Optimization & System Prompts
+const WHATS_NEW_VERSION = '8.3'; // Updated for Default Model Feature
 
 // Flag to track if the modal has been shown in the current session
 let modalShownInCurrentSession = false;
@@ -89,6 +89,9 @@ export function showWhatsNewModal(forceShow = false) {
  */
 function hideWhatsNewModal() {
     if (whatsNewModal) {
+        // Save to localStorage that user has seen this version
+        localStorage.setItem('whatsNewSeenVersion', WHATS_NEW_VERSION);
+
         const modalContent = whatsNewModal.querySelector('.modal-content');
         if (modalContent) {
             // Get all feature items for resetting later
@@ -248,4 +251,13 @@ export function initializeWhatsNew() {
 
     // Add window resize listener to adjust modal height when window size changes
     window.addEventListener('resize', adjustModalHeight);
+
+    // Check if user has seen this version - show modal once on first launch
+    const seenVersion = localStorage.getItem('whatsNewSeenVersion');
+    if (seenVersion !== WHATS_NEW_VERSION) {
+        // User hasn't seen this version yet, show the modal after a brief delay
+        setTimeout(() => {
+            showWhatsNewModal();
+        }, 1500); // 1.5 second delay to allow app to finish loading
+    }
 }
