@@ -129,11 +129,23 @@ if (rateAppLink) {
         // Add a visual feedback effect when clicked
         rateAppLink.classList.add('active-scale');
 
-        // Short delay before showing confirmation modal for visual feedback
+        // Short delay for visual feedback
         setTimeout(() => {
-            // Show confirmation modal before opening Google Play Store
-            const googlePlayUrl = 'https://play.google.com/store/apps/details?id=com.lmsa.app&pcampaignid=web_share';
-            showExternalSiteModal(googlePlayUrl);
+            // Check if we're in the Android app and use in-app review
+            if (typeof AndroidReview !== 'undefined' && AndroidReview.requestInAppReview) {
+                try {
+                    AndroidReview.requestInAppReview();
+                } catch (error) {
+                    console.error('Error launching in-app review:', error);
+                    // Fallback to Play Store if in-app review fails
+                    const googlePlayUrl = 'https://play.google.com/store/apps/details?id=com.lmsa.app&pcampaignid=web_share';
+                    showExternalSiteModal(googlePlayUrl);
+                }
+            } else {
+                // Fallback for web or if interface not available
+                const googlePlayUrl = 'https://play.google.com/store/apps/details?id=com.lmsa.app&pcampaignid=web_share';
+                showExternalSiteModal(googlePlayUrl);
+            }
 
             // Remove the active scale class
             rateAppLink.classList.remove('active-scale');
