@@ -146,6 +146,9 @@ If you're having trouble connecting LMSA to your LM Studio server, follow these 
 - In LM Studio, go to server settings and confirm "Enable CORS" is checked
 - Verify that "Serve on Local Host" is enabled in LM Studio settings - this is required for the server to accept connections from devices on your network
 
+<img width="461" height="353" alt="image" src="https://github.com/user-attachments/assets/8434daa1-e7d5-48b8-bc38-9461db47c99d" />
+
+
 ### Verify IP Address
 - The IP address shown in LM Studio may sometimes be incorrect
 - Manually check your computer's Wi-Fi adapter IP address:
@@ -153,6 +156,9 @@ If you're having trouble connecting LMSA to your LM Studio server, follow these 
   - **Mac**: Go to System Preferences > Network, select Wi-Fi, and note the IP address
   - **Linux**: Open Terminal and type `ip addr show` or `ifconfig`
 - Enter this IP address from your Wi-Fi adapter into LMSA
+
+<img width="699" height="190" alt="image" src="https://github.com/user-attachments/assets/550bad6b-1cea-4bee-8307-fc01f464aaf7" />
+
 
 ### Network Configuration
 - Ensure both your computer and Android phone are on the same network
