@@ -103,7 +103,7 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
   </a>
 </p>
 
-1. Start LM Studio on your computer and load your favorite language model (including vision language models)
+1. Start LM Studio on your computer and load your favorite language model using your phone. **Don't load the first model using your computer, go to Models > Load (near your desired model) on your Android Device** (including vision language models).
 2. Activate the server feature in LM Studio (usually on port 1234)
 3. **Enable CORS in LM Studio** - This is critical for LMSA to work properly:
    - In LM Studio, go to the server settings
