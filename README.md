@@ -88,7 +88,7 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 - **Comprehensive History** - Save, browse, and continue previous conversations with organized chat management
 - **Automatic Titles** - Saved chats are automatically titled for easy identification
 - **Import/Export** - Easily backup and transfer your saved conversations between devices
-- **Response Management** - Copy, regenerate, or modify AI responses with ease
+- **Response Management** - Copy & regenerate AI responses with ease.
 
 ### Connection & Configuration
 - **Simple Connection** - Connect to your LM Studio server with just an IP address and port
