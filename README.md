@@ -109,8 +109,12 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
    - In LM Studio, go to the server settings
    - Find and enable the "Enable CORS" option
    - Without CORS enabled, LMSA will not be able to communicate with your LM Studio server
-4. Connect the Android app to your computer using your local network
-5. Start chatting with your AI models from anywhere in your home
+4. **Enable "Serve on Local Host"** - After starting the server:
+   - In LM Studio server settings, locate and enable the "Serve on Local Host" option
+   - This allows the server to accept connections from devices on your local network
+   - Without this enabled, the connection will not reach any device on the network
+5. Connect the Android app to your computer using your local network
+6. Start chatting with your AI models from anywhere in your home
 
 ### Setting up LMSA (Android)
 <p align="left">
@@ -132,13 +136,15 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - LM Studio installed and running on a computer with a suitable language model (text or vision)
 - Both devices connected to the same network
 - CORS enabled in LM Studio server settings (required for proper functionality)
+- "Serve on Local Host" enabled in LM Studio server settings (required for network connectivity)
 
 ## 🔍 Troubleshooting Connection Issues
 
 If you're having trouble connecting LMSA to your LM Studio server, follow these steps:
 
-### Verify CORS is Enabled
+### Verify Server Settings
 - In LM Studio, go to server settings and confirm "Enable CORS" is checked
+- Verify that "Serve on Local Host" is enabled in LM Studio settings - this is required for the server to accept connections from devices on your network
 
 ### Verify IP Address
 - The IP address shown in LM Studio may sometimes be incorrect
