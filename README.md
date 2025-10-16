@@ -140,7 +140,6 @@ If you're having trouble connecting LMSA to your LM Studio server, follow these 
 ### Verify CORS is Enabled
 - In LM Studio, go to server settings and confirm "Enable CORS" is checked
 - This is the most common cause of connection failures
-- Restart the LM Studio server after enabling CORS
 
 ### Verify IP Address
 - The IP address shown in LM Studio may sometimes be incorrect
