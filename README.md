@@ -103,17 +103,21 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
   </a>
 </p>
 
+1. Start LM Studio on your computer and load your favorite language model (including vision language models)
+2. Activate the server feature in LM Studio (usually on port 1234)
+3. **Enable CORS in LM Studio** - This is critical for LMSA to work properly:
+   - In LM Studio, go to the server settings
+   - Find and enable the "Enable CORS" option
+   - Without CORS enabled, LMSA will not be able to communicate with your LM Studio server
+4. Connect the Android app to your computer using your local network
+5. Start chatting with your AI models from anywhere in your home
+
 ### Setting up LMSA (Android)
 <p align="left">
   <a href="https://lmsa.app/Images/apptutorial.gif">
     <img src="https://lmsa.app/Images/apptutorial.gif" alt="LMSA App Tutorial" width="200" style="display:inline-block" />
   </a>
 </p>
-
-1. Start LM Studio on your computer and load your favorite language model (including vision language models)
-2. Activate the server feature in LM Studio (usually on port 1234)
-3. Connect the Android app to your computer using your local network
-4. Start chatting with your AI models from anywhere in your home
 
 LMSA connects to LM Studio running on your computer, allowing you to:
 - Access powerful AI language models from your mobile device
@@ -127,6 +131,52 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - Android 8.0 or higher
 - LM Studio installed and running on a computer with a suitable language model (text or vision)
 - Both devices connected to the same network
+- CORS enabled in LM Studio server settings (required for proper functionality)
+
+## 🔍 Troubleshooting Connection Issues
+
+If you're having trouble connecting LMSA to your LM Studio server, follow these steps:
+
+### Verify CORS is Enabled
+- In LM Studio, go to server settings and confirm "Enable CORS" is checked
+- This is the most common cause of connection failures
+- Restart the LM Studio server after enabling CORS
+
+### Verify IP Address
+- The IP address shown in LM Studio may sometimes be incorrect
+- Manually check your computer's Wi-Fi adapter IP address:
+  - **Windows**: Open Command Prompt and type `ipconfig`, look for "Wireless LAN adapter Wi-Fi" and use the IPv4 Address listed there
+  - **Mac**: Go to System Preferences > Network, select Wi-Fi, and note the IP address
+  - **Linux**: Open Terminal and type `ip addr show` or `ifconfig`
+- Enter this IP address from your Wi-Fi adapter into LMSA
+
+### Network Configuration
+- Ensure both your computer and Android phone are on the same network
+- Avoid guest networks, which often isolate devices from each other
+- Check if your router has VLAN isolation or AP isolation enabled (disable if present)
+- Disable VPN on both devices, as VPNs typically isolate local network connections
+
+### Firewall Settings
+- Check Windows Firewall to ensure LM Studio is allowed through:
+  - Go to Windows Security > Firewall & network protection > Allow an app through firewall
+  - Verify LM Studio has checkmarks for both Private and Public networks (or whichever profile you're using)
+  - If LM Studio isn't listed, click "Allow another app" and add it manually
+
+### Port Configuration
+- Try using different ports if the default (1234) doesn't work
+- Common alternatives: 8080, 5000, 3000
+- Ensure the port you choose isn't blocked by your firewall or used by another application
+
+### Test Network Connectivity
+- **From Android to Computer**:
+  - Download a networking app with ping functionality (e.g., PingTools, Network Utilities)
+  - Ping your computer's IP address to verify connectivity
+- **From Computer to Android**:
+  - Find your Android phone's IP address in your router's connected devices list or in phone settings
+  - Open Command Prompt (Windows) or Terminal (Mac/Linux) and run `tracert [phone-ip]` (Windows) or `traceroute [phone-ip]` (Mac/Linux)
+  - If the traceroute fails, there may be network isolation preventing communication
+
+If none of these steps resolve the issue, visit our support center for additional help.
 
 ## 🔧 Need Help?
 
