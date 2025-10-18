@@ -12,6 +12,19 @@
   </a>
 </p>
 
+## Table of Contents
+
+- [🆕 What's New](#🆕-whats-new)
+- [📸 Screenshots](#📸-screenshots)
+- [📋 What is LMSA?](#📋-what-is-lmsa)
+- [🌟 Features Overview](#🌟-features-overview)
+- [📱 Getting Started](#📱-getting-started)
+- [💻 How It Works](#💻-how-it-works)
+- [🔧 Technical Requirements](#🔧-technical-requirements)
+- [🔍 Troubleshooting Connection Issues](#🔍-troubleshooting-connection-issues)
+- [🔧 Need Help?](#🔧-need-help)
+- [⚠️ Disclaimer](#⚠️-disclaimer)
+
 <details>
 <summary><strong>🆕 What's New</strong> (Click to expand/collapse)</summary>
 
@@ -110,7 +123,7 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 - **Simple Connection** - Connect to your LM Studio server with just an IP address and port
 - **Advanced Customization** - Adjust temperature, system prompts, and other model parameters directly from your phone
 
-## 📱 Usage
+## 📱 Getting Started
 
 <details>
 <summary><strong>Option 1: Android App (Recommended)</strong> (Click to expand/collapse)</summary>
