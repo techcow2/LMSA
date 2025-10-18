@@ -14,26 +14,29 @@
 
 ## 🆕 What's New
 
-🎉 **Latest Update: Version 8.2** - Now Available!
+🎉 **Latest Update: Version 8.4** - Now Available!
 
-### Performance & Optimization
-Version 8.2 delivers a noticeably snappier experience with intelligent caching and optimized server communication that reduces unnecessary network requests by up to 50%. Your LMSA app now responds faster while putting less load on your LM Studio server, resulting in cleaner logs and better overall performance.
+### Improved Message Input Field
+The message input field now automatically adjusts its height to accommodate longer messages, making it much easier to edit and review your text before sending. No more cramped single-line input that cuts off your thoughts!
 
-## 📋 Version History
+### Enhanced Chat Bubble UI
+Chat bubbles now have a cleaner, more modern look with improved spacing, typography, and visual hierarchy. The overall chat experience feels more polished and professional.
 
-### Version 8.1
-- **Modal UI Fixes**: Resolved user interface issues with modal dialogs for better visual consistency
-- **Enhanced Modal Behavior**: Improved positioning, overlay handling, and responsive design across all screen sizes
-- **UI Polish**: Refined animations and styling for smoother visual transitions
+### Import/Export Bug Fix
+Fixed a critical issue with the import/export feature that was causing problems for some users. Chat history can now be reliably backed up and restored without data loss.
 
-### Version 8.0
-- **Tailwind CSS Migration**: Migrated to local Tailwind installation, resolving UI inconsistencies across devices
-- **Enhanced Stability**: Improved interface reliability with locally-hosted styling
-- **Performance**: Reduced external dependencies and improved loading times
+### Light Theme Fixes
+Resolved display issues in light theme where some interface elements appeared black instead of their proper colors. Light theme now renders correctly across all components.
 
-### Version 7.1
-- **Settings Menu**: Fixed positioning issues for consistent experience across all devices
-- **UI Improvements**: Enhanced interface alignment and responsiveness
+### Auto-Scroll to Latest Messages
+Added a new setting in the options menu that automatically scrolls to the bottom (latest/newest part) of the chat history window when the LLM is streaming text. This keeps you focused on the most recent responses without manual scrolling.
+
+### Default Model Selection
+You can now set a default model that will automatically load whenever LMSA connects to LM Studio! Simply open the models modal and tap the star icon next to any model to set it as your default.
+
+Your default model will be saved and automatically selected every time you launch the app, eliminating the need to manually switch models. If a different model is already loaded when you start LMSA, it will automatically switch to your preferred default model.
+
+This feature provides a more automated experience - just launch the app and your favorite model is ready to go!
 
 ---
 
