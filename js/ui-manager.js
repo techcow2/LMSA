@@ -679,12 +679,22 @@ export function appendMessage(sender, message, files = null, isStreaming = false
                 // Create edit button for user messages
                 const editButton = document.createElement('button');
                 editButton.classList.add('edit-btn', 'flex', 'items-center', 'hover:text-blue-400', 'transition-colors', 'duration-300');
-                editButton.innerHTML = '<i class="fas fa-edit mr-1"></i> Edit';
+                editButton.innerHTML = '<i class="fas fa-edit"></i>';
                 editButton.title = 'Edit this message';
                 editButton.dataset.action = 'edit';
                 editButton.setAttribute('role', 'button');
                 editButton.setAttribute('aria-label', 'Edit message');
                 controlsContainer.appendChild(editButton);
+
+                // Create delete button for user messages
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('delete-btn', 'flex', 'items-center', 'hover:text-red-400', 'transition-colors', 'duration-300');
+                deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+                deleteButton.title = 'Delete this message';
+                deleteButton.dataset.action = 'delete';
+                deleteButton.setAttribute('role', 'button');
+                deleteButton.setAttribute('aria-label', 'Delete message');
+                controlsContainer.appendChild(deleteButton);
             } else if (sender === 'ai') {
                 // Create copy button for AI messages
                 const copyButton = document.createElement('button');
@@ -1225,14 +1235,26 @@ export function refreshAllMessages() {
                 // Create edit button
                 const editButton = document.createElement('button');
                 editButton.classList.add('edit-btn', 'flex', 'items-center', 'hover:text-blue-400', 'transition-colors', 'duration-300');
-                editButton.innerHTML = '<i class="fas fa-edit mr-1"></i> Edit';
+                editButton.innerHTML = '<i class="fas fa-edit"></i>';
                 editButton.title = 'Edit this message';
                 editButton.dataset.action = 'edit';
                 editButton.setAttribute('role', 'button');
                 editButton.setAttribute('aria-label', 'Edit message');
 
-                // Add the button to the controls container
+                // Add the edit button to the controls container
                 controlsContainer.appendChild(editButton);
+
+                // Create delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('delete-btn', 'flex', 'items-center', 'hover:text-red-400', 'transition-colors', 'duration-300');
+                deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+                deleteButton.title = 'Delete this message';
+                deleteButton.dataset.action = 'delete';
+                deleteButton.setAttribute('role', 'button');
+                deleteButton.setAttribute('aria-label', 'Delete message');
+
+                // Add the delete button to the controls container
+                controlsContainer.appendChild(deleteButton);
 
                 // Add the controls container to the message
                 messageEl.appendChild(controlsContainer);
@@ -1241,14 +1263,28 @@ export function refreshAllMessages() {
                 if (!controlsContainer.querySelector('.edit-btn')) {
                     const editButton = document.createElement('button');
                     editButton.classList.add('edit-btn', 'flex', 'items-center', 'hover:text-blue-400', 'transition-colors', 'duration-300');
-                    editButton.innerHTML = '<i class="fas fa-edit mr-1"></i> Edit';
+                    editButton.innerHTML = '<i class="fas fa-edit"></i>';
                     editButton.title = 'Edit this message';
                     editButton.dataset.action = 'edit';
                     editButton.setAttribute('role', 'button');
                     editButton.setAttribute('aria-label', 'Edit message');
 
-                    // Add the button to the controls container
+                    // Add the edit button to the controls container
                     controlsContainer.appendChild(editButton);
+                }
+
+                // Ensure the delete button exists in the controls container
+                if (!controlsContainer.querySelector('.delete-btn')) {
+                    const deleteButton = document.createElement('button');
+                    deleteButton.classList.add('delete-btn', 'flex', 'items-center', 'hover:text-red-400', 'transition-colors', 'duration-300');
+                    deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+                    deleteButton.title = 'Delete this message';
+                    deleteButton.dataset.action = 'delete';
+                    deleteButton.setAttribute('role', 'button');
+                    deleteButton.setAttribute('aria-label', 'Delete message');
+
+                    // Add the delete button to the controls container
+                    controlsContainer.appendChild(deleteButton);
                 }
             }
         }

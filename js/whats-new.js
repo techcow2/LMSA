@@ -8,7 +8,7 @@ const gotItButton = document.getElementById('got-it-whats-new');
 const versionElement = document.getElementById('whats-new-version');
 
 // Local storage keys
-const WHATS_NEW_VERSION = '8.3'; // Updated for Default Model Feature
+const WHATS_NEW_VERSION = '8.4'; // Updated for new features: message input improvements, chat bubble UI, import/export fixes, light theme fixes, auto-scroll feature
 
 // Flag to track if the modal has been shown in the current session
 let modalShownInCurrentSession = false;

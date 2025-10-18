@@ -249,24 +249,74 @@ export function initializeEventHandlers() {
 
     // Add input field event listeners for cursor visibility
     if (userInput) {
+        // Define height constants
+        const singleLineHeight = 52;  // Height for single line of text (matches actual scrollHeight)
+        const maxHeight = 200;
+
+        // Function to auto-resize the textarea based on content
+        const autoResizeTextarea = function(textarea) {
+            if (!textarea) return;
+
+            // Save the current scroll position
+            const scrollTop = textarea.scrollTop;
+
+            // Temporarily shrink to single line height to get accurate measurement
+            textarea.style.height = singleLineHeight + 'px';
+
+            // Get the scroll height - if content doesn't fit, this will be larger
+            const scrollHeight = textarea.scrollHeight;
+
+            // Determine the new height
+            let newHeight;
+            if (scrollHeight <= singleLineHeight) {
+                // Content fits in single line
+                newHeight = singleLineHeight;
+            } else {
+                // Content needs more space
+                newHeight = Math.min(scrollHeight, maxHeight);
+            }
+
+            // Set the final height
+            textarea.style.height = newHeight + 'px';
+
+            // Restore scroll position
+            textarea.scrollTop = scrollTop;
+
+            // Enable scrolling if content exceeds max height
+            if (scrollHeight > maxHeight) {
+                textarea.style.overflowY = 'auto';
+            } else {
+                textarea.style.overflowY = 'hidden';
+            }
+        };
+
         // Simple direct method to ensure cursor is at the end when typing
         const scrollInputToEnd = function(input) {
             // Use setTimeout to ensure this runs after the browser has updated the input value
             setTimeout(() => {
-                // Scroll to the end of the input
-                input.scrollLeft = input.scrollWidth;
+                // For textarea, scroll to bottom
+                input.scrollTop = input.scrollHeight;
             }, 0);
         };
 
         // Handle input events to ensure cursor visibility during typing
         userInput.addEventListener('input', function(e) {
+            // Auto-resize the textarea
+            autoResizeTextarea(e.target);
             // Use both methods for maximum compatibility
             scrollInputToEnd(e.target);
             ensureCursorVisible(e.target);
         });
 
-        // Handle keydown events for cursor visibility
+        // Handle keydown events for cursor visibility and Enter key
         userInput.addEventListener('keydown', function(e) {
+            // Handle Enter key to submit form (unless Shift is held)
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault(); // Prevent new line
+                chatForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                return;
+            }
+
             // For arrow keys, we need special handling
             if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' ||
                 e.key === 'Home' || e.key === 'End') {
@@ -331,10 +381,18 @@ export function initializeEventHandlers() {
             }, 0);
         });
 
-        // Force scroll to end on initial load
+        // Initialize textarea to correct single-line height on page load
+        // This ensures consistent height before and after typing
         setTimeout(() => {
-            userInput.scrollLeft = userInput.scrollWidth;
-        }, 100);
+            // Set to minimum first
+            userInput.style.height = singleLineHeight + 'px';
+            // Measure what the browser thinks the scrollHeight should be for single line
+            const naturalScrollHeight = userInput.scrollHeight;
+            // Set to that height for consistency
+            userInput.style.height = naturalScrollHeight + 'px';
+            userInput.style.overflowY = 'hidden';
+
+        }, 0);
     }
 
     // Clear chat button
@@ -444,8 +502,7 @@ export function initializeEventHandlers() {
         }
         lastTouchTime = now;
         
-        // Debug logging
-        
+        // Debug logging removed
         // Only process if this is a simple tap (not scrolling or other complex gestures)
         if (e.changedTouches && e.changedTouches.length === 1) {
             // Get the element at the touch position for more accurate detection
@@ -479,7 +536,6 @@ export function initializeEventHandlers() {
 
             // Check if we're tapping on the sidebar overlay directly
             if (elementAtTouch && elementAtTouch.id === 'sidebar-overlay') {
-                console.log('Tapping on sidebar overlay - closing sidebar');
                 // If tapping directly on the overlay, use toggleSidebar for consistency
                 toggleSidebar();
                 return;
@@ -1202,7 +1258,9 @@ export function initializeEventHandlers() {
                             userInput.blur();
                             // Small delay to ensure the click event has time to fire
                             setTimeout(() => {
-                                chatForm.dispatchEvent(new Event('submit'));
+                                // Create a proper submit event that bubbles and is cancelable
+                                const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+                                chatForm.dispatchEvent(submitEvent);
                             }, 10);
                         }
                     }
@@ -1293,6 +1351,7 @@ export function initializeEventHandlers() {
     if (messagesContainer) {
         messagesContainer.addEventListener('click', handleRegenerateButtonClick);
         messagesContainer.addEventListener('click', handleEditButtonClick);
+        messagesContainer.addEventListener('click', handleDeleteButtonClick);
     }
 
     // Initialize reset app button
@@ -1314,7 +1373,6 @@ export function initializeEventHandlers() {
         setTimeout(() => {
             if (messagesContainer.scrollHeight > messagesContainer.clientHeight) {
                 handleScroll(messagesContainer);
-                debugLog('Initial scroll position check performed');
             }
         }, 500);
     }
@@ -1408,8 +1466,12 @@ async function handleChatFormSubmit(e) {
             debugError('Error adding user message to history:', error);
         }
 
-        // Clear the input field while maintaining height
+        // Clear the input field and reset height
         userInput.value = '';
+        // Reset to single line height (52px) to match the initialized state
+        const singleLineHeight = 52;
+        userInput.style.height = singleLineHeight + 'px';
+        userInput.style.overflowY = 'hidden';
 
         // Create a new abort controller for this request
         // Important: ensure any existing controller is aborted and released first
@@ -1628,8 +1690,6 @@ function handleSidebarOutsideClick(e) {
         !targetElement.closest('header') &&
         !targetElement.closest('#loaded-model')) {
 
-        // Log for debugging
-        console.log('Closing sidebar from outside click/tap');
 
         // Use toggleSidebar (same as X button) for consistent behavior
         toggleSidebar();
@@ -2323,59 +2383,96 @@ function handleEditButtonClick(e) {
     // Get the original content
     const originalContent = messageElement.originalContent || contentContainer.textContent;
 
-    // Create editable input field
-    const editContainer = document.createElement('div');
-    editContainer.classList.add('edit-container', 'w-full');
+    // Store the original HTML content to restore if cancelled
+    const originalHTML = contentContainer.innerHTML;
 
-    // Create textarea with original content
+    // Store and lock the current width of the message bubble
+    // But ensure a minimum width for comfortable editing
+    const currentWidth = messageElement.offsetWidth;
+    const minEditWidth = 300; // Minimum width needed for buttons and comfortable editing
+    const editWidth = Math.max(currentWidth, minEditWidth);
+
+    messageElement.style.width = editWidth + 'px';
+    messageElement.style.minWidth = editWidth + 'px';
+    messageElement.style.maxWidth = editWidth + 'px';
+
+    // Create textarea with original content that matches the text style
     const textarea = document.createElement('textarea');
-    textarea.classList.add('edit-textarea', 'w-full', 'bg-darkTertiary', 'text-gray-100', 'border', 'border-gray-600', 'rounded-lg', 'px-3', 'py-2', 'focus:outline-none', 'mb-2');
+    textarea.classList.add('edit-textarea');
     textarea.value = originalContent;
-    textarea.rows = 3;
-    textarea.style.resize = 'vertical';
+    textarea.style.cssText = `
+        width: 100%;
+        background: transparent;
+        color: inherit;
+        border: none;
+        outline: none;
+        resize: none;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+        box-sizing: border-box;
+    `;
+
+    // Auto-resize textarea to match content
+    const autoResize = () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    };
+    textarea.addEventListener('input', autoResize);
 
     // Create buttons container
     const buttonsContainer = document.createElement('div');
-    buttonsContainer.classList.add('flex', 'justify-end', 'space-x-2', 'mt-2');
+    buttonsContainer.classList.add('edit-buttons-container', 'flex', 'gap-2', 'mt-3');
 
     // Create cancel button
     const cancelButton = document.createElement('button');
-    cancelButton.classList.add('bg-gray-600', 'text-white', 'rounded-lg', 'px-3', 'py-1', 'text-sm', 'hover:bg-gray-700', 'transition-colors');
+    cancelButton.classList.add('edit-cancel-btn', 'bg-gray-600', 'text-white', 'rounded-md', 'px-3', 'py-1.5', 'text-xs', 'hover:bg-gray-700', 'transition-colors');
     cancelButton.textContent = 'Cancel';
 
     // Create save button
     const saveButton = document.createElement('button');
-    saveButton.classList.add('bg-red-600', 'text-white', 'rounded-lg', 'px-3', 'py-1', 'text-sm', 'transition-colors');
+    saveButton.classList.add('edit-resend-btn', 'bg-red-600', 'text-white', 'rounded-md', 'px-3', 'py-1.5', 'text-xs', 'transition-colors');
     saveButton.textContent = 'Resend';
-    saveButton.classList.add('resend-btn'); // For possible future targeting
     saveButton.addEventListener('mouseenter', () => {
-        saveButton.style.backgroundColor = '#c0392b'; // Red hover color
+        saveButton.style.backgroundColor = '#c0392b';
     });
     saveButton.addEventListener('mouseleave', () => {
-        saveButton.style.backgroundColor = '#e74c3c'; // Red normal color
+        saveButton.style.backgroundColor = '#dc2626';
     });
 
     // Add buttons to container
     buttonsContainer.appendChild(cancelButton);
     buttonsContainer.appendChild(saveButton);
 
-    // Add textarea and buttons to edit container
-    editContainer.appendChild(textarea);
-    editContainer.appendChild(buttonsContainer);
+    // Replace content with textarea and add buttons
+    contentContainer.innerHTML = '';
+    contentContainer.appendChild(textarea);
+    contentContainer.appendChild(buttonsContainer);
 
-    // Hide existing content and add edit container
-    contentContainer.style.display = 'none';
-    messageElement.insertBefore(editContainer, messageElement.querySelector('.message-controls'));
+    // Add editing class to message element
+    messageElement.classList.add('editing-mode');
 
-    // Focus the textarea
+    // Set initial height and focus
+    autoResize();
     textarea.focus();
 
     // Cancel button handler
     cancelButton.addEventListener('click', (e) => {
         e.stopPropagation(); // Prevent event from bubbling up and triggering sidebar
-        // Remove edit container and restore original content
-        editContainer.remove();
-        contentContainer.style.display = '';
+        // Restore original content
+        contentContainer.innerHTML = originalHTML;
+        // Remove editing mode class
+        messageElement.classList.remove('editing-mode');
+        // Restore original width
+        messageElement.style.width = '';
+        messageElement.style.minWidth = '';
+        messageElement.style.maxWidth = '';
         // Show the edit button again
         controlsContainer.style.display = '';
     });
@@ -2395,9 +2492,12 @@ function handleEditButtonClick(e) {
             contentContainer.innerHTML = sanitizeInput(editedMessage);
             messageElement.originalContent = editedMessage;
 
-            // Remove edit container
-            editContainer.remove();
-            contentContainer.style.display = '';
+            // Remove editing mode class
+            messageElement.classList.remove('editing-mode');
+            // Restore original width
+            messageElement.style.width = '';
+            messageElement.style.minWidth = '';
+            messageElement.style.maxWidth = '';
             // Show the edit button again
             controlsContainer.style.display = '';
 
@@ -2506,6 +2606,113 @@ function handleEditButtonClick(e) {
             }
         }
     });
+}
+
+/**
+ * Handles click on the delete button for user messages
+ * @param {Event} e - The click event
+ */
+function handleDeleteButtonClick(e) {
+    const target = e.target.closest('.delete-btn');
+    if (!target) return; // Not a delete button
+
+    // Find the message element
+    const messageElement = target.closest('.user');
+    if (!messageElement) return;
+
+    // Get message index
+    const messageElements = Array.from(messagesContainer.children);
+    const messageIndex = messageElements.indexOf(messageElement);
+
+    if (messageIndex === -1) return;
+
+    // Show confirmation modal
+    const deleteModal = document.getElementById('delete-message-modal');
+    const confirmBtn = document.getElementById('confirm-delete-message');
+    const cancelBtn = document.getElementById('cancel-delete-message');
+
+    if (!deleteModal || !confirmBtn || !cancelBtn) return;
+
+    // Show the modal
+    deleteModal.classList.remove('hidden');
+    deleteModal.classList.add('flex');
+
+    // Handle confirmation
+    const handleConfirm = () => {
+        // Hide modal
+        deleteModal.classList.add('hidden');
+        deleteModal.classList.remove('flex');
+
+        // Clean up listeners
+        confirmBtn.removeEventListener('click', handleConfirm);
+        cancelBtn.removeEventListener('click', handleCancel);
+
+        deleteMessage(messageElement, messageElements, messageIndex);
+    };
+
+    // Handle cancellation
+    const handleCancel = () => {
+        // Hide modal
+        deleteModal.classList.add('hidden');
+        deleteModal.classList.remove('flex');
+
+        // Clean up listeners
+        confirmBtn.removeEventListener('click', handleConfirm);
+        cancelBtn.removeEventListener('click', handleCancel);
+    };
+
+    // Add event listeners
+    confirmBtn.addEventListener('click', handleConfirm);
+    cancelBtn.addEventListener('click', handleCancel);
+}
+
+/**
+ * Deletes a user message and all subsequent messages
+ * @param {HTMLElement} messageElement - The message element to delete
+ * @param {Array} messageElements - All message elements
+ * @param {number} messageIndex - Index of the message to delete
+ */
+function deleteMessage(messageElement, messageElements, messageIndex) {
+    try {
+        // Remove only the message element from DOM
+        messageElement.remove();
+
+        // Update chat history in storage
+        if (currentChatId && chatHistoryData[currentChatId]) {
+            const chatData = chatHistoryData[currentChatId];
+            const messages = Array.isArray(chatData) ? chatData : chatData.messages;
+
+            if (messages && messages.length > 0) {
+                // Count user messages in UI up to the deleted message
+                const userMessagesBeforeDelete = messageElements
+                    .slice(0, messageIndex + 1)
+                    .filter(el => el.classList.contains('user')).length;
+
+                // Find the user message index in chat history
+                const userMessageIndices = messages
+                    .map((msg, index) => msg.role === 'user' ? index : -1)
+                    .filter(index => index !== -1);
+
+                const userMessageIndex = userMessageIndices[userMessagesBeforeDelete - 1];
+
+                if (userMessageIndex !== undefined) {
+                    // Remove only this specific message from chat history
+                    if (Array.isArray(chatData)) {
+                        chatHistoryData[currentChatId].splice(userMessageIndex, 1);
+                    } else {
+                        chatData.messages.splice(userMessageIndex, 1);
+                    }
+
+                    // Save to storage
+                    saveChatHistory();
+                    updateChatHistoryUI();
+                }
+            }
+        }
+    } catch (error) {
+        debugError('Failed to delete message:', error);
+        appendMessage('error', 'An error occurred while deleting the message.');
+    }
 }
 
 /**

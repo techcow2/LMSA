@@ -53,19 +53,24 @@ body.preview-mode {
 #messages {
     flex-grow: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column; /* Changed from column-reverse to column for chronological order */
     padding-bottom: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     overscroll-behavior: contain; /* Prevent body scroll when reaching top/bottom */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    height: 100%;
+    min-height: 0;
     width: 100%;
     position: relative;
     z-index: 1;
     scroll-behavior: smooth; /* Enable smooth scrolling behavior */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
 }
 
-/* Add a container for messages to ensure they appear at the bottom */
+/* Add a container for messages to ensure they appear at the bottom when content is short */
 #messages::before {
     content: '';
     flex-grow: 1;
@@ -80,6 +85,7 @@ body.preview-mode {
     border-radius: 0.75rem;
     line-height: 1.5;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; /* Prevent message bubbles from being compressed */
 }
 
 /* Adjust message width on smaller screens */
@@ -93,19 +99,68 @@ body.preview-mode {
 
 #messages > div.user {
     align-self: flex-end;
-    background-color: var(--user-message-bg);
+    background: linear-gradient(145deg,
+        rgba(55, 65, 95, 0.85) 0%,
+        rgba(45, 55, 85, 0.9) 100%);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
     color: var(--user-message-text);
-    border-bottom-right-radius: 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 10px rgba(52, 152, 219, 0.3);
+    border-bottom-right-radius: 4px;
+    border: 1.5px solid rgba(100, 150, 255, 0.4);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: visible;
+}
+
+#messages > div.user::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0) 100%);
+    border-radius: inherit;
+    pointer-events: none;
 }
 
 #messages > div.ai {
     align-self: flex-start;
-    background-color: var(--ai-message-bg);
+    background: linear-gradient(145deg,
+        rgba(40, 50, 75, 0.85) 0%,
+        rgba(30, 40, 65, 0.9) 100%);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
     color: var(--ai-message-text);
-    border: 1px solid var(--ai-message-border);
-    border-bottom-left-radius: 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 10px rgba(44, 62, 80, 0.3);
+    border: 1.5px solid rgba(80, 120, 200, 0.35);
+    border-bottom-left-radius: 4px;
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: visible;
+}
+
+#messages > div.ai::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.06) 0%,
+        rgba(255, 255, 255, 0) 100%);
+    border-radius: inherit;
+    pointer-events: none;
 }
 
 /* Reasoning styles for think sections */
@@ -731,6 +786,9 @@ body.light-theme #loaded-model {
     visibility: hidden;
     display: flex;
     flex-direction: column;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     height: 100%;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
@@ -782,6 +840,9 @@ body.light-theme #loaded-model {
     z-index: 40;
     opacity: 0;
     visibility: hidden;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                backdrop-filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #sidebar-overlay.active {
@@ -822,6 +883,8 @@ body.light-theme #loaded-model {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
+    transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #close-sidebar:hover {
@@ -850,6 +913,9 @@ body.light-theme #loaded-model {
     user-select: none;
     -webkit-user-select: none;
     outline: none; /* Ensure no default outline */
+    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* New Chat button specific styles */
@@ -1151,6 +1217,10 @@ body.light-theme #loaded-model {
     border-bottom: 1px solid var(--sidebar-border);
     flex-shrink: 0;
     touch-action: auto;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #sidebar .sidebar-section:last-child {
@@ -1318,8 +1388,11 @@ body.light-theme #loaded-model {
 
 #user-input, button[type="submit"] {
     font-size: 16px;
-    height: 44px;
     box-sizing: border-box; /* Ensure padding is included in height calculation */
+}
+
+button[type="submit"] {
+    height: 52px; /* Keep button at fixed height matching input */
 }
 
 #chat-form {
@@ -1329,9 +1402,9 @@ body.light-theme #loaded-model {
     position: relative;
     z-index: 5; /* Ensure it's above other elements */
     display: flex; /* Ensure flexbox behavior */
-    align-items: center; /* Center items vertically */
+    align-items: flex-end; /* Align items to bottom for dynamic height */
     gap: 0px; /* Remove gap between elements */
-    height: calc(40px + 1rem); /* Reduced fixed height */
+    min-height: calc(52px + 1rem); /* Minimum height instead of fixed */
     box-sizing: border-box; /* Include padding in height calculation */
     margin-bottom: 8px; /* Add space below the chat form */
 }
@@ -1342,8 +1415,9 @@ body.light-theme #loaded-model {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 40px;
-    height: 40px; /* Reduced fixed height to match input */
+    min-height: 52px;
+    align-self: flex-end; /* Align button to bottom when textarea expands */
+    height: 52px; /* Match input height exactly */
     min-width: 90px;
     padding: 0 16px; /* Add consistent horizontal padding */
     overflow: hidden;
@@ -1361,28 +1435,42 @@ body.light-theme #loaded-model {
 #send-button, #stop-button {
     flex-shrink: 0;
     width: auto;
-    height: 40px; /* Reduced fixed height */
+    height: 52px; /* Match input height exactly */
 }
 
 /* Style the input container to match the new heights */
 #chat-form .flex-grow {
-    height: 40px; /* Match button height */
+    min-height: 52px; /* Minimum height to match button */
+    display: flex; /* Use flexbox for proper alignment */
+    align-items: flex-end; /* Align items to bottom */
+    flex: 1; /* Take up remaining space */
 }
 
 /* Style the actual input field */
 #user-input {
-    height: 40px; /* Match button height */
+    height: 52px; /* Matches actual scrollHeight measurement */
+    min-height: 52px; /* Minimum height to match calculated height */
+    max-height: 200px; /* Maximum height before scrolling */
     border-radius: 0.5rem 0 0 0.5rem; /* Ensure rounded corners only on left side */
-    padding: 0 2.5rem 0 0.75rem; /* Adjust padding for better text positioning */
+    padding: 10px 3rem 10px 0.75rem; /* Increased right padding to prevent text under paperclip */
+    line-height: 24px; /* Line height for text */
     border-right: none; /* Remove right border on input */
     border: 1px solid var(--input-border); /* Ensure consistent border */
     position: relative;
     z-index: 1; /* Place input below button to allow button overlap */
+    width: 100% !important; /* Full width of container - force override */
+    max-width: 100% !important; /* Prevent exceeding container width */
+    box-sizing: border-box !important; /* Include padding in width */
+    overflow-wrap: break-word !important; /* Break long words */
+    word-wrap: break-word !important; /* Legacy support */
+    resize: none !important; /* Prevent manual resizing */
+    overflow-y: hidden !important; /* Hide vertical scrollbar initially */
+    overflow-x: hidden !important; /* Hide horizontal scrollbar - critical for wrapping */
+    white-space: pre-wrap !important; /* Wrap text at container edge */
 }
 
 /* Position the paperclip button properly */
 #chat-form .absolute {
-    right: 0.75rem; /* Adjust position */
     z-index: 2; /* Ensure paperclip is above input but below send button */
 }
 
@@ -1403,14 +1491,14 @@ body.light-theme #loaded-model {
     }
 
     #user-input {
-        height: 40px; /* Keep consistent height */
+        min-height: 40px; /* Keep minimum height consistent */
         font-size: 0.95rem; /* Slightly smaller font for better fit */
         border-right: none; /* Ensure no border on mobile too */
     }
 
     #chat-form {
         padding: 0.5rem;
-        height: calc(40px + 1rem); /* Adjusted fixed height */
+        min-height: calc(40px + 1rem); /* Minimum height for dynamic expansion */
         margin-bottom: 8px; /* Maintain bottom spacing on mobile */
         gap: 0; /* Ensure no gap on mobile */
     }
@@ -2095,9 +2183,7 @@ body.light-theme #send-context-menu {
     pointer-events: none;
 }
 
-#send-context-menu button:active::after {
-    /* Removed ripple animation for better performance */
-}
+/* Removed ripple animation for better performance */
 
 /* Mobile optimizations */
 @media (max-width: 480px) {
@@ -2562,11 +2648,6 @@ body.light-theme #send-context-menu .menu-header {
 /* Animation for step transitions */
 
 
-.slide-in-right {
-}
-
-.slide-in-left {
-}
 
 /* Mobile-specific settings modal adjustments */
 @media (max-width: 767px) {
@@ -2956,11 +3037,6 @@ body.light-theme #send-context-menu .menu-header {
     }
 
     /* Animation for step transitions */
-    #settings-modal .slide-in-right {
-        }
-
-    #settings-modal .slide-in-left {
-        }
 
     /* Improved keyboard handling for tablets */
     #settings-modal .keyboard-visible {
@@ -3493,8 +3569,6 @@ body.light-theme #clear-system-prompt-modal #close-clear-system-prompt-modal:hov
     }
 }
 
-#confirmation-modal button {
-}
 
 #confirmation-modal button:hover {
     transform: translateY(-2px);
@@ -4071,8 +4145,6 @@ body.light-theme .regenerate-btn:hover {
 }
 
 /* Animation for regenerate button on hover */
-.regenerate-btn:hover i {
-}
 
 
 /* Make the button more touch-friendly on small screens */
@@ -4091,14 +4163,10 @@ body.light-theme .regenerate-btn:hover {
     }
 
     /* Fix for endless animation on mobile */
-    .regenerate-btn:hover i {
-        /* Disable hover animation on mobile */
-    }
+    /* Disable hover animation on mobile */
 
     /* Only apply animation when actively pressing */
-    .regenerate-btn:active i {
-         /* Run only once */
-    }
+    /* Run only once */
 
     /* Remove focus styles that might keep the button in "active" state */
     .regenerate-btn:focus {
@@ -4178,7 +4246,7 @@ body.light-theme .regenerate-btn:hover {
     /* Adjust chat form for very small screens */
     #chat-form {
         padding: 8px;
-        height: calc(44px + 16px); /* Fixed height: input height + padding */
+        min-height: calc(44px + 16px); /* Minimum height for dynamic expansion */
     }
 
     #send-button {
@@ -4187,7 +4255,7 @@ body.light-theme .regenerate-btn:hover {
 
     /* Smaller input field padding */
     #user-input {
-        padding: 8px;
+        padding: 8px 2.5rem 8px 8px; /* Add right padding for paperclip */
         font-size: 0.9rem;
     }
 }
@@ -4261,7 +4329,6 @@ body.light-theme .regenerate-btn:hover {
 
 .edit-btn i {
     font-size: 12px;
-    margin-right: 4px;
 }
 
 /* Make the edit button more touch-friendly on small screens */
@@ -4310,21 +4377,96 @@ body.light-theme .regenerate-btn:hover {
     opacity: 1;
 }
 
-/* Edit container styles */
-.edit-container {
-    margin-bottom: 10px;
-    position: relative;
-    margin-top: 1rem;
+/* Delete button styles */
+.delete-btn {
+    background-color: rgba(44, 62, 80, 0.7);
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    display: flex;
+    align-items: center;
+    color: #d1d5db;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
+.delete-btn:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #ef4444;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+    transform: translateY(-1px);
+}
+
+.delete-btn i {
+    font-size: 12px;
+}
+
+/* Make the delete button more touch-friendly on small screens */
+@media (max-width: 480px) {
+    .delete-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .delete-btn i {
+        font-size: 14px;
+    }
+
+    .delete-btn:focus {
+        outline: none;
+    }
+
+    .delete-btn {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+/* Make the delete button more touch-friendly on tablet screens */
+@media (min-width: 481px) and (max-width: 1024px) {
+    .delete-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+        background-color: rgba(44, 62, 80, 0.7);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .delete-btn i {
+        font-size: 14px;
+    }
+
+    .delete-btn {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+/* Edit textarea - invisible styling to match regular text */
 .edit-textarea {
-    min-height: 80px;
-    line-height: 1.5;
+    display: block;
 }
 
-.edit-textarea:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+/* Edit buttons container */
+.edit-buttons-container {
+    display: flex;
+    margin-top: 0.75rem;
+}
+
+/* Compact button styling */
+.edit-cancel-btn,
+.edit-resend-btn {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+}
+
+.edit-cancel-btn:hover {
+    opacity: 0.9;
+}
+
+.edit-resend-btn:hover {
+    opacity: 0.9;
 }
 
 /* Scroll to bottom button */
@@ -4383,11 +4525,6 @@ body.light-theme .regenerate-btn:hover {
 
 
 /* Modal animations */
-.animate-modal-in {
-}
-
-.animate-modal-out {
-}
 
 
 
@@ -4397,8 +4534,6 @@ body.light-theme .regenerate-btn:hover {
     width: 400px;
 }
 
-#import-status {
-}
 
 /* Media query for mobile devices */
 @media (max-width: 768px) {
@@ -4641,6 +4776,11 @@ body.light-theme .regenerate-btn:hover {
     display: none;
 }
 
+/* Light theme styles for What's New modal background */
+body.light-theme #whats-new-modal {
+    background-color: transparent;
+}
+
 #whats-new-modal .modal-content {
     max-width: 520px;
     width: 92%;
@@ -4685,8 +4825,6 @@ body.light-theme #whats-new-modal .modal-content {
 }
 
 /* About modal specific styles */
-#about-modal {
-}
 
 #about-modal .modal-content {
     transform: translateY(20px);
@@ -4954,9 +5092,18 @@ body.light-theme #about-modal .version-badge p {
     color: #2563eb !important;
 }
 
+/* About modal title - remove background box */
+#about-modal #about-title {
+    background-color: transparent !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+}
+
 /* Ensure app title is visible in light theme */
 body.light-theme #about-modal #about-title {
     background-image: linear-gradient(to right, #2563eb, #0891b2);
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
 }
 
 /* Ensure divider is visible in light theme */
@@ -5555,8 +5702,6 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
     opacity: 1;
 }
 
-.scroll-indicator.bounce .h-1 {
-}
 
 
 /* Help modal scrollbar styles */
@@ -5771,6 +5916,9 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
     padding-left: 0.5rem;
     border-left: 2px solid rgba(96, 165, 250, 0.3);
     margin-bottom: 0.75rem;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #import-export-container.animate-fade-in {
@@ -5783,6 +5931,7 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
 #import-export-group-btn .fa-caret-down,
 #import-export-group-btn .fa-caret-up {
     margin-left: auto;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #import-export-group-btn.active .fa-caret-down {
@@ -5792,11 +5941,6 @@ body.light-theme #whats-new-modal .features-container::-webkit-scrollbar-thumb:h
 /* Sidebar animation keyframes */
 
 
-.animate-slide-in {
-}
-
-.animate-slide-out {
-}
 
 /* Global touch handling for modals */
 .modal-content, .modal-content .overflow-y-auto {
@@ -6126,8 +6270,6 @@ body.light-theme .gradient-text {
 
 /* Pulse animation for loading state */
 
-.animate-pulse {
-}
 
 /* Light theme styles for Model modal */
 body.light-theme #model-modal .modal-content {
@@ -6780,13 +6922,6 @@ body.light-theme #full-model-name-modal #full-model-name {
     box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
 }
 
-#full-model-name-modal .modal-content.animate-modal-in {
-    
-}
-
-#full-model-name-modal .modal-content.animate-modal-out {
-    
-}
 
 
 
@@ -6951,22 +7086,16 @@ body.light-theme .trash-icon-container:focus {
 /* Enhanced spinning animations */
 
 
-.animate-spin-slow {
-}
 
 /* Enhanced pulsing animation */
 
 /* Slow pulse animation for background */
 
-.animate-pulse-slow {
-}
 
 /* Pulse glow animation for robot icon */
 
 /* Border glow animation */
 
-.animate-border-glow {
-}
 
 /* Floating particle animations */
 

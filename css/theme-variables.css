@@ -203,7 +203,7 @@ body.light-theme {
     --scrollbar-thumb-hover: rgba(59, 130, 246, 0.5);
     --header-bg: #f8fafc;
     --header-text: #1e293b;
-    --header-icon: #000000;
+    --header-icon: #1e293b;
     --header-icon-hover: #3b82f6;
     --header-border: #cbd5e1;
     --input-bg: #f8fafc;

@@ -229,7 +229,6 @@ export async function fetchAvailableModels() {
             // IMPORTANT: Skip this method if we already found a model to reduce API calls
             // This will help detect if a model is actually loaded even if the API doesn't report it
             if (!loadedModelInfo && modelsList.length > 0 && !window.currentLoadedModel) {
-                console.log('Methods 1 & 2 failed, attempting Method 3 (test completion)...');
                 try {
                     const controller = new AbortController();
                     const timeoutId = setTimeout(() => controller.abort(), 3000);

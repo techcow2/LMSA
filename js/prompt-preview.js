@@ -394,6 +394,7 @@ function handleKeyUp(event) {
     // Ensure input field stays empty in preview mode
     if (isPreviewMode && userInput && userInput.value !== '') {
         userInput.value = '';
+        userInput.style.height = 'auto'; // Reset height
     }
 }
 
@@ -428,6 +429,7 @@ function handleInputChange(event) {
             isPreviewMode = true;
             if (!isAndroidWebView()) {
                 userInput.value = '';
+                userInput.style.height = 'auto'; // Reset height
             }
             showPreview(actualInputValue);
         }
@@ -630,6 +632,7 @@ export function resetPreviewState() {
     // Clear input field
     if (userInput) {
         userInput.value = '';
+        userInput.style.height = 'auto'; // Reset height
     }
     
     // Hide preview if visible

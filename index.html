@@ -780,8 +780,8 @@
 
                     <form id="chat-form" class="flex" style="position: relative; background-color: var(--bg-secondary);">
                         <div class="flex-grow relative">
-                            <input type="text" id="user-input" class="w-full focus:outline-none" placeholder="Type your message..." aria-label="Type your message" autocomplete="off" style="background-color: var(--input-bg); color: var(--input-text); border: 1px solid var(--input-border);" oninput="this.scrollLeft = this.scrollWidth">
-                            <div class="absolute top-1/2 transform -translate-y-1/2">
+                            <textarea id="user-input" class="w-full focus:outline-none" placeholder="Type your message..." aria-label="Type your message" autocomplete="off" wrap="soft" style="background-color: var(--input-bg); color: var(--input-text); border: 1px solid var(--input-border);"></textarea>
+                            <div class="absolute" style="top: 50%; right: 0.75rem; transform: translateY(-50%);">
                                 <button type="button" id="paperclip-button" class="focus:outline-none p-1" style="color: var(--text-muted);">
                                     <i class="fas fa-paperclip"></i>
                                 </button>
@@ -871,6 +871,32 @@
                             </button>
                             <button id="confirm-file-removal" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
                                 <i class="fas fa-trash mr-2"></i>Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete message confirmation modal -->
+                <div id="delete-message-modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden z-50" aria-labelledby="delete-message-title" role="dialog" aria-modal="true">
+                    <div class="modal-content bg-darkSecondary border border-gray-600 rounded-lg p-6 max-w-md mx-4">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-trash text-red-400"></i>
+                            </div>
+                            <h3 id="delete-message-title" class="text-lg font-semibold text-white">Delete Message</h3>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="text-gray-300 mb-2">Are you sure you want to delete this message?</p>
+                            <p class="text-gray-400 text-sm">Only this message will be deleted.</p>
+                        </div>
+
+                        <div class="flex space-x-3">
+                            <button id="cancel-delete-message" class="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
+                                <i class="fas fa-times mr-2"></i>Cancel
+                            </button>
+                            <button id="confirm-delete-message" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                                <i class="fas fa-trash mr-2"></i>Delete
                             </button>
                         </div>
                     </div>
@@ -1058,6 +1084,19 @@
                             </div>
                         </div>
                         <p class="text-xs text-gray-400 mt-1">When enabled, uses the LLM to generate a short title (2-3 words) that describes what the chat is about based on your first message.</p>
+                    </div>
+
+                    <div class="mb-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="auto-scroll" class="text-sm font-medium">
+                                <i class="fas fa-arrow-down mr-2 text-blue-400"></i>Auto-Scroll to Bottom</label>
+                            <div class="toggle-container">
+                                <input type="checkbox" id="auto-scroll">
+                                <div class="toggle-switch"></div>
+                                <div class="toggle-dot"></div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">When enabled, automatically scrolls to the bottom of the chat while the LLM is streaming its response.</p>
                     </div>
 
                     <div class="mb-5">
@@ -1493,8 +1532,8 @@
                 <button id="close-about" class="absolute right-3 top-3 text-gray-400 hover:text-white focus:outline-none hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center">
                     <i class="fas fa-times"></i>
                 </button>
-                <div class="version-badge bg-white/10 px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300">Version 8.2</p>
+                <div class="version-badge px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
+                    <p class="text-sm font-medium text-blue-300 text-center">Version 8.4</p>
                 </div>
             </div>
 
@@ -1526,7 +1565,7 @@
                     <div class="mt-5 pt-4 border-t border-white/10 w-full">
                         <p class="text-center text-gray-400 flex items-center justify-center">
                             <i class="fas fa-question-circle text-blue-400 mr-2"></i>
-                            Need help? <a href="#" id="open-help-link" class="text-blue-400 hover:text-blue-300 font-medium ml-1.5 underline decoration-dotted underline-offset-2">Open Help Menu</a>
+                            Need help?&nbsp;<a href="#" id="open-help-link" class="text-blue-400 hover:text-blue-300 font-medium ml-1.5 underline decoration-dotted underline-offset-2">Open Help Menu</a>
                         </p>
                     </div>
                 </div>
@@ -1739,6 +1778,106 @@
 
             <div class="features-container overflow-y-auto flex-grow px-1 py-2">
                 <div class="space-y-3">
+                    <div class="feature-item">
+                        <div class="relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-blue-500/10 to-indigo-700/5 rounded-full blur-xl"></div>
+                            <div class="flex items-start relative z-10">
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-blue-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-edit text-blue-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <h3 class="feature-title">Improved Message Input Field</h3>
+                                        <span class="px-1.5 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded-full ml-2 font-semibold">Enhanced</span>
+                                    </div>
+                                    <div class="feature-description">
+                                        <p class="mb-3">The message input field now automatically adjusts its height to accommodate longer messages, making it much easier to edit and review your text before sending. No more cramped single-line input that cuts off your thoughts!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-green-500/10 to-emerald-700/5 rounded-full blur-xl"></div>
+                            <div class="flex items-start relative z-10">
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-green-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-comments text-green-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <h3 class="feature-title">Enhanced Chat Bubble UI</h3>
+                                        <span class="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full ml-2 font-semibold">Improved</span>
+                                    </div>
+                                    <div class="feature-description">
+                                        <p class="mb-3">Chat bubbles now have a cleaner, more modern look with improved spacing, typography, and visual hierarchy. The overall chat experience feels more polished and professional.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-purple-500/10 to-violet-700/5 rounded-full blur-xl"></div>
+                            <div class="flex items-start relative z-10">
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-purple-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-exchange-alt text-purple-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <h3 class="feature-title">Import/Export Bug Fix</h3>
+                                        <span class="px-1.5 py-0.5 bg-purple-500/20 text-purple-400 text-xs rounded-full ml-2 font-semibold">Fixed</span>
+                                    </div>
+                                    <div class="feature-description">
+                                        <p class="mb-3">Fixed a critical issue with the import/export feature that was causing problems for some users. Chat history can now be reliably backed up and restored without data loss.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-orange-500/10 to-red-700/5 rounded-full blur-xl"></div>
+                            <div class="flex items-start relative z-10">
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-orange-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-sun text-orange-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <h3 class="feature-title">Light Theme Fixes</h3>
+                                        <span class="px-1.5 py-0.5 bg-orange-500/20 text-orange-400 text-xs rounded-full ml-2 font-semibold">Fixed</span>
+                                    </div>
+                                    <div class="feature-description">
+                                        <p class="mb-3">Resolved display issues in light theme where some interface elements appeared black instead of their proper colors. Light theme now renders correctly across all components.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-cyan-500/10 to-teal-700/5 rounded-full blur-xl"></div>
+                            <div class="flex items-start relative z-10">
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-cyan-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-arrow-down text-cyan-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <h3 class="feature-title">Auto-Scroll to Latest Messages</h3>
+                                        <span class="px-1.5 py-0.5 bg-cyan-500/20 text-cyan-400 text-xs rounded-full ml-2 font-semibold">New</span>
+                                    </div>
+                                    <div class="feature-description">
+                                        <p class="mb-3">Added a new setting in the options menu that automatically scrolls to the bottom (latest/newest part) of the chat history window when the LLM is streaming text. This keeps you focused on the most recent responses without manual scrolling.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="feature-item">
                         <div class="relative overflow-hidden">
                             <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-yellow-500/10 to-amber-700/5 rounded-full blur-xl"></div>

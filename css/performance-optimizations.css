@@ -289,10 +289,547 @@ button {
     .animation-container {
         container-type: inline-size;
     }
-    
+
     @container (max-width: 480px) {
         .character-card {
             transform: none;
         }
     }
+}
+
+/* ============================================
+   Light Theme Color Overrides - VERSION 2.0
+   Fixes hardcoded Tailwind colors to work with light theme
+   MUST LOAD LAST for proper CSS cascade
+   Updated: 2025-10-18
+   ============================================ */
+
+/* Blue accent colors for icons and text */
+body.light-theme .text-blue-400,
+body.light-theme i.text-blue-400 {
+  color: #2563eb !important; /* Darker blue for better visibility */
+}
+
+body.light-theme .text-blue-500 {
+  color: #1d4ed8 !important;
+}
+
+body.light-theme .text-blue-600 {
+  color: #1e40af !important;
+}
+
+/* Red accent colors (trash icons, danger elements) */
+body.light-theme .text-red-400,
+body.light-theme i.text-red-400 {
+  color: #dc2626 !important; /* Red-600 for better contrast */
+}
+
+body.light-theme .text-red-500 {
+  color: #dc2626 !important;
+}
+
+body.light-theme .text-red-600 {
+  color: #b91c1c !important;
+}
+
+/* Yellow accent colors (sun icon, warnings) */
+body.light-theme .text-yellow-400,
+body.light-theme i.text-yellow-400 {
+  color: #ca8a04 !important; /* Yellow-600 for better contrast */
+}
+
+body.light-theme .text-yellow-500 {
+  color: #ca8a04 !important;
+}
+
+/* Green accent colors */
+body.light-theme .text-green-400 {
+  color: #16a34a !important; /* Green-600 */
+}
+
+body.light-theme .text-green-500 {
+  color: #16a34a !important;
+}
+
+/* Gray text colors - CRITICAL for readability */
+body.light-theme .text-gray-100 {
+  color: #1e293b !important; /* Convert light gray to dark for light theme */
+}
+
+body.light-theme .text-gray-200 {
+  color: #1e293b !important; /* Dark slate for primary text */
+}
+
+body.light-theme .text-gray-300 {
+  color: #334155 !important; /* Slate-700 for secondary text */
+}
+
+body.light-theme .text-gray-400 {
+  color: #64748b !important; /* Slate-500 for muted text */
+}
+
+body.light-theme .text-gray-500 {
+  color: #64748b !important;
+}
+
+body.light-theme .text-gray-600 {
+  color: #475569 !important; /* Slate-600 */
+}
+
+body.light-theme .text-gray-700 {
+  color: #334155 !important; /* Slate-700 */
+}
+
+body.light-theme .text-gray-800 {
+  color: #1e293b !important; /* Slate-800 */
+}
+
+/* White text should remain white on colored buttons, but become dark on plain backgrounds */
+body.light-theme h3.text-white:not(button .text-white),
+body.light-theme label.text-white:not(button .text-white),
+body.light-theme span.text-white:not(button .text-white),
+body.light-theme div.text-white:not(button .text-white):not([class*="bg-red"]):not([class*="bg-blue"]):not([class*="bg-gray-6"]) {
+  color: #1e293b !important;
+}
+
+/* Hover states for gray text */
+body.light-theme .hover\:text-gray-200:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .hover\:text-gray-700:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .hover\:text-gray-800:hover {
+  color: #0f172a !important;
+}
+
+body.light-theme .hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+/* Background colors */
+body.light-theme .bg-gray-600 {
+  background-color: #cbd5e1 !important; /* Light slate-300 */
+}
+
+body.light-theme .bg-gray-700 {
+  background-color: #94a3b8 !important; /* Slate-400 */
+}
+
+/* Border colors */
+body.light-theme .border-gray-300 {
+  border-color: #cbd5e1 !important;
+}
+
+body.light-theme .border-gray-600 {
+  border-color: #94a3b8 !important;
+}
+
+/* Dark theme specific overrides for light theme */
+body.light-theme .dark\:text-gray-200 {
+  color: #1e293b !important;
+}
+
+body.light-theme .dark\:text-gray-300 {
+  color: #334155 !important;
+}
+
+body.light-theme .dark\:text-gray-400 {
+  color: #64748b !important;
+}
+
+body.light-theme .dark\:text-blue-400 {
+  color: #2563eb !important;
+}
+
+body.light-theme .dark\:text-blue-500 {
+  color: #1d4ed8 !important;
+}
+
+body.light-theme .dark\:hover\:text-gray-200:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .dark\:hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+body.light-theme .dark\:border-gray-600 {
+  border-color: #cbd5e1 !important;
+}
+
+body.light-theme .dark\:hover\:bg-gray-700:hover {
+  background-color: #e2e8f0 !important;
+}
+
+/* Light theme specific overrides */
+body.light-theme .light\:text-blue-600 {
+  color: #1d4ed8 !important;
+}
+
+body.light-theme .light\:text-gray-600 {
+  color: #475569 !important;
+}
+
+body.light-theme .light\:text-gray-700 {
+  color: #334155 !important;
+}
+
+body.light-theme .light\:hover\:text-gray-800:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .light\:hover\:bg-blue-200\/50:hover {
+  background-color: rgba(191, 219, 254, 0.5) !important;
+}
+
+/* Special cases */
+body.light-theme .dark-icon {
+  color: #1e293b !important;
+}
+
+body.light-theme .light-icon {
+  color: #f59e0b !important; /* Keep sun icon yellow */
+}
+
+body.light-theme .dark-footer-text {
+  color: #475569 !important;
+}
+
+/* Input placeholders */
+body.light-theme input::placeholder,
+body.light-theme textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Modal close buttons */
+body.light-theme .close-modal,
+body.light-theme button[id*="close-"] {
+  color: #64748b !important;
+}
+
+body.light-theme .close-modal:hover,
+body.light-theme button[id*="close-"]:hover {
+  color: #334155 !important;
+}
+
+/* Lock icon color in light theme */
+body.light-theme #temperature-lock i.fa-lock {
+  color: #dc2626 !important;
+}
+
+body.light-theme #temperature-lock i.fa-unlock {
+  color: #16a34a !important;
+}
+
+/* Settings modal icon colors */
+body.light-theme #settings-modal i.fas {
+  color: #2563eb !important;
+}
+
+body.light-theme #settings-modal i.fa-trash-alt {
+  color: #dc2626 !important;
+}
+
+body.light-theme #settings-modal i.fa-exclamation-triangle {
+  color: #d97706 !important;
+}
+
+/* Ensure trash icons in sidebar remain red */
+body.light-theme .trash-icon-container .fas.fa-trash {
+  color: #dc2626 !important;
+}
+
+body.light-theme .trash-icon-container:hover .fas.fa-trash {
+  color: #b91c1c !important;
+}
+
+/* Chat history icon colors */
+body.light-theme .chat-history-icon {
+  color: #2563eb !important;
+}
+
+/* Heart icon should remain red */
+body.light-theme i.fa-heart {
+  color: #ef4444 !important;
+}
+
+/* File attachment icons */
+body.light-theme .fa-file,
+body.light-theme .fa-paperclip {
+  color: #2563eb !important;
+}
+
+/* Button icons inside professional buttons */
+body.light-theme .professional-button i {
+  color: inherit !important; /* Inherit from button's color scheme */
+}
+
+/* Ensure proper contrast for text in inputs and textareas */
+body.light-theme input,
+body.light-theme textarea {
+  color: #1e293b !important;
+}
+
+body.light-theme input.text-gray-100,
+body.light-theme textarea.text-gray-100 {
+  color: #1e293b !important;
+}
+
+/* Additional icon classes that may need adjustment */
+body.light-theme .text-xl {
+  /* Icons in header */
+  color: inherit;
+}
+
+body.light-theme .header-icon {
+  color: var(--header-icon) !important;
+}
+
+body.light-theme .header-icon:hover,
+body.light-theme button:hover .header-icon {
+  color: var(--header-icon-hover) !important;
+}
+
+/* ============================================
+   Sidebar Chat Item Fixes for Light Theme
+   VERSION 3.0 - 2025-10-18
+   ============================================ */
+
+/* Active chat item should have visible background and border */
+body.light-theme #chat-history .chat-item.active,
+body.light-theme .chat-item.active {
+  background: rgba(59, 130, 246, 0.25) !important; /* Very visible blue tint */
+  background-color: rgba(59, 130, 246, 0.25) !important;
+  border: 2px solid rgba(59, 130, 246, 0.6) !important; /* Strong blue border all around */
+  border-left: 4px solid #3b82f6 !important; /* Thick left border for emphasis */
+  color: #1d4ed8 !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important; /* Subtle shadow with inner highlight */
+}
+
+/* Chat item hover state */
+body.light-theme #chat-history .chat-item:hover,
+body.light-theme .chat-item:hover {
+  background: rgba(59, 130, 246, 0.12) !important;
+  background-color: rgba(59, 130, 246, 0.12) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Chat icon color in sidebar */
+body.light-theme .chat-item .fa-comment-alt {
+  color: #2563eb !important; /* Ensure chat icon is visible blue */
+}
+
+/* Active chat icon should be more prominent */
+body.light-theme .chat-item.active .fa-comment-alt {
+  color: #1d4ed8 !important; /* Darker blue for active */
+}
+
+/* Trash icon in sidebar - ensure it's red */
+body.light-theme #chat-history .trash-icon-container .fas.fa-trash,
+body.light-theme .chat-item .trash-icon-container .fas.fa-trash {
+  color: #dc2626 !important; /* Red for trash icons */
+}
+
+/* Trash icon hover state */
+body.light-theme #chat-history .trash-icon-container:hover .fas.fa-trash,
+body.light-theme .chat-item .trash-icon-container:hover .fas.fa-trash {
+  color: #b91c1c !important; /* Darker red on hover */
+}
+
+/* Chat item text color */
+body.light-theme .chat-item {
+  color: #1e293b !important;
+}
+
+/* Active chat item text should be blue */
+body.light-theme .chat-item.active span {
+  color: #1d4ed8 !important;
+}
+
+/* Chat item title text */
+body.light-theme .chat-item span {
+  color: inherit !important;
+}
+
+/* ============================================
+   Edit Message UI Fixes for Light Theme
+   ============================================ */
+
+/* Edit title "Edit Prompt" - WHITE text on blue message background */
+body.light-theme .edit-title,
+body.light-theme .edit-container .edit-title,
+body.light-theme .message .edit-title,
+body.light-theme div.edit-title {
+  color: #ffffff !important; /* White text for blue background */
+}
+
+/* Edit title with Tailwind class override */
+body.light-theme .edit-title.text-gray-300,
+body.light-theme .edit-container .edit-title.text-gray-300,
+body.light-theme div.edit-title.text-gray-300 {
+  color: #ffffff !important;
+}
+
+/* Override any font-semibold combinations */
+body.light-theme .edit-title.text-sm.font-semibold.text-gray-300 {
+  color: #ffffff !important;
+}
+
+/* Force edit title to have visible styling */
+body.light-theme .edit-title.mb-2 {
+  color: #ffffff !important; /* White text on blue background */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important; /* Subtle shadow for depth */
+  font-weight: 600 !important; /* Slightly bolder */
+}
+
+/* Edit textarea background and text */
+body.light-theme .edit-textarea {
+  background-color: #ffffff !important; /* White background */
+  color: #1e293b !important; /* Dark text */
+  border-color: #cbd5e1 !important; /* Light border */
+}
+
+/* Override bg-darkTertiary class */
+body.light-theme .edit-textarea.bg-darkTertiary {
+  background-color: #ffffff !important;
+}
+
+/* Override text-gray-100 class on textarea */
+body.light-theme .edit-textarea.text-gray-100 {
+  color: #1e293b !important;
+}
+
+/* Override border-gray-600 class on textarea */
+body.light-theme .edit-textarea.border-gray-600 {
+  border-color: #cbd5e1 !important;
+}
+
+/* Edit textarea focus state */
+body.light-theme .edit-textarea:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Cancel button */
+body.light-theme .edit-container .bg-gray-600 {
+  background-color: #e2e8f0 !important; /* Light gray background */
+  color: #334155 !important; /* Dark text */
+  border: 1px solid #cbd5e1 !important;
+}
+
+/* Cancel button hover */
+body.light-theme .edit-container .bg-gray-600:hover,
+body.light-theme .edit-container .hover\:bg-gray-700:hover {
+  background-color: #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+/* Cancel button text color override */
+body.light-theme .edit-container button.text-white {
+  color: #334155 !important;
+}
+
+/* Resend button should stay red but with good contrast */
+body.light-theme .edit-container .bg-red-600 {
+  background-color: #dc2626 !important; /* Keep red */
+  color: #ffffff !important; /* White text on red button */
+}
+
+/* Resend button hover - don't override since it has inline styles */
+body.light-theme .edit-container .bg-red-600:hover {
+  background-color: #b91c1c !important;
+}
+
+/* Edit container overall */
+body.light-theme .edit-container {
+  background-color: transparent !important;
+}
+
+/* Ensure buttons container has proper spacing */
+body.light-theme .edit-container .flex.justify-end {
+  margin-top: 0.5rem;
+}
+
+/* ============================================
+   Delete Message Modal Fixes for Light Theme
+   ============================================ */
+
+/* Modal backdrop - show blurred background instead of black */
+body.light-theme #delete-message-modal {
+  background-color: rgba(15, 23, 42, 0.3) !important; /* Much lighter overlay */
+  backdrop-filter: blur(8px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(180%) !important;
+}
+
+/* Override bg-black class */
+body.light-theme #delete-message-modal.bg-black {
+  background-color: rgba(15, 23, 42, 0.3) !important;
+}
+
+/* Override bg-opacity-50 */
+body.light-theme #delete-message-modal.bg-opacity-50 {
+  background-color: rgba(15, 23, 42, 0.3) !important;
+}
+
+/* Modal content - light background */
+body.light-theme #delete-message-modal .modal-content {
+  background: linear-gradient(to bottom, #ffffff, #f8fafc) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Override bg-darkSecondary */
+body.light-theme #delete-message-modal .modal-content.bg-darkSecondary {
+  background: linear-gradient(to bottom, #ffffff, #f8fafc) !important;
+}
+
+/* Modal title */
+body.light-theme #delete-message-modal h3.text-white,
+body.light-theme #delete-message-modal #delete-message-title {
+  color: #1e293b !important;
+}
+
+/* Modal text */
+body.light-theme #delete-message-modal .text-gray-300 {
+  color: #334155 !important;
+}
+
+body.light-theme #delete-message-modal .text-gray-400 {
+  color: #64748b !important;
+}
+
+/* Cancel button - light gray with black text */
+body.light-theme #delete-message-modal #cancel-delete-message {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important; /* Black text */
+  border: 1px solid #cbd5e1 !important;
+}
+
+/* Cancel button hover */
+body.light-theme #delete-message-modal #cancel-delete-message:hover {
+  background-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+/* Cancel button icon */
+body.light-theme #delete-message-modal #cancel-delete-message i {
+  color: #0f172a !important;
+}
+
+/* Delete button stays red with white text */
+body.light-theme #delete-message-modal #confirm-delete-message {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+body.light-theme #delete-message-modal #confirm-delete-message:hover {
+  background-color: #b91c1c !important;
+}
+
+/* Trash icon in modal */
+body.light-theme #delete-message-modal .fa-trash {
+  color: #dc2626 !important;
 }

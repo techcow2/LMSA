@@ -458,8 +458,8 @@ export function initializeExportImport() {
                         return false;
                     }
 
-                    if (!item.role || !item.content || typeof item.role !== 'string' || typeof item.content !== 'string') {
-                        console.error(`Import validation failed: Chat ${key} message ${i} is missing required properties`);
+                    if (!item.role || typeof item.role !== 'string' || typeof item.content !== 'string') {
+                        console.error(`Import validation failed: Chat ${key} message ${i} is missing required properties or has invalid types`);
                         return false;
                     }
 
@@ -519,8 +519,8 @@ export function initializeExportImport() {
                         return false;
                     }
 
-                    if (!item.role || !item.content || typeof item.role !== 'string' || typeof item.content !== 'string') {
-                        console.error(`Import validation failed: Chat ${key} message ${i} is missing required properties`);
+                    if (!item.role || typeof item.role !== 'string' || typeof item.content !== 'string') {
+                        console.error(`Import validation failed: Chat ${key} message ${i} is missing required properties or has invalid types`);
                         return false;
                     }
 
@@ -777,6 +777,9 @@ export function initializeExportImport() {
                 optionsContainer.classList.remove('animate-fade-in');
             }
 
+            // Get chat history section
+            const chatHistorySection = sidebar.querySelector('.sidebar-section:last-child');
+
             // Ensure chat history is visible when sidebar is shown
             if (chatHistorySection) {
                 chatHistorySection.classList.remove('chat-history-hidden');
@@ -806,13 +809,6 @@ export function initializeExportImport() {
                         importExportGroupButton.appendChild(caret);
                     }
                 }
-            }
-
-
-
-            // Ensure chat history is visible when sidebar is shown
-            if (chatHistorySection) {
-                chatHistorySection.classList.remove('chat-history-hidden');
             }
 
             setTimeout(() => {

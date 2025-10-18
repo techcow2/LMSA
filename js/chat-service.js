@@ -2,7 +2,7 @@
 import { messagesContainer, userInput, loadedModelDisplay } from './dom-elements.js';
 import { appendMessage, showLoadingIndicator, hideLoadingIndicator, toggleSendStopButton, hideWelcomeMessage, showWelcomeMessage, toggleSidebar, showConfirmationModal, hideConfirmationModal, updateChatHistoryScroll } from './ui-manager.js';
 import { getApiUrl, getAvailableModels, isServerRunning, fetchAvailableModels } from './api-service.js';
-import { getSystemPrompt, getTemperature, isSystemPromptSet, getAutoGenerateTitles, isUserCreatedPrompt, getHideThinking, getReasoningTimeout } from './settings-manager.js';
+import { getSystemPrompt, getTemperature, isSystemPromptSet, getAutoGenerateTitles, isUserCreatedPrompt, getHideThinking, getReasoningTimeout, getAutoScrollEnabled } from './settings-manager.js';
 import { sanitizeInput, basicSanitizeInput, initializeCodeMirror, scrollToBottom, handleScroll, debugLog, debugError, filterToEnglishCharacters, processCodeBlocks, decodeHtmlEntities, refreshAllCodeBlocks, containsCodeBlocks, containsCodeBlocksOutsideThinkTags, saveCurrentChatBeforeRefresh, removeThinkTags, hideScrollToBottomButton } from './utils.js';
 import { setActionToPerform } from './shared-state.js';
 
@@ -206,11 +206,13 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
 
         // Add file contents as attachments or embedded in the message
         if (fileContents && fileContents.length > 0) {
+            console.log('Processing file contents for AI request, count:', fileContents.length);
             // Check if this is a vision model that can handle images
             let isVisionModel = false;
             try {
                 const { isVisionModel: checkVisionModel } = await import('./file-upload.js');
-                isVisionModel = checkVisionModel();
+                isVisionModel = await checkVisionModel();
+                console.log('Vision model check result:', isVisionModel);
             } catch (error) {
                 console.error('Error checking vision model capability:', error);
             }
@@ -350,6 +352,9 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
             requestBody.max_tokens = maxTokens;
         }
 
+        console.log('Preparing to send API request...');
+        console.log('Request body messages count:', requestBody.messages.length);
+        console.log('Last message structure:', JSON.stringify(requestBody.messages[requestBody.messages.length - 1], null, 2).substring(0, 500));
         debugLog('Sending API request with body:', requestBody);
 
         // Create decoder for handling streamed UTF-8 data
@@ -377,6 +382,7 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
         });
 
         // Send the request to the API with timeout protection
+        console.log('Sending fetch request to:', apiUrl);
         const fetchPromise = fetch(apiUrl, {
             method: 'POST',
             headers: {
@@ -387,17 +393,23 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
         });
 
         // Race between fetch and timeout
+        console.log('Waiting for API response...');
         const response = await Promise.race([fetchPromise, timeoutPromise]);
+        console.log('Received response, status:', response.status, response.statusText);
 
         if (!response.ok) {
+            console.error('API request failed with status:', response.status, response.statusText);
             let errorText;
             try {
                 const errorData = await response.json();
+                console.error('Error data from API:', errorData);
                 errorText = errorData.error || errorData.message || `HTTP Error: ${response.status} ${response.statusText}`;
             } catch (jsonError) {
+                console.error('Failed to parse error response:', jsonError);
                 errorText = `HTTP Error: ${response.status} ${response.statusText}`;
             }
 
+            console.error('Throwing error:', errorText);
             throw new Error(errorText);
         }
 
@@ -672,8 +684,10 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
                                         hasInitializedCodeBlocks = true;
                                     }
                                     
-                                    // Scroll to bottom during streaming
-                                    scrollToBottom(messagesContainer, true);
+                                    // Scroll to bottom during streaming if auto-scroll is enabled
+                                    if (getAutoScrollEnabled()) {
+                                        scrollToBottom(messagesContainer, false);
+                                    }
                                 }
                             }
                         } catch (error) {
@@ -1115,7 +1129,16 @@ export function updateChatHistoryUI() {
                 // Add chat icon
                 const chatIcon = document.createElement('i');
                 chatIcon.classList.add('fas', 'fa-comment-alt', 'mr-3', 'flex-shrink-0');
-                chatIcon.style.color = 'var(--button-primary-bg)';
+
+                // Set icon color based on theme and active state
+                const isLightTheme = document.body.classList.contains('light-theme');
+                const isActive = (id === currentChatId);
+                if (isLightTheme) {
+                    chatIcon.style.color = isActive ? '#1d4ed8' : '#2563eb';
+                } else {
+                    chatIcon.style.color = 'var(--button-primary-bg)';
+                }
+
                 titleWrapper.appendChild(chatIcon);
 
                 const chatTitle = document.createElement('span');
@@ -1191,8 +1214,14 @@ export function updateChatHistoryUI() {
 
                 const trashIcon = document.createElement('i');
                 trashIcon.classList.add('fas', 'fa-trash');
+
+                // Function to get the appropriate trash icon color based on theme
+                const getTrashIconColor = () => {
+                    return document.body.classList.contains('light-theme') ? '#dc2626' : '#b91c1c';
+                };
+
                 trashIcon.style.cssText = `
-                    color: #b91c1c;
+                    color: ${getTrashIconColor()};
                     font-size: 14px;
                     transition: all 0.2s ease;
                     pointer-events: none;
@@ -1207,7 +1236,7 @@ export function updateChatHistoryUI() {
 
                 trashContainer.addEventListener('mouseleave', () => {
                     trashContainer.style.backgroundColor = 'transparent';
-                    trashIcon.style.color = '#b91c1c';
+                    trashIcon.style.color = getTrashIconColor();
                     trashIcon.style.transform = 'scale(1)';
                 });
 
@@ -2767,8 +2796,10 @@ export async function regenerateLastResponse(isRetry = false) {
                                             hasInitializedCodeBlocks = true;
                                         }
 
-                                        // Scroll to bottom during streaming
-                                        scrollToBottom(messagesContainer, true);
+                                        // Scroll to bottom during streaming if auto-scroll is enabled
+                                        if (getAutoScrollEnabled()) {
+                                            scrollToBottom(messagesContainer, true);
+                                        }
                                     }
                                 }
                             } catch (error) {
@@ -3157,3 +3188,40 @@ export async function addUserMessageToHistory(userMessage, fileContents = []) {
         updateChatHistoryUI();
     }
 }
+
+/**
+ * Updates all trash icon colors when theme changes
+ */
+function updateTrashIconColors() {
+    const isLightTheme = document.body.classList.contains('light-theme');
+    const trashIcons = document.querySelectorAll('.trash-icon-container .fas.fa-trash');
+    const color = isLightTheme ? '#dc2626' : '#b91c1c';
+
+    trashIcons.forEach(icon => {
+        // Only update if not currently being hovered
+        if (!icon.parentElement.matches(':hover')) {
+            icon.style.color = color;
+        }
+    });
+}
+
+/**
+ * Updates chat icon colors when theme changes
+ */
+function updateChatIconColors() {
+    const isLightTheme = document.body.classList.contains('light-theme');
+    const chatIcons = document.querySelectorAll('.chat-item .fa-comment-alt');
+
+    chatIcons.forEach(icon => {
+        // Check if this is the active chat
+        const isActive = icon.closest('.chat-item').classList.contains('active');
+        const color = isLightTheme ? (isActive ? '#1d4ed8' : '#2563eb') : 'var(--button-primary-bg)';
+        icon.style.color = color;
+    });
+}
+
+// Listen for theme changes to update icon colors
+document.addEventListener('themeChanged', () => {
+    updateTrashIconColors();
+    updateChatIconColors();
+});

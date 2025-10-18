@@ -12,6 +12,7 @@ let temperature = 0.3;
 let hideThinking = false;
 let autoGenerateTitles = false;
 let lightThemeEnabled = false;
+let autoScrollEnabled = false; // Auto-scroll to bottom during LLM streaming
 let reasoningTimeout = 300; // Default 5 minutes for reasoning models (in seconds)
 let defaultModelId = null; // Default model to auto-select when models load
 
@@ -365,12 +366,43 @@ export function loadAutoGenerateTitlesSetting() {
 }
 
 /**
+ * Loads the auto-scroll setting from localStorage
+ */
+export function loadAutoScrollSetting() {
+    const autoScrollCheckbox = document.getElementById('auto-scroll');
+    if (autoScrollCheckbox) {
+        const savedAutoScroll = localStorage.getItem('autoScrollEnabled');
+        if (savedAutoScroll === 'true') {
+            autoScrollCheckbox.checked = true;
+            autoScrollEnabled = true;
+        } else {
+            autoScrollCheckbox.checked = false;
+            autoScrollEnabled = false;
+        }
+
+        // Add event listener for the checkbox
+        autoScrollCheckbox.addEventListener('change', saveAutoScrollSetting);
+    }
+}
+
+/**
  * Saves the auto-generate titles setting to localStorage
  */
 export function saveAutoGenerateTitlesSetting() {
     if (autoGenerateTitlesCheckbox) {
         autoGenerateTitles = autoGenerateTitlesCheckbox.checked;
         localStorage.setItem('autoGenerateTitles', autoGenerateTitles);
+    }
+}
+
+/**
+ * Saves the auto-scroll setting to localStorage
+ */
+export function saveAutoScrollSetting() {
+    const autoScrollCheckbox = document.getElementById('auto-scroll');
+    if (autoScrollCheckbox) {
+        autoScrollEnabled = autoScrollCheckbox.checked;
+        localStorage.setItem('autoScrollEnabled', autoScrollEnabled);
     }
 }
 
@@ -530,6 +562,7 @@ export function loadSettings() {
     initializeTemperature();
     loadHideThinkingSetting();
     loadAutoGenerateTitlesSetting();
+    loadAutoScrollSetting();
     loadThemeSetting();
     loadReasoningTimeoutSetting();
     loadDefaultModelSetting();
@@ -708,6 +741,14 @@ export function getHideThinking() {
  */
 export function getAutoGenerateTitles() {
     return autoGenerateTitles;
+}
+
+/**
+ * Gets the current auto-scroll setting
+ * @returns {boolean} - The current auto-scroll value
+ */
+export function getAutoScrollEnabled() {
+    return autoScrollEnabled;
 }
 
 

@@ -575,30 +575,51 @@ function saveNewPrompt() {
  * @param {string} message - The success message to show
  */
 function showSuccessMessage(message) {
-    // Create a temporary success notification
-    const notification = document.createElement('div');
-    notification.className = 'fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg transition-all duration-300';
-    notification.style.zIndex = '9999';
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
+    // Create modal overlay
+    const modalOverlay = document.createElement('div');
+    modalOverlay.className = 'fixed inset-0 items-center justify-center modal-container';
+    modalOverlay.style.cssText = 'z-index: 9999; background: var(--modal-overlay); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%); display: flex;';
+
+    // Create modal content
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content rounded-lg shadow-xl p-6 max-w-sm mx-4';
+    modalContent.style.cssText = 'background: var(--chat-bg); border: 1px solid var(--border-color);';
+
+    // Create success icon
+    const iconContainer = document.createElement('div');
+    iconContainer.className = 'flex justify-center mb-4';
+    iconContainer.innerHTML = '<i class="fas fa-check-circle text-5xl text-green-500"></i>';
+
+    // Create message text
+    const messageText = document.createElement('p');
+    messageText.className = 'text-center text-lg';
+    messageText.style.color = 'var(--text-primary)';
+    messageText.textContent = message;
+
+    // Assemble modal
+    modalContent.appendChild(iconContainer);
+    modalContent.appendChild(messageText);
+    modalOverlay.appendChild(modalContent);
+    document.body.appendChild(modalOverlay);
+
+    // Prevent body scrolling
+    document.body.style.overflow = 'hidden';
+
     // Animate in
     setTimeout(() => {
-        notification.style.transform = 'translateX(0)';
-        notification.style.opacity = '1';
+        modalContent.classList.add('animate-modal-in');
     }, 10);
-    
-    // Remove after 3 seconds
+
+    // Remove after 2 seconds
     setTimeout(() => {
-        notification.style.transform = 'translateX(100%)';
-        notification.style.opacity = '0';
+        modalContent.classList.add('animate-modal-out');
         setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
+            if (modalOverlay.parentNode) {
+                modalOverlay.parentNode.removeChild(modalOverlay);
+                document.body.style.overflow = '';
             }
         }, 300);
-    }, 3000);
+    }, 2000);
 }
 
 /**
