@@ -14,7 +14,16 @@
 
 ## 🆕 What's New
 
-🎉 **Latest Update: Version 8.4** - Now Available!
+🎉 **Latest Update: Version 8.4.1** - Now Available!
+
+### Duplicate Message Fix
+Fixed a critical bug that was causing duplicate messages to be sent to the LLM when using certain models. This improves reliability and prevents confusion from repeated responses.
+
+### Delete User Messages
+You can now delete individual user messages from the chat history, giving you more control over your conversation flow and allowing you to remove unwanted messages.
+
+### Improved Message Editing UI
+Enhanced the user interface when editing messages in chat history. The editing experience is now smoother and more intuitive with better visual feedback.
 
 ### Improved Message Input Field
 The message input field now automatically adjusts its height to accommodate longer messages, making it much easier to edit and review your text before sending. No more cramped single-line input that cuts off your thoughts!
@@ -91,7 +100,8 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 - **Comprehensive History** - Save, browse, and continue previous conversations with organized chat management
 - **Automatic Titles** - Saved chats are automatically titled for easy identification
 - **Import/Export** - Easily backup and transfer your saved conversations between devices
-- **Response Management** - Copy & regenerate AI responses with ease.
+- **Response Management** - Copy, edit, delete, and regenerate messages with ease
+- **Message Control** - Delete individual user messages from chat history for better conversation management
 
 ### Connection & Configuration
 - **Simple Connection** - Connect to your LM Studio server with just an IP address and port
