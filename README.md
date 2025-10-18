@@ -190,12 +190,6 @@ You need to find your computer's local network IP address:
    - Example: `http://192.168.1.100:8000`
 3. The LMSA interface will load in your browser
 
-##### 5. Connect to LM Studio
-1. In the LMSA interface, tap the **Settings** button (gear icon)
-2. Enter your computer's IP address and port (usually 1234)
-3. Make sure CORS and "Serve on Local Host" are enabled in LM Studio (see setup instructions above)
-4. Tap "Connect" to establish the connection
-
 </details>
 
 
