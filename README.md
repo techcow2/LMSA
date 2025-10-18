@@ -138,7 +138,7 @@ If you don't want to install the Android app, you can run LMSA directly in your 
 
 #### Prerequisites
 - Python 3 installed on your computer
-- LM Studio running and configured (see setup instructions above)
+- LM Studio running and configured (see setup instructions below)
 - Both devices connected to the same local network
 
 #### Setup Instructions
