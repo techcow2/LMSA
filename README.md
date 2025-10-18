@@ -1,6 +1,7 @@
 # LMSA - LM Studio Android 
 ![Status: Open Source](https://img.shields.io/badge/Status-Open%20Source-brightgreen)
-![Version: Current](https://img.shields.io/badge/Version-Current-green)
+![Version: 8.4.1](https://img.shields.io/badge/Version-8.4.1-blue)
+![Release: Major Version Update](https://img.shields.io/badge/Release-Major%20Version%20Update-orange)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
 
 <p align="left">
@@ -14,7 +15,7 @@
 
 ## 🆕 What's New
 
-🎉 **Latest Update: Version 8.4.1** - Now Available!
+🎉 **Latest Update: Version 8.4.1** - Major Version Update - Now Available!
 
 ### Duplicate Message Fix
 Fixed a critical bug that was causing duplicate messages to be sent to the LLM when using certain models. This improves reliability and prevents confusion from repeated responses.
