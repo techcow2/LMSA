@@ -25,8 +25,9 @@
 - [🔧 Need Help?](#need-help)
 - [⚠️ Disclaimer](#disclaimer)
 
+<h2 id="whats-new">🆕 What's New</h2>
 <details>
-<summary><strong>🆕 What's New</strong> (Click to expand/collapse)</summary>
+<summary><strong>Expand for details</strong> (Click to expand/collapse)</summary>
 
 🎉 **Latest Update: Version 8.4.1** - Major Version Update - Now Available!
 
@@ -65,7 +66,7 @@ This feature provides a more automated experience - just launch the app and your
 
 ---
 
-## 📸 Screenshots
+<h2 id="screenshots">📸 Screenshots</h2>
 <p align="left">
   <img src="https://github.com/user-attachments/assets/ba437aee-6bc4-4442-948b-777cb34adea8" width="150" style="display:inline-block" />
   <img src="https://github.com/user-attachments/assets/67f86d21-dccb-4f1c-b4c9-ebe22551cac3" width="150" style="display:inline-block" />
@@ -73,7 +74,7 @@ This feature provides a more automated experience - just launch the app and your
   <img src="https://github.com/user-attachments/assets/0eec29a7-35d2-474a-af63-ba05522adac8" width="150" style="display:inline-block" />
 </p>
 
-## 📋 What is LMSA?
+<h2 id="what-is-lmsa">📋 What is LMSA?</h2>
 
 LMSA (LM Studio Assistant) is an Android front-end application for LM Studio that provides a clean, user-friendly interface to interact with language models on your Android device. It's designed with privacy in mind, offering a tracking-free experience for users who want to leverage the power of large language models on mobile.
 
@@ -84,7 +85,7 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 - Upload and analyze images with vision language models
 - Customize AI behavior with system prompts and temperature settings
 
-## 🌟 Features Overview
+<h2 id="features-overview">🌟 Features Overview</h2>
 
 ### Privacy & Security
 - **Community updates** improving app security and stability
@@ -123,7 +124,7 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 - **Simple Connection** - Connect to your LM Studio server with just an IP address and port
 - **Advanced Customization** - Adjust temperature, system prompts, and other model parameters directly from your phone
 
-## 📱 Getting Started
+<h2 id="getting-started">📱 Getting Started</h2>
 
 <details>
 <summary><strong>Option 1: Android App (Recommended)</strong> (Click to expand/collapse)</summary>
@@ -206,7 +207,7 @@ You need to find your computer's local network IP address:
 </details>
 
 
-## 💻 How It Works
+<h2 id="how-it-works">💻 How It Works</h2>
 
 ### Setting up LM Studio (Desktop)
 <p align="left">
@@ -242,7 +243,7 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - Upload images for vision language models to analyze and discuss
 - Customize AI behavior through temperature and system prompt settings
 
-## 🔧 Technical Requirements
+<h2 id="technical-requirements">🔧 Technical Requirements</h2>
 
 - Android 8.0 or higher
 - LM Studio installed and running on a computer with a suitable language model (text or vision)
@@ -250,7 +251,7 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 - CORS enabled in LM Studio server settings (required for proper functionality)
 - "Serve on Local Host" enabled in LM Studio server settings (required for network connectivity)
 
-## 🔍 Troubleshooting Connection Issues
+<h2 id="troubleshooting-connection-issues">🔍 Troubleshooting Connection Issues</h2>
 
 If you're having trouble connecting LMSA to your LM Studio server, follow these steps:
 
@@ -300,11 +301,11 @@ If you're having trouble connecting LMSA to your LM Studio server, follow these 
 
 If none of these steps resolve the issue, visit our support center for additional help.
 
-## 🔧 Need Help?
+<h2 id="need-help">🔧 Need Help?</h2>
 
 Having trouble with LMSA? Visit our **[comprehensive support center](https://lmsa.app/support.html)** for detailed setup guides, troubleshooting steps, and answers to frequently asked questions.
 
-## ⚠️ Disclaimer
+<h2 id="disclaimer">⚠️ Disclaimer</h2>
 
 LMSA is a third-party application and is not affiliated with LM Studio or its developers. This app is independently developed to provide an Android front-end interface for interacting with LM Studio. Use of this app is at your own discretion, and the developers of LMSA are not responsible for any issues arising from its use.
 
