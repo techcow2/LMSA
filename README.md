@@ -196,37 +196,6 @@ You need to find your computer's local network IP address:
 3. Make sure CORS and "Serve on Local Host" are enabled in LM Studio (see setup instructions above)
 4. Tap "Connect" to establish the connection
 
-#### Troubleshooting
-
-##### Connection Issues
-- **Can't connect to LM Studio**: Ensure both devices are on the same network
-- **CORS errors**: Make sure "Enable CORS" is checked in LM Studio server settings
-- **"Serve on Local Host"**: Ensure this option is enabled in LM Studio
-- **Firewall**: Check that Windows Firewall allows LM Studio and Python HTTP server
-
-##### Network Access Issues
-- **Guest networks**: Try connecting to the main network instead of guest networks
-- **VPN**: Disable VPN on both devices as they can interfere with local network access
-- **Router settings**: Disable any AP isolation or VLAN settings that might block device communication
-
-##### Server Issues
-- **Port already in use**: Try a different port: `python -m http.server 8080`
-- **Permission denied**: Make sure you're running the command from the correct directory
-- **Python not found**: Install Python 3 from [python.org](https://python.org)
-
-#### Advantages of Web Browser Version
-- **No installation required** - Works directly in any modern web browser
-- **Cross-platform** - Access from Android, iOS, Windows, macOS, or Linux devices
-- **Same functionality** - All features available in the Android app work in the browser
-- **Easy setup** - Just a few commands to get started
-- **No app store required** - Bypasses app installation and update processes
-
-#### Limitations
-- **Requires computer to be on** - Your computer must remain running with LM Studio and the HTTP server
-- **Local network only** - Access is limited to devices on your local network
-- **No offline mode** - Requires an active network connection to LM Studio
-- **Browser compatibility** - Works best in Chrome, Firefox, Safari, and Edge
-
 </details>
 
 
