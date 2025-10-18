@@ -1,7 +1,6 @@
 # LMSA - LM Studio Android 
 ![Status: Open Source](https://img.shields.io/badge/Status-Open%20Source-brightgreen)
 ![Version: 8.4.1](https://img.shields.io/badge/Version-8.4.1-blue)
-![Release: Major Version Update](https://img.shields.io/badge/Release-Major%20Version%20Update-orange)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
 
 <p align="left">
@@ -13,7 +12,8 @@
   </a>
 </p>
 
-## 🆕 What's New
+<details>
+<summary><strong>🆕 What's New</strong> (Click to expand/collapse)</summary>
 
 🎉 **Latest Update: Version 8.4.1** - Major Version Update - Now Available!
 
@@ -47,6 +47,8 @@ You can now set a default model that will automatically load whenever LMSA conne
 Your default model will be saved and automatically selected every time you launch the app, eliminating the need to manually switch models. If a different model is already loaded when you start LMSA, it will automatically switch to your preferred default model.
 
 This feature provides a more automated experience - just launch the app and your favorite model is ready to go!
+
+</details>
 
 ---
 
@@ -82,7 +84,7 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 - **Image analysis** - Upload and discuss images with vision language models
 - **Multimodal interactions** - Combine text, documents, and images in conversations
 - **Custom instructions** - Personalize AI responses
-- **Precision tuning** - Adjust response creativity and accuracy  
+- **Precision tuning** - Adjust response creativity and accuracy
 - **System prompt** - Set context for more relevant responses
 - **AI Reasoning Visibility** - Toggle the ability to see the model's "thinking" process before generating responses
 - **File Processing** - Upload and process files to include in your prompts for more context-aware responses
@@ -107,6 +109,126 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 ### Connection & Configuration
 - **Simple Connection** - Connect to your LM Studio server with just an IP address and port
 - **Advanced Customization** - Adjust temperature, system prompts, and other model parameters directly from your phone
+
+## 📱 Usage
+
+<details>
+<summary><strong>Option 1: Android App (Recommended)</strong> (Click to expand/collapse)</summary>
+
+The easiest way to use LMSA is by installing the official Android app from the Google Play Store:
+
+**Get it on Google Play:**
+<a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
+  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80">
+</a>
+
+The Android app provides the best experience with:
+- Native performance and optimized interface
+- Push notifications for new messages
+- Offline access to chat history
+- Easy integration with Android file system
+- Regular updates and improvements
+
+</details>
+
+<details>
+<summary><strong>Option 2: Web Browser Alternative (No App Installation Required)</strong> (Click to expand/collapse)</summary>
+
+If you don't want to install the Android app, you can run LMSA directly in your web browser using a simple Python HTTP server. This allows you to access LMSA from any device on your local network, including Android phones, tablets, and computers.
+
+#### Prerequisites
+- Python 3 installed on your computer
+- LM Studio running and configured (see setup instructions above)
+- Both devices connected to the same local network
+
+#### Setup Instructions
+
+##### 1. Clone the Repository
+First, clone the LMSA repository to your computer:
+```bash
+git clone https://github.com/techcow2/LMSA.git
+cd LMSA
+```
+
+##### 2. Start the Python HTTP Server
+Open a command prompt or terminal on the same computer where LM Studio is running:
+
+**For Windows:**
+```cmd
+cd "C:\path\to\your\LMSA\folder"
+python -m http.server 8000
+```
+
+**For macOS/Linux:**
+```bash
+cd /path/to/your/LMSA/folder
+python3 -m http.server 8000
+```
+
+##### 3. Find Your Computer's IP Address
+You need to find your computer's local network IP address:
+
+**Windows:**
+- Open Command Prompt and type: `ipconfig`
+- Look for "Wireless LAN adapter Wi-Fi" or "Ethernet adapter"
+- Note the "IPv4 Address" (usually starts with 192.168.x.x or 10.x.x.x)
+
+**macOS:**
+- Go to System Preferences > Network
+- Select your active connection (Wi-Fi or Ethernet)
+- Note the IP address
+
+**Linux:**
+- Open Terminal and type: `ip addr show` or `ifconfig`
+- Look for your active network interface
+- Note the IP address (usually starts with 192.168.x.x or 10.x.x.x)
+
+##### 4. Access LMSA from Your Android Device
+1. Open the web browser on your Android device
+2. Navigate to: `http://[YOUR_COMPUTER_IP]:8000`
+   - Replace `[YOUR_COMPUTER_IP]` with your computer's actual IP address
+   - Example: `http://192.168.1.100:8000`
+3. The LMSA interface will load in your browser
+
+##### 5. Connect to LM Studio
+1. In the LMSA interface, tap the **Settings** button (gear icon)
+2. Enter your computer's IP address and port (usually 1234)
+3. Make sure CORS and "Serve on Local Host" are enabled in LM Studio (see setup instructions above)
+4. Tap "Connect" to establish the connection
+
+#### Troubleshooting
+
+##### Connection Issues
+- **Can't connect to LM Studio**: Ensure both devices are on the same network
+- **CORS errors**: Make sure "Enable CORS" is checked in LM Studio server settings
+- **"Serve on Local Host"**: Ensure this option is enabled in LM Studio
+- **Firewall**: Check that Windows Firewall allows LM Studio and Python HTTP server
+
+##### Network Access Issues
+- **Guest networks**: Try connecting to the main network instead of guest networks
+- **VPN**: Disable VPN on both devices as they can interfere with local network access
+- **Router settings**: Disable any AP isolation or VLAN settings that might block device communication
+
+##### Server Issues
+- **Port already in use**: Try a different port: `python -m http.server 8080`
+- **Permission denied**: Make sure you're running the command from the correct directory
+- **Python not found**: Install Python 3 from [python.org](https://python.org)
+
+#### Advantages of Web Browser Version
+- **No installation required** - Works directly in any modern web browser
+- **Cross-platform** - Access from Android, iOS, Windows, macOS, or Linux devices
+- **Same functionality** - All features available in the Android app work in the browser
+- **Easy setup** - Just a few commands to get started
+- **No app store required** - Bypasses app installation and update processes
+
+#### Limitations
+- **Requires computer to be on** - Your computer must remain running with LM Studio and the HTTP server
+- **Local network only** - Access is limited to devices on your local network
+- **No offline mode** - Requires an active network connection to LM Studio
+- **Browser compatibility** - Works best in Chrome, Firefox, Safari, and Edge
+
+</details>
+
 
 ## 💻 How It Works
 
