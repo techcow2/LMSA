@@ -1,6 +1,0 @@
-# Ignore local documentation files
-CLAUDE.md
-
-# Ignore IDE and editor settings
-.claude/
-.vscode/
