@@ -14,16 +14,16 @@
 
 ## Table of Contents
 
-- [🆕 What's New](#🆕-whats-new)
-- [📸 Screenshots](#📸-screenshots)
-- [📋 What is LMSA?](#📋-what-is-lmsa)
-- [🌟 Features Overview](#🌟-features-overview)
-- [📱 Getting Started](#📱-getting-started)
-- [💻 How It Works](#💻-how-it-works)
-- [🔧 Technical Requirements](#🔧-technical-requirements)
-- [🔍 Troubleshooting Connection Issues](#🔍-troubleshooting-connection-issues)
-- [🔧 Need Help?](#🔧-need-help)
-- [⚠️ Disclaimer](#⚠️-disclaimer)
+- [🆕 What's New](#whats-new)
+- [📸 Screenshots](#screenshots)
+- [📋 What is LMSA?](#what-is-lmsa)
+- [🌟 Features Overview](#features-overview)
+- [📱 Getting Started](#getting-started)
+- [💻 How It Works](#how-it-works)
+- [🔧 Technical Requirements](#technical-requirements)
+- [🔍 Troubleshooting Connection Issues](#troubleshooting-connection-issues)
+- [🔧 Need Help?](#need-help)
+- [⚠️ Disclaimer](#disclaimer)
 
 <details>
 <summary><strong>🆕 What's New</strong> (Click to expand/collapse)</summary>
