@@ -184,25 +184,28 @@ async function generateAIResponseInternal(userMessage, fileContents = []) {
             }
         }
 
-        // Enhance the user message when files are attached
-        let enhancedUserMessage = userMessage;
-        if (fileContents && fileContents.length > 0) {
-            const fileCount = fileContents.length;
-            const fileNames = fileContents.map(f => f.name).join(', ');
-            const fileTypes = fileContents.map(f => {
-                if (f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf')) return 'PDF';
-                if (f.type.includes('word') || f.name.toLowerCase().includes('doc')) return 'Word document';
-                if (f.type.includes('text')) return 'text file';
-                return 'document';
-            });
-            const uniqueFileTypes = [...new Set(fileTypes)].join(' and ');
-            
-            // Add clear context about attached files to the user message
-            enhancedUserMessage = `[USER HAS ATTACHED ${fileCount} FILE(S): ${fileNames} - These are ${uniqueFileTypes}(s) that need to be analyzed]\n\n${userMessage}`;
-        }
+        // If files are attached, enhance the last user message in the messages array
+        // (which was already added to chat history and included above)
+        if (fileContents && fileContents.length > 0 && messages.length > 0) {
+            const lastMessageIndex = messages.length - 1;
+            const lastMessage = messages[lastMessageIndex];
 
-        // Add the enhanced user message
-        messages.push({ role: 'user', content: enhancedUserMessage });
+            // Only enhance if the last message is from the user
+            if (lastMessage.role === 'user') {
+                const fileCount = fileContents.length;
+                const fileNames = fileContents.map(f => f.name).join(', ');
+                const fileTypes = fileContents.map(f => {
+                    if (f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf')) return 'PDF';
+                    if (f.type.includes('word') || f.name.toLowerCase().includes('doc')) return 'Word document';
+                    if (f.type.includes('text')) return 'text file';
+                    return 'document';
+                });
+                const uniqueFileTypes = [...new Set(fileTypes)].join(' and ');
+
+                // Add clear context about attached files to the user message
+                lastMessage.content = `[USER HAS ATTACHED ${fileCount} FILE(S): ${fileNames} - These are ${uniqueFileTypes}(s) that need to be analyzed]\n\n${lastMessage.content}`;
+            }
+        }
 
         // Add file contents as attachments or embedded in the message
         if (fileContents && fileContents.length > 0) {
