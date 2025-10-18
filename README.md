@@ -212,4 +212,4 @@ LMSA is a third-party application and is not affiliated with LM Studio or its de
 
 ---
 
-© 2025 TechRay Apps LLC. All rights reserved. Google Play is a trademark of Google LLC.
+Google Play is a trademark of Google LLC.
