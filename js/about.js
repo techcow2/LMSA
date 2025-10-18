@@ -10,7 +10,6 @@ const sidebarElement = document.getElementById('sidebar');
 const modalContent = aboutModal ? aboutModal.querySelector('.modal-content') : null;
 const openHelpLink = document.getElementById('open-help-link');
 const helpModal = document.getElementById('help-modal');
-const rateAppLink = document.getElementById('rate-app-link');
 const officialWebsiteLink = document.getElementById('official-website-link');
 const devWebsiteLink = document.getElementById('dev-website-link');
 
@@ -118,38 +117,6 @@ if (openHelpLink && helpModal) {
                 }
             }, 300);
         }
-    });
-}
-
-// Rate app link click handler
-if (rateAppLink) {
-    rateAppLink.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        // Add a visual feedback effect when clicked
-        rateAppLink.classList.add('active-scale');
-
-        // Short delay for visual feedback
-        setTimeout(() => {
-            // Check if we're in the Android app and use in-app review
-            if (typeof AndroidReview !== 'undefined' && AndroidReview.requestInAppReview) {
-                try {
-                    AndroidReview.requestInAppReview();
-                } catch (error) {
-                    console.error('Error launching in-app review:', error);
-                    // Fallback to Play Store if in-app review fails
-                    const googlePlayUrl = 'https://play.google.com/store/apps/details?id=com.lmsa.app&pcampaignid=web_share';
-                    showExternalSiteModal(googlePlayUrl);
-                }
-            } else {
-                // Fallback for web or if interface not available
-                const googlePlayUrl = 'https://play.google.com/store/apps/details?id=com.lmsa.app&pcampaignid=web_share';
-                showExternalSiteModal(googlePlayUrl);
-            }
-
-            // Remove the active scale class
-            rateAppLink.classList.remove('active-scale');
-        }, 200);
     });
 }
 

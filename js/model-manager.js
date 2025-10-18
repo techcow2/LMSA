@@ -693,6 +693,14 @@ function showActionError(modelId, errorMsg) {
                     if (loadButton) {
                         loadButton.addEventListener('click', async (e) => {
                             e.preventDefault();
+                            // Show interstitial ad (if on Android)
+                            if (typeof AndroidAds !== 'undefined' && AndroidAds.showInterstitial) {
+                                try {
+                                    AndroidAds.showInterstitial();
+                                } catch (error) {
+                                    console.log('Interstitial ad trigger failed:', error);
+                                }
+                            }
                             await loadModel(modelId);
                         });
                     }
@@ -827,6 +835,14 @@ function displayAvailableModels(models, loadedModelId) {
                 if (loadButton) {
                     loadButton.addEventListener('click', async (e) => {
                         e.preventDefault();
+                        // Show interstitial ad (if on Android)
+                        if (typeof AndroidAds !== 'undefined' && AndroidAds.showInterstitial) {
+                            try {
+                                AndroidAds.showInterstitial();
+                            } catch (error) {
+                                console.log('Interstitial ad trigger failed:', error);
+                            }
+                        }
                         await loadModel(model.id);
                     });
 
@@ -953,6 +969,14 @@ function displayPotentialModels(models) {
             if (loadButton) {
                 loadButton.addEventListener('click', async (e) => {
                     e.preventDefault();
+                    // Show interstitial ad (if on Android)
+                    if (typeof AndroidAds !== 'undefined' && AndroidAds.showInterstitial) {
+                        try {
+                            AndroidAds.showInterstitial();
+                        } catch (error) {
+                            console.log('Interstitial ad trigger failed:', error);
+                        }
+                    }
                     await loadModel(model.id);
                 });
 

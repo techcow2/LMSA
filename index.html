@@ -478,36 +478,19 @@
 
 
         /* Button animations */
-        #rate-app-link.active-scale,
         #official-website-link.active-scale {
             transform: scale(0.95);
             opacity: 0.9;
         }
 
-        #rate-app-link,
         #official-website-link {
             position: relative;
             overflow: hidden;
         }
 
-        /* Pulsing effect for the rating button */
-
-
         .input-glow {
             border-color: #3b82f6 !important;
             outline: none;
-        }
-
-
-        #rate-app-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: translateX(-100%);
         }
 
 
@@ -1531,11 +1514,6 @@
                         <a href="#" id="official-website-link" class="professional-button flex items-center justify-center w-full h-[48px] gap-3">
                             <i class="fas fa-globe text-sm"></i>
                             <span>Visit Official Website</span>
-                        </a>
-
-                        <a href="#" id="rate-app-link" class="professional-button flex items-center justify-center w-full h-[48px] gap-3">
-                            <i class="fas fa-star text-sm"></i>
-                            <span>Rate us on Google Play</span>
                         </a>
 
                         <a href="#" id="dev-website-link" class="professional-button flex items-center justify-center w-full h-[48px] gap-3">

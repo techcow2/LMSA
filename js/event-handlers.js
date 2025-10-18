@@ -348,6 +348,14 @@ export function initializeEventHandlers() {
     // New chat button
     if (newChatButton) {
         newChatButton.addEventListener('click', () => {
+            // Show interstitial ad (if on Android)
+            if (typeof AndroidAds !== 'undefined' && AndroidAds.showInterstitial) {
+                try {
+                    AndroidAds.showInterstitial();
+                } catch (error) {
+                    console.log('Interstitial ad trigger failed:', error);
+                }
+            }
             createNewChat();
         });
     }
@@ -2544,20 +2552,29 @@ function toggleImportExportContainer() {
  */
 function handleNewChatButtonClick() {
     debugLog('New chat button clicked');
-    
+
+    // Show interstitial ad (if on Android)
+    if (typeof AndroidAds !== 'undefined' && AndroidAds.showInterstitial) {
+        try {
+            AndroidAds.showInterstitial();
+        } catch (error) {
+            console.log('Interstitial ad trigger failed:', error);
+        }
+    }
+
     // Close the sidebar first
     closeSidebar();
-    
+
     // Also close the options container
     const optionsContainer = document.getElementById('options-container');
     if (optionsContainer) {
         optionsContainer.classList.add('hidden');
         optionsContainer.classList.remove('animate-fade-in');
     }
-    
+
     // Create a new chat
     createNewChat();
-    
+
     // Remove focus to prevent the button from staying highlighted
     if (newChatHeaderButton) {
         newChatHeaderButton.blur();
