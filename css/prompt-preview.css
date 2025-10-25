@@ -1,0 +1,169 @@
+/* Prompt Preview Area Styles */
+#prompt-preview-area {
+    background-color: var(--bg-primary) !important;
+    background: var(--bg-gradient) !important;
+    /* Make it clear this is not an input - clicks should go to real input */
+    cursor: pointer !important;
+}
+
+/* Style input field when preview is active - blend with background and hide cursor */
+.preview-active #user-input {
+    background-color: var(--bg-secondary) !important;
+    border-color: var(--bg-secondary) !important;
+    box-shadow: none !important;
+    caret-color: transparent !important;
+}
+
+/* Fix for Android WebView - completely override preview styles to ensure typing works */
+.android-webview #user-input,
+.android-webview.preview-active #user-input {
+    /* Force visible cursor and text */
+    caret-color: var(--input-text) !important;
+    color: var(--input-text) !important;
+    -webkit-text-fill-color: var(--input-text) !important;
+    /* Restore normal background and border */
+    background-color: var(--input-bg) !important;
+    border-color: var(--input-border) !important;
+    box-shadow: 0 0 0 1px var(--input-border) !important;
+    /* Ensure input functionality */
+    pointer-events: auto !important;
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    -webkit-user-modify: read-write-plaintext-only !important;
+}
+
+/* Hide placeholder when preview is active */
+.preview-active #user-input::placeholder {
+    color: transparent !important;
+    opacity: 0 !important;
+}
+
+/* Keep placeholder visible for Android WebView */
+.android-webview #user-input::placeholder,
+.android-webview.preview-active #user-input::placeholder {
+    color: var(--input-placeholder) !important;
+    opacity: 0.7 !important;
+}
+
+#prompt-preview-area.show {
+    display: block !important;
+}
+
+#prompt-preview-area.hide {
+    display: none !important;
+}
+
+
+
+
+/* Gentle pulse animation removed - using consistent blinking cursor instead */
+
+/* Blinking cursor for preview text when there's content */
+.preview-active #prompt-preview-text:not(:empty)::after {
+    content: '|';
+    color: #14b8a6; /* Teal color */
+    font-weight: 300;
+    margin-left: 2px;
+}
+
+
+
+
+#prompt-preview-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 1.75rem;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    position: relative;
+    /* Make it editable like an input field */
+    pointer-events: auto !important;
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    -webkit-touch-callout: default !important;
+    cursor: text !important;
+    /* Input field properties */
+    outline: none !important;
+    white-space: pre-wrap !important;
+    min-height: 1.4em;
+    /* Ensure contenteditable works properly */
+    -webkit-user-modify: read-write-plaintext-only !important;
+    /* Force focus and input capability */
+}
+
+/* Specific styles for Android WebView contenteditable */
+.android-webview #prompt-preview-text[contenteditable="true"] {
+    /* Ensure it behaves like a proper input field */
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    /* Force text input mode */
+    touch-action: manipulation !important;
+    /* Ensure IME works */
+    ime-mode: auto !important;
+    /* Make sure it's focusable */
+    -webkit-user-focus: normal !important;
+}
+
+#prompt-preview-text:empty::before {
+    content: "Message...";
+    opacity: 0.6;
+    font-weight: 400;
+    color: var(--text-muted); /* Gray text */
+    margin-left: 12px; /* Space for the cursor */
+}
+
+#prompt-preview-text:empty::after {
+    content: "|";
+    position: absolute;
+    left: 0;
+    color: #14b8a6; /* Teal cursor */
+    font-weight: 300;
+     /* Blinking cursor */
+}
+
+/* The ::after pseudo-element now shows the teal cursor for empty preview */
+
+/* Placeholder cursor animation is now handled in the base rule above */
+
+/* blinkPlaceholder keyframes removed - using standard blink animation */
+
+/* Smooth text updates */
+.preview-text-updating {
+    opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #prompt-preview-area {
+        padding: 16px 20px;
+        min-height: 70px;
+    }
+    
+    #prompt-preview-text {
+        font-size: 1.5rem;
+        max-height: 180px;
+        line-height: 1.3;
+    }
+}
+
+/* Smooth scrollbar for preview text */
+#prompt-preview-text::-webkit-scrollbar {
+    width: 4px;
+}
+
+#prompt-preview-text::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#prompt-preview-text::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 2px;
+    opacity: 0.5;
+}
+
+#prompt-preview-text::-webkit-scrollbar-thumb:hover {
+    opacity: 0.8;
+}
