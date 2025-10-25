@@ -26,9 +26,6 @@
 - [⚠️ Disclaimer](#disclaimer)
 
 <h2 id="whats-new">🆕 What's New</h2>
-<details>
-<summary><strong>Expand for details</strong> (Click to expand/collapse)</summary>
-
 
 ### 🎉 Latest Update: Version 8.6 - Now Available!
 
@@ -43,8 +40,6 @@ Fixed CSS bugs affecting the color of certain elements and icons.
 
 #### General UI Improvements
 Implemented various UI enhancements for a better user experience.
-
-</details>
 
 ---
 
