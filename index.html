@@ -765,7 +765,7 @@
                             </div>
 
                             <div id="welcome-footer" class="mt-8 pt-5 pb-3 border-t border-white/10 text-xs">
-                                Version 8.6
+                                Version 8.7
                             </div>
                         </div>
                     </div>
@@ -1112,7 +1112,31 @@
                         <p class="text-xs text-gray-400 mt-1">When enabled, switches the app to light theme. When disabled, uses the default dark theme.</p>
                     </div>
 
+                    <div class="mb-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="enable-tts" class="text-sm font-medium">
+                                <i class="fas fa-volume-up mr-2 text-blue-400"></i>Text-to-Speech</label>
+                            <div class="toggle-container">
+                                <input type="checkbox" id="enable-tts">
+                                <div class="toggle-switch"></div>
+                                <div class="toggle-dot"></div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">When enabled, adds a speaker button to AI responses that reads the message aloud. <span class="text-amber-400">Note: Responses will be sent to a third-party API.</span></p>
+                    </div>
 
+                    <div class="mb-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="enable-image-gen" class="text-sm font-medium">
+                                <i class="fas fa-image mr-2 text-blue-400"></i>Image Generation</label>
+                            <div class="toggle-container">
+                                <input type="checkbox" id="enable-image-gen">
+                                <div class="toggle-switch"></div>
+                                <div class="toggle-dot"></div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">When enabled, type "/image" followed by a prompt to generate images. <span class="text-amber-400">Note: Prompts will be sent to a third-party API.</span></p>
+                    </div>
 
 
 
@@ -1540,7 +1564,7 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="version-badge px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300 text-center">Version 8.6</p>
+                    <p class="text-sm font-medium text-blue-300 text-center">Version 8.7</p>
                 </div>
             </div>
 
@@ -1573,6 +1597,9 @@
                         <p class="text-center text-gray-400 flex items-center justify-center">
                             <i class="fas fa-question-circle text-blue-400 mr-2"></i>
                             Need help?&nbsp;<a href="#" id="open-help-link" class="text-blue-400 hover:text-blue-300 font-medium ml-1.5 underline decoration-dotted underline-offset-2">Open Help Menu</a>
+                        </p>
+                        <p class="text-center text-gray-400 flex items-center justify-center mt-2">
+                            <a href="https://pollinations.ai/terms" target="_blank" class="text-blue-400 hover:text-blue-300 font-medium underline decoration-dotted underline-offset-2">Third-Party API Info</a>
                         </p>
                     </div>
                 </div>
@@ -1775,7 +1802,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-blue-400 font-extrabold">What's New</span>
-                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">8.3</span></span>
+                        <span class="text-xs text-blue-300/80 font-medium">v<span id="whats-new-version">8.7</span></span>
                     </div>
                 </h2>
                 <button id="close-whats-new" class="text-gray-400 hover:text-white focus:outline-none rounded-full w-8 h-8 flex items-center justify-center">
@@ -1785,6 +1812,46 @@
 
             <div class="features-container overflow-y-auto flex-grow px-1 py-2">
                 <div class="space-y-3">
+                    <div class="feature-item">
+                        <div class="relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-pink-500/10 to-rose-700/5 rounded-full blur-xl"></div>
+                            <div class="flex items-start relative z-10">
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-pink-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-volume-up text-pink-400" style="color: #ec4899;"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <h3 class="feature-title">Text-to-Speech</h3>
+                                    </div>
+                                    <div class="feature-description">
+                                        <p class="mb-3">Enable text-to-speech in settings to have AI responses read aloud with natural-sounding voices.</p>
+                                        <p class="mb-3"><strong>Privacy Note:</strong> This feature uses a third-party service, so AI responses will be sent to an external provider when enabled, reducing privacy. <a href="https://pollinations.ai/terms" target="_blank" class="text-blue-400 hover:text-blue-300 underline">See terms of service</a>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-purple-500/10 to-violet-700/5 rounded-full blur-xl"></div>
+                            <div class="flex items-start relative z-10">
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-purple-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-image text-purple-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <h3 class="feature-title">Image Generation</h3>
+                                    </div>
+                                    <div class="feature-description">
+                                        <p class="mb-3">Enable image generation in settings, then simply type '/image' followed by your description to create stunning visuals directly in chat.</p>
+                                        <p class="mb-3"><strong>Privacy Note:</strong> Uses a third-party AI service, so your image prompts will be sent to an external provider. <a href="https://pollinations.ai/terms" target="_blank" class="text-blue-400 hover:text-blue-300 underline">See terms of service</a>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="feature-item">
                         <div class="relative overflow-hidden">
                             <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-emerald-500/10 to-teal-700/5 rounded-full blur-xl"></div>
@@ -1899,6 +1966,7 @@
                             </div>
                         </div>
                     </div>
+
 
                     <div class="feature-item">
                         <div class="relative overflow-hidden">
@@ -2490,7 +2558,7 @@
                 <!-- Enhanced title with warning icon -->
                 <div class="mb-6 text-center">
                     <h2 id="ip-port-confirmation-title" class="text-2xl font-bold mb-2" style="color: #f97316;">
-                        <i class="fas fa-exclamation-triangle mr-3"></i>Network Settings Changed
+                        <i class="fas fa-exclamation-triangle mr-3"></i>Network Settings Checklist
                     </h2>
                     <div class="w-20 h-0.5 bg-gradient-to-r from-orange-500 to-yellow-500 mx-auto rounded-full"></div>
                 </div>
@@ -2524,7 +2592,7 @@
                     <div class="flex items-start space-x-3 p-3 rounded-lg" style="background: var(--settings-label-bg); border: 1px solid var(--border-color);">
                         <input type="checkbox" id="vpn-check" class="mt-1 focus:ring-orange-500 focus:ring-2">
                         <label for="vpn-check" class="text-sm cursor-pointer" style="color: var(--text-primary);">
-                            <span class="font-medium" style="color: #f97316;">VPN Disabled:</span> Did you disable all VPN software on your mobile device and computer to prevent connection issues?
+                            <span class="font-medium" style="color: #f97316;">WiFi Network:</span> Is your mobile device connected to the same WiFi network as the computer running LM Studio server?
                         </label>
                     </div>
                 </div>

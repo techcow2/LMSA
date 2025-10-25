@@ -1,6 +1,6 @@
-# LMSA - LM Studio Android 
+# LMSA - LM Studio Android
 ![Status: Open Source](https://img.shields.io/badge/Status-Open%20Source-brightgreen)
-![Version: 8.6](https://img.shields.io/badge/Version-8.6-blue)
+![Version: 8.7](https://img.shields.io/badge/Version-8.7-blue)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
 
 <p align="left">
@@ -24,7 +24,16 @@
 
 <h2 id="whats-new">🆕 What's New</h2>
 
-### 🎉 Latest Update: Version 8.6 - Now Available!
+### 🎉 Latest Update: Version 8.7 - Now Available!
+
+#### Text-to-Speech Feature
+Added text-to-speech functionality that allows AI responses to be read aloud with natural-sounding voices. Enable this optional feature in Settings to add speaker buttons to AI messages.
+
+#### Image Generation Feature
+Added AI-powered image generation! Simply type "/image" followed by a description to create stunning visuals directly in chat. This feature uses a third-party AI service for image creation.
+
+#### Third-Party API Privacy Notice
+Both text-to-speech and image generation features use third-party APIs. When enabled, your data will be sent to external services, reducing local privacy. These features are completely optional and can be enabled or disabled at any time in Settings. See [third-party API terms of service](https://pollinations.ai/terms).
 
 #### Network Change Validation Checklist
 Added a network change validation checklist that prompts users to verify important LM Studio server settings, such as enabling CORS.
