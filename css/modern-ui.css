@@ -120,9 +120,6 @@ body.light-theme header {
   -webkit-tap-highlight-color: transparent !important;
 }
 
-.header-icon {
-}
-
 .header-btn:hover .header-icon {
   transform: scale(1.1);
   color: var(--modern-accent-primary);
@@ -265,9 +262,6 @@ body.light-theme .menu-item:hover {
   background-color: rgba(59, 130, 246, 0.08);
 }
 
-.menu-item i {
-}
-
 body.light-theme .menu-item i {
   color: var(--modern-light-text-secondary);
 }
@@ -365,9 +359,6 @@ body.light-theme .main-menu-section .menu-item:hover {
 .characters-section .section-header:hover {
   background-color: rgba(59, 130, 246, 0.1);
   border-color: rgba(59, 130, 246, 0.2);
-}
-
-.characters-section .section-header .fa-chevron-down {
 }
 
 .characters-section .section-header.active .fa-chevron-down {
@@ -821,9 +812,15 @@ body.light-theme #active-character-display {
 body.light-theme #user-input {
   background-color: var(--modern-light-bg-tertiary);
   box-shadow: var(--modern-shadow-inner), 0 0 0 1px rgba(0, 0, 0, 0.05);
-  border: 2px solid rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(0, 0, 0, 0.2);
   border-right: none;
   /* Remove right border for seamless blend */
+}
+
+/* Light theme placeholder styling - darker for better visibility */
+body.light-theme #user-input::placeholder {
+  color: #475569;
+  opacity: 0.8;
 }
 
 /* Light theme send button styling */
@@ -2376,20 +2373,6 @@ body.light-theme .dark-footer-text {
 /* Subtle button entrance animation */
 
 /* Apply staggered animations to welcome screen buttons */
-#get-started-btn {
-}
-
-#welcome-character-gallery-btn {
-}
-
-#welcome-models-btn {
-}
-
-#welcome-new-chat-btn {
-}
-
-#welcome-help-btn {
-}
 
 /* General mobile optimization for welcome screen buttons */
 @media (max-width: 480px) {
@@ -3588,6 +3571,51 @@ body.light-theme #support-articles-btn.professional-button:hover {
     0 0 0 2px rgba(16, 185, 129, 0.5);
 }
 
+#github-btn.professional-button {
+  border-color: rgba(139, 92, 246, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(139, 92, 246, 0.3);
+}
+
+#github-btn.professional-button:hover {
+  border-color: rgba(139, 92, 246, 0.8);
+  box-shadow:
+    0 12px 40px rgba(139, 92, 246, 0.25),
+    0 6px 20px rgba(124, 58, 237, 0.15),
+    0 3px 10px rgba(109, 40, 217, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(139, 92, 246, 0.4);
+}
+
+body.light-theme #github-btn.professional-button {
+  border-color: rgba(139, 92, 246, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(139, 92, 246, 0.4);
+}
+
+body.light-theme #github-btn.professional-button:hover {
+  border-color: rgba(139, 92, 246, 0.9);
+  box-shadow:
+    0 12px 40px rgba(139, 92, 246, 0.3),
+    0 6px 20px rgba(124, 58, 237, 0.2),
+    0 3px 10px rgba(109, 40, 217, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(139, 92, 246, 0.5);
+}
+
 /* Settings modal button color accents */
 #edit-system-prompt-btn.professional-button {
   border-color: rgba(59, 130, 246, 0.6);
@@ -3828,6 +3856,7 @@ body.light-theme #reset-app.professional-button:hover {
 
 body.light-theme #close-settings.professional-button {
   border-color: rgba(5, 150, 105, 0.7);
+  color: white !important;
   box-shadow:
     0 8px 32px rgba(15, 23, 42, 0.15),
     0 4px 16px rgba(30, 41, 59, 0.1),
@@ -4171,6 +4200,116 @@ body.light-theme i.fa-heart {
 body.light-theme .fa-file,
 body.light-theme .fa-paperclip {
   color: #2563eb !important;
+}
+
+/* Light theme sidebar icon colors - distinct colors for each icon */
+body.light-theme #sidebar .fa-plus-circle {
+  color: #059669 !important; /* Green for new chat */
+}
+
+body.light-theme #sidebar .fa-cog {
+  color: #2563eb !important; /* Blue for settings */
+}
+
+body.light-theme #sidebar .fa-chevron-down,
+body.light-theme #sidebar .fa-caret-down,
+body.light-theme #sidebar .fa-caret-up {
+  color: #475569 !important; /* Gray for arrows */
+}
+
+body.light-theme #sidebar .fa-exchange-alt {
+  color: #7c3aed !important; /* Purple for switch model */
+}
+
+body.light-theme #sidebar .fa-file-import {
+  color: #0891b2 !important; /* Cyan for import */
+}
+
+body.light-theme #sidebar .fa-file-export {
+  color: #d97706 !important; /* Amber for export */
+}
+
+body.light-theme #sidebar .fa-robot {
+  color: #2563eb !important; /* Blue for models */
+}
+
+body.light-theme #sidebar .fa-save {
+  color: #059669 !important; /* Green for save */
+}
+
+body.light-theme #sidebar .fa-question-circle {
+  color: #0891b2 !important; /* Cyan for help */
+}
+
+body.light-theme #sidebar .fa-wand-magic-sparkles {
+  color: #be185d !important; /* Pink for magic/prompts */
+}
+
+body.light-theme #sidebar .fa-info-circle {
+  color: #2563eb !important; /* Blue for info */
+}
+
+body.light-theme #sidebar .fa-undo {
+  color: #d97706 !important; /* Amber for reset */
+}
+
+body.light-theme #sidebar .fa-comments {
+  color: #2563eb !important; /* Blue for chat history */
+}
+
+/* Dark theme sidebar icon colors - preserve individual colors */
+body:not(.light-theme) #sidebar .fa-plus-circle {
+  color: #10b981 !important; /* Green for new chat */
+}
+
+body:not(.light-theme) #sidebar .fa-cog {
+  color: #3b82f6 !important; /* Blue for settings */
+}
+
+body:not(.light-theme) #sidebar .fa-chevron-down,
+body:not(.light-theme) #sidebar .fa-caret-down,
+body:not(.light-theme) #sidebar .fa-caret-up {
+  color: #64748b !important; /* Gray for arrows */
+}
+
+body:not(.light-theme) #sidebar .fa-exchange-alt {
+  color: #a855f7 !important; /* Purple for switch model */
+}
+
+body:not(.light-theme) #sidebar .fa-file-import {
+  color: #06b6d4 !important; /* Cyan for import */
+}
+
+body:not(.light-theme) #sidebar .fa-file-export {
+  color: #f59e0b !important; /* Amber for export */
+}
+
+body:not(.light-theme) #sidebar .fa-robot {
+  color: #3b82f6 !important; /* Blue for models */
+}
+
+body:not(.light-theme) #sidebar .fa-save {
+  color: #10b981 !important; /* Green for save */
+}
+
+body:not(.light-theme) #sidebar .fa-question-circle {
+  color: #06b6d4 !important; /* Cyan for help */
+}
+
+body:not(.light-theme) #sidebar .fa-wand-magic-sparkles {
+  color: #ec4899 !important; /* Pink for magic/prompts */
+}
+
+body:not(.light-theme) #sidebar .fa-info-circle {
+  color: #3b82f6 !important; /* Blue for info */
+}
+
+body:not(.light-theme) #sidebar .fa-undo {
+  color: #f59e0b !important; /* Amber for reset */
+}
+
+body:not(.light-theme) #sidebar .fa-comments {
+  color: #3b82f6 !important; /* Blue for chat history */
 }
 
 /* Button icons inside professional buttons */

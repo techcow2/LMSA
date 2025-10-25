@@ -43,6 +43,7 @@ import { setActionToPerform, getActionToPerform } from './shared-state.js';
 import { closeSidebarExport } from './export-import.js';
 import { showModelModal } from './model-manager.js';
 import { showWhatsNewModal } from './whats-new.js';
+import { interceptIpPortChanges } from './ip-port-confirmation-modal.js';
 import { debugLog, debugError, formatDate } from './utils.js';
 import { closeApplication, copyToClipboard, sanitizeInput, scrollToBottom, scrollToBottomManual, handleScroll, ensureCursorVisible } from './utils.js';
 
@@ -1622,21 +1623,26 @@ function handleCloseSettingsButtonClick() {
         }
     }
 
-    // Immediately prevent any sidebar interactions
-    document.body.removeEventListener('click', handleSidebarOutsideClick);
+    // Use IP/Port confirmation modal to intercept changes
+    interceptIpPortChanges(() => {
+        // This callback will be executed after user confirms or if no changes detected
+        
+        // Immediately prevent any sidebar interactions
+        document.body.removeEventListener('click', handleSidebarOutsideClick);
 
-    // Use the centralized settings modal manager
-    hideSettingsModal();
+        // Use the centralized settings modal manager
+        hideSettingsModal();
 
-    // Re-attach the sidebar click handler after a short delay
-    setTimeout(() => {
-        document.addEventListener('click', handleSidebarOutsideClick);
-    }, 400); // Slightly longer delay to ensure modal is fully hidden
+        // Re-attach the sidebar click handler after a short delay
+        setTimeout(() => {
+            document.addEventListener('click', handleSidebarOutsideClick);
+        }, 400); // Slightly longer delay to ensure modal is fully hidden
 
-    // If there are no messages, show the welcome message again
-    if (messagesContainer && messagesContainer.children.length === 0) {
-        showWelcomeMessage();
-    }
+        // If there are no messages, show the welcome message again
+        if (messagesContainer && messagesContainer.children.length === 0) {
+            showWelcomeMessage();
+        }
+    });
 }
 
 /**

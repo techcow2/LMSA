@@ -354,7 +354,15 @@ export async function fetchAvailableModels() {
             return modelsList;
         } catch (fetchError) {
             clearTimeout(timeoutId);
-            console.error('Error fetching models:', fetchError);
+            // Suppress console errors for unsafe ports and common fetch failures
+            const errorMessage = fetchError.message || fetchError.toString();
+            const isUnsafePortError = errorMessage.includes('ERR_UNSAFE_PORT') || 
+                                    errorMessage.includes('Failed to fetch') ||
+                                    errorMessage.includes('net::ERR_');
+            
+            if (!isUnsafePortError) {
+                console.error('Error fetching models:', fetchError);
+            }
             availableModels = []; // Ensure availableModels is empty
             if (loadedModelDisplay) {
                 loadedModelDisplay.classList.add('hidden');
@@ -368,7 +376,15 @@ export async function fetchAvailableModels() {
 
         return lastFetchPromise;
     } catch (error) {
-        console.error('Unexpected error in fetchAvailableModels:', error);
+        // Suppress console errors for unsafe ports and common fetch failures
+        const errorMessage = error.message || error.toString();
+        const isUnsafePortError = errorMessage.includes('ERR_UNSAFE_PORT') || 
+                                errorMessage.includes('Failed to fetch') ||
+                                errorMessage.includes('net::ERR_');
+        
+        if (!isUnsafePortError) {
+            console.error('Unexpected error in fetchAvailableModels:', error);
+        }
         availableModels = []; // Ensure availableModels is empty
         if (loadedModelDisplay) {
             loadedModelDisplay.classList.add('hidden');

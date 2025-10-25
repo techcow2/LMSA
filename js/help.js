@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeHelpBtn = document.getElementById('close-help');
     const tutorialVideoBtn = document.getElementById('tutorial-video-btn');
     const supportArticlesBtn = document.getElementById('support-articles-btn');
+    const githubBtn = document.getElementById('github-btn');
     const settingsHelpBtn = document.getElementById('settings-help-btn');
     const sidebarElement = document.getElementById('sidebar');
     const modalContent = helpModal ? helpModal.querySelector('.modal-content') : null;
@@ -227,6 +228,15 @@ Thank you for your help!
                 // Show confirmation modal before opening support articles
                 const supportUrl = 'https://lmsa.app/support.html';
                 showExternalSiteModal(supportUrl);
+            });
+        }
+
+        // GitHub button event listener
+        if (githubBtn) {
+            githubBtn.addEventListener('click', () => {
+                // Show confirmation modal before opening GitHub repository
+                const githubUrl = 'https://github.com/techcow2/LMSA';
+                showExternalSiteModal(githubUrl);
             });
         }
 

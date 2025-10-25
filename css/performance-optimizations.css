@@ -176,6 +176,8 @@ button {
 
 /* Optimized Chat Input Animation */
 #user-input {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    will-change: transform;
 }
 
 #user-input:focus {
@@ -218,21 +220,43 @@ button {
 
 /* Optimized fade animations */
 .fade-in {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.fade-in.active {
+    opacity: 1;
 }
 
 .fade-out {
+    opacity: 1;
+    transition: opacity 0.3s ease;
 }
 
-
+.fade-out.active {
+    opacity: 0;
+}
 
 /* Optimized spin animation for loading */
 .spin {
+    animation: spin 1s linear infinite;
+    will-change: transform;
 }
 
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
 
 /* Memory-efficient transitions */
 .efficient-transition {
     /* Only animate transform and opacity for best performance */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
 }
 
 /* Remove will-change after animations complete */
@@ -390,6 +414,72 @@ body.light-theme label.text-white:not(button .text-white),
 body.light-theme span.text-white:not(button .text-white),
 body.light-theme div.text-white:not(button .text-white):not([class*="bg-red"]):not([class*="bg-blue"]):not([class*="bg-gray-6"]) {
   color: #1e293b !important;
+}
+
+/* Ensure buttons with text-white class remain white in light theme */
+body.light-theme button.text-white {
+  color: white !important;
+}
+
+/* Fix Apply Changes button in network settings modal to have black text in light theme */
+body.light-theme #ip-port-confirm-btn {
+  color: #1e293b !important;
+}
+
+/* IP/port confirmation modal checkbox styling */
+#ip-port-confirmation-modal input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* Dark theme checkbox styling */
+#ip-port-confirmation-modal input[type="checkbox"] {
+  background-color: #2c2c2c;
+  border: 2px solid #64748b;
+}
+
+#ip-port-confirmation-modal input[type="checkbox"]:checked {
+  background-color: #f97316;
+  border-color: #f97316;
+}
+
+#ip-port-confirmation-modal input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -2px;
+  left: 1px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Light theme checkbox styling */
+body.light-theme #ip-port-confirmation-modal input[type="checkbox"] {
+  background-color: #f8fafc;
+  border: 2px solid #94a3b8;
+}
+
+body.light-theme #ip-port-confirmation-modal input[type="checkbox"]:checked {
+  background-color: #f97316;
+  border-color: #f97316;
+}
+
+body.light-theme #ip-port-confirmation-modal input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -2px;
+  left: 1px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 /* Hover states for gray text */
@@ -832,4 +922,40 @@ body.light-theme #delete-message-modal #confirm-delete-message:hover {
 /* Trash icon in modal */
 body.light-theme #delete-message-modal .fa-trash {
   color: #dc2626 !important;
+}
+
+/* ============================================
+   Message Input Field Enhancements for Light Theme
+   ============================================ */
+
+/* Enhanced border visibility for message input field in light theme */
+body.light-theme #user-input {
+  border: 2px solid rgba(0, 0, 0, 0.25) !important;
+  border-right: none !important; /* Keep seamless blend with send button */
+}
+
+/* Darker placeholder text for better visibility in light theme */
+body.light-theme #user-input::placeholder {
+  color: #475569 !important;
+  opacity: 0.85 !important;
+}
+
+/* Enhanced border for send button to match input field */
+body.light-theme #chat-form #send-button,
+body.light-theme #chat-form #stop-button {
+  border: 2px solid rgba(0, 0, 0, 0.25) !important;
+  border-left: none !important; /* Keep seamless blend with input field */
+}
+
+/* Enhanced borders for IP and port input fields in light theme for better visibility */
+body.light-theme #server-ip,
+body.light-theme #server-port {
+  border: 2px solid rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-theme #server-ip:focus,
+body.light-theme #server-port:focus {
+  border: 2px solid rgba(59, 130, 246, 0.6) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1) !important;
 }

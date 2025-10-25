@@ -216,8 +216,6 @@
 
 
 /* Class to force repaint when theme changes */
-#settings-modal.theme-update {
-}
 
 
 
@@ -1123,13 +1121,7 @@
     overscroll-behavior: contain; /* Prevent body scroll when reaching top/bottom */
 }
 
-.slide-in-right {
-    
-}
 
-.slide-in-left {
-    
-}
 
 
 
@@ -1141,18 +1133,10 @@
     
 }
 
-#settings-modal.show .modal-content {
-    
-}
-
 #settings-modal.hide {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    
-}
-
-#settings-modal.hide .modal-content {
     
 }
 
@@ -1161,9 +1145,6 @@
 }
 
 /* Animation for modal content */
-
-.animate-modal-in {
-}
 
 /* Navigation buttons container */
 #settings-navigation-buttons {
@@ -1503,3 +1484,4 @@
         padding: 0.75rem !important;
     }
 }
+

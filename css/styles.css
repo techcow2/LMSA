@@ -4757,28 +4757,59 @@ body.light-theme .regenerate-btn:hover {
 #whats-new-modal {
     opacity: 0;
     visibility: hidden;
-    backdrop-filter: blur(0px);
+    z-index: 99999 !important;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.95) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Ensure proper flexbox centering */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    /* Ensure full screen coverage */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 #whats-new-modal.fade-in {
     opacity: 1;
     visibility: visible;
-    backdrop-filter: blur(8px);
+    pointer-events: auto;
+    background: rgba(0, 0, 0, 0.95) !important;
+    z-index: 99999 !important;
 }
 
 #whats-new-modal.fade-out {
     opacity: 0;
     visibility: hidden;
-    backdrop-filter: blur(0px);
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.95) !important;
+    z-index: 99999 !important;
 }
 
 #whats-new-modal.hidden {
-    display: none;
+    display: none !important;
 }
 
 /* Light theme styles for What's New modal background */
 body.light-theme #whats-new-modal {
-    background-color: transparent;
+    background: rgba(255, 255, 255, 0.95) !important;
+    z-index: 99999 !important;
+}
+
+body.light-theme #whats-new-modal.fade-in {
+    background: rgba(255, 255, 255, 0.95) !important;
+    z-index: 99999 !important;
+}
+
+body.light-theme #whats-new-modal.fade-out {
+    background: rgba(255, 255, 255, 0.75);
 }
 
 #whats-new-modal .modal-content {
@@ -4798,6 +4829,50 @@ body.light-theme #whats-new-modal {
     border-radius: 1.25rem;
     overflow: hidden;
     transform: translateY(0) scale(1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile-specific styles for What's New modal */
+@media (max-width: 767px) {
+    #whats-new-modal {
+        /* Ensure full screen coverage on mobile */
+        padding: 1rem !important;
+        /* Center the modal content */
+        align-items: center !important;
+        justify-content: center !important;
+        /* Override any conflicting positioning */
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 99999 !important;
+    }
+    
+    #whats-new-modal .modal-content {
+        width: calc(100% - 2rem);
+        max-width: calc(100% - 2rem);
+        margin: 0;
+        border-radius: 1.25rem; /* Full border radius for mobile */
+        height: auto;
+        /* Optimal height for mobile viewing */
+        max-height: 80vh;
+        min-height: 60vh;
+        /* Center positioning */
+        margin-bottom: 0;
+        box-shadow:
+            0 20px 40px -8px rgba(0, 0, 0, 0.8),
+            0 8px 25px -5px rgba(31, 66, 135, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+    }
+    
+    #whats-new-modal .features-container {
+        max-height: calc(80vh - 12rem);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 }
 
 /* Light theme styles for What's New modal */
@@ -4810,17 +4885,61 @@ body.light-theme #whats-new-modal .modal-content {
         0 0 0 1px rgba(255, 255, 255, 0.7) inset;
 }
 
+/* Mobile light theme adjustments */
+@media (max-width: 767px) {
+    body.light-theme #whats-new-modal .modal-content {
+        box-shadow:
+            0 20px 40px -8px rgba(0, 0, 0, 0.2),
+            0 8px 25px -5px rgba(59, 130, 246, 0.15),
+            0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+    }
+}
+
 /* Tablet-specific What's New modal adjustments */
 @media (min-width: 768px) and (max-width: 1024px) {
+    #whats-new-modal {
+        padding: 1.5rem;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
     #whats-new-modal .modal-content {
-        width: 550px; /* Slightly wider on tablets */
-        max-width: 80%; /* Limit width relative to screen */
-        margin: 2rem auto; /* Center with good spacing */
-        padding: 1.5rem; /* More padding for better touch targets */
+        width: 90%;
+        max-width: 600px;
+        margin: 0;
+        padding: 1.5rem;
+        max-height: calc(100vh - 3rem);
+        border-radius: 1.25rem; /* Full border radius for tablet */
+        box-shadow:
+            0 25px 50px -12px rgba(0, 0, 0, 0.7),
+            0 10px 30px -10px rgba(31, 66, 135, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.15) inset;
     }
 
     #whats-new-modal .features-container {
-        max-height: 60vh; /* Limit height to ensure buttons are visible */
+        max-height: calc(100vh - 15rem);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Large tablet and small desktop adjustments */
+@media (min-width: 1025px) and (max-width: 1280px) {
+    #whats-new-modal {
+        padding: 2rem;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    #whats-new-modal .modal-content {
+        width: 85%;
+        max-width: 650px;
+        max-height: calc(100vh - 4rem);
+        border-radius: 1.25rem; /* Full border radius for desktop */
+    }
+    
+    #whats-new-modal .features-container {
+        max-height: calc(100vh - 16rem);
     }
 }
 
@@ -5558,11 +5677,99 @@ body.light-theme #whats-new-modal .bg-green-500\/20 {
     background-color: rgba(34, 197, 94, 0.15);
 }
 
-body.light-theme #whats-new-modal .text-indigo-400,
-body.light-theme #whats-new-modal .text-blue-400,
-body.light-theme #whats-new-modal .text-purple-400,
+body.light-theme #whats-new-modal .bg-emerald-500\/20 {
+    background-color: rgba(16, 185, 129, 0.15);
+}
+
+body.light-theme #whats-new-modal .bg-cyan-500\/20 {
+    background-color: rgba(6, 182, 212, 0.15);
+}
+
+body.light-theme #whats-new-modal .bg-orange-500\/20 {
+    background-color: rgba(249, 115, 22, 0.15);
+}
+
+body.light-theme #whats-new-modal .bg-yellow-500\/20 {
+    background-color: rgba(234, 179, 8, 0.15);
+}
+
+/* Dark theme icon colors - preserve original colorful appearance */
+#whats-new-modal .text-indigo-400 {
+    color: #a78bfa;
+}
+
+#whats-new-modal .text-blue-400 {
+    color: #60a5fa;
+}
+
+#whats-new-modal .text-purple-400 {
+    color: #c084fc;
+}
+
+#whats-new-modal .text-green-400 {
+    color: #4ade80;
+}
+
+#whats-new-modal .text-emerald-400 {
+    color: #10d97a !important;
+}
+
+#whats-new-modal .text-cyan-400 {
+    color: #22d3ee;
+}
+
+#whats-new-modal .text-orange-400 {
+    color: #fb923c;
+}
+
+#whats-new-modal .text-yellow-400 {
+    color: #fbbf24;
+}
+
+/* Specific styling for shield icon to ensure visibility */
+#whats-new-modal .fa-shield-alt {
+    color: #10d97a !important;
+    text-shadow: 0 0 8px rgba(16, 217, 122, 0.4);
+    font-weight: 900;
+}
+
+body.light-theme #whats-new-modal .text-indigo-400 {
+    color: #6366f1;
+}
+
+body.light-theme #whats-new-modal .text-blue-400 {
+    color: #3b82f6;
+}
+
+body.light-theme #whats-new-modal .text-purple-400 {
+    color: #a855f7;
+}
+
 body.light-theme #whats-new-modal .text-green-400 {
-    color: #1e40af;
+    color: #22c55e;
+}
+
+body.light-theme #whats-new-modal .text-emerald-400 {
+    color: #059669 !important;
+}
+
+body.light-theme #whats-new-modal .text-cyan-400 {
+    color: #06b6d4;
+}
+
+body.light-theme #whats-new-modal .text-orange-400 {
+    color: #f97316;
+}
+
+body.light-theme #whats-new-modal .text-yellow-400 {
+    color: #eab308;
+}
+
+/* Light theme specific styling for shield icon */
+body.light-theme #whats-new-modal .fa-shield-alt {
+    color: #059669 !important;
+    text-shadow: 0 0 6px rgba(5, 150, 105, 0.3);
+    font-weight: 900;
 }
 
 body.light-theme #whats-new-modal .text-indigo-300,
@@ -7606,4 +7813,31 @@ body.dark-theme .native-ad-container {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Modal open state - prevent background interaction and scrolling */
+html.modal-open,
+body.modal-open {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Ensure modal content can still scroll */
+.modal-open .modal-content {
+    overflow-y: auto !important;
+}
+
+/* Prevent touch events on background elements when modal is open */
+.modal-open * {
+    pointer-events: none;
+}
+
+/* Allow pointer events on modal elements */
+.modal-open .modal-container,
+.modal-open .modal-container *,
+.modal-open #whats-new-modal,
+.modal-open #whats-new-modal * {
+    pointer-events: auto;
 }

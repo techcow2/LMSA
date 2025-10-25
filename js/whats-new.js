@@ -8,7 +8,7 @@ const gotItButton = document.getElementById('got-it-whats-new');
 const versionElement = document.getElementById('whats-new-version');
 
 // Local storage keys
-const WHATS_NEW_VERSION = '8.4'; // Updated for new features: message input improvements, chat bubble UI, import/export fixes, light theme fixes, auto-scroll feature
+const WHATS_NEW_VERSION = '8.6'; // Updated for new features: IP/port verification checklist, message input improvements, chat bubble UI, import/export fixes, light theme fixes, auto-scroll feature
 
 // Flag to track if the modal has been shown in the current session
 let modalShownInCurrentSession = false;
@@ -28,6 +28,13 @@ export function showWhatsNewModal(forceShow = false) {
         if (versionElement) {
             versionElement.textContent = WHATS_NEW_VERSION;
         }
+
+        // Add modal-open class to html and body to help with touch handling and prevent background interaction
+        document.documentElement.classList.add('modal-open');
+        document.body.classList.add('modal-open');
+        
+        // Prevent scrolling of the body
+        document.body.style.overflow = 'hidden';
 
         // Fix touch scrolling for the modal
         setupTouchScrolling();
@@ -128,6 +135,13 @@ function hideWhatsNewModal() {
                     // Remove resize event listener when modal is hidden
                     window.removeEventListener('resize', adjustModalHeight);
 
+                    // Remove modal-open class from html and body
+                    document.documentElement.classList.remove('modal-open');
+                    document.body.classList.remove('modal-open');
+                    
+                    // Restore body scrolling
+                    document.body.style.overflow = '';
+
                     // Check if welcome message should be shown
                     checkAndShowWelcomeMessage();
                 }, 300); // Match this with the CSS transition duration
@@ -139,6 +153,14 @@ function hideWhatsNewModal() {
                 whatsNewModal.classList.remove('fade-out');
                 whatsNewModal.classList.add('hidden');
                 window.removeEventListener('resize', adjustModalHeight);
+                
+                // Remove modal-open class from html and body
+                document.documentElement.classList.remove('modal-open');
+                document.body.classList.remove('modal-open');
+                
+                // Restore body scrolling
+                document.body.style.overflow = '';
+                
                 checkAndShowWelcomeMessage();
             }, 300);
         }

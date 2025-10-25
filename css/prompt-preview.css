@@ -50,6 +50,7 @@
 }
 
 #prompt-preview-area.hide {
+    display: none !important;
 }
 
 
@@ -91,7 +92,6 @@
     /* Ensure contenteditable works properly */
     -webkit-user-modify: read-write-plaintext-only !important;
     /* Force focus and input capability */
-    tab-index: 0;
 }
 
 /* Specific styles for Android WebView contenteditable */
@@ -130,9 +130,6 @@
 
 /* blinkPlaceholder keyframes removed - using standard blink animation */
 
-#prompt-preview-text {
-}
-
 /* Smooth text updates */
 .preview-text-updating {
     opacity: 0.8;
@@ -150,16 +147,6 @@
         max-height: 180px;
         line-height: 1.3;
     }
-}
-
-/* Dark mode specific adjustments */
-.dark #prompt-preview-area {
-    /* Removed border-color that was causing the faint line */
-}
-
-/* Light mode specific adjustments */
-.light #prompt-preview-area {
-    /* Removed border-color that was causing the faint line */
 }
 
 /* Smooth scrollbar for preview text */

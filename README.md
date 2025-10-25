@@ -1,6 +1,6 @@
 # LMSA - LM Studio Android 
 ![Status: Open Source](https://img.shields.io/badge/Status-Open%20Source-brightgreen)
-![Version: 8.4.1](https://img.shields.io/badge/Version-8.4.1-blue)
+![Version: 8.6](https://img.shields.io/badge/Version-8.6-blue)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
 
 <p align="left">
@@ -29,38 +29,20 @@
 <details>
 <summary><strong>Expand for details</strong> (Click to expand/collapse)</summary>
 
-🎉 **Latest Update: Version 8.4.1** - Major Version Update - Now Available!
 
-### Duplicate Message Fix
-Fixed a critical bug that was causing duplicate messages to be sent to the LLM when using certain models. This improves reliability and prevents confusion from repeated responses.
+### 🎉 Latest Update: Version 8.6 - Now Available!
 
-### Delete User Messages
-You can now delete individual user messages from the chat history, giving you more control over your conversation flow and allowing you to remove unwanted messages.
+#### Network Change Validation Checklist
+Added a network change validation checklist that prompts users to verify important LM Studio server settings, such as enabling CORS.
 
-### Improved Message Editing UI
-Enhanced the user interface when editing messages in chat history. The editing experience is now smoother and more intuitive with better visual feedback.
+#### Minimum SDK Version Update
+Updated minimum SDK version to 23 (Android 6.0), expanding Play Store availability to more users.
 
-### Improved Message Input Field
-The message input field now automatically adjusts its height to accommodate longer messages, making it much easier to edit and review your text before sending. No more cramped single-line input that cuts off your thoughts!
+#### CSS Bug Fixes
+Fixed CSS bugs affecting the color of certain elements and icons.
 
-### Enhanced Chat Bubble UI
-Chat bubbles now have a cleaner, more modern look with improved spacing, typography, and visual hierarchy. The overall chat experience feels more polished and professional.
-
-### Import/Export Bug Fix
-Fixed a critical issue with the import/export feature that was causing problems for some users. Chat history can now be reliably backed up and restored without data loss.
-
-### Light Theme Fixes
-Resolved display issues in light theme where some interface elements appeared black instead of their proper colors. Light theme now renders correctly across all components.
-
-### Auto-Scroll to Latest Messages
-Added a new setting in the options menu that automatically scrolls to the bottom (latest/newest part) of the chat history window when the LLM is streaming text. This keeps you focused on the most recent responses without manual scrolling.
-
-### Default Model Selection
-You can now set a default model that will automatically load whenever LMSA connects to LM Studio! Simply open the models modal and tap the star icon next to any model to set it as your default.
-
-Your default model will be saved and automatically selected every time you launch the app, eliminating the need to manually switch models. If a different model is already loaded when you start LMSA, it will automatically switch to your preferred default model.
-
-This feature provides a more automated experience - just launch the app and your favorite model is ready to go!
+#### General UI Improvements
+Implemented various UI enhancements for a better user experience.
 
 </details>
 
@@ -245,7 +227,7 @@ LMSA connects to LM Studio running on your computer, allowing you to:
 
 <h2 id="technical-requirements">🔧 Technical Requirements</h2>
 
-- Android 8.0 or higher
+- Android 6.0 or higher
 - LM Studio installed and running on a computer with a suitable language model (text or vision)
 - Both devices connected to the same network
 - CORS enabled in LM Studio server settings (required for proper functionality)

@@ -765,7 +765,7 @@
                             </div>
 
                             <div id="welcome-footer" class="mt-8 pt-5 pb-3 border-t border-white/10 text-xs">
-                                <p class="opacity-60 dark-footer-text pt-1 pb-1">Developed with <i class="fas fa-heart mx-1" style="color: #ef4444 !important;"></i> for local AI enthusiasts</p>
+                                Version 8.6
                             </div>
                         </div>
                     </div>
@@ -1127,6 +1127,7 @@
                             <i class="fas fa-trash-alt text-sm"></i>
                             <span>Clear All Chats</span>
                         </button>
+
                         <button id="reset-app" class="professional-button flex items-center justify-center gap-3 w-full h-[48px]">
                             <i class="fas fa-exclamation-triangle text-sm"></i>
                             <span>Reset App</span>
@@ -1391,6 +1392,12 @@
                         <i class="fas fa-book text-sm"></i>
                         <span>Support Articles</span>
                     </button>
+
+                    <!-- GitHub Button -->
+                    <button id="github-btn" class="professional-button flex items-center justify-center gap-3 flex-1 h-[48px]">
+                        <i class="fab fa-github text-sm"></i>
+                        <span>GitHub</span>
+                    </button>
                 </div>
                     </button>
                 </div>
@@ -1533,7 +1540,7 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="version-badge px-4 py-1.5 rounded-full mx-auto w-fit mt-2">
-                    <p class="text-sm font-medium text-blue-300 text-center">Version 8.4</p>
+                    <p class="text-sm font-medium text-blue-300 text-center">Version 8.6</p>
                 </div>
             </div>
 
@@ -1759,7 +1766,7 @@
     </div>
 
     <!-- What's New modal -->
-    <div id="whats-new-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md items-center justify-center hidden modal-container" aria-labelledby="whats-new-title" role="dialog" aria-modal="true" style="padding: 1.5rem;">
+    <div id="whats-new-modal" class="fixed inset-0 hidden modal-container" aria-labelledby="whats-new-title" role="dialog" aria-modal="true">
         <div class="bg-gradient-to-b from-[#0a192f]/95 via-[#0c1e36]/95 to-[#0a192f]/95 p-4 rounded-2xl shadow-2xl modal-content flex flex-col border border-white/10 overflow-hidden" style="box-shadow: 0 20px 60px -15px rgba(0,0,0,0.7), 0 0 30px rgba(31, 66, 135, 0.2), 0 0 0 1px rgba(255,255,255,0.1) inset;">
             <div class="flex justify-between items-center mb-3 pb-3 border-b border-white/15">
                 <h2 id="whats-new-title" class="text-xl font-bold flex items-center">
@@ -1780,6 +1787,26 @@
                 <div class="space-y-3">
                     <div class="feature-item">
                         <div class="relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-emerald-500/10 to-teal-700/5 rounded-full blur-xl"></div>
+                            <div class="flex items-start relative z-10">
+                                <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-emerald-500/20 w-10 h-10 shadow-sm">
+                                    <i class="fas fa-shield-alt text-emerald-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <h3 class="feature-title">IP/Port Verification Checklist</h3>
+                                    </div>
+                                    <div class="feature-description">
+                                        <p class="mb-3">Added a verification checklist that appears when changes are detected in the IP and/or port input fields. This helpful reminder ensures you don't forget important CORS and local network setting changes that are required for LMSA to work properly with your LM Studio instance.</p>
+                                        <p>The checklist guides you through the essential configuration steps, making setup more reliable and reducing connection issues.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="relative overflow-hidden">
                             <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-blue-500/10 to-indigo-700/5 rounded-full blur-xl"></div>
                             <div class="flex items-start relative z-10">
                                 <div class="feature-icon-wrapper mr-3 flex items-center justify-center rounded-full bg-blue-500/20 w-10 h-10 shadow-sm">
@@ -1788,7 +1815,6 @@
                                 <div class="flex-1">
                                     <div class="flex items-center">
                                         <h3 class="feature-title">Improved Message Input Field</h3>
-                                        <span class="px-1.5 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded-full ml-2 font-semibold">Enhanced</span>
                                     </div>
                                     <div class="feature-description">
                                         <p class="mb-3">The message input field now automatically adjusts its height to accommodate longer messages, making it much easier to edit and review your text before sending. No more cramped single-line input that cuts off your thoughts!</p>
@@ -1808,7 +1834,6 @@
                                 <div class="flex-1">
                                     <div class="flex items-center">
                                         <h3 class="feature-title">Enhanced Chat Bubble UI</h3>
-                                        <span class="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full ml-2 font-semibold">Improved</span>
                                     </div>
                                     <div class="feature-description">
                                         <p class="mb-3">Chat bubbles now have a cleaner, more modern look with improved spacing, typography, and visual hierarchy. The overall chat experience feels more polished and professional.</p>
@@ -1828,7 +1853,6 @@
                                 <div class="flex-1">
                                     <div class="flex items-center">
                                         <h3 class="feature-title">Import/Export Bug Fix</h3>
-                                        <span class="px-1.5 py-0.5 bg-purple-500/20 text-purple-400 text-xs rounded-full ml-2 font-semibold">Fixed</span>
                                     </div>
                                     <div class="feature-description">
                                         <p class="mb-3">Fixed a critical issue with the import/export feature that was causing problems for some users. Chat history can now be reliably backed up and restored without data loss.</p>
@@ -1848,7 +1872,6 @@
                                 <div class="flex-1">
                                     <div class="flex items-center">
                                         <h3 class="feature-title">Light Theme Fixes</h3>
-                                        <span class="px-1.5 py-0.5 bg-orange-500/20 text-orange-400 text-xs rounded-full ml-2 font-semibold">Fixed</span>
                                     </div>
                                     <div class="feature-description">
                                         <p class="mb-3">Resolved display issues in light theme where some interface elements appeared black instead of their proper colors. Light theme now renders correctly across all components.</p>
@@ -1868,7 +1891,6 @@
                                 <div class="flex-1">
                                     <div class="flex items-center">
                                         <h3 class="feature-title">Auto-Scroll to Latest Messages</h3>
-                                        <span class="px-1.5 py-0.5 bg-cyan-500/20 text-cyan-400 text-xs rounded-full ml-2 font-semibold">New</span>
                                     </div>
                                     <div class="feature-description">
                                         <p class="mb-3">Added a new setting in the options menu that automatically scrolls to the bottom (latest/newest part) of the chat history window when the LLM is streaming text. This keeps you focused on the most recent responses without manual scrolling.</p>
@@ -1888,7 +1910,6 @@
                                 <div class="flex-1">
                                     <div class="flex items-center">
                                         <h3 class="feature-title">Default Model Selection</h3>
-                                        <span class="px-1.5 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full ml-2 font-semibold">New</span>
                                     </div>
                                     <div class="feature-description">
                                         <p class="mb-3">You can now set a default model that will automatically load whenever LMSA connects to LM Studio! Simply open the models modal and tap the star icon next to any model to set it as your default.</p>
@@ -2447,11 +2468,6 @@
                 <!-- Enhanced info section with better styling -->
                 <div class="mt-6 flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-xl border border-blue-500/10 dark:border-blue-500/10 light:border-blue-400/20">
                     <div class="flex items-center text-sm text-gray-400 dark:text-gray-400 light:text-gray-500">
-                        <div class="flex space-x-1 mr-3">
-                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                        </div>
                         <span>This may take a few moments depending on model size</span>
                     </div>
                 </div>
@@ -2460,6 +2476,74 @@
     </div>
 
     <!-- Full Model Name modal -->
+
+    <!-- IP/Port Settings Confirmation Modal -->
+    <div id="ip-port-confirmation-modal" class="fixed inset-0 items-center justify-center hidden modal-container" style="z-index: 2300; background: var(--modal-overlay); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);" aria-labelledby="ip-port-confirmation-title" role="dialog" aria-modal="true">
+        <div class="relative p-8 rounded-2xl w-[600px] max-w-[90%] shadow-2xl overflow-hidden flex flex-col modal-content" style="background: var(--modal-bg); border: 1px solid var(--border-color); box-shadow: 0 25px 50px -12px var(--modal-overlay), 0 0 0 1px var(--border-color) inset, 0 1px 3px 0 var(--border-color) inset;">
+            <!-- Animated background gradient -->
+            <div class="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-yellow-500/10 rounded-2xl"></div>
+            
+            <!-- Decorative border glow -->
+            <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-orange-500/30 via-yellow-500/20 to-orange-500/30 opacity-20"></div>
+            
+            <div class="relative z-10">
+                <!-- Enhanced title with warning icon -->
+                <div class="mb-6 text-center">
+                    <h2 id="ip-port-confirmation-title" class="text-2xl font-bold mb-2" style="color: #f97316;">
+                        <i class="fas fa-exclamation-triangle mr-3"></i>Network Settings Changed
+                    </h2>
+                    <div class="w-20 h-0.5 bg-gradient-to-r from-orange-500 to-yellow-500 mx-auto rounded-full"></div>
+                </div>
+
+                <!-- Main message -->
+                <div class="mb-6">
+                    <p class="text-center mb-4 font-medium" style="color: var(--text-primary);">
+                        You've changed your IP address and/or port settings. Before applying these changes, please ensure you've completed the following steps:
+                    </p>
+                </div>
+
+                <!-- Checklist -->
+                <div class="mb-8 space-y-4">
+                    <h3 class="text-lg font-semibold mb-4" style="color: var(--text-primary);">
+                        <i class="fas fa-list-check mr-2" style="color: #f97316;"></i>Required Setup Steps:
+                    </h3>
+                    <div class="flex items-start space-x-3 p-3 rounded-lg" style="background: var(--settings-label-bg); border: 1px solid var(--border-color);">
+                        <input type="checkbox" id="cors-check" class="mt-1 focus:ring-orange-500 focus:ring-2">
+                        <label for="cors-check" class="text-sm cursor-pointer" style="color: var(--text-primary);">
+                            <span class="font-medium" style="color: #f97316;">CORS Enabled:</span> Did you enable CORS in LM Studio server on your computer?
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3 p-3 rounded-lg" style="background: var(--settings-label-bg); border: 1px solid var(--border-color);">
+                        <input type="checkbox" id="local-network-check" class="mt-1 focus:ring-orange-500 focus:ring-2">
+                        <label for="local-network-check" class="text-sm cursor-pointer" style="color: var(--text-primary);">
+                            <span class="font-medium" style="color: #f97316;">Local Network:</span> Did you enable the "Serve on Local Network" setting in LM Studio server settings on your computer?
+                        </label>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3 p-3 rounded-lg" style="background: var(--settings-label-bg); border: 1px solid var(--border-color);">
+                        <input type="checkbox" id="vpn-check" class="mt-1 focus:ring-orange-500 focus:ring-2">
+                        <label for="vpn-check" class="text-sm cursor-pointer" style="color: var(--text-primary);">
+                            <span class="font-medium" style="color: #f97316;">VPN Disabled:</span> Did you disable all VPN software on your mobile device and computer to prevent connection issues?
+                        </label>
+                    </div>
+                </div>
+
+
+
+                <!-- Action buttons -->
+                <div class="flex space-x-3">
+                    <button id="ip-port-cancel-btn" class="flex-1 px-4 py-3 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2" style="background: var(--settings-label-bg); color: var(--text-primary); border: 1px solid var(--border-color); box-shadow: 0 2px 4px var(--modal-overlay);">
+                        <i class="fas fa-times mr-2"></i>Cancel
+                    </button>
+                    <button id="ip-port-confirm-btn" class="flex-1 px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled style="box-shadow: 0 4px 6px var(--modal-overlay), 0 2px 4px var(--modal-overlay), 0 0 1px var(--border-color) inset;">
+                        <i class="fas fa-check mr-2"></i>Apply Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
 <div id="settings-step-actions" class="settings-step hidden" data-step-name="Actions">

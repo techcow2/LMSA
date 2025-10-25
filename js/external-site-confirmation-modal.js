@@ -85,7 +85,7 @@ function createExternalSiteModal() {
             <h2 id="external-site-title" class="text-xl font-bold mb-4 flex items-center modal-title">
                 <i class="fas fa-external-link-alt mr-2 ${isLightTheme ? 'text-blue-600' : 'text-blue-400'}"></i>Leaving LMSA
             </h2>
-            <div id="external-site-message" class="${isLightTheme ? 'mb-5 p-3 bg-blue-50 rounded-lg border border-blue-200 text-slate-700' : 'mb-5 p-3 bg-blue-900/20 rounded-lg border border-blue-800/30 text-gray-200'}">
+            <div id="external-site-message" class="${isLightTheme ? 'mb-5 p-3 bg-blue-50 rounded-lg text-slate-700' : 'mb-5 p-3 bg-blue-900/20 rounded-lg text-gray-200'}">
                 You are about to leave the LMSA app and visit an external website. Once you leave, you will no longer be covered by the <span class="${isLightTheme ? 'text-blue-700 font-medium' : 'text-blue-300 font-medium'}">LMSA Privacy Policy</span>, but instead by the privacy policy of the site you are visiting.
             </div>
             <div class="flex justify-end space-x-4">
@@ -293,7 +293,7 @@ export function updateExternalSiteModalTheme() {
         if (messageBox) {
             // Ensure message box has correct styling based on theme
             if (isLightTheme) {
-                messageBox.className = 'mb-5 p-3 bg-blue-50 rounded-lg border border-blue-200 text-slate-700';
+                messageBox.className = 'mb-5 p-3 bg-blue-50 rounded-lg text-slate-700';
                 
                 // Make sure the LMSA Privacy Policy text is highlighted appropriately for light theme
                 const messageText = messageBox.innerHTML;
@@ -305,7 +305,7 @@ export function updateExternalSiteModalTheme() {
                     );
                 }
             } else {
-                messageBox.className = 'mb-5 p-3 bg-blue-900/20 rounded-lg border border-blue-800/30 text-gray-200';
+                messageBox.className = 'mb-5 p-3 bg-blue-900/20 rounded-lg text-gray-200';
                 
                 // Make sure the LMSA Privacy Policy text is highlighted appropriately for dark theme
                 const messageText = messageBox.innerHTML;
@@ -436,4 +436,4 @@ document.addEventListener('themeChanged', () => {
             modal.classList.add('bg-black', 'bg-opacity-70');
         }
     }
-}); 
+});

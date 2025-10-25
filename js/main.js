@@ -15,6 +15,7 @@ import { initializeExportImport } from './export-import.js';
 import { initializeModelManager } from './model-manager.js';
 import { initializeWhatsNew } from './whats-new.js';
 import { initializeSettingsModal } from './settings-modal-manager.js';
+import { initializeIpPortConfirmationModal } from './ip-port-confirmation-modal.js';
 import { memoryManager } from './memory-manager.js';
 import { messageCache } from './message-cache.js';
 import { chatHistoryOptimizer } from './chat-history-optimizer.js';
@@ -126,6 +127,7 @@ async function initializeApp() {
     
     initializeCollapsibleSections();
     initializeSettingsModal();
+    initializeIpPortConfirmationModal();
     
     // Initialize saved system prompts functionality
     try {
