@@ -7,9 +7,6 @@
   <a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
     <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80">
   </a>
-  <a href="https://github.com/techcow2/LMSA/releases">
-    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" height="80">
-  </a>
 </p>
 
 ## Table of Contents
