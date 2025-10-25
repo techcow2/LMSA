@@ -105,7 +105,6 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 
 The easiest way to use LMSA is by installing the official Android app from the Google Play Store:
 
-**Get it on Google Play:**
 <a href="https://play.google.com/store/apps/details?id=com.lmsa.app">
   <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80">
 </a>
