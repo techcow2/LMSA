@@ -117,8 +117,7 @@ LMSA (LM Studio Assistant) is an Android front-end application for LM Studio tha
 
 <h2 id="getting-started">📱 Getting Started</h2>
 
-<details>
-<summary><strong>Option 1: Build the Android App</strong> (Click to expand/collapse)</summary>
+### Build the Android App
 
 #### Prerequisites
 - Android Studio installed on your computer
@@ -165,69 +164,6 @@ The Android app provides:
 - Easy integration with Android file system
 
 **Note:** As this app is no longer maintained, use at your own discretion.
-
-</details>
-
-<details>
-<summary><strong>Option 2: Web Browser Alternative (No App Installation Required)</strong> (Click to expand/collapse)</summary>
-
-If you don't want to install the Android app, you can run LMSA directly in your web browser using a simple Python HTTP server. This allows you to access LMSA from any device on your local network, including Android phones, tablets, and computers.
-
-#### Prerequisites
-- Python 3 installed on your computer
-- LM Studio running and configured (see setup instructions below)
-- Both devices connected to the same local network
-
-#### Setup Instructions
-
-##### 1. Clone the Repository
-First, clone the LMSA repository to your computer:
-```bash
-git clone https://github.com/techcow2/LMSA.git
-cd LMSA
-```
-
-##### 2. Start the Python HTTP Server
-Open a command prompt or terminal on the same computer where LM Studio is running:
-
-**For Windows:**
-```cmd
-cd "C:\path\to\your\LMSA\folder"
-python -m http.server 8000
-```
-
-**For macOS/Linux:**
-```bash
-cd /path/to/your/LMSA/folder
-python3 -m http.server 8000
-```
-
-##### 3. Find Your Computer's IP Address
-You need to find your computer's local network IP address:
-
-**Windows:**
-- Open Command Prompt and type: `ipconfig`
-- Look for "Wireless LAN adapter Wi-Fi" or "Ethernet adapter"
-- Note the "IPv4 Address" (usually starts with 192.168.x.x or 10.x.x.x)
-
-**macOS:**
-- Go to System Preferences > Network
-- Select your active connection (Wi-Fi or Ethernet)
-- Note the IP address
-
-**Linux:**
-- Open Terminal and type: `ip addr show` or `ifconfig`
-- Look for your active network interface
-- Note the IP address (usually starts with 192.168.x.x or 10.x.x.x)
-
-##### 4. Access LMSA from Your Android Device
-1. Open the web browser on your Android device
-2. Navigate to: `http://[YOUR_COMPUTER_IP]:8000`
-   - Replace `[YOUR_COMPUTER_IP]` with your computer's actual IP address
-   - Example: `http://192.168.1.100:8000`
-3. The LMSA interface will load in your browser
-
-</details>
 
 
 <h2 id="how-it-works">💻 How It Works</h2>
