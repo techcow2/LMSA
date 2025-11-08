@@ -22,9 +22,9 @@ This project is now open-source under the **MIT License**.
 You are free to fork this code, learn from it, maintain it, or even re-launch it under your *own* developer account. By using, downloading, or forking this code, you agree that you are solely responsible for its use and any legal or safety obligations that come with it. The original developer provides this code "as-is" with no warranties and assumes **no liability**.
 
 # LMSA - LM Studio Android 
-![Status: Open Source](https://img.shields.io/badge/Status-Open%20Source-brightgreen)
+![Status: Unmaintained](https://img.shields.io/badge/Status-Unmaintained-red)
 ![Version: 8.8](https://img.shields.io/badge/Version-8.8-blue)
-![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
+![License: MIT](https://img.shields.io/badge/License-MIT-green)
 
 ## Table of Contents
 
