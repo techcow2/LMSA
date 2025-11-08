@@ -26,12 +26,6 @@ You are free to fork this code, learn from it, maintain it, or even re-launch it
 ![Version: 8.8](https://img.shields.io/badge/Version-8.8-blue)
 ![Release: Community](https://img.shields.io/badge/Release-Community%20Driven-blue)
 
-<p align="left">
-  <a href="https://github.com/techcow2/LMSA/releases">
-    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="Get it on GitHub" height="80">
-  </a>
-</p>
-
 ## Table of Contents
 
 - [🆕 What's New](#whats-new)
