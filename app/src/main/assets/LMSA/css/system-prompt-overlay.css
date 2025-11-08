@@ -1,0 +1,725 @@
+/* System Prompt Overlay Styles */
+
+/* Main overlay container */
+#system-prompt-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--modal-overlay);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    padding: 1rem;
+    overflow-y: auto;
+    opacity: 0.95;
+    /* Use dynamic viewport units for better mobile support */
+    height: 100vh;
+    height: 100dvh;
+}
+
+#system-prompt-overlay.active {
+    opacity: 1;
+}
+
+/* Modal content container - now using the proper modal structure */
+#system-prompt-overlay .modal-content {
+    background: var(--modal-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    max-height: 90vh;
+    width: 100%;
+    max-width: 700px;
+    margin: auto;
+    position: relative;
+    padding: 2rem;
+}
+
+/* Header styling */
+#system-prompt-overlay .flex.justify-between {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+    transform: none;
+    will-change: auto;
+}
+
+#system-prompt-overlay h2 {
+    color: var(--modal-title);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    transform: none;
+    will-change: auto;
+    font-size: 2rem;
+}
+
+#system-prompt-overlay h2 i {
+    color: var(--button-primary-bg);
+    font-size: 1.25rem;
+}
+
+
+
+/* Textarea styling */
+#system-prompt-editor {
+    background-color: var(--settings-input-bg);
+    border: 1px solid var(--settings-input-border);
+    border-radius: 0.75rem;
+    color: var(--settings-input-text);
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: 1rem;
+    resize: none;
+    min-height: 200px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#system-prompt-editor:focus {
+    outline: none;
+    border-color: var(--button-primary-bg);
+    box-shadow:
+        0 0 0 2px rgba(59, 130, 246, 0.3),
+        inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Button container */
+#system-prompt-overlay .flex.justify-between:last-child {
+    margin-top: 0.5rem;
+}
+
+/* Button styling */
+#system-prompt-overlay button {
+    border-radius: 0.375rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#cancel-system-prompt-edit {
+    background-color: transparent;
+    color: var(--modal-text);
+    border-color: var(--border-color);
+}
+
+#cancel-system-prompt-edit:hover {
+    background-color: var(--sidebar-item-hover);
+}
+
+#save-system-prompt-edit {
+    background-color: rgb(37, 99, 235);
+    color: white;
+    border-color: rgb(37, 99, 235);
+}
+
+#save-system-prompt-edit:hover {
+    background-color: rgb(29, 78, 216);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#save-system-prompt-edit:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Close button styling */
+#close-system-prompt-overlay {
+    background: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: var(--modal-text);
+    cursor: pointer;
+    font-size: 2rem !important;
+    line-height: 1;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+    border-radius: 0.25rem;
+    transform: translateX(12px);
+    transition: all 0.2s ease;
+}
+
+#close-system-prompt-overlay:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+#close-system-prompt-overlay:focus-visible {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Ensure no webkit or browser default styles interfere */
+#close-system-prompt-overlay {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-focus-ring-color: transparent;
+}
+
+/* Remove any potential ring or border on all states */
+#close-system-prompt-overlay,
+#close-system-prompt-overlay:hover,
+#close-system-prompt-overlay:focus,
+#close-system-prompt-overlay:active,
+#close-system-prompt-overlay:focus-visible {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#close-system-prompt-overlay:hover {
+    background-color: var(--sidebar-item-hover);
+    color: var(--modal-title);
+    transform: translateY(-1px);
+}
+
+#close-system-prompt-overlay:active {
+    transform: translateY(0);
+    background-color: var(--settings-label-bg);
+}
+
+/* Clear button styling in overlay */
+#clear-system-prompt-btn {
+    background-color: transparent;
+    color: rgb(220, 38, 38);
+    border: 1px solid rgb(252, 165, 165);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#clear-system-prompt-btn:hover {
+    background-color: rgb(254, 242, 242);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: rgb(185, 28, 28);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+.dark #clear-system-prompt-btn {
+    color: rgb(248, 113, 113);
+    border-color: rgb(220, 38, 38);
+}
+
+.dark #clear-system-prompt-btn:hover {
+    background-color: rgba(127, 29, 29, 0.2);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: rgb(220, 38, 38);
+}
+
+#clear-system-prompt-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Responsive adjustments for mobile and small tablets */
+@media (max-width: 768px) {
+    #system-prompt-overlay {
+        padding: 0.5rem;
+    }
+
+    #system-prompt-overlay .modal-content {
+        padding: 1rem;
+        max-width: 95%;
+    }
+
+    #system-prompt-editor {
+        min-height: 150px;
+        font-size: 0.95rem;
+        padding: 0.75rem;
+    }
+
+    #system-prompt-overlay button {
+        padding: 0.5rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    #clear-system-prompt-btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    #system-prompt-overlay h2 {
+        font-size: 1.25rem;
+    }
+
+    /* Ensure close button maintains size and position */
+    #close-system-prompt-overlay {
+        font-size: 2rem !important;
+        padding: 0.5rem 1rem 0.5rem 0.5rem;
+        transform: translateX(12px);
+    }
+}
+
+/* Tablet-specific enhancements (768px-1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    #system-prompt-overlay .modal-content {
+        max-width: 650px;
+        width: 90%;
+        padding: 1.5rem;
+        border-radius: 1.25rem;
+    }
+
+    #system-prompt-editor {
+        min-height: 180px;
+        font-size: 1rem;
+    }
+
+    /* Improve button spacing for tablets */
+    #system-prompt-overlay .flex.justify-between:last-child {
+        margin-top: 1rem;
+    }
+
+    #system-prompt-overlay button {
+        min-width: 100px;
+        min-height: 44px;
+    }
+
+    /* Ensure close button maintains size and position on tablets */
+    #close-system-prompt-overlay {
+        font-size: 2rem !important;
+        padding: 0.5rem 1rem 0.5rem 0.5rem;
+        transform: translateX(12px);
+        width: auto;
+        min-width: auto;
+        min-height: auto;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    #system-prompt-overlay .modal-content {
+        padding: 0.75rem;
+        max-width: 100%;
+        margin: 0.5rem;
+    }
+
+    #system-prompt-overlay .flex.justify-between {
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    #system-prompt-editor {
+        min-height: 120px;
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+
+    #system-prompt-overlay button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+        min-width: 80px; /* Ensure buttons are wide enough for touch */
+        min-height: 40px; /* Ensure buttons are tall enough for touch */
+    }
+
+    #system-prompt-overlay h2 {
+        font-size: 1.1rem;
+    }
+
+
+
+    /* Improve spacing between buttons for touch */
+    #system-prompt-overlay .flex.justify-end {
+        gap: 10px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    #system-prompt-overlay {
+        padding: 0.25rem;
+        /* Use dynamic viewport height to account for mobile keyboards */
+        height: 100dvh;
+        min-height: 100vh;
+    }
+
+    #system-prompt-overlay .modal-content {
+        padding: 0.5rem;
+        max-height: calc(100dvh - 0.5rem);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        /* Ensure modal fits within safe areas */
+        margin: 0.25rem;
+        margin-top: max(0.25rem, env(safe-area-inset-top));
+        margin-bottom: max(0.25rem, env(safe-area-inset-bottom));
+    }
+
+    #system-prompt-editor {
+        min-height: 80px;
+        max-height: 40vh;
+        resize: vertical;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Stack buttons on very small screens */
+    #system-prompt-overlay .flex.justify-between:last-child {
+        flex-direction: column-reverse;
+        gap: 6px;
+        margin-top: 0.5rem;
+        /* Ensure buttons are always visible */
+        position: sticky;
+        bottom: 0;
+        background: var(--modal-bg);
+        padding-top: 0.5rem;
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    #system-prompt-overlay .flex.justify-between:last-child .flex {
+        width: 100%;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    #system-prompt-overlay button {
+        width: 100%;
+        min-height: 44px;
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+    }
+
+    /* Optimize header for ultra-small screens */
+    #system-prompt-overlay .flex.justify-between {
+        padding-bottom: 0.375rem;
+        margin-bottom: 0.5rem;
+        flex-wrap: nowrap;
+    }
+
+    #system-prompt-overlay h2 {
+        font-size: 1rem;
+        line-height: 1.2;
+        flex-shrink: 1;
+        min-width: 0;
+    }
+
+    #close-system-prompt-overlay {
+        width: 44px;
+        height: 36px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 36px;
+        font-size: 2rem !important;
+        padding: 0.5rem 1rem 0.5rem 0.5rem;
+        transform: translateX(12px);
+    }
+}
+
+/* iPhone SE specific optimizations */
+@media (min-width: 361px) and (max-width: 375px) {
+    #system-prompt-overlay {
+        padding: 0.5rem;
+    }
+
+    #system-prompt-overlay .modal-content {
+        padding: 0.75rem;
+        max-width: 100%;
+        margin: 0.5rem;
+    }
+
+    #system-prompt-editor {
+        min-height: 120px;
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+
+    /* Improve button layout for iPhone SE */
+    #system-prompt-overlay .flex.justify-end {
+        gap: 12px;
+    }
+
+    #system-prompt-overlay button {
+        min-width: 90px;
+        min-height: 44px; /* Better touch target */
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* Optimize header for iPhone SE */
+    #system-prompt-overlay .flex.justify-between {
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    #system-prompt-overlay h2 {
+        font-size: 1.1rem;
+    }
+
+
+}
+
+/* Desktop enhancements (larger screens) */
+@media (min-width: 1025px) {
+    #system-prompt-overlay .modal-content {
+        max-width: 800px;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        box-shadow:
+            0 20px 25px -5px rgba(0, 0, 0, 0.5),
+            0 10px 10px -5px rgba(0, 0, 0, 0.2),
+            0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    }
+
+    #system-prompt-editor {
+        min-height: 250px;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        padding: 1.25rem;
+        border-radius: 1rem;
+    }
+
+    #system-prompt-overlay h2 {
+        font-size: 1.5rem;
+    }
+
+    #system-prompt-overlay .flex.justify-between {
+        margin-bottom: 1.5rem;
+    }
+
+    #system-prompt-overlay .flex.justify-end {
+        margin-top: 1.5rem;
+    }
+
+    #system-prompt-overlay button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        min-width: 120px;
+        border-radius: 0.75rem;
+    }
+
+    /* Add subtle hover effects for desktop */
+    #system-prompt-editor:hover {
+        border-color: var(--border-color-hover);
+    }
+}
+
+/* Ultra-small screens (smaller than 320px) */
+@media (max-width: 320px) {
+    #system-prompt-overlay {
+        padding: 0.125rem;
+    }
+
+    #system-prompt-overlay .modal-content {
+        padding: 0.375rem;
+        margin: 0.125rem;
+        border-radius: 0.5rem;
+    }
+
+    #system-prompt-editor {
+        min-height: 60px;
+        max-height: 35vh;
+        font-size: 0.85rem;
+        padding: 0.375rem;
+        line-height: 1.3;
+    }
+
+    #system-prompt-overlay h2 {
+        font-size: 0.9rem;
+    }
+
+    #system-prompt-overlay button {
+        min-height: 40px;
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+
+}
+
+/* Landscape orientation for small devices */
+@media (max-width: 768px) and (max-height: 500px) and (orientation: landscape) {
+    #system-prompt-overlay {
+        padding: 0.25rem;
+        height: 100dvh;
+        min-height: 100vh;
+    }
+
+    #system-prompt-overlay .modal-content {
+        max-height: calc(100dvh - 0.5rem);
+        padding: 0.5rem;
+        margin: 0.25rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #system-prompt-editor {
+        min-height: 60px;
+        max-height: 30vh;
+        flex: 1;
+        resize: none;
+    }
+
+    /* Keep buttons horizontal in landscape */
+    #system-prompt-overlay .flex.justify-end {
+        flex-direction: row;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        position: sticky;
+        bottom: 0;
+        background: var(--modal-bg);
+        padding-top: 0.5rem;
+    }
+
+    #system-prompt-overlay button {
+        flex: 1;
+        min-height: 36px;
+        font-size: 0.85rem;
+    }
+
+    /* Compact header for landscape */
+    #system-prompt-overlay .flex.justify-between {
+        padding-bottom: 0.25rem;
+        margin-bottom: 0.375rem;
+    }
+
+    #system-prompt-overlay h2 {
+        font-size: 0.95rem;
+    }
+
+
+}
+
+/* Keyboard visible state adjustments */
+@media (max-width: 480px) {
+    #system-prompt-overlay.keyboard-visible {
+        /* Height and positioning will be set dynamically by JavaScript */
+        padding: 0.75rem;
+        align-items: stretch;
+        justify-content: flex-start;
+        padding-top: max(0.75rem, env(safe-area-inset-top));
+        padding-bottom: 0.75rem;
+        /* Ensure no gaps */
+        margin: 0;
+    }
+
+    #system-prompt-overlay.keyboard-visible .modal-content {
+        height: calc(100% - 1.5rem);
+        max-height: none;
+        margin: 0;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        /* Ensure it takes full available space */
+        flex: 1;
+    }
+
+    #system-prompt-overlay.keyboard-visible #system-prompt-editor {
+        flex: 1;
+        min-height: 150px;
+        max-height: none;
+        resize: none;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 1rem;
+    }
+
+    /* Ensure buttons remain visible and accessible */
+    #system-prompt-overlay.keyboard-visible .flex.justify-between:last-child {
+        flex-shrink: 0;
+        margin-top: 0;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Header adjustments for keyboard visible state */
+    #system-prompt-overlay.keyboard-visible .flex.justify-between:first-child {
+        flex-shrink: 0;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+    }
+}
+
+/* High DPI / Retina display optimizations for small screens */
+@media (max-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+    #system-prompt-overlay button {
+        /* Slightly larger touch targets on high DPI small screens */
+        min-height: 46px;
+        padding: 0.75rem 1rem;
+    }
+
+
+}
+
+/* Accessibility improvements for small screens */
+@media (max-width: 480px) {
+    /* Ensure focus indicators are visible on small screens */
+    #system-prompt-editor:focus {
+        outline: 2px solid var(--button-primary-bg);
+        outline-offset: 2px;
+    }
+
+    /* Improve button focus indicators */
+    #system-prompt-overlay button:focus {
+        outline: 2px solid var(--button-primary-bg);
+        outline-offset: 2px;
+    }
+
+
+
+    /* Improve touch feedback */
+    #system-prompt-overlay button:active {
+        transform: scale(0.98);
+    }
+
+    /* Prevent text selection on buttons for better touch experience */
+    #system-prompt-overlay button {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Ensure textarea is scrollable with touch */
+    #system-prompt-editor {
+        -webkit-overflow-scrolling: touch;
+        touch-action: manipulation;
+        overscroll-behavior: contain;
+    }
+}
+
+/* Prevent zoom on input focus for iOS */
+@media (max-width: 480px) {
+    #system-prompt-editor {
+        font-size: max(16px, 0.9rem); /* Prevent iOS zoom */
+    }
+}
+
+/* Dark mode specific improvements for small screens */
+@media (max-width: 480px) and (prefers-color-scheme: dark) {
+    #system-prompt-overlay .modal-content {
+        /* Ensure good contrast in dark mode */
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    #system-prompt-editor {
+        /* Better visibility in dark mode */
+        background-color: rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Animation for modal appearance */

@@ -1,0 +1,22 @@
+*.iml
+.gradle
+/local.properties
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# IDE settings - personal workspace files
+.idea/
+
+# Ignore all build directories
+**/build/
+app/build/
+
+# Kotlin
+.kotlin/
+
+# VS Code
+.vscode/

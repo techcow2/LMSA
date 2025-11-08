@@ -1,0 +1,1106 @@
+/* Performance Optimizations CSS */
+/* Replace layout-changing animations with transform-based animations */
+
+/* Optimized Button Animations */
+.header-btn,
+.btn,
+button {
+    /* Use transform instead of changing width/height/position */
+    will-change: transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.header-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.header-btn:active {
+    transform: translateY(0) scale(0.98);
+    
+}
+
+/* Optimized Modal Animations */
+.modal,
+#settings-modal,
+#character-gallery,
+#whats-new-modal {
+    /* Use transform for show/hide instead of display changes */
+    transform: translateY(-50px) scale(0.95);
+    opacity: 0;
+    visibility: hidden;
+    will-change: transform, opacity;
+}
+
+.modal.show,
+#settings-modal.show,
+#character-gallery.show,
+#whats-new-modal.show {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Optimized Sidebar Animations - Buttery Smooth */
+#sidebar {
+    transform: translateX(-100%);
+    will-change: transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    -moz-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+}
+
+#sidebar.active {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+/* Optimized Message Animations */
+.message {
+    transform: translateY(20px);
+    opacity: 0;
+}
+
+
+/* Optimized Loading Animations */
+.loading-indicator {
+    transform: scale(0.8);
+    opacity: 0;
+}
+
+.loading-indicator.visible {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Optimized Character Gallery Animations */
+.character-card {
+    transform: translateY(10px);
+    opacity: 0;
+    will-change: transform;
+}
+
+.character-card.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.character-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Optimized File Preview Animations */
+.file-preview {
+    transform: scale(0.9);
+    opacity: 0;
+}
+
+.file-preview.loaded {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Optimized Tooltip Animations */
+.tooltip {
+    transform: translateY(10px) scale(0.8);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.tooltip.show {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* Optimized Scroll Animations */
+.scroll-to-bottom {
+    transform: translateY(50px) scale(0.8);
+    opacity: 0;
+}
+
+.scroll-to-bottom.visible {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* Optimized Ripple Effect */
+.ripple-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-effect::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+}
+
+.ripple-effect:active::after {
+    width: 200px;
+    height: 200px;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    
+}
+
+/* Optimized Welcome Message Animation */
+.welcome-message {
+    transform: translateY(30px);
+    opacity: 0;
+}
+
+.welcome-message.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Hardware Acceleration for Better Performance */
+.hardware-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform;
+}
+
+/* Optimized Chat Input Animation */
+#user-input {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    will-change: transform;
+}
+
+#user-input:focus {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Optimized Settings Panel Animations */
+.settings-step {
+    transform: translateX(30px);
+    opacity: 0;
+}
+
+.settings-step.active {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* Optimized Menu Animations */
+.dropdown-menu,
+.context-menu {
+    transform: translateY(-10px) scale(0.95);
+    opacity: 0;
+    transform-origin: top;
+}
+
+.dropdown-menu.show,
+.context-menu.show {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* Performance optimization for scrolling */
+.messages-container {
+    /* Enable hardware acceleration for smooth scrolling */
+    transform: translateZ(0);
+    -webkit-overflow-scrolling: touch;
+    contain: layout style paint;
+}
+
+/* Optimized fade animations */
+.fade-in {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.fade-in.active {
+    opacity: 1;
+}
+
+.fade-out {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.fade-out.active {
+    opacity: 0;
+}
+
+/* Optimized spin animation for loading */
+.spin {
+    animation: spin 1s linear infinite;
+    will-change: transform;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Memory-efficient transitions */
+.efficient-transition {
+    /* Only animate transform and opacity for best performance */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
+}
+
+/* Remove will-change after animations complete */
+.remove-will-change {
+    will-change: auto;
+}
+
+
+/* High contrast mode optimizations */
+@media (prefers-contrast: high), (-ms-high-contrast: active) {
+    /* Reduce complex animations for better accessibility */
+    .header-btn,
+    .btn,
+    button {
+        transition: opacity 0.2s ease;
+    }
+    
+    .header-btn:hover {
+        transform: none;
+        opacity: 0.8;
+    }
+}
+
+/* Reduced motion optimizations */
+@media (prefers-reduced-motion: reduce) {
+    /* Respect user's motion preferences */
+    .header-btn,
+    .btn,
+    button,
+    .modal,
+    .character-card,
+    .welcome-message,
+    .settings-step {
+        transition: none;
+        animation: none;
+    }
+    
+    .header-btn:hover,
+    .character-card:hover {
+        transform: none;
+        opacity: 0.8;
+    }
+}
+
+/* Force hardware acceleration for specific elements */
+.force-gpu {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Container queries for better responsive animations */
+@supports (container-type: inline-size) {
+    .animation-container {
+        container-type: inline-size;
+    }
+
+    @container (max-width: 480px) {
+        .character-card {
+            transform: none;
+        }
+    }
+}
+
+/* ============================================
+   Light Theme Color Overrides - VERSION 2.0
+   Fixes hardcoded Tailwind colors to work with light theme
+   MUST LOAD LAST for proper CSS cascade
+   Updated: 2025-10-18
+   ============================================ */
+
+/* Blue accent colors for icons and text */
+body.light-theme .text-blue-400,
+body.light-theme i.text-blue-400 {
+  color: #2563eb !important; /* Darker blue for better visibility */
+}
+
+body.light-theme .text-blue-500 {
+  color: #1d4ed8 !important;
+}
+
+body.light-theme .text-blue-600 {
+  color: #1e40af !important;
+}
+
+/* Red accent colors (trash icons, danger elements) */
+body.light-theme .text-red-400,
+body.light-theme i.text-red-400 {
+  color: #dc2626 !important; /* Red-600 for better contrast */
+}
+
+body.light-theme .text-red-500 {
+  color: #dc2626 !important;
+}
+
+body.light-theme .text-red-600 {
+  color: #b91c1c !important;
+}
+
+/* Yellow accent colors (sun icon, warnings) */
+body.light-theme .text-yellow-400,
+body.light-theme i.text-yellow-400 {
+  color: #ca8a04 !important; /* Yellow-600 for better contrast */
+}
+
+body.light-theme .text-yellow-500 {
+  color: #ca8a04 !important;
+}
+
+/* Green accent colors */
+body.light-theme .text-green-400 {
+  color: #16a34a !important; /* Green-600 */
+}
+
+body.light-theme .text-green-500 {
+  color: #16a34a !important;
+}
+
+/* Gray text colors - CRITICAL for readability */
+body.light-theme .text-gray-100 {
+  color: #1e293b !important; /* Convert light gray to dark for light theme */
+}
+
+body.light-theme .text-gray-200 {
+  color: #1e293b !important; /* Dark slate for primary text */
+}
+
+body.light-theme .text-gray-300 {
+  color: #334155 !important; /* Slate-700 for secondary text */
+}
+
+body.light-theme .text-gray-400 {
+  color: #64748b !important; /* Slate-500 for muted text */
+}
+
+body.light-theme .text-gray-500 {
+  color: #64748b !important;
+}
+
+body.light-theme .text-gray-600 {
+  color: #475569 !important; /* Slate-600 */
+}
+
+body.light-theme .text-gray-700 {
+  color: #334155 !important; /* Slate-700 */
+}
+
+body.light-theme .text-gray-800 {
+  color: #1e293b !important; /* Slate-800 */
+}
+
+/* White text should remain white on colored buttons, but become dark on plain backgrounds */
+body.light-theme h3.text-white:not(button .text-white),
+body.light-theme label.text-white:not(button .text-white),
+body.light-theme span.text-white:not(button .text-white),
+body.light-theme div.text-white:not(button .text-white):not([class*="bg-red"]):not([class*="bg-blue"]):not([class*="bg-gray-6"]) {
+  color: #1e293b !important;
+}
+
+/* Ensure buttons with text-white class remain white in light theme */
+body.light-theme button.text-white {
+  color: white !important;
+}
+
+/* Privacy policy close button should remain white in light theme */
+body.light-theme #privacy-policy-close-btn {
+  color: white !important;
+}
+
+/* Fix Apply Changes button in network settings modal to have black text in light theme */
+body.light-theme #ip-port-confirm-btn {
+  color: #1e293b !important;
+}
+
+/* IP/port confirmation modal checkbox styling */
+#ip-port-confirmation-modal input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  max-width: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 5px !important;
+  position: relative !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+  align-self: center !important;
+  margin: 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Dark theme checkbox styling */
+#ip-port-confirmation-modal input[type="checkbox"] {
+  background-color: #2c2c2c;
+  border: 2px solid #64748b;
+}
+
+#ip-port-confirmation-modal input[type="checkbox"]:hover {
+  border-color: #f97316;
+  transform: scale(1.05);
+}
+
+#ip-port-confirmation-modal input[type="checkbox"]:checked {
+  background-color: #f97316;
+  border-color: #f97316;
+  transform: scale(1.05);
+}
+
+#ip-port-confirmation-modal input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -1px;
+  left: 2px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* Light theme checkbox styling */
+body.light-theme #ip-port-confirmation-modal input[type="checkbox"] {
+  background-color: #f8fafc;
+  border: 2px solid #94a3b8;
+}
+
+body.light-theme #ip-port-confirmation-modal input[type="checkbox"]:hover {
+  border-color: #f97316;
+  transform: scale(1.05);
+}
+
+body.light-theme #ip-port-confirmation-modal input[type="checkbox"]:checked {
+  background-color: #f97316;
+  border-color: #f97316;
+  transform: scale(1.05);
+}
+
+body.light-theme #ip-port-confirmation-modal input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -1px;
+  left: 2px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* IP/Port confirmation modal responsive width adjustments */
+/* Make modal narrower on desktop and tablet screens for better UX */
+@media (min-width: 768px) {
+  #ip-port-confirmation-modal .modal-content {
+    width: 480px !important;
+    max-width: 90% !important;
+  }
+}
+
+/* Further optimize for larger desktop screens */
+@media (min-width: 1024px) {
+  #ip-port-confirmation-modal .modal-content {
+    width: 420px !important;
+    max-width: 85% !important;
+  }
+}
+
+/* Extra large screens - keep it compact */
+@media (min-width: 1440px) {
+  #ip-port-confirmation-modal .modal-content {
+    width: 400px !important;
+    max-width: 80% !important;
+  }
+}
+
+/* Enhanced touch targets and spacing for mobile devices */
+@media (max-width: 767px) {
+  #ip-port-confirmation-modal input[type="checkbox"] {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    max-width: 22px !important;
+    min-height: 22px !important;
+    max-height: 22px !important;
+    aspect-ratio: 1 / 1 !important;
+    margin-right: 4px !important;
+  }
+  
+  #ip-port-confirmation-modal input[type="checkbox"]:checked::after {
+    font-size: 15px;
+    left: 2.5px;
+  }
+  
+  body.light-theme #ip-port-confirmation-modal input[type="checkbox"]:checked::after {
+    font-size: 15px;
+    left: 2.5px;
+  }
+  
+  /* Increase spacing between checkbox items on mobile */
+  #ip-port-confirmation-modal .space-y-4 > div {
+    margin-bottom: 1rem;
+  }
+  
+  /* Better touch target for labels */
+  #ip-port-confirmation-modal label {
+    padding: 4px 0;
+    line-height: 1.4;
+  }
+}
+
+/* Progress tracker styling for IP/Port confirmation modal */
+#checklist-progress-tracker {
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--settings-label-bg) 0%, rgba(249, 115, 22, 0.05) 100%);
+  border: 2px solid rgba(249, 115, 22, 0.2);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.1);
+  transition: all 0.3s ease;
+}
+
+#progress-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+#progress-count {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #f97316 !important;
+  text-shadow: 0 1px 2px rgba(249, 115, 22, 0.3);
+}
+
+/* Light theme adjustments for progress tracker */
+body.light-theme #checklist-progress-tracker {
+  background: linear-gradient(135deg, #f8fafc 0%, rgba(249, 115, 22, 0.08) 100%);
+  border-color: rgba(249, 115, 22, 0.3);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.15);
+}
+
+body.light-theme #progress-text {
+  color: #1e293b !important;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+body.light-theme #progress-count {
+  color: #ea580c !important;
+  text-shadow: 0 1px 2px rgba(234, 88, 12, 0.2);
+}
+
+/* Mobile responsive adjustments for progress tracker */
+@media (max-width: 767px) {
+  #checklist-progress-tracker {
+    padding: 10px 12px;
+    margin: 12px 0;
+  }
+  
+  #progress-text {
+    font-size: 1rem;
+  }
+  
+  #progress-count {
+    font-size: 1.1rem;
+  }
+}
+
+/* Hover states for gray text */
+body.light-theme .hover\:text-gray-200:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .hover\:text-gray-700:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .hover\:text-gray-800:hover {
+  color: #0f172a !important;
+}
+
+body.light-theme .hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+/* Background colors */
+body.light-theme .bg-gray-600 {
+  background-color: #cbd5e1 !important; /* Light slate-300 */
+}
+
+body.light-theme .bg-gray-700 {
+  background-color: #94a3b8 !important; /* Slate-400 */
+}
+
+/* Border colors */
+body.light-theme .border-gray-300 {
+  border-color: #cbd5e1 !important;
+}
+
+body.light-theme .border-gray-600 {
+  border-color: #94a3b8 !important;
+}
+
+/* Dark theme specific overrides for light theme */
+body.light-theme .dark\:text-gray-200 {
+  color: #1e293b !important;
+}
+
+body.light-theme .dark\:text-gray-300 {
+  color: #334155 !important;
+}
+
+body.light-theme .dark\:text-gray-400 {
+  color: #64748b !important;
+}
+
+body.light-theme .dark\:text-blue-400 {
+  color: #2563eb !important;
+}
+
+body.light-theme .dark\:text-blue-500 {
+  color: #1d4ed8 !important;
+}
+
+body.light-theme .dark\:hover\:text-gray-200:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .dark\:hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+body.light-theme .dark\:border-gray-600 {
+  border-color: #cbd5e1 !important;
+}
+
+body.light-theme .dark\:hover\:bg-gray-700:hover {
+  background-color: #e2e8f0 !important;
+}
+
+/* Light theme specific overrides */
+body.light-theme .light\:text-blue-600 {
+  color: #1d4ed8 !important;
+}
+
+body.light-theme .light\:text-gray-600 {
+  color: #475569 !important;
+}
+
+body.light-theme .light\:text-gray-700 {
+  color: #334155 !important;
+}
+
+body.light-theme .light\:hover\:text-gray-800:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .light\:hover\:bg-blue-200\/50:hover {
+  background-color: rgba(191, 219, 254, 0.5) !important;
+}
+
+/* Special cases */
+body.light-theme .dark-icon {
+  color: #1e293b !important;
+}
+
+body.light-theme .light-icon {
+  color: #f59e0b !important; /* Keep sun icon yellow */
+}
+
+body.light-theme .dark-footer-text {
+  color: #475569 !important;
+}
+
+/* Input placeholders */
+body.light-theme input::placeholder,
+body.light-theme textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Modal close buttons */
+body.light-theme .close-modal,
+body.light-theme button[id*="close-"] {
+  color: #64748b !important;
+}
+
+body.light-theme .close-modal:hover,
+body.light-theme button[id*="close-"]:hover {
+  color: #334155 !important;
+}
+
+/* Lock icon color in light theme */
+body.light-theme #temperature-lock i.fa-lock {
+  color: #dc2626 !important;
+}
+
+body.light-theme #temperature-lock i.fa-unlock {
+  color: #16a34a !important;
+}
+
+/* Settings modal icon colors */
+body.light-theme #settings-modal i.fas {
+  color: #2563eb !important;
+}
+
+body.light-theme #settings-modal i.fa-trash-alt {
+  color: #dc2626 !important;
+}
+
+body.light-theme #settings-modal i.fa-exclamation-triangle {
+  color: #d97706 !important;
+}
+
+/* Ensure trash icons in sidebar remain red */
+body.light-theme .trash-icon-container .fas.fa-trash {
+  color: #dc2626 !important;
+}
+
+body.light-theme .trash-icon-container:hover .fas.fa-trash {
+  color: #b91c1c !important;
+}
+
+/* Chat history icon colors */
+body.light-theme .chat-history-icon {
+  color: #2563eb !important;
+}
+
+/* Heart icon should remain red */
+body.light-theme i.fa-heart {
+  color: #ef4444 !important;
+}
+
+/* File attachment icons */
+body.light-theme .fa-file,
+body.light-theme .fa-paperclip {
+  color: #2563eb !important;
+}
+
+/* Button icons inside professional buttons */
+body.light-theme .professional-button i {
+  color: inherit !important; /* Inherit from button's color scheme */
+}
+
+/* Ensure proper contrast for text in inputs and textareas */
+body.light-theme input,
+body.light-theme textarea {
+  color: #1e293b !important;
+}
+
+body.light-theme input.text-gray-100,
+body.light-theme textarea.text-gray-100 {
+  color: #1e293b !important;
+}
+
+/* Additional icon classes that may need adjustment */
+body.light-theme .text-xl {
+  /* Icons in header */
+  color: inherit;
+}
+
+body.light-theme .header-icon {
+  color: var(--header-icon) !important;
+}
+
+body.light-theme .header-icon:hover,
+body.light-theme button:hover .header-icon {
+  color: var(--header-icon-hover) !important;
+}
+
+/* ============================================
+   Sidebar Chat Item Fixes for Light Theme
+   VERSION 3.0 - 2025-10-18
+   ============================================ */
+
+/* Active chat item should have visible background and border */
+body.light-theme #chat-history .chat-item.active,
+body.light-theme .chat-item.active {
+  background: rgba(59, 130, 246, 0.25) !important; /* Very visible blue tint */
+  background-color: rgba(59, 130, 246, 0.25) !important;
+  border: 2px solid rgba(59, 130, 246, 0.6) !important; /* Strong blue border all around */
+  border-left: 4px solid #3b82f6 !important; /* Thick left border for emphasis */
+  color: #1d4ed8 !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important; /* Subtle shadow with inner highlight */
+}
+
+/* Chat item hover state */
+body.light-theme #chat-history .chat-item:hover,
+body.light-theme .chat-item:hover {
+  background: rgba(59, 130, 246, 0.12) !important;
+  background-color: rgba(59, 130, 246, 0.12) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Chat icon color in sidebar */
+body.light-theme .chat-item .fa-comment-alt {
+  color: #2563eb !important; /* Ensure chat icon is visible blue */
+}
+
+/* Active chat icon should be more prominent */
+body.light-theme .chat-item.active .fa-comment-alt {
+  color: #1d4ed8 !important; /* Darker blue for active */
+}
+
+/* Trash icon in sidebar - ensure it's red */
+body.light-theme #chat-history .trash-icon-container .fas.fa-trash,
+body.light-theme .chat-item .trash-icon-container .fas.fa-trash {
+  color: #dc2626 !important; /* Red for trash icons */
+}
+
+/* Trash icon hover state */
+body.light-theme #chat-history .trash-icon-container:hover .fas.fa-trash,
+body.light-theme .chat-item .trash-icon-container:hover .fas.fa-trash {
+  color: #b91c1c !important; /* Darker red on hover */
+}
+
+/* Chat item text color */
+body.light-theme .chat-item {
+  color: #1e293b !important;
+}
+
+/* Active chat item text should be blue */
+body.light-theme .chat-item.active span {
+  color: #1d4ed8 !important;
+}
+
+/* Chat item title text */
+body.light-theme .chat-item span {
+  color: inherit !important;
+}
+
+/* ============================================
+   Edit Message UI Fixes for Light Theme
+   ============================================ */
+
+/* Edit title "Edit Prompt" - WHITE text on blue message background */
+body.light-theme .edit-title,
+body.light-theme .edit-container .edit-title,
+body.light-theme .message .edit-title,
+body.light-theme div.edit-title {
+  color: #ffffff !important; /* White text for blue background */
+}
+
+/* Edit title with Tailwind class override */
+body.light-theme .edit-title.text-gray-300,
+body.light-theme .edit-container .edit-title.text-gray-300,
+body.light-theme div.edit-title.text-gray-300 {
+  color: #ffffff !important;
+}
+
+/* Override any font-semibold combinations */
+body.light-theme .edit-title.text-sm.font-semibold.text-gray-300 {
+  color: #ffffff !important;
+}
+
+/* Force edit title to have visible styling */
+body.light-theme .edit-title.mb-2 {
+  color: #ffffff !important; /* White text on blue background */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important; /* Subtle shadow for depth */
+  font-weight: 600 !important; /* Slightly bolder */
+}
+
+/* Edit textarea background and text */
+body.light-theme .edit-textarea {
+  background-color: #ffffff !important; /* White background */
+  color: #1e293b !important; /* Dark text */
+  border-color: #cbd5e1 !important; /* Light border */
+}
+
+/* Override bg-darkTertiary class */
+body.light-theme .edit-textarea.bg-darkTertiary {
+  background-color: #ffffff !important;
+}
+
+/* Override text-gray-100 class on textarea */
+body.light-theme .edit-textarea.text-gray-100 {
+  color: #1e293b !important;
+}
+
+/* Override border-gray-600 class on textarea */
+body.light-theme .edit-textarea.border-gray-600 {
+  border-color: #cbd5e1 !important;
+}
+
+/* Edit textarea focus state */
+body.light-theme .edit-textarea:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Cancel button */
+body.light-theme .edit-container .bg-gray-600 {
+  background-color: #e2e8f0 !important; /* Light gray background */
+  color: #334155 !important; /* Dark text */
+  border: 1px solid #cbd5e1 !important;
+}
+
+/* Cancel button hover */
+body.light-theme .edit-container .bg-gray-600:hover,
+body.light-theme .edit-container .hover\:bg-gray-700:hover {
+  background-color: #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+/* Cancel button text color override */
+body.light-theme .edit-container button.text-white {
+  color: #334155 !important;
+}
+
+/* Resend button should stay red but with good contrast */
+body.light-theme .edit-container .bg-red-600 {
+  background-color: #dc2626 !important; /* Keep red */
+  color: #ffffff !important; /* White text on red button */
+}
+
+/* Resend button hover - don't override since it has inline styles */
+body.light-theme .edit-container .bg-red-600:hover {
+  background-color: #b91c1c !important;
+}
+
+/* Edit container overall */
+body.light-theme .edit-container {
+  background-color: transparent !important;
+}
+
+/* Ensure buttons container has proper spacing */
+body.light-theme .edit-container .flex.justify-end {
+  margin-top: 0.5rem;
+}
+
+/* ============================================
+   Delete Message Modal Fixes for Light Theme
+   ============================================ */
+
+/* Modal backdrop - show blurred background instead of black */
+body.light-theme #delete-message-modal {
+  background-color: rgba(15, 23, 42, 0.3) !important; /* Much lighter overlay */
+  backdrop-filter: blur(8px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(180%) !important;
+}
+
+/* Override bg-black class */
+body.light-theme #delete-message-modal.bg-black {
+  background-color: rgba(15, 23, 42, 0.3) !important;
+}
+
+/* Override bg-opacity-50 */
+body.light-theme #delete-message-modal.bg-opacity-50 {
+  background-color: rgba(15, 23, 42, 0.3) !important;
+}
+
+/* Modal content - light background */
+body.light-theme #delete-message-modal .modal-content {
+  background: linear-gradient(to bottom, #ffffff, #f8fafc) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Override bg-darkSecondary */
+body.light-theme #delete-message-modal .modal-content.bg-darkSecondary {
+  background: linear-gradient(to bottom, #ffffff, #f8fafc) !important;
+}
+
+/* Modal title */
+body.light-theme #delete-message-modal h3.text-white,
+body.light-theme #delete-message-modal #delete-message-title {
+  color: #1e293b !important;
+}
+
+/* Modal text */
+body.light-theme #delete-message-modal .text-gray-300 {
+  color: #334155 !important;
+}
+
+body.light-theme #delete-message-modal .text-gray-400 {
+  color: #64748b !important;
+}
+
+/* Cancel button - light gray with black text */
+body.light-theme #delete-message-modal #cancel-delete-message {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important; /* Black text */
+  border: 1px solid #cbd5e1 !important;
+}
+
+/* Cancel button hover */
+body.light-theme #delete-message-modal #cancel-delete-message:hover {
+  background-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+/* Cancel button icon */
+body.light-theme #delete-message-modal #cancel-delete-message i {
+  color: #0f172a !important;
+}
+
+/* Delete button stays red with white text */
+body.light-theme #delete-message-modal #confirm-delete-message {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+body.light-theme #delete-message-modal #confirm-delete-message:hover {
+  background-color: #b91c1c !important;
+}
+
+/* Trash icon in modal */
+body.light-theme #delete-message-modal .fa-trash {
+  color: #dc2626 !important;
+}
+
+/* ============================================
+   Message Input Field Enhancements for Light Theme
+   ============================================ */
+
+/* Enhanced border visibility for message input field in light theme */
+body.light-theme #user-input {
+  border: 2px solid rgba(0, 0, 0, 0.25) !important;
+  border-right: none !important; /* Keep seamless blend with send button */
+}
+
+/* Darker placeholder text for better visibility in light theme */
+body.light-theme #user-input::placeholder {
+  color: #475569 !important;
+  opacity: 0.85 !important;
+}
+
+/* Enhanced border for send button to match input field */
+body.light-theme #chat-form #send-button,
+body.light-theme #chat-form #stop-button {
+  border: 2px solid rgba(0, 0, 0, 0.25) !important;
+  border-left: none !important; /* Keep seamless blend with input field */
+}
+
+/* Enhanced borders for IP and port input fields in light theme for better visibility */
+body.light-theme #server-ip,
+body.light-theme #server-port {
+  border: 2px solid rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-theme #server-ip:focus,
+body.light-theme #server-port:focus {
+  border: 2px solid rgba(59, 130, 246, 0.6) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}

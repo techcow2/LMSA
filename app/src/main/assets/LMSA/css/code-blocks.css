@@ -1,0 +1,267 @@
+/* Code Blocks Styling */
+
+/* HTML Code Container - for full HTML code blocks */
+.html-code-container {
+    background-color: rgba(39, 40, 34, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 0.75rem !important;
+    padding: 2.5rem 1rem 1rem 1rem !important;
+    margin: 1rem 0 !important;
+    overflow-x: auto !important;
+    position: relative !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Copy button for HTML code container */
+.html-code-container::before {
+    content: "Copy HTML";
+    position: absolute !important;
+    top: 0.5rem !important;
+    right: 0.5rem !important;
+    background-color: rgba(39, 40, 34, 0.9) !important;
+    color: #f8f8f2 !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 0.375rem !important;
+    padding: 0.4rem 0.75rem !important;
+    font-size: 0.85rem !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+    font-family: 'Segoe UI', Arial, sans-serif !important;
+    opacity: 0.9 !important;
+    
+}
+
+.html-code-container:hover::before {
+    background-color: rgba(59, 130, 246, 0.9) !important;
+    border-color: rgba(59, 130, 246, 0.6) !important;
+}
+
+.html-code-container:active::before {
+    transform: translateY(1px) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+.html-code-container[data-copied="true"]::before {
+    content: "Copied!" !important;
+    background-color: rgba(16, 185, 129, 0.9) !important;
+    border-color: rgba(16, 185, 129, 0.6) !important;
+    
+}
+
+/* HTML Code Line Styling - for displaying HTML code as text */
+.html-code-line {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    white-space: pre-wrap !important;
+    color: #f8f8f2 !important;
+    padding: 0.125rem 0 !important;
+    margin: 0 !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+}
+
+/* Individual HTML code lines within container */
+.html-code-container .html-code-line {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0.125rem 0 !important;
+    margin: 0 !important;
+}
+
+/* Standalone HTML code lines (not in container) */
+.html-code-line:not(.html-code-container .html-code-line) {
+    background-color: rgba(39, 40, 34, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 0.375rem !important;
+    padding: 0.5rem 0.75rem !important;
+    margin: 0.25rem 0 !important;
+    overflow-x: auto !important;
+}
+
+/* Dark theme specific styling */
+[data-theme="dark"] .html-code-container {
+    background-color: rgba(39, 40, 34, 0.9) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] .html-code-line {
+    color: #f8f8f2 !important;
+}
+
+[data-theme="dark"] .html-code-line:not(.html-code-container .html-code-line) {
+    background-color: rgba(39, 40, 34, 0.9) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Light theme specific styling */
+[data-theme="light"] .html-code-container {
+    background-color: rgba(248, 249, 250, 0.9) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .html-code-line {
+    color: #24292e !important;
+}
+
+[data-theme="light"] .html-code-line:not(.html-code-container .html-code-line) {
+    background-color: rgba(248, 249, 250, 0.9) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Mobile responsiveness for HTML code lines */
+@media (max-width: 768px) {
+    .html-code-container {
+        padding: 0.75rem !important;
+        margin: 0.75rem 0 !important;
+    }
+    
+    .html-code-line {
+        font-size: 0.85rem !important;
+    }
+    
+    .html-code-line:not(.html-code-container .html-code-line) {
+        padding: 0.4rem 0.6rem !important;
+        margin: 0.2rem 0 !important;
+    }
+}
+
+/* Basic pre/code styling (fallback) */
+pre {
+    white-space: pre !important;
+    overflow-x: auto !important;
+    background-color: #272822 !important; /* Match Monokai theme background */
+    border-radius: 0.75rem !important;
+    padding: 1rem !important;
+    margin: 1.25rem 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+    position: relative !important;
+    max-width: 100% !important;
+}
+
+pre code {
+    white-space: pre !important;
+    word-wrap: normal !important;
+    word-break: normal !important;
+    display: block !important;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace !important;
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    color: #f8f8f2 !important;
+}
+
+/* Special handling for multiline code blocks */
+pre[data-multiline="true"] code br {
+    display: block !important;
+    content: "" !important;
+    margin-top: 0.5em !important;
+}
+
+/* Add copy button to pre elements as fallback */
+pre[data-multiline="true"] {
+    padding-top: 2.5rem !important; /* Make room for copy button */
+}
+
+pre[data-multiline="true"]::before {
+    content: "Copy";
+    position: absolute !important;
+    top: 0.5rem !important;
+    right: 0.5rem !important;
+    background-color: rgba(39, 40, 34, 0.9) !important;
+    color: #f8f8f2 !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 0.375rem !important;
+    padding: 0.4rem 0.75rem !important;
+    font-size: 0.85rem !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+    font-family: 'Segoe UI', Arial, sans-serif !important;
+    opacity: 0.9 !important;
+    
+}
+
+pre[data-multiline="true"]:hover::before {
+    background-color: rgba(59, 130, 246, 0.9) !important;
+    border-color: rgba(59, 130, 246, 0.6) !important;
+}
+
+/* Active state for fallback button */
+pre[data-multiline="true"]:active::before {
+    transform: translateY(1px) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Copied state for fallback button */
+pre[data-multiline="true"][data-copied="true"]::before {
+    content: "Copied!" !important;
+    background-color: rgba(16, 185, 129, 0.9) !important; /* Green for success */
+    border-color: rgba(16, 185, 129, 0.6) !important;
+    
+}
+
+/* Animation for copy button feedback */
+
+/* Language indicator for fallback */
+pre[data-multiline="true"]::after {
+    content: attr(data-language) !important;
+    position: absolute !important;
+    bottom: 0.5rem !important;
+    right: 0.5rem !important;
+    background-color: rgba(39, 40, 34, 0.8) !important;
+    color: #a6e22e !important;
+    padding: 0.2rem 0.5rem !important;
+    border-radius: 0.25rem !important;
+    font-size: 0.75rem !important;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+    opacity: 0.8 !important;
+}
+
+/* Code blocks styling - simplified without Monaco */
+
+/* Enhanced pre/code styling for better readability */
+
+        /* Animation for copy button feedback */
+
+/* Container highlight effect is now handled in the Monaco container styles */
+
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    /* Monaco Editor removed - code blocks now use standard pre/code styling */
+}
+
+/* iPhone SE specific optimizations */
+@media (min-width: 361px) and (max-width: 375px) {
+    /* Optimize code blocks for iPhone SE */
+    pre {
+        padding: 0.85rem !important;
+        margin: 1rem 0 !important;
+        font-size: 0.85rem !important;
+    }
+
+    pre code {
+        font-size: 0.85rem !important;
+    }
+
+    /* Monaco Editor removed - iPhone SE optimizations now use standard pre/code styling */
+
+    /* Optimize pre elements with copy button */
+    pre[data-multiline="true"]::before {
+        min-width: 44px !important;
+        min-height: 30px !important;
+        padding: 0.4rem 0.7rem !important;
+        font-size: 0.8rem !important;
+        top: 0.25rem !important;
+        right: 0.25rem !important;
+    }
+
+    /* Ensure language indicator is visible but not intrusive */
+    pre[data-multiline="true"]::after {
+        font-size: 0.7rem !important;
+        padding: 0.15rem 0.4rem !important;
+    }
+
+    /* Monaco Editor removed - language indicators and scroll arrows removed */
+}

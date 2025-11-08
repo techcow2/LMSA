@@ -1,0 +1,297 @@
+/* Terms of Service Modal Styles */
+#terms-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+#terms-modal.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+#terms-modal .bg-white {
+    animation: slideUp 0.4s ease-out;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+#terms-content {
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    position: relative;
+}
+
+#terms-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+#terms-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#terms-content::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 3px;
+}
+
+#terms-content::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 163, 175, 0.7);
+}
+
+#terms-content h3 {
+    color: #1f2937;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+#terms-content ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+#terms-content li {
+    margin-bottom: 0.5rem;
+}
+
+#terms-content a {
+    color: #3b82f6;
+    text-decoration: underline;
+}
+
+#terms-content a:hover {
+    color: #2563eb;
+}
+
+/* Dark theme styles */
+body.dark #terms-modal .bg-white {
+    background-color: #1f2937 !important;
+}
+
+body.dark #terms-content h3 {
+    color: #f9fafb !important;
+}
+
+body.dark #terms-content {
+    color: #d1d5db !important;
+}
+
+body.dark #terms-content a {
+    color: #60a5fa !important;
+}
+
+body.dark #terms-content a:hover {
+    color: #3b82f6 !important;
+}
+
+body.dark #terms-modal .border-gray-200 {
+    border-color: #374151 !important;
+}
+
+body.dark #terms-modal .border-gray-700 {
+    border-color: #4b5563 !important;
+}
+
+body.dark #terms-modal .text-gray-900 {
+    color: #f9fafb !important;
+}
+
+body.dark #terms-modal .text-gray-600 {
+    color: #9ca3af !important;
+}
+
+body.dark #terms-modal .text-gray-700 {
+    color: #d1d5db !important;
+}
+
+body.dark #terms-modal .text-gray-500 {
+    color: #9ca3af !important;
+}
+
+body.dark #terms-modal .text-gray-400 {
+    color: #6b7280 !important;
+}
+
+body.dark #terms-modal .bg-gray-50 {
+    background-color: #111827 !important;
+}
+
+body.dark #terms-modal .bg-gray-900\/50 {
+    background-color: rgba(17, 24, 39, 0.5) !important;
+}
+
+/* Accept button styles */
+#accept-terms-btn:disabled {
+    background: #d1d5db !important;
+    color: #9ca3af !important;
+    cursor: not-allowed !important;
+}
+
+body.dark #accept-terms-btn:disabled {
+    background: #4b5563 !important;
+    color: #6b7280 !important;
+}
+
+#accept-terms-btn:not(:disabled) {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white !important;
+    cursor: pointer !important;
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+    transition: all 0.2s ease;
+}
+
+#accept-terms-btn:not(:disabled):hover {
+    background: linear-gradient(135deg, #059669, #047857) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(16, 185, 129, 0.3);
+}
+
+#accept-terms-btn:not(:disabled):active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+/* Scroll indicator styles */
+#scroll-indicator {
+    transition: all 0.3s ease;
+    border: 1px solid #fbbf24;
+    background: linear-gradient(135deg, #fef3c7, #fef9c3);
+}
+
+body.dark #scroll-indicator {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(254, 249, 195, 0.05));
+    border-color: #f59e0b;
+    color: #fbbf24;
+}
+
+#scroll-indicator.hidden {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+    #terms-modal {
+        padding: 0.5rem;
+    }
+
+    #terms-modal .bg-white {
+        margin: 0.5rem;
+        max-width: calc(100vw - 1rem);
+        max-height: calc(100vh - 1rem);
+    }
+
+    #terms-content {
+        max-height: calc(70vh - 120px);
+        font-size: 0.875rem;
+        line-height: 1.5;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+        overscroll-behavior: contain;
+    }
+
+    #terms-content h3 {
+        font-size: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    #terms-modal .p-6 {
+        padding: 1rem;
+    }
+
+    #terms-modal .text-2xl {
+        font-size: 1.5rem;
+    }
+
+    #accept-terms-btn {
+        font-size: 0.875rem;
+        padding: 0.75rem 1rem;
+        touch-action: manipulation;
+    }
+}
+
+/* Tablet optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+    #terms-modal .max-w-2xl {
+        max-width: 90%;
+    }
+
+    #terms-content {
+        max-height: 65vh;
+    }
+}
+
+/* Prevent body scroll when modal is open - handled by JavaScript inline styles */
+
+/* Focus management */
+#accept-terms-btn:focus {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+}
+
+body.dark #accept-terms-btn:focus {
+    outline-color: #059669;
+}
+
+/* Loading state for button */
+#accept-terms-btn.loading {
+    position: relative;
+    color: transparent !important;
+}
+
+#accept-terms-btn.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1rem;
+    height: 1rem;
+    margin: -0.5rem 0 0 -0.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

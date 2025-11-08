@@ -1,0 +1,1492 @@
+/* Immersive Professional Settings Modal Theme */
+
+/* Modal background with rich visual backdrop */
+#settings-modal {
+    background: var(--modal-overlay);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    /* Force proper centering with high specificity */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    /* Override any transform that might move the modal */
+    transform: none !important;
+    margin: 0 !important;
+    overflow: hidden;
+    z-index: 1050;
+    /* Minimal padding to prevent edge cutoff */
+    padding: 8px;
+    box-sizing: border-box !important;
+    /* will-change removed - only apply during transitions */
+}
+
+/* Rich immersive background pattern with dynamic effects */
+#settings-modal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 20% 35%, rgba(76, 29, 149, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 85% 75%, rgba(16, 185, 129, 0.08) 0%, transparent 45%);
+    z-index: -1;
+    opacity: 1;
+}
+
+/* Animated particle effect overlay */
+#settings-modal::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='10' cy='10' r='1'/%3E%3Ccircle cx='25' cy='30' r='0.5'/%3E%3Ccircle cx='40' cy='15' r='0.8'/%3E%3Ccircle cx='55' cy='35' r='0.6'/%3E%3Ccircle cx='70' cy='10' r='1'/%3E%3Ccircle cx='85' cy='25' r='0.5'/%3E%3Ccircle cx='92' cy='40' r='0.8'/%3E%3Ccircle cx='15' cy='65' r='0.7'/%3E%3Ccircle cx='32' cy='80' r='0.4'/%3E%3Ccircle cx='50' cy='50' r='1'/%3E%3Ccircle cx='65' cy='70' r='0.6'/%3E%3Ccircle cx='80' cy='85' r='0.7'/%3E%3Ccircle cx='95' cy='55' r='0.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    z-index: -1;
+    opacity: 0.8;
+}
+
+/* Modal content with immersive, premium styling */
+#settings-modal .modal-content {
+    background: var(--modal-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    padding: 1.5rem; /* Add back the padding that was removed from HTML */
+    box-shadow:
+        0 25px 50px -12px var(--modal-overlay),
+        0 0 0 1px var(--border-color) inset,
+        0 1px 3px 0 var(--border-color) inset;
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95));
+        box-shadow:
+            0 25px 50px -12px rgba(15, 23, 42, 0.15),
+            0 0 0 1px rgba(226, 232, 240, 0.7) inset,
+            0 1px 3px 0 rgba(226, 232, 240, 0.5) inset,
+            0 1px 0 rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(203, 213, 225, 0.5);
+    }
+    /* Reset any positioning that might interfere */
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    overflow: hidden;
+    z-index: 1052;
+    /* Responsive sizing that works across all devices */
+    width: min(750px, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 32px);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box !important;
+    flex-shrink: 0;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    /* will-change removed - only apply during transitions */
+}
+
+/* Premium edge highlight with animated gradient border */
+#settings-modal .modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 1.5rem;
+    padding: 1.5px;
+    background: linear-gradient(300deg,
+        rgba(59, 130, 246, 0.7) 0%,
+        rgba(147, 51, 234, 0.7) 20%,
+        rgba(236, 72, 153, 0.7) 40%,
+        rgba(16, 185, 129, 0.7) 60%,
+        rgba(245, 158, 11, 0.7) 80%,
+        rgba(59, 130, 246, 0.7) 100%);
+    background-size: 300% 300%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+/* Professional settings header with clean styling */
+#settings-modal #settings-title {
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 1.5rem;
+    color: var(--modal-title);
+    text-shadow: var(--title-shadow);
+    /* Ensure crisp text rendering */
+    font-smooth: always;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Professional underline effect */
+#settings-modal #settings-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--title-border);
+    border-radius: 1px;
+    opacity: 0.9;
+}
+
+/* Modern professional settings icon */
+#settings-modal #settings-title i {
+    color: var(--header-icon);
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(79, 70, 229, 0.9));
+    border-radius: 12px;
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    z-index: 1;
+    transform: rotate(0deg);
+}
+
+/* Icon subtle hover effect */
+#settings-modal:hover #settings-title i {
+    transform: rotate(30deg);
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.9), rgba(59, 130, 246, 0.9));
+}
+
+/* Icon content positioning */
+#settings-modal #settings-title i::before {
+    position: relative;
+    z-index: 2;
+}
+
+/* Subtle accent for icon */
+#settings-modal #settings-title i::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+    border-radius: 12px;
+    z-index: 1;
+    opacity: 0.5;
+}
+
+/* Immersive animations for the entire modal */
+
+
+
+
+
+
+
+/* Class to force repaint when theme changes */
+
+
+
+
+/* Premium help button with immersive styling */
+#settings-modal #settings-help-btn {
+    background: linear-gradient(135deg, #ff8a00, #e63c00);
+    color: white;
+    border: none;
+    box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.1),
+        0 2px 4px rgba(0, 0, 0, 0.06),
+        0 0 1px rgba(255, 255, 255, 0.1) inset,
+        0 0 15px rgba(230, 60, 0, 0.2);
+    font-weight: 600;
+    padding: 0.85rem 1.5rem;
+    border-radius: 0.75rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.02em;
+}
+
+/* Button glow effects */
+#settings-modal #settings-help-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 138, 0, 0.5), rgba(230, 60, 0, 0.5));
+    filter: blur(15px);
+    opacity: 0;
+    z-index: -1;
+    transform: translateY(5px);
+}
+
+#settings-modal #settings-help-btn:hover::before {
+    opacity: 0.7;
+}
+
+/* Premium section headers with immersive styling */
+#settings-modal .settings-step label.block.text-sm.font-medium {
+    color: var(--settings-label-text);
+    font-weight: 600;
+    background: var(--settings-label-bg);
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    border-left: none;
+    margin-bottom: 1.5rem;
+    box-shadow:
+        0 4px 20px var(--modal-overlay),
+        0 0 0 1px var(--border-color) inset,
+        0 0 15px rgba(59, 130, 246, 0.2);
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: linear-gradient(135deg, rgba(248, 250, 252, 0.9), rgba(241, 245, 249, 0.9));
+        color: #1e293b;
+        box-shadow:
+            0 4px 15px rgba(15, 23, 42, 0.05),
+            0 0 0 1px rgba(226, 232, 240, 0.8) inset,
+            0 0 10px rgba(59, 130, 246, 0.1);
+        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    letter-spacing: 0.03em;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    font-size: 1rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Section header hover effect */
+#settings-modal .settings-step label.block.text-sm.font-medium:hover {
+    box-shadow:
+        0 4px 25px var(--modal-overlay),
+        0 0 0 1px var(--border-color-hover) inset,
+        0 0 20px rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Section header icon glow effect */
+#settings-modal .settings-step label.block.text-sm.font-medium i {
+    color: var(--toggle-active-bg);
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+    position: relative;
+    z-index: 1;
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        color: #3b82f6;
+        filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.4));
+    }
+}
+
+/* Glowing accent for section headers */
+#settings-modal .settings-step label.block.text-sm.font-medium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #ec4899);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+    border-radius: 4px 0 0 4px;
+}
+
+/* Left border */
+#settings-modal .settings-step label.block.text-sm.font-medium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: #3b82f6;
+}
+
+#settings-modal .settings-step label.block.text-sm.font-medium:hover {
+    background: var(--settings-label-bg);
+    transform: translateX(2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Premium input fields with immersive styling */
+#settings-modal input[type="text"],
+#settings-modal input[type="number"],
+#settings-modal textarea {
+    background: var(--settings-input-bg);
+    color: var(--settings-input-text);
+    border: 1px solid var(--settings-input-border);
+    border-radius: 0.75rem;
+    padding: 1rem 1.2rem;
+    box-shadow:
+        0 4px 10px var(--modal-overlay),
+        inset 0 1px 3px var(--modal-overlay),
+        0 0 0 1px var(--border-color);
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(203, 213, 225, 0.8);
+        box-shadow:
+            0 2px 5px rgba(15, 23, 42, 0.05),
+            inset 0 1px 2px rgba(148, 163, 184, 0.05),
+            0 0 0 1px rgba(226, 232, 240, 0.5);
+    }
+    font-size: 0.95rem;
+    position: relative;
+    width: 100%;
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+/* Premium focus effect with glow */
+#settings-modal input[type="text"]:focus,
+#settings-modal input[type="number"]:focus,
+#settings-modal textarea:focus {
+    background: var(--settings-input-bg);
+    border-color: var(--toggle-active-bg);
+    outline: none;
+    box-shadow:
+        0 4px 15px var(--modal-overlay),
+        0 0 0 1px var(--toggle-active-border),
+        0 0 15px rgba(59, 130, 246, 0.3);
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: rgba(59, 130, 246, 0.8);
+        box-shadow:
+            0 4px 12px rgba(15, 23, 42, 0.05),
+            0 0 0 1px rgba(59, 130, 246, 0.6),
+            0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+    transform: translateY(-1px);
+}
+
+/* Placeholder text */
+#settings-modal input[type="text"]::placeholder,
+#settings-modal input[type="number"]::placeholder,
+#settings-modal textarea::placeholder {
+    color: var(--input-placeholder);
+    font-style: normal;
+}
+
+/* IP and Port inputs with icons */
+#server-ip {
+    padding-left: 1rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='2' width='20' height='8' rx='2' ry='2'%3E%3C/rect%3E%3Crect x='2' y='14' width='20' height='8' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='6' y1='6' x2='6.01' y2='6'%3E%3C/line%3E%3Cline x1='6' y1='18' x2='6.01' y2='18'%3E%3C/line%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 0.6rem center; /* Moved icon slightly to the right */
+    padding-left: 2.4rem; /* Increased left padding to prevent text from overlapping icon */
+    background-size: 14px;
+    
+    position: relative;
+    background-color: var(--settings-input-bg);
+    color: var(--settings-input-text);
+    text-indent: 0; /* Removed text indent as it's not needed with increased padding */
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+    width: 100%; /* Ensure the input takes full width of its container */
+}
+
+#server-ip:focus {
+    background-position: 0.6rem center; /* Keep consistent with non-focus state */
+    padding-left: 2.4rem; /* Keep consistent with non-focus state */
+    background-color: var(--settings-input-bg);
+    border-color: var(--toggle-active-bg);
+    text-indent: 0; /* Removed text indent */
+}
+
+#server-port {
+    padding-left: 1rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'%3E%3C/path%3E%3Crect x='8' y='2' width='8' height='4' rx='1' ry='1'%3E%3C/rect%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 0.4rem center; /* Moved icon slightly to the right */
+    padding-left: 1.7rem; /* Increased left padding */
+    padding-right: 0.5rem; /* Increased right padding to prevent text from being cut off */
+    background-size: 10px;
+    
+    position: relative;
+    background-color: var(--settings-input-bg);
+    color: var(--settings-input-text);
+    text-indent: 0; /* No text indent for port field */
+    font-size: 0.85rem; /* Even smaller font size for port field */
+    letter-spacing: -0.01rem; /* Slightly tighter letter spacing */
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+    width: 100%; /* Ensure the input takes full width of its container */
+}
+
+#server-port:focus {
+    background-position: 0.4rem center; /* Keep consistent with non-focus state */
+    padding-left: 1.7rem; /* Keep consistent with non-focus state */
+    padding-right: 0.5rem; /* Keep consistent with non-focus state */
+    background-color: var(--settings-input-bg);
+    border-color: var(--toggle-active-bg);
+    text-indent: 0; /* No text indent for port field */
+}
+
+/* IP and Port container */
+.ip-port-container {
+    position: relative;
+    display: flex;
+    gap: 1rem; /* Increased gap between IP and port fields */
+    width: 100%; /* Ensure container takes full width */
+    padding: 0 0.1rem; /* Add slight padding to prevent edge cutoff */
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+/* IP input container */
+.ip-input-container {
+    flex: 1;
+    max-width: 65%; /* Limit IP field width to prevent it from being too wide */
+    min-width: 12rem; /* Ensure minimum width for IP container */
+    box-sizing: border-box;
+}
+
+/* Port input container */
+.port-input-container {
+    min-width: 7rem; /* Ensure minimum width for port container */
+    max-width: 8rem; /* Limit port field width */
+    flex-shrink: 0; /* Prevent container from shrinking */
+    padding-right: 0.25rem; /* Add padding to prevent right edge cutoff */
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+/* Field labels */
+#settings-modal label.block.text-xs {
+    color: var(--settings-label-text);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    letter-spacing: 0.01em;
+    font-size: 0.85rem;
+    position: relative;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Help text panels */
+#settings-modal p.text-xs.text-gray-300,
+#settings-modal p.text-xs.text-gray-400 {
+    color: var(--settings-help-text);
+    background: var(--settings-label-bg);
+    padding: 0.7rem 1rem;
+    border-radius: 0.4rem;
+    margin-top: 0.6rem;
+    border-left: 2px solid rgba(59, 130, 246, 0.5);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Info icon */
+#settings-modal p.text-xs.text-gray-300::before,
+#settings-modal p.text-xs.text-gray-400::before {
+    content: 'ℹ';
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: var(--toggle-active-bg);
+    font-weight: bold;
+    font-style: normal;
+}
+
+#settings-modal em.text-xs {
+    color: var(--toggle-active-bg);
+    font-weight: bold;
+}
+
+#settings-modal p.text-xs.text-gray-300,
+#settings-modal p.text-xs.text-gray-400 {
+    padding-left: 1.8rem;
+}
+
+/* URL text */
+#settings-modal p.text-xs span.text-blue-400 {
+    color: var(--toggle-active-bg);
+    font-weight: 600;
+    background: rgba(59, 130, 246, 0.15);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.3rem;
+    
+    display: inline-block;
+}
+
+/* URL hover effect */
+#settings-modal p.text-xs span.text-blue-400:hover {
+    background: rgba(59, 130, 246, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Toggle switches - improved design */
+#settings-modal .toggle-switch {
+    background: var(--toggle-bg);
+    border-radius: 1rem;
+    width: 50px;
+    height: 24px;
+    position: relative;
+    cursor: pointer;
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.2),
+        0 1px 2px rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: #e2e8f0;
+        border: 1px solid #cbd5e1;
+        box-shadow:
+            inset 0 1px 3px rgba(148, 163, 184, 0.1),
+            0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+    overflow: hidden;
+}
+
+/* Toggle switch background glow effect */
+#settings-modal .toggle-switch::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 50%, var(--toggle-active-border), transparent 50%);
+    opacity: 0;
+    
+    z-index: 1;
+}
+
+#settings-modal .toggle-dot {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: white;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+    }
+    z-index: 2;
+}
+
+/* Remove toggle dot inner glow for cleaner appearance */
+#settings-modal .toggle-dot::after {
+    display: none;
+}
+
+/* Improved active toggle with subtle effect */
+#settings-modal input[type="checkbox"]:checked ~ .toggle-switch {
+    background: #3b82f6;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #2563eb;
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: #3b82f6;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #2563eb;
+    }
+}
+
+/* Active toggle switch inner glow */
+#settings-modal input[type="checkbox"]:checked ~ .toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 70% 50%, rgba(96, 165, 250, 0.6), transparent 70%);
+    z-index: 1;
+    opacity: 0.8;
+    border-radius: 1rem;
+    
+}
+
+#settings-modal input[type="checkbox"]:checked ~ .toggle-dot {
+    background: white;
+    transform: translateX(28px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Subtle hover effects */
+#settings-modal .toggle-container:hover .toggle-dot {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+}
+
+#settings-modal .toggle-container:hover input[type="checkbox"]:checked ~ .toggle-dot {
+    transform: translateX(28px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Toggle container to ensure proper alignment */
+#settings-modal .toggle-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0; /* Prevent container from shrinking */
+    margin-left: 12px; /* Add more spacing from the label */
+    margin-right: 4px; /* Add spacing on the right to prevent being cut off */
+    min-width: 50px; /* Ensure minimum width for the toggle */
+}
+
+/* Next buttons */
+#settings-modal button[id^="to-"] {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06), 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    font-weight: 500;
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.5rem;
+    
+    position: relative;
+    overflow: hidden;
+    color: #ffffff;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.9rem;
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        box-shadow:
+            0 4px 6px rgba(15, 23, 42, 0.08),
+            0 2px 4px rgba(15, 23, 42, 0.05),
+            0 0 1px rgba(255, 255, 255, 0.5) inset,
+            0 -1px 0 rgba(0, 0, 0, 0.1) inset;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        font-weight: 600;
+    }
+}
+
+/* Hover state */
+#settings-modal button[id^="to-"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05), 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    background: linear-gradient(135deg, #4338ca, #3b82f6);
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        box-shadow:
+            0 6px 15px rgba(15, 23, 42, 0.1),
+            0 4px 6px rgba(15, 23, 42, 0.05),
+            0 0 1px rgba(255, 255, 255, 0.5) inset;
+    }
+}
+
+/* Focus state for keyboard navigation */
+#settings-modal button[id^="to-"]:focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.3);
+    transform: translateY(-2px);
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        outline: 2px solid #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
+    }
+}
+
+/* Active state */
+#settings-modal button[id^="to-"]:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.1);
+    }
+}
+
+/* Icon */
+#settings-modal button[id^="to-"] i {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    position: relative;
+}
+
+/* Back buttons */
+#settings-modal button[id^="back-"] {
+    background: var(--settings-label-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    font-weight: 500;
+    padding: 0.7rem 1.2rem;
+    
+    box-shadow: 0 2px 4px var(--modal-overlay);
+    position: relative;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.9rem;
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: linear-gradient(to bottom, rgba(248, 250, 252, 0.9), rgba(241, 245, 249, 0.9));
+        color: #1e293b;
+        border: 1px solid rgba(203, 213, 225, 0.5);
+        box-shadow:
+            0 2px 4px rgba(15, 23, 42, 0.05),
+            0 1px 0 rgba(255, 255, 255, 0.8) inset;
+    }
+}
+
+/* Hover state for back buttons */
+#settings-modal button[id^="back-"]:hover {
+    background: var(--settings-input-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--modal-overlay);
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow:
+            0 4px 8px rgba(15, 23, 42, 0.05),
+            0 1px 0 rgba(255, 255, 255, 1) inset;
+        border-color: rgba(203, 213, 225, 0.8);
+    }
+}
+
+/* Focus state for keyboard navigation */
+#settings-modal button[id^="back-"]:focus-visible {
+    outline: 2px solid var(--toggle-active-bg);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--toggle-active-border);
+    transform: translateY(-2px);
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        outline: 2px solid #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
+    }
+}
+
+/* Active state for back buttons */
+#settings-modal button[id^="back-"]:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px var(--modal-overlay);
+}
+
+/* Icon for back buttons */
+#settings-modal button[id^="back-"] i {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    position: relative;
+}
+
+
+
+/* Responsive adjustments for iPhone SE and other small screens */
+@media (max-width: 375px) {
+}
+
+/* Save button */
+#settings-modal #close-settings {
+    background: var(--button-success-bg);
+    border: none;
+    box-shadow: 0 4px 6px var(--modal-overlay), 0 2px 4px var(--modal-overlay), 0 0 1px var(--border-color) inset;
+
+    /* Enhanced appearance for light mode */
+    .light-theme & {
+        background: linear-gradient(135deg, #0ea5e9, #0284c7);
+        box-shadow:
+            0 4px 6px rgba(15, 23, 42, 0.1),
+            0 2px 4px rgba(15, 23, 42, 0.05),
+            0 0 1px rgba(255, 255, 255, 0.5) inset,
+            0 -1px 0 rgba(0, 0, 0, 0.1) inset;
+    }
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+    position: relative;
+    overflow: hidden;
+    margin-top: 0.75rem; /* Reduced top margin to minimize gap with navigation buttons */
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.03em;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.95rem;
+    width: 100%;
+    flex-shrink: 0; /* Prevent button from shrinking */
+    z-index: 5; /* Ensure button is above scrollable content */
+}
+
+/* Hover state */
+#settings-modal #close-settings:hover {
+    background: linear-gradient(135deg, #059669, #10b981);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(5, 150, 105, 0.2), 0 4px 6px rgba(5, 150, 105, 0.1);
+}
+
+/* Active state */
+#settings-modal #close-settings:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Save icon */
+#settings-modal #close-settings i {
+    color: #ffffff;
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+    position: relative;
+}
+
+/* Temperature slider */
+#settings-modal input[type="range"] {
+    background: #3b82f6;
+    border-radius: 0.5rem;
+    height: 0.5rem;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    
+    cursor: pointer;
+    position: relative;
+    overflow: visible;
+}
+
+/* Slider thumb */
+#settings-modal input[type="range"]::-webkit-slider-thumb {
+    background: #ffffff;
+    border: 2px solid #3b82f6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    
+    cursor: pointer;
+    position: relative;
+    z-index: 3;
+}
+
+/* Hover effect for thumb */
+#settings-modal input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Firefox support */
+#settings-modal input[type="range"]::-moz-range-thumb {
+    background: #ffffff;
+    border: 2px solid #3b82f6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    
+    cursor: pointer;
+    position: relative;
+    z-index: 3;
+}
+
+#settings-modal input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Temperature value display */
+#settings-modal #temperature-value {
+    color: #ffffff;
+    font-weight: 600;
+    background: var(--toggle-active-bg);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.3rem;
+    margin-left: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    
+    position: relative;
+    display: inline-block;
+    min-width: 2rem;
+    text-align: center;
+}
+
+/* Disabled state for temperature slider */
+#settings-modal input[type="range"]:disabled {
+    background: #6b7280 !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+    pointer-events: none !important;
+}
+
+#settings-modal input[type="range"]:disabled::-webkit-slider-thumb {
+    background: #9ca3af !important;
+    border-color: #6b7280 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+#settings-modal input[type="range"]:disabled::-webkit-slider-thumb:hover {
+    transform: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+#settings-modal input[type="range"]:disabled::-moz-range-thumb {
+    background: #9ca3af !important;
+    border-color: #6b7280 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+#settings-modal input[type="range"]:disabled::-moz-range-thumb:hover {
+    transform: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Settings content wrapper */
+#settings-content-wrapper {
+    overflow-y: auto;
+    max-height: calc(85vh - 160px); /* Adjust based on header and footer height */
+    padding-right: 12px; /* Add padding for scrollbar */
+    margin-right: -12px; /* Offset padding to maintain alignment */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59, 130, 246, 0.5) rgba(30, 41, 59, 0.2);
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+}
+
+/* Webkit scrollbar styles */
+#settings-content-wrapper::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgba(30, 41, 59, 0.1);
+    border-radius: 8px;
+}
+
+#settings-content-wrapper::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#settings-content-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 5px;
+    border: 2px solid var(--scrollbar-track);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+#settings-content-wrapper::-webkit-scrollbar-thumb:hover,
+#settings-content-wrapper::-webkit-scrollbar-thumb:active {
+    background-color: var(--scrollbar-thumb-hover);
+}
+
+/* Close button positioning and styling */
+#settings-modal #close-settings-x {
+    outline: none;
+    position: relative;
+    background: transparent; /* Removed background */
+    border: none; /* Removed border */
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary); /* Use primary text color for better visibility */
+    opacity: 0.8; /* Slightly transparent when not hovered */
+    
+    cursor: pointer;
+    flex-shrink: 0; /* Prevent shrinking */
+    margin-left: auto; /* Push to the right */
+}
+
+#settings-modal #close-settings-x:hover {
+    background: transparent; /* Keep background transparent on hover */
+    color: var(--text-primary);
+    opacity: 1; /* Full opacity on hover */
+    /* Removed transform to prevent movement on hover */
+}
+
+#settings-modal #close-settings-x:focus,
+#settings-modal #close-settings-x:focus-visible {
+    outline: none;
+    background: transparent; /* Keep background transparent even on focus */
+    border: none; /* No border on focus */
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* Keep focus ring for accessibility */
+    opacity: 1; /* Full opacity on focus for better visibility */
+    transform: scale(1.1); /* Slight scale on focus for better visibility */
+}
+
+#settings-modal #close-settings-x i {
+    font-size: 16px; /* Slightly larger for better visibility without background */
+    line-height: 1;
+    font-weight: 600; /* Make the icon bolder for better contrast */
+}
+
+/* Settings header container fixes */
+#settings-modal .flex.justify-between.items-center {
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    position: relative;
+}
+
+#settings-modal #settings-title {
+    flex: 1;
+    margin-right: 1rem; /* Ensure space between title and close button */
+}
+
+/* Mobile navigation styles - now applied to all screen sizes */
+#settings-modal .settings-step {
+    min-height: fit-content; /* Ensure content fits without scrolling */
+    padding-bottom: 10px; /* Add some padding at the bottom */
+    display: none !important; /* Hide all steps by default with high specificity */
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#settings-modal .settings-step.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#settings-modal .settings-step.active {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+    touch-action: pan-y; /* Allow vertical touch scrolling */
+    overscroll-behavior: contain; /* Prevent body scroll when reaching top/bottom */
+}
+
+/* Ensure action buttons never get cut off on any screen size */
+#settings-step-actions .professional-button {
+    width: calc(100% - 4px) !important;
+    max-width: calc(100% - 4px) !important;
+    box-sizing: border-box !important;
+    margin: 0 2px 1rem 2px !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+#settings-step-actions .professional-button:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Account for border-width to prevent overflow - 2px border each side = 4px total */
+#settings-modal #clear-chat.professional-button,
+#settings-modal #reset-app.professional-button {
+    width: calc(100% - 20px) !important;
+    max-width: calc(100% - 20px) !important;
+    margin: 0 10px 1rem 10px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    position: relative !important;
+    border-width: 2px !important;
+}
+
+#settings-modal #reset-app.professional-button {
+    margin-bottom: 0 !important;
+}
+
+/* Fallback: Even more specific with additional width reduction */
+html body #settings-modal #settings-step-actions #clear-chat.professional-button,
+html body #settings-modal #settings-step-actions #reset-app.professional-button {
+    width: calc(100% - 24px) !important;
+    max-width: calc(100% - 24px) !important;
+    margin: 0 12px 1rem 12px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    position: relative !important;
+    border-width: 2px !important;
+}
+
+html body #settings-modal #settings-step-actions #reset-app.professional-button {
+    margin-bottom: 0 !important;
+}
+
+
+
+
+
+/* Show/hide animations */
+#settings-modal.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    
+}
+
+#settings-modal.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    
+}
+
+#settings-modal.hidden {
+    display: none;
+}
+
+/* Animation for modal content */
+
+/* Navigation buttons container */
+#settings-navigation-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem; /* Adjusted spacing for closer button positioning */
+    z-index: 10;
+    position: relative;
+}
+
+/* Navigation button groups */
+#settings-navigation-buttons .navigation-buttons {
+    display: flex;
+    width: 100%;
+    gap: 0.75rem;
+}
+
+#settings-navigation-buttons .navigation-buttons.hidden {
+    display: none;
+}
+
+/* Mobile/tablet navigation buttons */
+@media (max-width: 1023px) {
+    /* Ensure navigation buttons are visible and properly styled */
+    #settings-navigation-buttons {
+        display: flex !important;
+        flex-shrink: 0; /* Prevent buttons from shrinking */
+    }
+
+    /* Ensure navigation buttons are properly styled and clickable */
+    #settings-modal button[id^="to-"],
+    #settings-modal button[id^="back-"] {
+        position: relative;
+        z-index: 11; /* Higher z-index than the container */
+        touch-action: manipulation; /* Optimize for touch */
+        -webkit-tap-highlight-color: rgba(0,0,0,0); /* Remove tap highlight on iOS */
+        cursor: pointer;
+        user-select: none; /* Prevent text selection */
+        min-height: 44px; /* Ensure minimum height for touch targets */
+    }
+
+    /* Remove extra padding at the bottom of steps since buttons are now static */
+    #settings-modal .settings-step {
+        padding-bottom: 0.5rem;
+    }
+
+    /* Close button mobile positioning */
+    @media (max-width: 767px) {
+        /* Fix for small screens to prevent toggle switches from being cut off */        
+        /* Adjust toggle container layout */
+        #settings-modal .flex.justify-between.items-center:not(.mb-2) {
+            padding-right: 16px; /* Increased padding to prevent content from touching the edge */
+            padding-left: 8px; /* Add left padding for better balance */
+            margin-right: 0; /* Remove any margin that might push content off-screen */
+            width: calc(100% - 24px); /* Account for padding to prevent overflow */
+            box-sizing: border-box; /* Include padding in width calculation */
+            overflow: visible; /* Ensure content isn't cut off */
+            margin-left: 0; /* Reset margin */
+        }
+
+        /* Ensure labels don't push toggles off-screen */
+        #settings-modal .flex.justify-between.items-center:not(.mb-2) label {
+            flex: 1; /* Allow label to shrink if needed */
+            padding-right: 12px; /* Add spacing between label and toggle */
+            font-size: 0.9rem; /* Slightly smaller font on very small screens */
+            max-width: calc(100% - 70px); /* Reserve space for toggle */
+            overflow-wrap: break-word; /* Allow long text to wrap */
+            word-break: break-word; /* Break long words if needed */
+        }
+        
+        /* Ensure scrollbar is visible on small screens */
+        #settings-content-wrapper::-webkit-scrollbar {
+            width: 8px; /* Slightly smaller on mobile */
+        }
+
+        #settings-content-wrapper {
+            margin-right: -8px; /* Smaller offset for mobile */
+            padding-right: 8px; /* Smaller padding for mobile */
+        }
+
+        /* Adjust navigation buttons for small screens */
+        #settings-navigation-buttons {
+            margin-top: 0.75rem;
+            margin-bottom: 0.25rem; /* Further reduced for mobile */
+        }
+
+        #settings-navigation-buttons .navigation-buttons {
+            gap: 0.5rem;
+        }
+        
+        /* Reduce the gap between navigation buttons and save button on mobile */
+        #settings-modal .mt-2 {
+            margin-top: 0.5rem !important;
+        }
+
+        #settings-modal button[id^="to-"],
+        #settings-modal button[id^="back-"] {
+            padding: 0.6rem 1rem;
+            font-size: 0.85rem;
+        }
+    }
+
+    /* iPhone SE and very small screens specific optimizations */
+    @media (max-width: 375px) {
+        /* Ensure modal doesn't get cut off on very small screens */
+        #settings-modal {
+            padding: 8px; /* Add small padding to prevent edge cutoff */
+        }
+        
+        /* Optimize modal for very small screens */
+        #settings-modal .modal-content {
+            padding: 0.85rem !important;
+            width: calc(100vw - 16px) !important; /* Account for padding */
+            max-width: calc(100vw - 16px) !important;
+            max-height: calc(100vh - 16px) !important;
+            max-height: calc(100dvh - 16px) !important;
+            /* Ensure it doesn't overflow */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Adjust close button for very small screens */
+        #settings-modal #close-settings-x {
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 34px;
+            height: 34px;
+        }
+        
+        /* Optimize form elements for iPhone SE */
+        #settings-modal input[type="text"],
+        #settings-modal input[type="number"],
+        #settings-modal textarea {
+            padding: 0.75rem 1rem !important;
+            font-size: 0.9rem !important;
+            min-height: 44px !important; /* Better touch target */
+        }
+        
+        /* Ensure buttons have proper touch targets */
+        #settings-modal button {
+            min-height: 44px !important;
+        }
+
+        /* Optimize navigation buttons for iPhone SE */
+        #settings-navigation-buttons {
+            margin-top: 0.6rem !important;
+            margin-bottom: 0.2rem !important; /* Further reduced for iPhone SE */
+        }
+
+        #settings-navigation-buttons .navigation-buttons {
+            gap: 0.4rem !important;
+        }
+
+
+
+        /* Minimize gap between navigation and save button for iPhone SE */
+        #settings-modal .mt-2 {
+            margin-top: 0.4rem !important;
+        }
+
+        #settings-modal button[id^="to-"],
+        #settings-modal button[id^="back-"] {
+            padding: 0.6rem 0.9rem !important;
+            font-size: 0.85rem !important;
+        }
+
+        /* Optimize toggle switches for iPhone SE */
+        #settings-modal .flex.justify-between.items-center:not(.mb-2) label {
+            font-size: 0.85rem !important;
+            padding-right: 6px !important;
+        }
+
+        /* Optimize section headers for iPhone SE */
+        #settings-modal .settings-step label.block.text-sm.font-medium {
+            padding: 0.85rem 1.2rem !important;
+            font-size: 0.9rem !important;
+            margin-bottom: 1.2rem !important;
+        }
+    }
+
+    /* Specific fix for tablet view */
+    @media (min-width: 768px) and (max-width: 1023px) {
+        #settings-navigation-buttons {
+            margin-top: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Make buttons larger on tablets for better touch targets */
+        #settings-modal button[id^="to-"],
+        #settings-modal button[id^="back-"] {
+            min-height: 50px;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        /* Fix for tablet view to prevent right edge from being cut off */
+        #settings-modal .modal-content {
+            width: min(580px, calc(100vw - 60px));
+            max-width: min(580px, calc(100vw - 60px));
+            padding: 1.25rem;
+            box-sizing: border-box;
+            overflow-x: visible;
+        }
+
+        /* Ensure action buttons don't get cut off on tablets */
+        #settings-step-actions .professional-button {
+            width: calc(100% - 16px) !important;
+            max-width: calc(100% - 16px) !important;
+            margin: 0 8px 1rem 8px !important;
+            box-sizing: border-box !important;
+        }
+
+        #settings-step-actions .professional-button:last-child {
+            margin-bottom: 0 !important;
+        }
+
+        /* Ensure toggle containers have proper spacing and don't get cut off */
+        #settings-modal .flex.justify-between.items-center {
+            padding-right: 12px;
+            margin-right: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    }
+}
+
+/* Larger screens styling - maintain stepped navigation */
+@media (min-width: 1024px) {
+    #settings-modal .modal-content {
+        width: 600px;
+        max-width: min(600px, calc(100vw - 60px));
+        max-height: 80vh;
+        padding: 1.5rem;
+        box-sizing: border-box;
+    }
+
+    /* Ensure action buttons don't get cut off by reducing their width */
+    #settings-step-actions .professional-button {
+        width: calc(100% - 16px) !important;
+        max-width: calc(100% - 16px) !important;
+        margin: 0 8px 1rem 8px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    #settings-step-actions .professional-button:last-child {
+        margin-bottom: 0 !important;
+    }
+}
+
+/* Simplified mobile keyboard handling for settings modal */
+@media (max-width: 767px) {
+    /* Input field adjustments for mobile */
+    #settings-modal input[type="text"],
+    #settings-modal input[type="number"] {
+        height: 44px;
+        font-size: 16px !important; /* Prevent iOS zoom */
+        padding: 8px 12px;
+        box-sizing: border-box;
+    }
+
+    /* IP input specific adjustments */
+    #settings-modal #server-ip {
+        padding-left: 2.4rem !important;
+        background-position: 0.6rem center !important;
+        background-size: 14px !important;
+    }
+
+    /* Port input specific adjustments */
+    #settings-modal #server-port {
+        padding-left: 1.7rem !important;
+        padding-right: 0.5rem !important;
+        background-position: 0.4rem center !important;
+        background-size: 10px !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* Better touch handling for input containers */
+    #settings-modal .ip-port-container {
+        margin-bottom: 1rem;
+    }
+
+    /* Ensure focused inputs scroll into view properly */
+    #settings-modal input:focus,
+    #settings-modal textarea:focus {
+        scroll-margin-bottom: 100px;
+        scroll-margin-top: 50px;
+    }
+}
+
+/* Simple mobile responsive adjustments */
+@media (max-width: 767px) {
+    #settings-modal .modal-content {
+        /* Ensure modal fits on small screens */
+        width: min(calc(100vw - 16px), 95vw) !important;
+        max-width: min(calc(100vw - 16px), 95vw) !important;
+        max-height: min(calc(100vh - 16px), 95vh) !important;
+        padding: 1rem !important;
+    }
+}
+
+/* Very small screens need extra care */
+@media (max-width: 375px) {
+    #settings-modal .modal-content {
+        width: calc(100vw - 12px) !important;
+        max-width: calc(100vw - 12px) !important;
+        max-height: calc(100vh - 12px) !important;
+        padding: 0.75rem !important;
+    }
+}
+

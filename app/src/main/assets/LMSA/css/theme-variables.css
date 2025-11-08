@@ -1,0 +1,251 @@
+/* Theme Variables for LMSA
+ * This file contains CSS variables for both light and dark themes
+ */
+
+/* Ensure custom-dark-mode class uses the dark theme variables */
+.custom-dark-mode {
+    /* Background colors */
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #2c2c2c;
+    --bg-gradient: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+    --modal-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    --sidebar-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+
+    /* Text colors */
+    --text-primary: #e0e0e0;
+    --text-secondary: #bdc3c7;
+    --text-muted: #a0a0a0;
+
+    /* Border colors */
+    --border-color: rgba(148, 163, 184, 0.2);
+    --border-color-hover: rgba(148, 163, 184, 0.4);
+
+    /* UI element colors */
+    --user-message-bg: #3498db;
+    --user-message-text: #ffffff;
+    --ai-message-bg: #2c3e50;
+    --ai-message-text: #e0e0e0;
+    --ai-message-border: #34495e;
+    --toggle-bg: rgba(15, 23, 42, 0.8);
+    --toggle-border: rgba(148, 163, 184, 0.3);
+    --toggle-dot: #f8fafc;
+    --toggle-active-bg: #3b82f6;
+    --toggle-active-border: rgba(59, 130, 246, 0.7);
+    --model-display-bg: #2c3e50;
+    --model-display-text: #00ff00;
+    --loading-indicator: #3498db;
+    --chat-item-bg: rgba(30, 41, 59, 0.5);
+    --chat-item-border: rgba(255, 255, 255, 0.1);
+    --chat-item-text: #e0e0e0;
+    --chat-item-hover-bg: rgba(59, 130, 246, 0.2);
+    --scrollbar-track: rgba(15, 23, 42, 0.3);
+    --scrollbar-thumb: rgba(96, 165, 250, 0.3);
+    --scrollbar-thumb-hover: rgba(96, 165, 250, 0.5);
+    --header-bg: #0f172a; /* Original dark header color */
+    --header-text: #e0e0e0;
+    --header-icon: #e0e0e0;
+    --header-icon-hover: #3b82f6;
+    --header-border: #1e293b; /* Original dark header border */
+    --input-bg: #2c2c2c;
+    --input-border: #34495e;
+    --input-text: #e0e0e0;
+    --input-placeholder: #a0a0a0;
+    --sidebar-text: #e0e0e0;
+    --sidebar-item-hover: rgba(59, 130, 246, 0.2);
+    --sidebar-border: rgba(255, 255, 255, 0.1);
+    --modal-overlay: rgba(0, 0, 0, 0.75);
+    --modal-text: #e0e0e0;
+    --modal-title: #ffffff;
+    --title-accent: #3b82f6;
+    --title-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 0 5px rgba(59, 130, 246, 0.15);
+    --title-border: rgba(59, 130, 246, 0.3);
+    --title-gradient: linear-gradient(90deg,
+        var(--header-text),
+        color-mix(in srgb, var(--header-text) 80%, var(--title-accent) 20%) 50%,
+        var(--header-text) 100%);
+    --settings-title-border: rgba(59, 130, 246, 0.3);
+    --settings-label-bg: rgba(30, 41, 59, 0.5);
+    --settings-label-text: #e0e0e0;
+    --settings-input-bg: #0a192f; /* Original dark input background */
+    --settings-input-border: #34495e;
+    --settings-input-text: #e0e0e0;
+    --settings-help-text: #a0a0a0;
+    --info-color: #3b82f6; /* Info color for informational elements */
+    --success-color: #10b981; /* Success/positive color */
+    --warning-color: #f59e0b; /* Warning color */
+
+    /* Button colors */
+    --button-primary-bg: #3b82f6;
+    --button-primary-hover: #2563eb;
+    --button-secondary-bg: #6b7280;
+    --button-secondary-hover: #4b5563;
+    --button-danger-bg: #ef4444;
+    --button-danger-hover: #dc2626;
+    --button-success-bg: #10b981;
+    --button-success-hover: #059669;
+}
+
+:root {
+    /* Default theme is dark */
+    /* Background colors */
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #2c2c2c;
+    --bg-gradient: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+    --modal-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    --sidebar-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+
+    /* Text colors */
+    --text-primary: #e0e0e0;
+    --text-secondary: #bdc3c7;
+    --text-muted: #a0a0a0;
+
+    /* Border colors */
+    --border-color: rgba(148, 163, 184, 0.2);
+    --border-color-hover: rgba(148, 163, 184, 0.4);
+
+    /* UI element colors */
+    --user-message-bg: #3498db;
+    --user-message-text: #ffffff;
+    --ai-message-bg: #2c3e50;
+    --ai-message-text: #e0e0e0;
+    --ai-message-border: #34495e;
+    --toggle-bg: rgba(15, 23, 42, 0.8);
+    --toggle-border: rgba(148, 163, 184, 0.3);
+    --toggle-dot: #f8fafc;
+    --toggle-active-bg: #3b82f6;
+    --toggle-active-border: rgba(59, 130, 246, 0.7);
+    --model-display-bg: #2c3e50;
+    --model-display-text: #00ff00;
+    --loading-indicator: #3498db;
+    --chat-item-bg: rgba(30, 41, 59, 0.5);
+    --chat-item-border: rgba(255, 255, 255, 0.1);
+    --chat-item-text: #e0e0e0;
+    --chat-item-hover-bg: rgba(59, 130, 246, 0.2);
+    --scrollbar-track: rgba(15, 23, 42, 0.3);
+    --scrollbar-thumb: rgba(96, 165, 250, 0.3);
+    --scrollbar-thumb-hover: rgba(96, 165, 250, 0.5);
+    --header-bg: #0f172a; /* Original dark header color */
+    --header-text: #e0e0e0;
+    --header-icon: #e0e0e0;
+    --header-icon-hover: #3b82f6;
+    --header-border: #1e293b; /* Original dark header border */
+    --input-bg: #2c2c2c;
+    --input-border: #34495e;
+    --input-text: #e0e0e0;
+    --input-placeholder: #a0a0a0;
+    --sidebar-text: #e0e0e0;
+    --sidebar-item-hover: rgba(59, 130, 246, 0.2);
+    --sidebar-border: rgba(255, 255, 255, 0.1);
+    --modal-overlay: rgba(0, 0, 0, 0.75);
+    --modal-text: #e0e0e0;
+    --modal-title: #ffffff;
+    --title-accent: #3b82f6;
+    --title-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    --title-border: rgba(59, 130, 246, 0.3);
+    --settings-title-border: rgba(59, 130, 246, 0.3);
+    --settings-label-bg: rgba(30, 41, 59, 0.5);
+    --settings-label-text: #e0e0e0;
+    --settings-input-bg: #0a192f; /* Original dark input background */
+    --settings-input-border: #34495e;
+    --settings-input-text: #e0e0e0;
+    --settings-help-text: #a0a0a0;
+    --info-color: #3b82f6; /* Info color for informational elements */
+    --success-color: #10b981; /* Success/positive color */
+    --warning-color: #f59e0b; /* Warning color */
+
+    /* Button colors */
+    --button-primary-bg: #3b82f6;
+    --button-primary-hover: #2563eb;
+    --button-secondary-bg: #6b7280;
+    --button-secondary-hover: #4b5563;
+    --button-danger-bg: #ef4444;
+    --button-danger-hover: #dc2626;
+    --button-success-bg: #10b981;
+    --button-success-hover: #059669;
+}
+
+/* Light theme variables */
+body.light-theme {
+    /* Background colors */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #f1f5f9;
+    --bg-tertiary: #e2e8f0;
+    --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    --modal-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    --sidebar-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+
+    /* Text colors */
+    --text-primary: #1e293b;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+
+    /* Border colors */
+    --border-color: rgba(100, 116, 139, 0.2);
+    --border-color-hover: rgba(100, 116, 139, 0.4);
+
+    /* UI element colors */
+    --user-message-bg: #3b82f6;
+    --user-message-text: #ffffff;
+    --ai-message-bg: #e2e8f0;
+    --ai-message-text: #1e293b;
+    --ai-message-border: #cbd5e1;
+    --toggle-bg: rgba(203, 213, 225, 0.8);
+    --toggle-border: rgba(100, 116, 139, 0.3);
+    --toggle-dot: #ffffff;
+    --toggle-active-bg: #3b82f6;
+    --toggle-active-border: rgba(59, 130, 246, 0.7);
+    --model-display-bg: #e2e8f0;
+    --model-display-text: #047857;
+    --loading-indicator: #3b82f6;
+    --chat-item-bg: rgba(241, 245, 249, 0.8);
+    --chat-item-border: rgba(100, 116, 139, 0.2);
+    --chat-item-text: #1e293b;
+    --chat-item-hover-bg: rgba(224, 231, 255, 0.6);
+    --scrollbar-track: rgba(203, 213, 225, 0.5);
+    --scrollbar-thumb: rgba(59, 130, 246, 0.3);
+    --scrollbar-thumb-hover: rgba(59, 130, 246, 0.5);
+    --header-bg: #f8fafc;
+    --header-text: #1e293b;
+    --header-icon: #1e293b;
+    --header-icon-hover: #3b82f6;
+    --header-border: #cbd5e1;
+    --input-bg: #f8fafc;
+    --input-border: #cbd5e1;
+    --input-text: #1e293b;
+    --input-placeholder: #94a3b8;
+    --sidebar-text: #1e293b;
+    --sidebar-item-hover: rgba(59, 130, 246, 0.1);
+    --sidebar-border: #cbd5e1;
+    --modal-overlay: rgba(15, 23, 42, 0.5);
+    --modal-text: #1e293b;
+    --modal-title: #1e293b;
+    --title-accent: #2563eb;
+    --title-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 5px rgba(37, 99, 235, 0.1);
+    --title-border: rgba(59, 130, 246, 0.3);
+    --title-gradient: linear-gradient(90deg,
+        var(--header-text),
+        color-mix(in srgb, var(--header-text) 80%, var(--title-accent) 20%) 50%,
+        var(--header-text) 100%);
+    --settings-title-border: rgba(59, 130, 246, 0.3);
+    --settings-label-bg: rgba(241, 245, 249, 0.7);
+    --settings-label-text: #1e293b;
+    --settings-input-bg: #f8fafc;
+    --settings-input-border: #cbd5e1;
+    --settings-input-text: #1e293b;
+    --settings-help-text: #64748b;
+    --info-color: #2563eb; /* Info color for informational elements */
+    --success-color: #059669; /* Success/positive color - darker for light theme */
+    --warning-color: #d97706; /* Warning color - darker for light theme */
+
+    /* Button colors remain mostly the same for consistency */
+    --button-primary-bg: #3b82f6;
+    --button-primary-hover: #2563eb;
+    --button-secondary-bg: #64748b;
+    --button-secondary-hover: #475569;
+    --button-danger-bg: #ef4444;
+    --button-danger-hover: #dc2626;
+    --button-success-bg: #10b981;
+    --button-success-hover: #059669;
+}

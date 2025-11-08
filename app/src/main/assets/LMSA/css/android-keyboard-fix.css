@@ -1,0 +1,126 @@
+/* Android Keyboard Fix CSS */
+
+/* Main container fixes */
+.android-webview {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.android-webview #app-container {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  position: relative;
+}
+
+/* Keyboard visibility handling */
+.android-webview.keyboard-visible {
+  padding-bottom: 0 !important;
+}
+
+.android-webview.keyboard-visible #app-container {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  padding-bottom: 0 !important;
+}
+
+/* Messages container adjustments */
+.android-webview #messages {
+  max-height: calc(100dvh - 200px) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Dynamic adjustments when keyboard is visible */
+@supports (height: 100dvh) {
+  .android-webview.keyboard-visible #messages {
+    max-height: calc(100dvh - 200px - env(keyboard-inset-height, 0px)) !important;
+  }
+}
+
+/* Chat form positioning */
+.android-webview #chat-form {
+  position: sticky !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+  flex-shrink: 0;
+}
+
+.android-webview.keyboard-visible #chat-form {
+  position: fixed !important;
+  bottom: 0 !important;
+  width: 100% !important;
+}
+
+/* Prevent white space when keyboard is active */
+.android-webview {
+  overscroll-behavior: none;
+}
+
+.android-webview #main-content {
+  overscroll-behavior: contain;
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Body styling fixes */
+.android-webview body {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Input field fixes */
+.android-webview #user-input {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+}
+
+/* Visual viewport handling */
+@viewport {
+  width: device-width;
+  zoom: 1.0;
+  interactive-widget: resizes-content;
+}
+
+@-ms-viewport {
+  width: device-width;
+  zoom: 1.0;
+  interactive-widget: resizes-content;
+}
+
+/* Fix for modals when keyboard is visible */
+.android-webview .modal-container {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+}
+
+.android-webview.keyboard-visible .modal-container {
+  max-height: calc(100dvh - env(keyboard-inset-height, 0px)) !important;
+}
+
+/* Special handling for settings modal */
+.android-webview #settings-modal {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+}
+
+.android-webview.keyboard-visible #settings-modal {
+  max-height: calc(100dvh - env(keyboard-inset-height, 0px)) !important;
+}

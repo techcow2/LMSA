@@ -1,0 +1,4581 @@
+/*
+ * LMSA Modern UI Enhancement
+ * A comprehensive CSS framework to transform the UI into a professional, modern and creative interface
+ */
+
+/* Font and loader for modern UI */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Modern Color Palette - Dark Theme */
+  --modern-bg-primary: #0f172a;
+  --modern-bg-secondary: #1e293b;
+  --modern-bg-tertiary: #334155;
+  --modern-accent-primary: #3b82f6;
+  --modern-accent-secondary: #10b981;
+  --modern-accent-tertiary: #a855f7;
+  --modern-text-primary: #f1f5f9;
+  --modern-text-secondary: #cbd5e1;
+  --modern-text-muted: #64748b;
+  --modern-gradient-primary: linear-gradient(135deg, #3b82f6, #2dd4bf);
+  --modern-gradient-secondary: linear-gradient(135deg, #8b5cf6, #ec4899);
+  --modern-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --modern-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --modern-shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  --modern-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  --modern-shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  /* Modern Light Theme Colors */
+  --modern-light-bg-primary: #f8fafc;
+  --modern-light-bg-secondary: #f1f5f9;
+  --modern-light-bg-tertiary: #e2e8f0;
+  --modern-light-text-primary: #0f172a;
+  --modern-light-text-secondary: #334155;
+  --modern-light-text-muted: #64748b;
+}
+
+/* Modern Typography */
+body {
+  font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.011em;
+  text-rendering: optimizeLegibility;
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  letter-spacing: -0.021em;
+  line-height: 1.2;
+}
+
+/* Modern UI Elements */
+.header-title {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--modal-title);
+  text-shadow: var(--title-shadow);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+/* Enhanced Header */
+header {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--modern-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+body.light-theme header {
+  background: #f8fafc;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.header-btn {
+  border-radius: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent !important;
+  outline: none !important;
+}
+
+.header-btn:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  transform: scale(0);
+  opacity: 0;
+}
+
+.header-btn:hover:after {
+  transform: scale(2);
+  opacity: 1;
+}
+
+.header-btn:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  transform: translateY(-2px);
+}
+
+.header-btn:active {
+  transform: translateY(0);
+  background-color: transparent !important;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.header-btn:hover .header-icon {
+  transform: scale(1.1);
+  color: var(--modern-accent-primary);
+}
+
+/* Sidebar Enhancements */
+#sidebar {
+  background: linear-gradient(180deg, var(--modern-bg-primary) 0%, var(--modern-bg-secondary) 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--modern-shadow-lg);
+}
+
+body.light-theme #sidebar {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.08) !important;
+  color: var(--modern-light-text-primary) !important;
+}
+
+/* Additional sidebar element light theme overrides */
+body.light-theme #sidebar {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.08) !important;
+  color: #0f172a !important;
+}
+
+body.light-theme #sidebar * {
+  color: #0f172a !important;
+}
+
+/* Ensure New Chat button text remains white in light mode */
+body.light-theme #sidebar #new-chat {
+  color: white !important;
+}
+
+body.light-theme #sidebar #new-chat span,
+body.light-theme #sidebar #new-chat i {
+  color: white !important;
+}
+
+body.light-theme #sidebar .menu-item {
+  background-color: rgba(59, 130, 246, 0.05) !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(203, 213, 225, 0.3) !important;
+}
+
+body.light-theme #sidebar .menu-item:hover {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  color: #0f172a !important;
+}
+
+body.light-theme #sidebar .professional-button {
+  background: linear-gradient(135deg,
+      rgba(241, 245, 249, 0.95) 0%,
+      rgba(226, 232, 240, 0.9) 25%,
+      rgba(203, 213, 225, 0.85) 50%,
+      rgba(226, 232, 240, 0.9) 75%,
+      rgba(241, 245, 249, 0.95) 100%) !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(203, 213, 225, 0.5) !important;
+}
+
+body.light-theme #sidebar .professional-button:hover {
+  background: linear-gradient(135deg,
+      rgba(226, 232, 240, 0.98) 0%,
+      rgba(203, 213, 225, 0.93) 25%,
+      rgba(186, 195, 208, 0.88) 50%,
+      rgba(203, 213, 225, 0.93) 75%,
+      rgba(226, 232, 240, 0.98) 100%) !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(203, 213, 225, 0.7) !important;
+}
+
+body.light-theme #sidebar .sidebar-section {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background-color: rgba(241, 245, 249, 0.6) !important;
+}
+
+body.light-theme #sidebar .section-header {
+  color: #0f172a !important;
+  background-color: rgba(241, 245, 249, 0.6) !important;
+}
+
+body.light-theme #sidebar .chat-item {
+  background-color: rgba(241, 245, 249, 0.6) !important;
+  border: 1px solid rgba(203, 213, 225, 0.3) !important;
+  color: #0f172a !important;
+}
+
+body.light-theme #sidebar .chat-item:hover {
+  background-color: rgba(59, 130, 246, 0.08) !important;
+  color: #0f172a !important;
+}
+
+/* Sidebar header styling - removed logo */
+.sidebar-section {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: rgba(30, 41, 59, 0.4);
+  border-radius: 0.75rem;
+  margin: 0.5rem;
+  border: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+body.light-theme .sidebar-section {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background-color: rgba(241, 245, 249, 0.6);
+  border: 1px solid rgba(203, 213, 225, 0.4);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+}
+
+.section-header:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+body.light-theme .section-header:hover {
+  background-color: rgba(59, 130, 246, 0.08);
+}
+
+.menu-item {
+  border-radius: 0.5rem;
+  margin: 0.25rem 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.menu-item:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  transform: translateX(4px);
+}
+
+body.light-theme .menu-item:hover {
+  background-color: rgba(59, 130, 246, 0.08);
+}
+
+body.light-theme .menu-item i {
+  color: var(--modern-light-text-secondary);
+}
+
+.menu-item:hover i {
+  color: var(--modern-accent-primary);
+  transform: scale(1.1);
+}
+
+body.light-theme .menu-item:hover i {
+  color: var(--modern-accent-primary);
+}
+
+/* Chat History Section Styling */
+.chat-history-icon {
+  color: #3b82f6;
+}
+
+.chat-history-title {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+}
+
+body.light-theme .chat-history-icon {
+  color: #2563eb;
+}
+
+body.light-theme .chat-history-title {
+  color: #1e293b;
+}
+
+/* Sidebar Header Styling */
+.sidebar-header {
+  background: linear-gradient(180deg, var(--modern-bg-primary) 0%, var(--modern-bg-secondary) 100%);
+}
+
+body.light-theme .sidebar-header {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  border-color: rgba(203, 213, 225, 0.4) !important;
+}
+
+.close-sidebar-btn {
+  background-color: rgba(30, 41, 59, 0.4);
+  color: var(--text-muted);
+}
+
+.close-sidebar-btn:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--text-primary);
+}
+
+body.light-theme .close-sidebar-btn {
+  background-color: rgba(241, 245, 249, 0.6);
+  color: var(--modern-light-text-muted);
+}
+
+body.light-theme .close-sidebar-btn:hover {
+  background-color: rgba(59, 130, 246, 0.08);
+  color: var(--modern-light-text-primary);
+}
+
+/* Main Menu Section Styling */
+.main-menu-section {
+  margin-top: 1rem;
+}
+
+.main-menu-section .menu-item {
+  font-weight: 600;
+}
+
+body.light-theme .main-menu-section .menu-item {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+body.light-theme .main-menu-section .menu-item:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Characters Section Styling */
+.sidebar-section.characters-section {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.characters-section .section-header {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  background-color: rgba(30, 41, 59, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  color: var(--text-primary);
+}
+
+.characters-section .section-header:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.characters-section .section-header.active .fa-chevron-down {
+  transform: rotate(180deg);
+}
+
+.characters-section .collapsible-content {
+  padding-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+.characters-section .collapsible-content .menu-item {
+  margin-bottom: 0.25rem;
+}
+
+body.light-theme .sidebar-section.characters-section {
+  border-bottom: 1px solid rgba(203, 213, 225, 0.3);
+}
+
+body.light-theme .characters-section .section-header {
+  background-color: rgba(241, 245, 249, 0.6);
+  border-color: rgba(203, 213, 225, 0.3);
+  color: var(--modern-light-text-primary);
+}
+
+body.light-theme .characters-section .section-header:hover {
+  background-color: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+/* Create Character Button Styling */
+.create-character-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--modern-accent-primary);
+}
+
+.create-character-btn:hover {
+  background-color: rgba(59, 130, 246, 0.2);
+  transform: scale(1.1);
+}
+
+body.light-theme .create-character-btn {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--modern-accent-primary);
+}
+
+body.light-theme .create-character-btn:hover {
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+/* Sidebar Overlay Styling for Light Mode */
+body.light-theme .sidebar-overlay {
+  background-color: rgba(15, 23, 42, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+/* FIXED: Reduced height chat items with proper responsive design */
+.chat-history-wrapper .chat-item,
+#chat-history .chat-item,
+#sidebar .chat-item,
+.chat-item {
+  min-height: 2.25rem !important;
+  /* 36px for desktop - reduced from 48px */
+  padding: 0.5rem 0.75rem !important;
+  padding-right: 0.25rem !important;
+  /* Space for action wrapper */
+}
+
+/* Responsive height adjustments */
+@media (max-width: 768px) {
+
+  .chat-history-wrapper .chat-item,
+  #chat-history .chat-item,
+  #sidebar .chat-item,
+  .chat-item {
+    min-height: 2.5rem !important;
+    /* 40px on mobile for better touch targets */
+    padding: 0.625rem 0.75rem !important;
+    padding-right: 0.25rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .chat-history-wrapper .chat-item,
+  #chat-history .chat-item,
+  #sidebar .chat-item,
+  .chat-item {
+    min-height: 2.75rem !important;
+    /* 44px on very small screens for accessibility */
+    padding: 0.75rem 0.875rem !important;
+    padding-right: 0.25rem !important;
+  }
+}
+
+/* Enhanced Chat History Items Styling */
+#chat-history .chat-item {
+  border-radius: 0.5rem;
+  margin: 0.25rem 0;
+  padding: 0.5rem 0.75rem;
+  /* Reduced from 0.5rem 0.75rem to be more compact */
+  cursor: pointer;
+  background-color: rgba(30, 41, 59, 0.4);
+  border: 1px solid rgba(59, 130, 246, 0.05);
+  /* Ensure proper spacing for action wrapper */
+  padding-right: 0.25rem;
+  min-height: 2.25rem;
+  /* Reduced from default 3rem (48px) to 2.25rem (36px) for desktop */
+}
+
+#chat-history .chat-item:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  transform: translateX(2px);
+}
+
+#chat-history .chat-item.active {
+  background-color: rgba(59, 130, 246, 0.15);
+  border-left: 3px solid var(--modern-accent-primary);
+}
+
+body.light-theme #chat-history .chat-item {
+  background-color: rgba(241, 245, 249, 0.6);
+  border: 1px solid rgba(203, 213, 225, 0.3);
+  color: var(--modern-light-text-primary);
+}
+
+body.light-theme #chat-history .chat-item:hover {
+  background-color: rgba(59, 130, 246, 0.08);
+}
+
+body.light-theme #chat-history .chat-item.active {
+  background-color: rgba(59, 130, 246, 0.12);
+  border-left: 3px solid var(--modern-accent-primary);
+}
+
+/* Modern trash icon container styling */
+.trash-icon-container {
+  background-color: transparent;
+  border: none;
+  border-radius: 0.375rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.trash-icon-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(220, 38, 38, 0) 0%, rgba(220, 38, 38, 0.1) 100%);
+  opacity: 0;
+  border-radius: inherit;
+}
+
+.trash-icon-container:hover::before {
+  opacity: 1;
+}
+
+.trash-icon-container .fas.fa-trash {
+  position: relative;
+  z-index: 1;
+  color: #dc2626;
+}
+
+.trash-icon-container:hover .fas.fa-trash {
+  color: #ef4444;
+  transform: scale(1.1);
+}
+
+.trash-icon-container:active .fas.fa-trash {
+  transform: scale(0.95);
+}
+
+/* Light theme adjustments */
+body.light-theme .trash-icon-container .fas.fa-trash {
+  color: #dc2626;
+}
+
+body.light-theme .trash-icon-container:hover .fas.fa-trash {
+  color: #b91c1c;
+}
+
+/* Focus styles for accessibility */
+.trash-icon-container:focus-visible {
+  outline: 2px solid rgba(220, 38, 38, 0.5);
+  outline-offset: 2px;
+  background-color: rgba(220, 38, 38, 0.05);
+}
+
+/* Touch feedback enhancements */
+@media (max-width: 768px) {
+  .trash-icon-container {
+    min-width: 48px;
+    min-height: 48px;
+    padding: 12px;
+    border-radius: 0.5rem;
+  }
+
+  .trash-icon-container .fas.fa-trash {
+    font-size: 16px;
+  }
+
+  /* Enhanced touch feedback */
+  .trash-icon-container:active {
+    background-color: rgba(220, 38, 38, 0.15);
+    transform: scale(0.95);
+  }
+
+  /* Ensure proper spacing on mobile and maintain touch-friendly sizing */
+  #chat-history .chat-item .action-wrapper {
+    margin-left: 0.5rem;
+  }
+
+  /* Keep chat items touch-friendly on mobile while being more compact */
+  #chat-history .chat-item {
+    padding: 0.625rem 0.75rem;
+    padding-right: 0.25rem;
+    min-height: 2.5rem;
+    /* 40px minimum on mobile for better touch targets */
+  }
+}
+
+@media (max-width: 480px) {
+  .trash-icon-container {
+    min-width: 52px;
+    min-height: 52px;
+    padding: 14px;
+  }
+
+  .trash-icon-container .fas.fa-trash {
+    font-size: 18px;
+  }
+
+  /* Extra care for very small screens - ensure adequate touch targets */
+  #chat-history .chat-item {
+    min-height: 2.75rem;
+    /* 44px on very small screens for accessibility */
+    padding: 0.75rem 0.875rem;
+    /* Original padding on very small screens */
+    padding-right: 0.25rem;
+    /* Maintain space for action wrapper */
+  }
+}
+
+/* Enhanced Chat Interface */
+#chat-container {
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.03) 0%, transparent 20%),
+    radial-gradient(circle at 90% 50%, rgba(16, 185, 129, 0.03) 0%, transparent 25%),
+    radial-gradient(circle at 30% 80%, rgba(168, 85, 247, 0.03) 0%, transparent 15%);
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+body.light-theme #chat-container {
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 25%),
+    radial-gradient(circle at 30% 80%, rgba(168, 85, 247, 0.05) 0%, transparent 15%);
+}
+
+#messages>div.user {
+  background: linear-gradient(145deg,
+    rgba(55, 65, 95, 0.8) 0%,
+    rgba(45, 55, 85, 0.85) 100%) !important;
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border-radius: 1.25rem 1.25rem 0.25rem 1.25rem;
+  border: 1.5px solid rgba(100, 150, 255, 0.4) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2) !important;
+  transform-origin: bottom right;
+  position: relative;
+  overflow: hidden;
+}
+
+#messages>div.user::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0) 100%);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#messages>div.ai {
+  background: linear-gradient(145deg,
+    rgba(40, 50, 75, 0.8) 0%,
+    rgba(30, 40, 65, 0.85) 100%) !important;
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border-radius: 1.25rem 1.25rem 1.25rem 0.25rem;
+  border: 1.5px solid rgba(80, 120, 200, 0.35) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2) !important;
+  transform-origin: bottom left;
+  position: relative;
+  overflow: hidden;
+}
+
+#messages>div.ai::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0) 100%);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+}
+
+body.light-theme #messages>div.ai {
+  background: linear-gradient(145deg,
+    rgba(226, 232, 240, 0.8) 0%,
+    rgba(203, 213, 225, 0.85) 100%) !important;
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1.5px solid rgba(59, 130, 246, 0.3) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Ensure message content appears above glass effect */
+#messages>div.user > *,
+#messages>div.ai > * {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* Input Area Enhancements */
+#chat-form {
+  padding: 1.25rem;
+  background-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top: none;
+}
+
+body.light-theme #chat-form {
+  background-color: transparent;
+  border-top: none;
+}
+
+/* Make active character display transparent to match background above it */
+#active-character-display {
+  background-color: transparent !important;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0 !important;
+  /* Remove any margin that might create a gap */
+  border-bottom: none !important;
+  /* Remove border to avoid visible line */
+}
+
+/* Ensure hidden state is respected in modern UI */
+#active-character-display.hidden {
+  display: none !important;
+}
+
+body.light-theme #active-character-display {
+  background-color: transparent !important;
+  border-bottom: none !important;
+}
+
+#user-input {
+  border-radius: 0.75rem 0 0 0.75rem;
+  /* Smaller left radius to utilize more space */
+  padding: 0.875rem 3rem 0.875rem 0.75rem;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-right: none;
+  /* Remove right border for seamless blend */
+  background-color: var(--modern-bg-tertiary);
+  box-shadow: var(--modern-shadow-inner), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -ms-overflow-style: none;
+  /* Hide scrollbar in IE and Edge */
+  scrollbar-width: none;
+  /* Hide scrollbar in Firefox */
+  position: relative;
+  z-index: 1;
+  /* Allow send button to overlap slightly */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+#user-input::-webkit-scrollbar {
+  display: none;
+}
+
+/* Send button styling for modern UI */
+#chat-form #send-button,
+#chat-form #stop-button {
+  border-radius: 0 1.5rem 1.5rem 0;
+  /* Right side rounded to blend with input */
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-left: none;
+  /* Remove left border for seamless blend */
+  margin-left: -2px;
+  /* Overlap input by 2px to create seamless appearance */
+  background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+  box-shadow: var(--modern-shadow), 0 0 0 1px rgba(37, 99, 235, 0.4);
+  position: relative;
+  z-index: 2;
+  /* Ensure button is above input */
+  padding: 0.875rem 0.5rem !important;
+  /* Reduced horizontal padding for narrower button */
+  min-width: 50px !important;
+  /* Reduced minimum width to allow smaller button */
+  color: #e0f2fe;
+  transition: min-width 0.2s ease, padding 0.2s ease;
+}
+
+#chat-form #send-button i,
+#chat-form #stop-button i {
+  transition: font-size 0.2s ease;
+}
+
+#chat-form #send-button:hover,
+#chat-form #stop-button:hover {
+  transform: none;
+  /* Remove transform to prevent breaking the seam */
+  background: linear-gradient(135deg, #2c5282 0%, #3b82f6 100%);
+  box-shadow: var(--modern-shadow-md), 0 0 0 1px rgba(59, 130, 246, 0.6);
+  filter: brightness(1.1);
+}
+
+@media (max-width: 768px) {
+  #user-input {
+    border-radius: 0.75rem 0 0 0.75rem;
+    /* Consistent smaller rounded left side */
+  }
+}
+
+body.light-theme #user-input {
+  background-color: var(--modern-light-bg-tertiary);
+  box-shadow: var(--modern-shadow-inner), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-right: none;
+  /* Remove right border for seamless blend */
+}
+
+/* Light theme placeholder styling - darker for better visibility */
+body.light-theme #user-input::placeholder {
+  color: #475569;
+  opacity: 0.8;
+}
+
+/* Light theme send button styling */
+body.light-theme #chat-form #send-button,
+body.light-theme #chat-form #stop-button {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-left: none;
+  /* Remove left border for seamless blend */
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: var(--modern-shadow), 0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+body.light-theme #chat-form #send-button:hover,
+body.light-theme #chat-form #stop-button:hover {
+  box-shadow: var(--modern-shadow-md), 0 0 0 1px rgba(59, 130, 246, 0.5);
+}
+
+#user-input:focus {
+  border-color: var(--input-border);
+  box-shadow: none;
+  outline: none;
+}
+
+#user-input::placeholder {
+  color: var(--modern-text-muted);
+  opacity: 0.6;
+}
+
+/* Settings & Modal Enhancements */
+.modal-content {
+  background: linear-gradient(135deg, var(--modern-bg-secondary), var(--modern-bg-primary));
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--modern-shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+body.light-theme .modal-content {
+  background: linear-gradient(135deg, var(--modern-light-bg-secondary), var(--modern-light-bg-primary));
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: var(--modern-shadow-lg), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.modal-header {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.light-theme .modal-header {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.modal-title {
+  font-weight: 700;
+  color: var(--modal-title);
+  letter-spacing: -0.02em;
+  text-shadow: var(--title-shadow);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+  border-bottom: 2px solid var(--title-border);
+}
+
+/* Button Enhancements */
+.modern-button-primary {
+  background: var(--modern-gradient-primary);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  border: none;
+  box-shadow: var(--modern-shadow), 0 0 0 1px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  min-height: 48px;
+  /* Ensure consistent height */
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.modern-button-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  transform: translateX(-100%);
+}
+
+.modern-button-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--modern-shadow-md), 0 0 0 1px rgba(59, 130, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  filter: brightness(1.05);
+}
+
+.modern-button-primary:hover::before {
+  transform: translateX(100%);
+}
+
+.modern-button-primary:active {
+  transform: translateY(1px);
+  box-shadow: var(--modern-shadow), 0 0 0 1px rgba(59, 130, 246, 0.4), inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  filter: brightness(0.95);
+}
+
+/* Legacy button enhancements - disabled in favor of professional-button class */
+/*
+#welcome-character-gallery-btn,
+#welcome-new-chat-btn,
+#welcome-help-btn,
+#get-started-btn {
+  position: relative;
+  overflow: hidden;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 0.85rem;
+  padding: 0.65rem 1.25rem;
+  min-height: 44px;
+}
+
+#welcome-character-gallery-btn::after,
+#welcome-new-chat-btn::after,
+#welcome-help-btn::after,
+#get-started-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  border-radius: 0.85rem 0.85rem 2rem 2rem;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+#welcome-character-gallery-btn::before,
+#welcome-new-chat-btn::before,
+#welcome-help-btn::before,
+#get-started-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  transform: translateX(-100%);
+}
+
+#welcome-character-gallery-btn:hover::before,
+#welcome-new-chat-btn:hover::before,
+#welcome-help-btn:hover::before,
+#get-started-btn:hover::before {
+  transform: translateX(100%);
+}
+*/
+
+#welcome-character-gallery-btn i,
+#welcome-new-chat-btn i,
+#welcome-help-btn i,
+#welcome-models-btn i,
+#get-started-btn i {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+  /* Base icon sizing to prevent oversizing on any screen */
+  font-size: 0.85rem;
+  width: auto;
+  height: auto;
+  max-width: 1em;
+  max-height: 1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  box-sizing: content-box;
+}
+
+#welcome-character-gallery-btn span,
+#welcome-new-chat-btn span,
+#welcome-help-btn span,
+#get-started-btn span {
+  position: relative;
+  z-index: 2;
+}
+
+/* Limit hover effects on mobile to prevent icon scaling issues */
+@media (min-width: 769px) {
+
+  /* Only apply these hover effects on non-mobile devices */
+  #get-started-btn:hover i {
+    transform: rotate(20deg) scale(1.15);
+  }
+
+  #welcome-character-gallery-btn:hover i {
+    transform: scale(1.2);
+  }
+}
+
+/* For mobile devices, use more subtle hover effects that don't scale icons */
+@media (max-width: 768px) {
+
+  #get-started-btn:hover i,
+  #welcome-character-gallery-btn:hover i,
+  #welcome-new-chat-btn:hover i,
+  #welcome-help-btn:hover i,
+  #welcome-models-btn:hover i {
+    transform: none !important;
+    /* Prevent any scaling on mobile */
+    opacity: 0.9;
+    /* Subtle opacity change instead */
+  }
+}
+
+/* Only apply this hover effect on non-mobile devices */
+@media (min-width: 769px) {
+  #welcome-new-chat-btn:hover i {
+    transform: translateX(-3px) scale(1.1);
+  }
+}
+
+/* Only apply this hover effect on non-mobile devices */
+@media (min-width: 769px) {
+  #welcome-help-btn:hover i {
+    transform: rotate(15deg) scale(1.1);
+  }
+}
+
+/* Specific fix for screen sizes around 360x740 where icons become oversized */
+@media (min-width: 359px) and (max-width: 400px) and (min-height: 730px) and (max-height: 760px) {
+
+  /* Add padding to body for extra space */
+  body {
+    padding-bottom: 1rem !important;
+  }
+
+  /* Welcome screen button fixes */
+  #welcome-character-gallery-btn,
+  #welcome-new-chat-btn,
+  #welcome-help-btn,
+  #welcome-models-btn,
+  #get-started-btn {
+    padding: 0.4rem 0.65rem !important;
+    min-height: 40px !important;
+    font-size: 0.85rem !important;
+  }
+
+  #welcome-character-gallery-btn i,
+  #welcome-new-chat-btn i,
+  #welcome-help-btn i,
+  #welcome-models-btn i,
+  #get-started-btn i {
+    font-size: 0.75rem !important;
+    margin-right: 0.3rem !important;
+    transform: none !important;
+  }
+
+  /* Override hover effects */
+  #get-started-btn:hover i,
+  #welcome-character-gallery-btn:hover i,
+  #welcome-models-btn:hover i,
+  #welcome-new-chat-btn:hover i,
+  #welcome-help-btn:hover i {
+    transform: none !important;
+    font-size: 0.75rem !important;
+  }
+
+  .welcome-content .grid {
+    gap: 0.4rem !important;
+  }
+
+  .welcome-content .grid .grid {
+    gap: 0.3rem !important;
+  }
+
+  /* Header icons spacing fix - updated to work with new responsive system */
+  header {
+    padding: 0.65rem 0.45rem !important;
+  }
+
+  header .flex.items-center h1 {
+    font-size: 1.1rem !important;
+    margin-right: 0.3rem !important;
+  }
+
+  /* Remove conflicting header button styles - now handled by main responsive system */
+  /* .header-btn styles are now managed in styles.css */
+
+  .header-icon {
+    font-size: 0.85rem !important;
+  }
+
+  /* Welcome content adjustments */
+  .welcome-content {
+    padding: 1.6rem 1.2rem !important;
+    max-width: 95% !important;
+    width: 95% !important;
+  }
+
+  .welcome-content .icon-container {
+    width: 4rem !important;
+    height: 4rem !important;
+    margin: 0.5rem auto 0.85rem auto !important;
+    padding: 0.6rem !important;
+  }
+
+  .welcome-content .icon-container img {
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+  }
+
+  .welcome-content h1 {
+    font-size: 1.15rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .welcome-content p {
+    font-size: 0.85rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  #welcome-footer {
+    margin-top: 0.75rem !important;
+    padding-top: 0.5rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  /* Input field fixes */
+  #chat-form {
+    padding: 0.95rem 0.75rem !important;
+  }
+
+  #user-input {
+    padding: 0.6rem 2.5rem 0.6rem 0.6rem !important;
+    font-size: 0.9rem !important;
+    border-radius: 0.75rem 0 0 0.75rem !important;
+    height: 38px !important;
+  }
+
+  #send-button,
+  #stop-button {
+    padding: 0.35rem 0.35rem !important;
+    border-radius: 0 1.25rem 1.25rem 0 !important;
+    height: auto !important;
+    min-height: 38px !important;
+    min-width: 40px !important;
+    /* Reduced minimum width for mobile */
+  }
+
+  #send-button i,
+  #stop-button i {
+    font-size: 0.85rem !important;
+  }
+
+  #send-button span,
+  #stop-button span {
+    display: none !important;
+  }
+
+  /* Chat container spacing */
+  #chat-container {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  /* Message bubbles */
+  #messages>div.user,
+  #messages>div.ai {
+    padding: 0.85rem !important;
+    margin-bottom: 0.75rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Active character display */
+  #active-character-display {
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  /* Theme toggle in welcome screen */
+  #welcome-theme-toggle .welcome-toggle-container {
+    padding: 0.35rem 0.5rem !important;
+  }
+
+  #welcome-theme-toggle .toggle-container {
+    width: 38px !important;
+    height: 20px !important;
+  }
+
+  #welcome-theme-toggle .toggle-dot {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  #welcome-theme-toggle input[type="checkbox"]:checked~.toggle-dot {
+    transform: translateX(18px) !important;
+  }
+
+  /* Fix paperclip position */
+  #paperclip-button {
+    right: 0.5rem !important;
+  }
+
+  /* Loaded model banner fixes */
+  #loaded-model {
+    font-size: 0.75rem !important;
+    padding: 0.35rem 0.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #loaded-model .text-sm {
+    font-size: 0.7rem !important;
+  }
+
+  /* Scroll to bottom button */
+  #scroll-to-bottom {
+    width: 34px !important;
+    height: 34px !important;
+    bottom: 80px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+  }
+
+  #scroll-to-bottom i {
+    font-size: 0.85rem !important;
+  }
+
+  /* Fix modal content size */
+  .modal-content {
+    max-width: 90% !important;
+    padding: 1rem !important;
+  }
+
+  .modal-header {
+    padding: 0.75rem !important;
+  }
+
+  .modal-body {
+    padding: 0.75rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .modal-footer {
+    padding: 0.75rem !important;
+  }
+
+  .modal-title {
+    font-size: 1.1rem !important;
+  }
+
+  /* Sidebar optimizations */
+  #sidebar {
+    width: 85% !important;
+    max-width: 275px !important;
+  }
+
+  .sidebar-section {
+    margin: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+  }
+
+  .section-header {
+    padding: 0.6rem 0.8rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .menu-item {
+    padding: 0.6rem 0.8rem !important;
+    margin: 0.2rem 0.35rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .menu-item i {
+    font-size: 0.85rem !important;
+    margin-right: 0.5rem !important;
+  }
+
+  .sidebar-header {
+    padding: 0.65rem !important;
+  }
+
+  .close-sidebar-btn {
+    padding: 0.35rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Message history items */
+  #chat-history .chat-item {
+    padding: 0.5rem 0.65rem !important;
+    /* Slightly increased for better touch targets */
+    padding-right: 0.25rem !important;
+    /* Maintain space for action wrapper */
+    margin: 0.2rem 0 !important;
+    font-size: 0.8rem !important;
+    min-height: 2.75rem !important;
+    /* 44px on very small screens for accessibility */
+  }
+
+  /* Code blocks and pre formatting */
+  pre {
+    padding: 0.75rem !important;
+    margin: 0.75rem 0 !important;
+    font-size: 0.8rem !important;
+  }
+
+  code {
+    font-size: 0.8rem !important;
+  }
+
+  /* Loading indicator */
+  #loading-indicator {
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  .loading-ellipsis {
+    height: 14px !important;
+    width: 50px !important;
+  }
+
+  /* Character badges */
+  .character-badge {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.8rem !important;
+    border-radius: 0.6rem !important;
+  }
+
+  .character-badge img {
+    width: 18px !important;
+    height: 18px !important;
+    margin-right: 0.3rem !important;
+  }
+}
+
+/* Legacy button styling - disabled */
+/*
+#welcome-character-gallery-btn {
+  background: linear-gradient(135deg, #4f46e5, #8b5cf6);
+  box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.2), 0 2px 4px -1px rgba(79, 70, 229, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+*/
+
+.modern-button-secondary {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--modern-text-primary);
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 48px;
+  /* Ensure consistent height */
+  position: relative;
+  overflow: hidden;
+}
+
+body.light-theme .modern-button-secondary {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--modern-light-text-primary);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.modern-button-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: var(--modern-shadow-sm);
+}
+
+body.light-theme .modern-button-secondary:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.modern-button-secondary:active {
+  transform: translateY(1px);
+}
+
+/* Add subtle glow effect to welcome screen buttons */
+.welcome-content .modern-button-primary:hover {
+  box-shadow: 0 6px 12px -2px rgba(59, 130, 246, 0.3), 0 3px 6px -3px rgba(59, 130, 246, 0.2);
+}
+
+/* Legacy button styles - disabled in favor of professional-button class */
+/*
+#get-started-btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+#get-started-btn:hover {
+  background: linear-gradient(135deg, #4f8df9, #2b6feb);
+  box-shadow: 0 8px 15px -3px rgba(37, 99, 235, 0.25), 0 4px 6px -2px rgba(37, 99, 235, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+#get-started-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px -1px rgba(37, 99, 235, 0.2), 0 1px 2px -1px rgba(37, 99, 235, 0.1), inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+}
+
+#welcome-character-gallery-btn {
+  background: linear-gradient(135deg, #4f46e5, #8b5cf6);
+  box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.2), 0 2px 4px -1px rgba(79, 70, 229, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+#welcome-character-gallery-btn:hover {
+  background: linear-gradient(135deg, #5a52e5, #9361f7);
+  box-shadow: 0 8px 15px -3px rgba(139, 92, 246, 0.25), 0 4px 6px -2px rgba(79, 70, 229, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+#welcome-character-gallery-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px -1px rgba(139, 92, 246, 0.2), 0 1px 2px -1px rgba(79, 70, 229, 0.1), inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #4338ca, #8b5cf6);
+}
+
+#welcome-new-chat-btn {
+  background: linear-gradient(135deg, #0ea5e9, #10b981);
+  box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2), 0 2px 4px -1px rgba(14, 165, 233, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+#welcome-new-chat-btn:hover {
+  background: linear-gradient(135deg, #38bdf8, #34d399);
+  box-shadow: 0 8px 15px -3px rgba(16, 185, 129, 0.25), 0 4px 6px -2px rgba(14, 165, 233, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+#welcome-new-chat-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px -1px rgba(16, 185, 129, 0.2), 0 1px 2px -1px rgba(14, 165, 233, 0.1), inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #0284c7, #059669);
+}
+
+#welcome-help-btn {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2), 0 2px 4px -1px rgba(245, 158, 11, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+#welcome-help-btn:hover {
+  background: linear-gradient(135deg, #fbbf24, #f87171);
+  box-shadow: 0 8px 15px -3px rgba(239, 68, 68, 0.25), 0 4px 6px -2px rgba(245, 158, 11, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+#welcome-help-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px -1px rgba(239, 68, 68, 0.2), 0 1px 2px -1px rgba(245, 158, 11, 0.1), inset 0 1px 1px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #d97706, #dc2626);
+}
+*/
+
+.welcome-content .modern-button-secondary:hover {
+  box-shadow: 0 4px 8px -2px rgba(255, 255, 255, 0.1);
+}
+
+body.light-theme .welcome-content .modern-button-secondary:hover {
+  box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* Welcome Screen Enhancement */
+#welcome-message {
+  background-image:
+    radial-gradient(circle at 20% 25%, rgba(59, 130, 246, 0.08) 0%, transparent 30%),
+    radial-gradient(circle at 80% 50%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 40% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 35%);
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+/* Add more visible background gradients for light mode */
+body.light-theme #welcome-message {
+  background-image:
+    radial-gradient(circle at 20% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 35%),
+    radial-gradient(circle at 80% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 45%),
+    radial-gradient(circle at 40% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 40%);
+  background-color: rgba(241, 245, 249, 0.4);
+  /* Add a subtle background color */
+}
+
+.welcome-content {
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: var(--modern-shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  padding: 2.5rem 2rem;
+  /* Fixed base padding */
+  max-width: min(500px, 95%);
+  width: 95%;
+  overflow: visible !important;
+  /* Changed from auto to prevent scrolling and ensure visibility */
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  max-height: none !important;
+  /* Remove max-height to prevent scrolling */
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  /* Remove margins to prevent spacing issues */
+  /* Ensure there's space for the character icon if it's visible */
+  /* Universal fix to ensure content is properly positioned */
+  position: relative !important;
+  z-index: 5 !important;
+  padding-top: max(2.5rem, env(safe-area-inset-top, 2.5rem)) !important;
+  /* Ensure enough top padding on all devices */
+}
+
+/* Universal fix for welcome message positioning */
+#welcome-message {
+  align-items: center !important;
+  /* Ensure vertical centering */
+  justify-content: center !important;
+  /* Ensure horizontal centering */
+  overflow: visible !important;
+  /* Prevent clipping */
+  padding-top: 0 !important;
+  /* Remove default padding */
+  position: absolute !important;
+  /* Ensure proper positioning */
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Icon container default styling */
+.welcome-content .icon-container {
+  margin-top: 1.75rem !important;
+  /* Further increased to ensure icon never touches the top edge on any screen size */
+  margin-bottom: 1.25rem !important;
+  position: relative !important;
+  /* Ensure proper positioning */
+  display: flex !important;
+  /* Use flexbox for better centering */
+  align-items: center !important;
+  /* Center vertically */
+  justify-content: center !important;
+  /* Center horizontally */
+  overflow: visible !important;
+  /* Prevent clipping */
+  z-index: 10 !important;
+  /* Ensure icon is above other elements */
+}
+
+/* Responsive welcome screen adjustments */
+/* Large screens (desktops & large tablets) */
+@media (min-width: 1025px) {
+  .welcome-content {
+    padding: 3rem 2.5rem;
+    max-width: 520px;
+    margin: 0;
+    /* Remove margins */
+  }
+
+  .welcome-content .icon-container {
+    width: 6.5rem !important;
+    height: 6.5rem !important;
+    padding: 1rem !important;
+    margin: 1rem auto 2rem auto !important;
+    /* Adjust margin */
+  }
+
+  .welcome-content .icon-container img {
+    width: 4rem !important;
+    height: 4rem !important;
+  }
+
+  #welcome-footer {
+    margin-top: 2.5rem !important;
+    padding-top: 1.25rem !important;
+    margin-bottom: 0 !important;
+    /* Remove bottom margin */
+  }
+}
+
+/* Tablet-specific optimizations (iPad, smaller laptops) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .welcome-content {
+    padding: 3rem 2.25rem;
+    max-width: 480px;
+  }
+
+  .welcome-content .icon-container {
+    width: 6rem !important;
+    height: 6rem !important;
+    padding: 0.9rem !important;
+    margin: 1.25rem auto 1.75rem auto !important;
+    border-radius: 1rem !important;
+  }
+
+  .welcome-content .icon-container img {
+    width: 3.75rem !important;
+    height: 3.75rem !important;
+    max-width: 75% !important;
+    max-height: 75% !important;
+  }
+
+  #welcome-footer {
+    margin-top: 2rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  /* Fix chat title cutoff on tablet landscape by reducing trash icon size */
+  #chat-history .chat-item .trash-icon-container {
+    min-width: 32px !important;
+    min-height: 32px !important;
+    padding: 6px !important;
+  }
+  
+  #chat-history .chat-item .action-wrapper {
+    margin-left: 0.375rem;
+  }
+}
+
+/* Additional fix for tablet landscape orientation where sidebar is most constrained */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  #chat-history .chat-item .trash-icon-container {
+    min-width: 28px !important;
+    min-height: 28px !important;
+    padding: 4px !important;
+  }
+  
+  #chat-history .chat-item .action-wrapper {
+    margin-left: 0.25rem;
+  }
+  
+  #chat-history .chat-item {
+    padding-right: 0.125rem !important;
+  }
+}
+
+/* Medium-sized screens (iPad Mini, larger phones) */
+@media (min-width: 641px) and (max-width: 767px) {
+  .welcome-content {
+    padding: 2.75rem 2rem;
+  }
+
+  /* Android keyboard specific fixes */
+  .android-webview {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+  }
+
+  .android-webview #app-container {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  .android-webview.keyboard-visible #app-container {
+    height: 100dvh !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Use dynamic viewport units for better keyboard handling */
+  @supports (height: 100dvh) {
+    .android-webview #messages {
+      max-height: calc(100dvh - 200px) !important;
+    }
+
+    .android-webview.keyboard-visible #messages {
+      max-height: calc(100dvh - 200px - env(keyboard-inset-height, 0px)) !important;
+    }
+  }
+
+  /* Fix for the white gap issue when keyboard appears */
+  .android-webview #chat-form {
+    position: fixed !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    z-index: 1000 !important;
+  }
+
+  .android-webview.keyboard-visible #chat-form {
+    bottom: 0 !important;
+    transform: none !important;
+  }
+
+  /* Prevent white space when keyboard is active */
+  .android-webview {
+    overscroll-behavior: none;
+  }
+
+  .android-webview #main-content {
+    overscroll-behavior: contain;
+  }
+
+  /* Additional fix for the body height when keyboard is visible */
+  .android-webview body {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+  }
+
+  /* Ensure proper scrolling behavior */
+  .android-webview #messages {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }
+
+  /* Fix for input field positioning */
+  .android-webview #user-input {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+  }
+
+  @media (max-width: 768px) {
+    .welcome-content {
+      max-width: 460px;
+    }
+  }
+
+  .welcome-content .icon-container {
+    width: 5.5rem !important;
+    height: 5.5rem !important;
+    padding: 0.8rem !important;
+    margin: 1rem auto 1.5rem auto !important;
+    border-radius: 0.9rem !important;
+  }
+
+  .welcome-content .icon-container img {
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+    max-width: 75% !important;
+    max-height: 75% !important;
+  }
+
+  #welcome-footer {
+    margin-top: 1.75rem !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+}
+
+/* Small screens (most phones) */
+@media (min-width: 481px) and (max-width: 640px) {
+  .welcome-content {
+    padding: 2.5rem 1.75rem;
+    max-width: 440px;
+    margin: 1.25rem 0;
+  }
+
+  .welcome-content .icon-container {
+    width: 5rem !important;
+    height: 5rem !important;
+    padding: 0.75rem !important;
+    margin: 0.75rem auto 1.25rem auto !important;
+    border-radius: 0.85rem !important;
+  }
+
+  .welcome-content .icon-container img {
+    width: 3.25rem !important;
+    height: 3.25rem !important;
+    max-width: 75% !important;
+    max-height: 75% !important;
+  }
+
+  #welcome-footer {
+    margin-top: 1.5rem !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+}
+
+/* For shorter screens (any width) */
+@media (max-height: 700px) {
+  .welcome-content {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+    max-height: 90vh;
+  }
+
+  .welcome-content .icon-container {
+    margin-top: 0.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  #welcome-footer {
+    margin-top: 1.25rem !important;
+    padding-top: 0.5rem !important;
+  }
+
+  .welcome-content .mb-8 {
+    margin-bottom: 1rem !important;
+  }
+
+  .welcome-content .mt-8 {
+    margin-top: 1rem !important;
+  }
+
+  .welcome-content button {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    min-height: 42px !important;
+  }
+}
+
+/* Extra small screens (most mobile phones) */
+@media (max-width: 480px) {
+  .welcome-content {
+    padding: 2rem 1.5rem;
+    max-height: none;
+    /* Remove max-height to prevent scrolling */
+    margin: 0;
+    /* Remove margins */
+    max-width: 100%;
+    width: 90%;
+  }
+
+  .welcome-content .icon-container {
+    width: 4.5rem !important;
+    height: 4.5rem !important;
+    padding: 0.65rem !important;
+    margin: 1.5rem auto 1rem auto !important;
+    /* Increased top margin to prevent icon from being cut off */
+    border-radius: 0.8rem !important;
+  }
+
+  .welcome-content .icon-container img {
+    width: 3rem !important;
+    height: 3rem !important;
+    max-width: 75% !important;
+    max-height: 75% !important;
+  }
+}
+
+#welcome-footer {
+  margin-top: 1.25rem !important;
+  padding-top: 0.65rem !important;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 0 !important;
+  /* Remove bottom margin */
+}
+
+.welcome-content .text-2xl {
+  font-size: 1.15rem;
+}
+
+/* Specific optimization for spacing */
+.welcome-content .grid {
+  gap: 0.5rem !important;
+}
+
+/* Optimize welcome screen buttons for small screens */
+#welcome-character-gallery-btn,
+#welcome-new-chat-btn,
+#welcome-help-btn,
+#welcome-models-btn,
+#get-started-btn {
+  padding: 0.5rem 0.75rem !important;
+  font-size: 0.9rem !important;
+  min-height: 40px !important;
+}
+
+.welcome-content button {
+  padding: 0.5rem !important;
+  font-size: 0.9rem !important;
+}
+
+/* Optimize button layout for very small screens */
+.welcome-content button i {
+  font-size: 0.85rem !important;
+  margin-right: 0.35rem !important;
+}
+
+/* Ensure buttons have proper spacing */
+.welcome-content .gap-2 {
+  gap: 0.35rem !important;
+}
+
+/* Override CSS variables for loaded model banner to remove excessive spacing */
+#loaded-model-wrapper:not(.hidden)~#chat-container #welcome-message {
+  padding-top: var(--loaded-model-height, 35px) !important;
+  /* Remove additional padding */
+}
+
+/* Extra small screens including iPhone SE in portrait mode */
+@media (max-height: 580px) and (max-width: 380px) {
+  #welcome-message {
+    align-items: center !important;
+    /* Center content */
+    padding-top: 0;
+    overflow: hidden;
+  }
+
+  /* Fix additional spacing when model banner is visible */
+  #loaded-model-wrapper:not(.hidden)~#chat-container #welcome-message {
+    padding-top: var(--loaded-model-height, 35px) !important;
+    /* Remove additional padding */
+  }
+
+  .welcome-content {
+    max-height: none;
+    /* Remove max-height to prevent scrolling */
+    padding: 1.75rem 1.25rem !important;
+    /* Slightly reduced padding */
+  }
+
+  /* Optimize welcome screen buttons for very small screens */
+  .welcome-content .grid {
+    gap: 0.5rem !important;
+  }
+
+  #welcome-character-gallery-btn,
+  #welcome-new-chat-btn,
+  #welcome-help-btn,
+  #welcome-models-btn,
+  #get-started-btn {
+    padding: 0.4rem 0.65rem !important;
+    min-height: 38px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .welcome-content button {
+    padding: 0.4rem 0.65rem !important;
+    min-height: 38px !important;
+  }
+
+  .welcome-content button i {
+    font-size: 0.8rem !important;
+    margin-right: 0.3rem !important;
+  }
+}
+
+/* Specific optimization for 360x800px devices (common Android phone size) */
+/* Specific fix for screens around 360px width (common Android phone size) */
+@media (min-width: 350px) and (max-width: 375px) {
+  .welcome-content {
+    padding: 1.75rem 1.25rem !important;
+    max-height: min(550px, 85vh) !important;
+    width: 92% !important;
+    max-width: 92% !important;
+  }
+
+  .welcome-content .icon-container {
+    width: 4rem !important;
+    height: 4rem !important;
+    margin: 1.75rem auto 0.85rem auto !important;
+    /* Increased top margin to prevent icon from being cut off */
+    padding: 0.6rem !important;
+    border-radius: 0.75rem !important;
+  }
+
+  .welcome-content .icon-container img {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    max-width: 75% !important;
+    max-height: 75% !important;
+  }
+
+  /* Ensure welcome message is properly centered */
+  #welcome-message {
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: 0 !important;
+    overflow: visible !important;
+    /* Prevent clipping */
+  }
+}
+
+#welcome-footer {
+  margin-top: 1rem !important;
+  padding-top: 0.5rem !important;
+  font-size: 0.7rem !important;
+}
+
+.welcome-content h1 {
+  font-size: 1.25rem !important;
+}
+
+.welcome-content p {
+  font-size: 0.85rem !important;
+}
+
+/* Small screen optimizations for welcome screen */
+@media (max-width: 400px) {
+  .welcome-content .text-2xl {
+    font-size: 1.1rem !important;
+  }
+
+  .welcome-content .grid {
+    gap: 0.5rem !important;
+  }
+
+  .welcome-content .mb-8 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  #welcome-character-gallery-btn,
+  #welcome-new-chat-btn,
+  #welcome-help-btn,
+  #welcome-models-btn,
+  #get-started-btn {
+    min-height: 40px !important;
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.85rem !important;
+    /* Ensure consistent button sizing */
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .welcome-content button {
+    min-height: 40px !important;
+    /* Better touch target */
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.85rem !important;
+    /* Ensure consistent button sizing */
+    box-sizing: border-box !important;
+  }
+
+  .welcome-content button i {
+    font-size: 0.75rem !important;
+    /* Reduced from 0.8rem */
+    margin-right: 0.3rem !important;
+    /* Prevent icon scaling */
+    transform: none !important;
+    /* Ensure icons maintain consistent size */
+    max-width: 1em !important;
+    max-height: 1em !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+  }
+
+  /* Optimize the nested grid for the two buttons */
+  .welcome-content .grid .grid {
+    gap: 0.35rem !important;
+  }
+
+  /* Reduce text size for better fit */
+  .welcome-content p {
+    font-size: 0.85rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  #welcome-theme-toggle {
+    margin-top: 0.65rem !important;
+    margin-bottom: 0.65rem !important;
+  }
+
+  #welcome-theme-toggle .text-sm {
+    font-size: 0.75rem !important;
+  }
+
+  #welcome-theme-toggle .welcome-toggle-container {
+    padding: 0.35rem 0.5rem !important;
+    width: auto !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  #welcome-theme-toggle .toggle-container {
+    width: 38px !important;
+    margin: 0 2px !important;
+  }
+
+  #welcome-theme-toggle i.fa-moon,
+  #welcome-theme-toggle i.fa-sun {
+    font-size: 0.85rem !important;
+  }
+
+  #welcome-theme-toggle input[type="checkbox"]:checked~.toggle-dot {
+    transform: translateX(18px) !important;
+  }
+
+  #welcome-footer {
+    margin-top: 0.65rem !important;
+    padding-top: 0.65rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  #welcome-footer i.fa-heart {
+    font-size: 0.65rem !important;
+    vertical-align: middle !important;
+  }
+
+  /* Fix the gap between buttons in the welcome screen */
+  .welcome-content .gap-2 {
+    gap: 0.35rem !important;
+  }
+}
+
+/* iPhone SE specific optimizations */
+@media (min-width: 361px) and (max-width: 375px) {
+
+  /* Optimize header for iPhone SE */
+  header {
+    padding: 0.4rem !important;
+  }
+
+  header .flex.items-center h1 {
+    font-size: 1.15rem !important;
+  }
+
+  /* Optimize buttons for iPhone SE */
+  .header-btn {
+    padding: 0.4rem !important;
+    min-height: 40px !important;
+    min-width: 40px !important;
+  }
+
+  /* Optimize welcome screen for iPhone SE */
+  .welcome-content {
+    padding: 0.85rem !important;
+    max-height: min(550px, 75vh) !important;
+    width: 95% !important;
+    max-width: 95% !important;
+  }
+
+  .welcome-content .text-2xl {
+    font-size: 1.1rem !important;
+  }
+
+  .welcome-content .grid {
+    gap: 0.5rem !important;
+  }
+
+  /* Ensure proper spacing for the appearance toggle section */
+  #welcome-theme-toggle {
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  #welcome-character-gallery-btn,
+  #welcome-new-chat-btn,
+  #welcome-help-btn,
+  #welcome-models-btn,
+  #get-started-btn {
+    min-height: 40px !important;
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .welcome-content button {
+    min-height: 40px !important;
+    /* Better touch target */
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Fix appearance toggle in welcome screen for iPhone SE */
+  #welcome-theme-toggle .welcome-toggle-container {
+    padding: 0.4rem 0.6rem !important;
+    /* Reduce horizontal padding */
+    width: auto !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  #welcome-theme-toggle .toggle-container {
+    width: 40px !important;
+    /* Slightly smaller toggle */
+    margin: 0 2px !important;
+    /* Reduce margins */
+  }
+
+  #welcome-theme-toggle i.fa-moon,
+  #welcome-theme-toggle i.fa-sun {
+    font-size: 0.9rem !important;
+    /* Smaller icons */
+  }
+
+  #welcome-theme-toggle input[type="checkbox"]:checked~.toggle-dot {
+    transform: translateX(20px) !important;
+    /* Adjust for smaller toggle */
+  }
+
+  /* Ensure the label fits within the container */
+  #welcome-theme-toggle label {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Optimize chat input for iPhone SE */
+  #chat-form {
+    padding: 0.75rem !important;
+  }
+
+  #active-character-display {
+    padding: 0.75rem 1rem !important;
+  }
+
+  #user-input {
+    padding: 0.75rem 2.5rem 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Optimize message bubbles for iPhone SE */
+  #messages>div.user,
+  #messages>div.ai {
+    padding: 0.85rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+}
+
+/* Additional iPhone SE welcome screen optimizations */
+/* Extremely small screens (iPhone SE in portrait, etc.) */
+@media (max-width: 320px) {
+  .welcome-content {
+    padding: 1.5rem 1rem !important;
+    max-height: min(520px, 90vh) !important;
+    width: 95% !important;
+  }
+
+  .welcome-content .icon-container {
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+    margin: 2rem auto 0.75rem auto !important;
+    /* Further increased top margin to prevent icon from being cut off */
+    padding: 0.5rem !important;
+    border-radius: 0.65rem !important;
+    position: relative !important;
+    z-index: 10 !important;
+    transform: translateY(0) !important;
+    /* Prevent any transforms that might affect positioning */
+  }
+
+  .welcome-content .icon-container img {
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+    max-width: 75% !important;
+    max-height: 75% !important;
+    position: relative !important;
+    z-index: 5 !important;
+  }
+
+  #welcome-footer {
+    margin-top: 0.85rem !important;
+    padding-top: 0.5rem !important;
+    font-size: 0.65rem !important;
+  }
+
+  /* Ensure welcome message is properly centered */
+  #welcome-message {
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: 0 !important;
+    overflow: visible !important;
+    /* Prevent clipping */
+  }
+}
+
+/* Further optimize welcome screen buttons for extremely small screens */
+#welcome-character-gallery-btn,
+#welcome-new-chat-btn,
+#welcome-help-btn,
+#welcome-models-btn,
+#get-started-btn {
+  min-height: 38px !important;
+  padding: 0.4rem 0.5rem !important;
+  font-size: 0.8rem !important;
+}
+
+/* Ensure icons are properly sized on extremely small screens */
+#welcome-character-gallery-btn i,
+#welcome-new-chat-btn i,
+#welcome-help-btn i,
+#welcome-models-btn i,
+#get-started-btn i {
+  font-size: 0.7rem !important;
+  margin-right: 0.25rem !important;
+  transform: none !important;
+  /* Fixed dimensions to prevent any scaling issues */
+  width: 0.7rem !important;
+  height: 0.7rem !important;
+  line-height: 0.7rem !important;
+}
+
+.welcome-content h1 {
+  font-size: 1.15rem !important;
+  margin-bottom: 0.35rem !important;
+}
+
+.welcome-content p {
+  font-size: 0.8rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.welcome-content .mb-8 {
+  margin-bottom: 0.75rem !important;
+}
+
+/* Additional welcome content margin adjustments */
+@media (max-width: 320px) {
+  .welcome-content .mb-6 {
+    margin-bottom: 0.5rem !important;
+  }
+
+  .welcome-content .mb-7 {
+    margin-bottom: 0.5rem !important;
+  }
+
+  .welcome-content .mb-8 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  #welcome-footer i.fa-heart {
+    font-size: 0.65rem !important;
+    vertical-align: middle !important;
+  }
+}
+
+body.light-theme .welcome-content {
+  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: var(--modern-shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  /* Add a subtle gradient background to increase visibility */
+  background-image: linear-gradient(to bottom, rgba(241, 245, 249, 0.9), rgba(226, 232, 240, 0.9));
+}
+
+/* Ensure footer text is visible in light mode */
+body.light-theme .dark-footer-text {
+  color: rgba(15, 23, 42, 0.8);
+}
+
+/* Optimize heart icon size in footer - universal fix for all screen sizes */
+#welcome-footer i.fa-heart {
+  font-size: 0.7rem !important;
+  vertical-align: middle !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 0.7rem !important;
+  height: 0.7rem !important;
+  line-height: 0.7rem !important;
+  transform: none !important;
+  max-width: 0.7rem !important;
+  max-height: 0.7rem !important;
+  overflow: visible !important;
+}
+
+
+/* Subtle button entrance animation */
+
+/* Apply staggered animations to welcome screen buttons */
+
+/* General mobile optimization for welcome screen buttons */
+@media (max-width: 480px) {
+
+  #welcome-character-gallery-btn,
+  #welcome-new-chat-btn,
+  #welcome-help-btn,
+  #welcome-models-btn,
+  #get-started-btn {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.9rem !important;
+    min-height: 40px !important;
+  }
+}
+
+/* Specific fix for iPhone SE size (320x568) to prevent icon from being cut off */
+@media (max-width: 320px) and (max-height: 568px) {
+  .welcome-content {
+    padding-top: 1.25rem !important;
+    /* Reduced top padding */
+    padding-bottom: 1.25rem !important;
+    /* Reduced bottom padding */
+    max-height: none !important;
+    /* Remove max-height to prevent scrolling */
+  }
+
+  .welcome-content .icon-container {
+    margin: 2.25rem auto 0.75rem auto !important;
+    /* Extra top margin to ensure icon is not cut off */
+    transform: translateY(0) !important;
+    /* Prevent any transforms that might affect positioning */
+  }
+
+  /* Ensure welcome message is properly centered */
+  #welcome-message {
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: 0 !important;
+    overflow: visible !important;
+    /* Prevent clipping */
+  }
+
+  /* Adjust welcome content for better fit on small screens */
+  .welcome-content h1 {
+    font-size: 1.1rem !important;
+    margin-bottom: 0.4rem !important;
+  }
+
+  .welcome-content p {
+    font-size: 0.8rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+}
+
+/* Specific fix for 320x480 screen size to prevent icon from being cut off */
+@media (max-width: 320px) and (max-height: 480px) {
+  .welcome-content {
+    padding-top: 1rem !important;
+    /* Further reduced top padding */
+    padding-bottom: 1rem !important;
+    /* Further reduced bottom padding */
+    max-height: calc(100vh - 2rem) !important;
+    /* Ensure content fits within viewport */
+    overflow-y: auto !important;
+    /* Allow scrolling if needed */
+    box-sizing: border-box !important;
+    /* Include padding in height calculation */
+  }
+
+  .welcome-content .icon-container {
+    margin: 1rem auto 0.5rem auto !important;
+    /* Reduced top margin for better fit */
+    width: 3rem !important;
+    /* Smaller icon container */
+    height: 3rem !important;
+    transform: translateY(0) !important;
+    /* Prevent any transforms that might affect positioning */
+  }
+
+  .welcome-content .icon-container img {
+    width: 2rem !important;
+    /* Smaller icon */
+    height: 2rem !important;
+  }
+
+  /* Ensure welcome message is properly centered and contained */
+  #welcome-message {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.5rem !important;
+    /* Add small padding to prevent edge overflow */
+    overflow: hidden !important;
+    /* Prevent content from overflowing */
+    box-sizing: border-box !important;
+  }
+
+  /* Adjust welcome content for better fit on very small screens */
+  .welcome-content h1 {
+    font-size: 1rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+
+  .welcome-content p {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Ensure footer stays within container */
+  #welcome-footer {
+    margin-top: 0.5rem !important;
+    padding-top: 0.3rem !important;
+    padding-bottom: 0.3rem !important;
+    /* Add bottom padding */
+    font-size: 0.6rem !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    /* Ensure footer takes full width */
+    overflow: hidden !important;
+    /* Prevent text overflow */
+  }
+
+  #welcome-footer p {
+    margin: 0 !important;
+    /* Remove default margins */
+    padding: 0 !important;
+    line-height: 1.2 !important;
+    /* Compact line height */
+    word-wrap: break-word !important;
+    /* Break long words if needed */
+    overflow-wrap: break-word !important;
+  }
+
+  #welcome-footer i.fa-heart {
+    font-size: 0.6rem !important;
+    width: 0.6rem !important;
+    height: 0.6rem !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+  }
+}
+
+/* Specific fix for 360x640 screen size (common Android phone size) */
+@media (min-width: 359px) and (max-width: 361px) and (min-height: 639px) and (max-height: 641px) {
+  .welcome-content {
+    padding-top: 1.75rem !important;
+    /* Increased top padding */
+    overflow: visible !important;
+  }
+
+  .welcome-content .icon-container {
+    margin: 1.75rem auto 0.85rem auto !important;
+    /* Extra top margin to ensure icon is not cut off */
+  }
+
+  /* Ensure welcome message is properly centered */
+  #welcome-message {
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: 0 !important;
+    overflow: visible !important;
+    /* Prevent clipping */
+  }
+}
+
+/* Specific fix for 344x882 screen size to fix oversized heart icon */
+@media (min-width: 343px) and (max-width: 345px) and (min-height: 880px) and (max-height: 884px) {
+  #welcome-footer i.fa-heart {
+    font-size: 0.65rem !important;
+    width: 0.65rem !important;
+    height: 0.65rem !important;
+    line-height: 0.65rem !important;
+    max-width: 0.65rem !important;
+    max-height: 0.65rem !important;
+  }
+
+  .welcome-content .icon-container {
+    margin: 2rem auto 0.85rem auto !important;
+    /* Extra top margin to ensure icon is not cut off */
+  }
+
+  /* Ensure welcome message is properly centered */
+  #welcome-message {
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: 0 !important;
+    overflow: visible !important;
+    /* Prevent clipping */
+  }
+}
+
+/* Universal fix to ensure icon is never cut off regardless of screen size */
+@media (max-width: 480px) {
+
+  /* Ensure welcome content has enough space for the icon */
+  .welcome-content {
+    padding-top: max(1.75rem, env(safe-area-inset-top, 1.75rem)) !important;
+    /* Increased from 1.5rem */
+    padding-bottom: 1rem !important;
+    /* Ensure bottom padding for footer */
+    max-height: calc(100vh - 4rem) !important;
+    /* Constrain height to viewport */
+    overflow-y: auto !important;
+    /* Allow scrolling if content is too tall */
+    box-sizing: border-box !important;
+  }
+
+  /* Ensure icon container has enough margin */
+  .welcome-content .icon-container {
+    margin-top: max(1.5rem, env(safe-area-inset-top, 1.5rem)) !important;
+    /* Increased from 1rem */
+    position: relative !important;
+    z-index: 10 !important;
+    /* Ensure icon is above other elements */
+  }
+
+  /* Ensure welcome message container doesn't overflow */
+  #welcome-message {
+    padding: 0.5rem !important;
+    /* Add padding to prevent edge overflow */
+    overflow: hidden !important;
+    /* Prevent content overflow */
+    box-sizing: border-box !important;
+  }
+
+  /* Universal footer fixes for all small screens */
+  #welcome-footer {
+    margin-top: 1rem !important;
+    padding: 0.5rem 0 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    /* Prevent text overflow */
+  }
+
+  #welcome-footer p {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.3 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    text-align: center !important;
+    /* Center the footer text */
+  }
+}
+
+/* Additional fix for extremely small screens (under 360px) */
+@media (max-width: 360px) {
+  .welcome-content {
+    padding: 0.75rem !important;
+    /* Reduce padding further */
+    max-height: calc(100vh - 1.5rem) !important;
+    /* Tighter height constraint */
+    margin: 0.75rem auto !important;
+    /* Reduce margins */
+  }
+
+  .welcome-content .grid {
+    gap: 0.25rem !important;
+    /* Reduce button gaps */
+    margin-bottom: 0.5rem !important;
+    /* Reduce bottom margin */
+  }
+
+  #welcome-theme-toggle {
+    margin: 0.5rem 0 !important;
+    /* Reduce theme toggle margins */
+  }
+
+  #welcome-footer {
+    margin-top: 0.5rem !important;
+    /* Reduce top margin */
+    padding: 0.25rem 0 !important;
+    /* Reduce padding */
+    font-size: 0.65rem !important;
+    /* Smaller font size */
+  }
+
+  #welcome-footer p {
+    line-height: 1.2 !important;
+    /* Tighter line height */
+  }
+
+  /* Ensure buttons are more compact */
+  .welcome-content button {
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.8rem !important;
+    min-height: 36px !important;
+  }
+}
+
+/* Universal fix for welcome screen button icons to prevent oversizing on any screen */
+@media (max-width: 480px) {
+
+  /* Welcome screen button icon fixes - apply to all mobile screens */
+  #welcome-character-gallery-btn i,
+  #welcome-new-chat-btn i,
+  #welcome-help-btn i,
+  #welcome-models-btn i,
+  #get-started-btn i {
+    font-size: 0.75rem !important;
+    margin-right: 0.3rem !important;
+    transform: none !important;
+    /* Ensure icons maintain consistent size */
+    max-width: 1em !important;
+    max-height: 1em !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+  }
+}
+
+/* Modern Toggle Switch */
+.toggle-container {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: var(--toggle-bg);
+  border: 2px solid var(--toggle-border);
+  cursor: pointer;
+}
+
+.toggle-dot {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--toggle-dot);
+  box-shadow: var(--modern-shadow);
+}
+
+input:checked+.toggle-switch+.toggle-dot {
+  transform: translateX(24px);
+  background-color: white;
+}
+
+input:checked+.toggle-switch {
+  background-color: var(--toggle-active-bg);
+  border-color: var(--toggle-active-border);
+}
+
+/* Monaco Editor removed */
+
+/* Code Block Enhancement */
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-feature-settings: "calt" 1;
+}
+
+pre {
+  border-radius: 0.75rem;
+  box-shadow: var(--modern-shadow);
+}
+
+pre:hover {
+  box-shadow: var(--modern-shadow-md);
+}
+
+/* Loading Animation Enhancement */
+.loading-ellipsis {
+  position: relative;
+  display: inline-block;
+  width: 64px;
+  height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.loading-ellipsis::after {
+  content: '...';
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  color: var(--modern-accent-primary);
+  font-weight: 700;
+  display: inline-block;
+  white-space: nowrap;
+  letter-spacing: 0;
+  text-align: left;
+  direction: ltr;
+  unicode-bidi: normal;
+}
+
+
+/* Scroll to Bottom Button Enhancement */
+#scroll-to-bottom {
+  background: var(--modern-gradient-primary);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--modern-shadow-md);
+  position: fixed;
+  bottom: 100px;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 15;
+  /* Increased z-index to be higher than active-character-display */
+  opacity: 0;
+  /* Remove conflicting positioning properties */
+  right: auto !important;
+  pointer-events: auto !important;
+  /* Ensure the button is always clickable */
+}
+
+#scroll-to-bottom.show {
+  opacity: 0.5;
+  /* Slightly less transparent */
+  visibility: visible;
+}
+
+#scroll-to-bottom:hover {
+  opacity: 0.7;
+  /* Still transparent on hover but more visible */
+  transform: translateX(-50%) scale(1.05);
+}
+
+#scroll-to-bottom:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+/* Scrollbar Enhancement */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.2);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 5px;
+  border: 2px solid rgba(15, 23, 42, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}
+
+body.light-theme ::-webkit-scrollbar-track {
+  background: rgba(226, 232, 240, 0.5);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border: 2px solid rgba(226, 232, 240, 0.5);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}
+
+/* Hide sidebar scrollbar while preserving functionality */
+#sidebar::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+#sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+#sidebar::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+}
+
+/* Firefox scrollbar for sidebar - hidden */
+#sidebar {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+/* Model Display Enhancement */
+#loaded-model {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--modern-shadow);
+  letter-spacing: 0.02em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+}
+
+body.light-theme #loaded-model {
+  background: rgba(248, 250, 252, 0.8);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Glass Morphism Effects */
+.glass-card {
+  background: rgba(30, 41, 59, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--modern-shadow), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+body.light-theme .glass-card {
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: var(--modern-shadow), 0 0 15px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  /* Add a subtle inner shadow to create depth */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Professional Glass Style Button Implementation */
+.professional-button {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  border-radius: 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.025em;
+  cursor: pointer;
+
+  /* Glass morphism base */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  /* Professional dark gradient - works in both themes */
+  background: linear-gradient(135deg,
+      rgba(15, 23, 42, 0.9) 0%,
+      rgba(30, 41, 59, 0.85) 25%,
+      rgba(51, 65, 85, 0.8) 50%,
+      rgba(30, 41, 59, 0.85) 75%,
+      rgba(15, 23, 42, 0.9) 100%);
+
+  /* Enhanced border with gradient */
+  border: 1px solid rgba(148, 163, 184, 0.2);
+
+  /* Professional shadow system */
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+
+  color: rgba(248, 250, 252, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Glass reflection effect */
+.professional-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.06) 50%,
+      rgba(255, 255, 255, 0) 100%);
+  border-radius: 1rem 1rem 0 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Shimmer effect */
+.professional-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Hover states */
+.professional-button:hover {
+  transform: translateY(-2px);
+
+  background: linear-gradient(135deg,
+      rgba(30, 41, 59, 0.95) 0%,
+      rgba(51, 65, 85, 0.9) 25%,
+      rgba(71, 85, 105, 0.85) 50%,
+      rgba(51, 65, 85, 0.9) 75%,
+      rgba(30, 41, 59, 0.95) 100%);
+
+  border-color: rgba(148, 163, 184, 0.3);
+
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.15),
+    0 6px 20px rgba(0, 0, 0, 0.1),
+    0 3px 10px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+
+  color: rgba(255, 255, 255, 1);
+}
+
+.professional-button:hover::after {
+  left: 100%;
+}
+
+/* Active/pressed state */
+.professional-button:active {
+  transform: translateY(0);
+
+  background: linear-gradient(135deg,
+      rgba(15, 23, 42, 0.95) 0%,
+      rgba(30, 41, 59, 0.9) 25%,
+      rgba(51, 65, 85, 0.85) 50%,
+      rgba(30, 41, 59, 0.9) 75%,
+      rgba(15, 23, 42, 0.95) 100%);
+
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+}
+
+/* Light theme adaptations */
+body.light-theme .professional-button {
+  background: linear-gradient(135deg,
+      rgba(51, 65, 85, 0.95) 0%,
+      rgba(71, 85, 105, 0.9) 25%,
+      rgba(100, 116, 139, 0.85) 50%,
+      rgba(71, 85, 105, 0.9) 75%,
+      rgba(51, 65, 85, 0.95) 100%);
+
+  border-color: rgba(100, 116, 139, 0.5);
+  color: rgba(248, 250, 252, 0.98);
+
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme .professional-button:hover {
+  background: linear-gradient(135deg,
+      rgba(71, 85, 105, 0.98) 0%,
+      rgba(100, 116, 139, 0.93) 25%,
+      rgba(129, 140, 160, 0.88) 50%,
+      rgba(100, 116, 139, 0.93) 75%,
+      rgba(71, 85, 105, 0.98) 100%);
+
+  border-color: rgba(129, 140, 160, 0.4);
+
+  box-shadow:
+    0 12px 40px rgba(15, 23, 42, 0.18),
+    0 6px 20px rgba(30, 41, 59, 0.12),
+    0 3px 10px rgba(51, 65, 85, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme .professional-button:active {
+  background: linear-gradient(135deg,
+      rgba(51, 65, 85, 0.98) 0%,
+      rgba(71, 85, 105, 0.93) 25%,
+      rgba(100, 116, 139, 0.88) 50%,
+      rgba(71, 85, 105, 0.93) 75%,
+      rgba(51, 65, 85, 0.98) 100%);
+}
+
+/* Enhanced light theme color borders */
+body.light-theme #get-started-btn.professional-button {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(59, 130, 246, 0.4);
+}
+
+body.light-theme #get-started-btn.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.9);
+  box-shadow:
+    0 12px 40px rgba(59, 130, 246, 0.3),
+    0 6px 20px rgba(37, 99, 235, 0.2),
+    0 3px 10px rgba(29, 78, 216, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+body.light-theme #welcome-character-gallery-btn.professional-button {
+  border-color: rgba(139, 92, 246, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(139, 92, 246, 0.4);
+}
+
+body.light-theme #welcome-character-gallery-btn.professional-button:hover {
+  border-color: rgba(139, 92, 246, 0.9);
+  box-shadow:
+    0 12px 40px rgba(139, 92, 246, 0.3),
+    0 6px 20px rgba(124, 58, 237, 0.2),
+    0 3px 10px rgba(109, 40, 217, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(139, 92, 246, 0.5);
+}
+
+body.light-theme #welcome-models-btn.professional-button {
+  border-color: rgba(34, 197, 94, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(34, 197, 94, 0.4);
+}
+
+body.light-theme #welcome-models-btn.professional-button:hover {
+  border-color: rgba(34, 197, 94, 0.9);
+  box-shadow:
+    0 12px 40px rgba(34, 197, 94, 0.3),
+    0 6px 20px rgba(22, 163, 74, 0.2),
+    0 3px 10px rgba(21, 128, 61, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(34, 197, 94, 0.5);
+}
+
+body.light-theme #welcome-new-chat-btn.professional-button {
+  border-color: rgba(6, 182, 212, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(6, 182, 212, 0.4);
+}
+
+body.light-theme #welcome-new-chat-btn.professional-button:hover {
+  border-color: rgba(6, 182, 212, 0.9);
+  box-shadow:
+    0 12px 40px rgba(6, 182, 212, 0.3),
+    0 6px 20px rgba(8, 145, 178, 0.2),
+    0 3px 10px rgba(14, 116, 144, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(6, 182, 212, 0.5);
+}
+
+body.light-theme #welcome-help-btn.professional-button {
+  border-color: rgba(245, 158, 11, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(245, 158, 11, 0.4);
+}
+
+body.light-theme #welcome-help-btn.professional-button:hover {
+  border-color: rgba(245, 158, 11, 0.9);
+  box-shadow:
+    0 12px 40px rgba(245, 158, 11, 0.3),
+    0 6px 20px rgba(217, 119, 6, 0.2),
+    0 3px 10px rgba(180, 83, 9, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(245, 158, 11, 0.5);
+}
+
+/* Icon styling within professional buttons */
+.professional-button i {
+  position: relative;
+  z-index: 3;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.professional-button span {
+  position: relative;
+  z-index: 3;
+}
+
+/* Specific button color accents - Enhanced visibility */
+#get-started-btn.professional-button {
+  border-color: rgba(59, 130, 246, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+#get-started-btn.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow:
+    0 12px 40px rgba(59, 130, 246, 0.25),
+    0 6px 20px rgba(37, 99, 235, 0.15),
+    0 3px 10px rgba(29, 78, 216, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+#welcome-character-gallery-btn.professional-button {
+  border-color: rgba(139, 92, 246, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(139, 92, 246, 0.3);
+}
+
+#welcome-character-gallery-btn.professional-button:hover {
+  border-color: rgba(139, 92, 246, 0.8);
+  box-shadow:
+    0 12px 40px rgba(139, 92, 246, 0.25),
+    0 6px 20px rgba(124, 58, 237, 0.15),
+    0 3px 10px rgba(109, 40, 217, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(139, 92, 246, 0.4);
+}
+
+#welcome-models-btn.professional-button {
+  border-color: rgba(34, 197, 94, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(34, 197, 94, 0.3);
+}
+
+#welcome-models-btn.professional-button:hover {
+  border-color: rgba(34, 197, 94, 0.8);
+  box-shadow:
+    0 12px 40px rgba(34, 197, 94, 0.25),
+    0 6px 20px rgba(22, 163, 74, 0.15),
+    0 3px 10px rgba(21, 128, 61, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(34, 197, 94, 0.4);
+}
+
+#welcome-new-chat-btn.professional-button {
+  border-color: rgba(6, 182, 212, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(6, 182, 212, 0.3);
+}
+
+#welcome-new-chat-btn.professional-button:hover {
+  border-color: rgba(6, 182, 212, 0.8);
+  box-shadow:
+    0 12px 40px rgba(6, 182, 212, 0.25),
+    0 6px 20px rgba(8, 145, 178, 0.15),
+    0 3px 10px rgba(14, 116, 144, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(6, 182, 212, 0.4);
+}
+
+#welcome-help-btn.professional-button {
+  border-color: rgba(245, 158, 11, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(245, 158, 11, 0.3);
+}
+
+#welcome-help-btn.professional-button:hover {
+  border-color: rgba(245, 158, 11, 0.8);
+  box-shadow:
+    0 12px 40px rgba(245, 158, 11, 0.25),
+    0 6px 20px rgba(217, 119, 6, 0.15),
+    0 3px 10px rgba(180, 83, 9, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(245, 158, 11, 0.4);
+}
+
+/* Mobile optimizations for professional buttons */
+@media (max-width: 768px) {
+  .professional-button {
+    font-size: 0.85rem;
+    border-radius: 0.875rem;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .professional-button:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 480px) {
+  .professional-button {
+    font-size: 0.8rem;
+    border-radius: 0.75rem;
+    padding: 0.5rem 0.75rem !important;
+    min-height: 42px !important;
+  }
+
+  .professional-button i {
+    font-size: 0.75rem !important;
+    margin-right: 0.4rem !important;
+  }
+}
+
+/* Focus states for accessibility */
+.professional-button:focus {
+  outline: none;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* About modal button color accents */
+#official-website-link.professional-button {
+  border-color: rgba(59, 130, 246, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+#official-website-link.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow:
+    0 12px 40px rgba(59, 130, 246, 0.25),
+    0 6px 20px rgba(37, 99, 235, 0.15),
+    0 3px 10px rgba(29, 78, 216, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+#rate-app-link.professional-button {
+  border-color: rgba(249, 115, 22, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(249, 115, 22, 0.3);
+}
+
+#rate-app-link.professional-button:hover {
+  border-color: rgba(249, 115, 22, 0.8);
+  box-shadow:
+    0 12px 40px rgba(249, 115, 22, 0.25),
+    0 6px 20px rgba(234, 88, 12, 0.15),
+    0 3px 10px rgba(194, 65, 12, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(249, 115, 22, 0.4);
+}
+
+#dev-website-link.professional-button {
+  border-color: rgba(147, 51, 234, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(147, 51, 234, 0.3);
+}
+
+#dev-website-link.professional-button:hover {
+  border-color: rgba(147, 51, 234, 0.8);
+  box-shadow:
+    0 12px 40px rgba(147, 51, 234, 0.25),
+    0 6px 20px rgba(126, 34, 206, 0.15),
+    0 3px 10px rgba(107, 33, 168, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(147, 51, 234, 0.4);
+}
+
+/* Light theme adaptations for about modal buttons */
+body.light-theme #official-website-link.professional-button {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(59, 130, 246, 0.4);
+}
+
+body.light-theme #official-website-link.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.9);
+  box-shadow:
+    0 12px 40px rgba(59, 130, 246, 0.3),
+    0 6px 20px rgba(37, 99, 235, 0.2),
+    0 3px 10px rgba(29, 78, 216, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+body.light-theme #rate-app-link.professional-button {
+  border-color: rgba(249, 115, 22, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(249, 115, 22, 0.4);
+}
+
+body.light-theme #rate-app-link.professional-button:hover {
+  border-color: rgba(249, 115, 22, 0.9);
+  box-shadow:
+    0 12px 40px rgba(249, 115, 22, 0.3),
+    0 6px 20px rgba(234, 88, 12, 0.2),
+    0 3px 10px rgba(194, 65, 12, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(249, 115, 22, 0.5);
+}
+
+body.light-theme #dev-website-link.professional-button {
+  border-color: rgba(147, 51, 234, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(147, 51, 234, 0.4);
+}
+
+body.light-theme #dev-website-link.professional-button:hover {
+  border-color: rgba(147, 51, 234, 0.9);
+  box-shadow:
+    0 12px 40px rgba(147, 51, 234, 0.3),
+    0 6px 20px rgba(126, 34, 206, 0.2),
+    0 3px 10px rgba(107, 33, 168, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(147, 51, 234, 0.5);
+}
+
+/* Help modal button color accents */
+#tutorial-video-btn.professional-button {
+  border-color: rgba(220, 38, 38, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(220, 38, 38, 0.3);
+}
+
+#tutorial-video-btn.professional-button:hover {
+  border-color: rgba(220, 38, 38, 0.8);
+  box-shadow:
+    0 12px 40px rgba(220, 38, 38, 0.25),
+    0 6px 20px rgba(185, 28, 28, 0.15),
+    0 3px 10px rgba(153, 27, 27, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(220, 38, 38, 0.4);
+}
+
+#support-articles-btn.professional-button {
+  border-color: rgba(16, 185, 129, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(16, 185, 129, 0.3);
+}
+
+#support-articles-btn.professional-button:hover {
+  border-color: rgba(16, 185, 129, 0.8);
+  box-shadow:
+    0 12px 40px rgba(16, 185, 129, 0.25),
+    0 6px 20px rgba(5, 150, 105, 0.15),
+    0 3px 10px rgba(4, 120, 87, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(16, 185, 129, 0.4);
+}
+
+/* Light theme variants for help modal buttons */
+body.light-theme #tutorial-video-btn.professional-button {
+  border-color: rgba(220, 38, 38, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(220, 38, 38, 0.4);
+}
+
+body.light-theme #tutorial-video-btn.professional-button:hover {
+  border-color: rgba(220, 38, 38, 0.9);
+  box-shadow:
+    0 12px 40px rgba(220, 38, 38, 0.3),
+    0 6px 20px rgba(185, 28, 28, 0.2),
+    0 3px 10px rgba(153, 27, 27, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(220, 38, 38, 0.5);
+}
+
+body.light-theme #support-articles-btn.professional-button {
+  border-color: rgba(16, 185, 129, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(16, 185, 129, 0.4);
+}
+
+body.light-theme #support-articles-btn.professional-button:hover {
+  border-color: rgba(16, 185, 129, 0.9);
+  box-shadow:
+    0 12px 40px rgba(16, 185, 129, 0.3),
+    0 6px 20px rgba(5, 150, 105, 0.2),
+    0 3px 10px rgba(4, 120, 87, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(16, 185, 129, 0.5);
+}
+
+#github-btn.professional-button {
+  border-color: rgba(139, 92, 246, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(139, 92, 246, 0.3);
+}
+
+#github-btn.professional-button:hover {
+  border-color: rgba(139, 92, 246, 0.8);
+  box-shadow:
+    0 12px 40px rgba(139, 92, 246, 0.25),
+    0 6px 20px rgba(124, 58, 237, 0.15),
+    0 3px 10px rgba(109, 40, 217, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(139, 92, 246, 0.4);
+}
+
+body.light-theme #github-btn.professional-button {
+  border-color: rgba(139, 92, 246, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(139, 92, 246, 0.4);
+}
+
+body.light-theme #github-btn.professional-button:hover {
+  border-color: rgba(139, 92, 246, 0.9);
+  box-shadow:
+    0 12px 40px rgba(139, 92, 246, 0.3),
+    0 6px 20px rgba(124, 58, 237, 0.2),
+    0 3px 10px rgba(109, 40, 217, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(139, 92, 246, 0.5);
+}
+
+/* Settings modal button color accents */
+#edit-system-prompt-btn.professional-button {
+  border-color: rgba(59, 130, 246, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+#edit-system-prompt-btn.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow:
+    0 12px 40px rgba(59, 130, 246, 0.25),
+    0 6px 20px rgba(37, 99, 235, 0.15),
+    0 3px 10px rgba(29, 78, 216, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+#clear-chat.professional-button {
+  border-color: rgba(220, 38, 38, 0.6);
+  border-width: 2px;
+  width: fit-content;
+  margin: 0 auto 1rem auto;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(220, 38, 38, 0.3);
+}
+
+#clear-chat.professional-button:hover {
+  border-color: rgba(220, 38, 38, 0.8);
+  box-shadow:
+    0 12px 40px rgba(220, 38, 38, 0.25),
+    0 6px 20px rgba(185, 28, 28, 0.15),
+    0 3px 10px rgba(153, 27, 27, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(220, 38, 38, 0.4);
+}
+
+#reset-app.professional-button {
+  border-color: rgba(153, 27, 27, 0.6);
+  border-width: 2px;
+  width: fit-content;
+  margin: 0 auto;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(153, 27, 27, 0.3);
+}
+
+#reset-app.professional-button:hover {
+  border-color: rgba(153, 27, 27, 0.8);
+  box-shadow:
+    0 12px 40px rgba(153, 27, 27, 0.25),
+    0 6px 20px rgba(127, 29, 29, 0.15),
+    0 3px 10px rgba(105, 30, 30, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(153, 27, 27, 0.4);
+}
+
+#close-settings.professional-button {
+  border-color: rgba(5, 150, 105, 0.6);
+  border-width: 2px;
+  color: white !important;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(5, 150, 105, 0.3);
+}
+
+#close-settings.professional-button:hover {
+  border-color: rgba(5, 150, 105, 0.8);
+  box-shadow:
+    0 12px 40px rgba(5, 150, 105, 0.25),
+    0 6px 20px rgba(4, 120, 87, 0.15),
+    0 3px 10px rgba(6, 95, 70, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(5, 150, 105, 0.4);
+}
+
+/* Navigation buttons in settings modal */
+#to-prompt-step-btn.professional-button,
+#to-options-step-btn.professional-button,
+#to-actions-step-btn.professional-button {
+  border-color: rgba(59, 130, 246, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+#to-prompt-step-btn.professional-button:hover,
+#to-options-step-btn.professional-button:hover,
+#to-actions-step-btn.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow:
+    0 12px 40px rgba(59, 130, 246, 0.25),
+    0 6px 20px rgba(37, 99, 235, 0.15),
+    0 3px 10px rgba(29, 78, 216, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+/* Ensure navigation button icons are white in dark theme */
+#settings-modal #to-prompt-step-btn.professional-button i.fas,
+#settings-modal #to-options-step-btn.professional-button i.fas,
+#settings-modal #to-actions-step-btn.professional-button i.fas {
+  color: white !important;
+}
+
+#back-to-connection-btn.professional-button,
+#back-to-prompt-btn.professional-button,
+#back-to-options-btn.professional-button {
+  border-color: rgba(107, 114, 128, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(107, 114, 128, 0.3);
+}
+
+#back-to-connection-btn.professional-button:hover,
+#back-to-prompt-btn.professional-button:hover,
+#back-to-options-btn.professional-button:hover {
+  border-color: rgba(107, 114, 128, 0.8);
+  box-shadow:
+    0 12px 40px rgba(107, 114, 128, 0.25),
+    0 6px 20px rgba(75, 85, 99, 0.15),
+    0 3px 10px rgba(55, 65, 81, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(107, 114, 128, 0.4);
+}
+
+#settings-help-btn.professional-button {
+  border-color: rgba(245, 158, 11, 0.6);
+  border-width: 2px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(245, 158, 11, 0.3);
+}
+
+#settings-help-btn.professional-button:hover {
+  border-color: rgba(245, 158, 11, 0.8);
+  box-shadow:
+    0 12px 40px rgba(245, 158, 11, 0.25),
+    0 6px 20px rgba(217, 119, 6, 0.15),
+    0 3px 10px rgba(180, 83, 9, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(245, 158, 11, 0.4);
+}
+
+/* Light theme variants for settings modal buttons */
+body.light-theme #edit-system-prompt-btn.professional-button {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(59, 130, 246, 0.4);
+}
+
+body.light-theme #edit-system-prompt-btn.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.9);
+  box-shadow:
+    0 12px 40px rgba(59, 130, 246, 0.3),
+    0 6px 20px rgba(37, 99, 235, 0.2),
+    0 3px 10px rgba(29, 78, 216, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+body.light-theme #clear-chat.professional-button {
+  border-color: rgba(220, 38, 38, 0.7);
+  width: fit-content;
+  margin: 0 auto 1rem auto;
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(220, 38, 38, 0.4);
+}
+
+body.light-theme #clear-chat.professional-button:hover {
+  border-color: rgba(220, 38, 38, 0.9);
+  box-shadow:
+    0 12px 40px rgba(220, 38, 38, 0.3),
+    0 6px 20px rgba(185, 28, 28, 0.2),
+    0 3px 10px rgba(153, 27, 27, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(220, 38, 38, 0.5);
+}
+
+/* Responsive spacing for Edit and +Add buttons container */
+#edit-system-prompt-btn + #save-system-prompt-btn {
+  margin-left: 0.5rem; /* Default gap-2 equivalent */
+}
+
+/* Increase spacing for tablet screens (768px and up) */
+@media (min-width: 768px) {
+  #edit-system-prompt-btn + #save-system-prompt-btn {
+    margin-left: 1rem; /* gap-4 equivalent */
+  }
+}
+
+/* Increase spacing for desktop screens (1024px and up) */
+@media (min-width: 1024px) {
+  #edit-system-prompt-btn + #save-system-prompt-btn {
+    margin-left: 1.5rem; /* gap-6 equivalent */
+  }
+}
+
+body.light-theme #reset-app.professional-button {
+  border-color: rgba(153, 27, 27, 0.7);
+  width: fit-content;
+  margin: 0 auto;
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(153, 27, 27, 0.4);
+}
+
+body.light-theme #reset-app.professional-button:hover {
+  border-color: rgba(153, 27, 27, 0.9);
+  box-shadow:
+    0 12px 40px rgba(153, 27, 27, 0.3),
+    0 6px 20px rgba(127, 29, 29, 0.2),
+    0 3px 10px rgba(105, 30, 30, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(153, 27, 27, 0.5);
+}
+
+body.light-theme #close-settings.professional-button {
+  border-color: rgba(5, 150, 105, 0.7);
+  color: white !important;
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(5, 150, 105, 0.4);
+}
+
+body.light-theme #close-settings.professional-button:hover {
+  border-color: rgba(5, 150, 105, 0.9);
+  box-shadow:
+    0 12px 40px rgba(5, 150, 105, 0.3),
+    0 6px 20px rgba(4, 120, 87, 0.2),
+    0 3px 10px rgba(6, 95, 70, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(5, 150, 105, 0.5);
+}
+
+/* Ensure checkmark icon is white in light theme */
+body.light-theme #close-settings.professional-button i.fas.fa-check.text-sm {
+  color: white !important;
+}
+
+body.light-theme #to-prompt-step-btn.professional-button,
+body.light-theme #to-options-step-btn.professional-button,
+body.light-theme #to-actions-step-btn.professional-button {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(59, 130, 246, 0.4);
+}
+
+body.light-theme #to-prompt-step-btn.professional-button:hover,
+body.light-theme #to-options-step-btn.professional-button:hover,
+body.light-theme #to-actions-step-btn.professional-button:hover {
+  border-color: rgba(59, 130, 246, 0.9);
+  box-shadow:
+    0 12px 40px rgba(59, 130, 246, 0.3),
+    0 6px 20px rgba(37, 99, 235, 0.2),
+    0 3px 10px rgba(29, 78, 216, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Ensure navigation button icons are white in light theme */
+body.light-theme #settings-modal #to-prompt-step-btn.professional-button i.fas,
+body.light-theme #settings-modal #to-options-step-btn.professional-button i.fas,
+body.light-theme #settings-modal #to-actions-step-btn.professional-button i.fas {
+  color: white !important;
+}
+
+body.light-theme #back-to-connection-btn.professional-button,
+body.light-theme #back-to-prompt-btn.professional-button,
+body.light-theme #back-to-options-btn.professional-button {
+  border-color: rgba(107, 114, 128, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(107, 114, 128, 0.4);
+}
+
+body.light-theme #back-to-connection-btn.professional-button:hover,
+body.light-theme #back-to-prompt-btn.professional-button:hover,
+body.light-theme #back-to-options-btn.professional-button:hover {
+  border-color: rgba(107, 114, 128, 0.9);
+  box-shadow:
+    0 12px 40px rgba(107, 114, 128, 0.3),
+    0 6px 20px rgba(75, 85, 99, 0.2),
+    0 3px 10px rgba(55, 65, 81, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(107, 114, 128, 0.5);
+}
+
+body.light-theme #settings-help-btn.professional-button {
+  border-color: rgba(245, 158, 11, 0.7);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(245, 158, 11, 0.4);
+}
+
+body.light-theme #settings-help-btn.professional-button:hover {
+  border-color: rgba(245, 158, 11, 0.9);
+  box-shadow:
+    0 12px 40px rgba(245, 158, 11, 0.3),
+    0 6px 20px rgba(217, 119, 6, 0.2),
+    0 3px 10px rgba(180, 83, 9, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(245, 158, 11, 0.5);
+}
+
+/* ============================================
+   Light Theme Color Overrides
+   Fixes hardcoded Tailwind colors to work with light theme
+   ============================================ */
+
+/* Blue accent colors for icons and text */
+body.light-theme .text-blue-400,
+body.light-theme i.text-blue-400 {
+  color: #2563eb !important; /* Darker blue for better visibility */
+}
+
+body.light-theme .text-blue-500 {
+  color: #1d4ed8 !important;
+}
+
+body.light-theme .text-blue-600 {
+  color: #1e40af !important;
+}
+
+/* Red accent colors (trash icons, danger elements) */
+body.light-theme .text-red-400,
+body.light-theme i.text-red-400 {
+  color: #dc2626 !important; /* Red-600 for better contrast */
+}
+
+body.light-theme .text-red-500 {
+  color: #dc2626 !important;
+}
+
+body.light-theme .text-red-600 {
+  color: #b91c1c !important;
+}
+
+/* Yellow accent colors (sun icon, warnings) */
+body.light-theme .text-yellow-400,
+body.light-theme i.text-yellow-400 {
+  color: #ca8a04 !important; /* Yellow-600 for better contrast */
+}
+
+body.light-theme .text-yellow-500 {
+  color: #ca8a04 !important;
+}
+
+/* Green accent colors */
+body.light-theme .text-green-400 {
+  color: #16a34a !important; /* Green-600 */
+}
+
+body.light-theme .text-green-500 {
+  color: #16a34a !important;
+}
+
+/* Gray text colors */
+body.light-theme .text-gray-200 {
+  color: #1e293b !important; /* Dark slate for primary text */
+}
+
+body.light-theme .text-gray-300 {
+  color: #334155 !important; /* Slate-700 for secondary text */
+}
+
+body.light-theme .text-gray-400 {
+  color: #64748b !important; /* Slate-500 for muted text */
+}
+
+body.light-theme .text-gray-500 {
+  color: #64748b !important;
+}
+
+body.light-theme .text-gray-600 {
+  color: #475569 !important; /* Slate-600 */
+}
+
+body.light-theme .text-gray-700 {
+  color: #334155 !important; /* Slate-700 */
+}
+
+body.light-theme .text-gray-800 {
+  color: #1e293b !important; /* Slate-800 */
+}
+
+/* Hover states for gray text */
+body.light-theme .hover\:text-gray-200:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .hover\:text-gray-700:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .hover\:text-gray-800:hover {
+  color: #0f172a !important;
+}
+
+body.light-theme .hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+/* Background colors */
+body.light-theme .bg-gray-600 {
+  background-color: #cbd5e1 !important; /* Light slate-300 */
+}
+
+body.light-theme .bg-gray-700 {
+  background-color: #94a3b8 !important; /* Slate-400 */
+}
+
+/* Border colors */
+body.light-theme .border-gray-300 {
+  border-color: #cbd5e1 !important;
+}
+
+body.light-theme .border-gray-600 {
+  border-color: #94a3b8 !important;
+}
+
+/* Dark theme specific overrides for light theme */
+body.light-theme .dark\:text-gray-200 {
+  color: #1e293b !important;
+}
+
+body.light-theme .dark\:text-gray-300 {
+  color: #334155 !important;
+}
+
+body.light-theme .dark\:text-gray-400 {
+  color: #64748b !important;
+}
+
+body.light-theme .dark\:text-blue-400 {
+  color: #2563eb !important;
+}
+
+body.light-theme .dark\:text-blue-500 {
+  color: #1d4ed8 !important;
+}
+
+body.light-theme .dark\:hover\:text-gray-200:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .dark\:hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+body.light-theme .dark\:border-gray-600 {
+  border-color: #cbd5e1 !important;
+}
+
+body.light-theme .dark\:hover\:bg-gray-700:hover {
+  background-color: #e2e8f0 !important;
+}
+
+/* Light theme specific overrides */
+body.light-theme .light\:text-blue-600 {
+  color: #1d4ed8 !important;
+}
+
+body.light-theme .light\:text-gray-600 {
+  color: #475569 !important;
+}
+
+body.light-theme .light\:text-gray-700 {
+  color: #334155 !important;
+}
+
+body.light-theme .light\:hover\:text-gray-800:hover {
+  color: #1e293b !important;
+}
+
+body.light-theme .light\:hover\:bg-blue-200\/50:hover {
+  background-color: rgba(191, 219, 254, 0.5) !important;
+}
+
+/* Special cases */
+body.light-theme .dark-icon {
+  color: #1e293b !important;
+}
+
+body.light-theme .light-icon {
+  color: #f59e0b !important; /* Keep sun icon yellow */
+}
+
+body.light-theme .dark-footer-text {
+  color: #475569 !important;
+}
+
+/* Input placeholders */
+body.light-theme input::placeholder,
+body.light-theme textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Modal close buttons */
+body.light-theme .close-modal,
+body.light-theme button[id*="close-"] {
+  color: #64748b !important;
+}
+
+body.light-theme .close-modal:hover,
+body.light-theme button[id*="close-"]:hover {
+  color: #334155 !important;
+}
+
+/* Lock icon color in light theme */
+body.light-theme #temperature-lock i.fa-lock {
+  color: #dc2626 !important;
+}
+
+body.light-theme #temperature-lock i.fa-unlock {
+  color: #16a34a !important;
+}
+
+/* Settings modal icon colors */
+body.light-theme #settings-modal i.fas {
+  color: #2563eb !important;
+}
+
+body.light-theme #settings-modal i.fa-trash-alt {
+  color: #dc2626 !important;
+}
+
+body.light-theme #settings-modal i.fa-exclamation-triangle {
+  color: #d97706 !important;
+}
+
+/* Ensure trash icons in sidebar remain red */
+body.light-theme .trash-icon-container .fas.fa-trash {
+  color: #dc2626 !important;
+}
+
+body.light-theme .trash-icon-container:hover .fas.fa-trash {
+  color: #b91c1c !important;
+}
+
+/* Chat history icon colors */
+body.light-theme .chat-history-icon {
+  color: #2563eb !important;
+}
+
+/* Heart icon should remain red */
+body.light-theme i.fa-heart {
+  color: #ef4444 !important;
+}
+
+/* File attachment icons */
+body.light-theme .fa-file,
+body.light-theme .fa-paperclip {
+  color: #2563eb !important;
+}
+
+/* Light theme sidebar icon colors - distinct colors for each icon */
+body.light-theme #sidebar .fa-plus-circle {
+  color: #059669 !important; /* Green for new chat */
+}
+
+body.light-theme #sidebar .fa-cog {
+  color: #2563eb !important; /* Blue for settings */
+}
+
+body.light-theme #sidebar .fa-chevron-down,
+body.light-theme #sidebar .fa-caret-down,
+body.light-theme #sidebar .fa-caret-up {
+  color: #475569 !important; /* Gray for arrows */
+}
+
+body.light-theme #sidebar .fa-exchange-alt {
+  color: #7c3aed !important; /* Purple for switch model */
+}
+
+body.light-theme #sidebar .fa-file-import {
+  color: #0891b2 !important; /* Cyan for import */
+}
+
+body.light-theme #sidebar .fa-file-export {
+  color: #d97706 !important; /* Amber for export */
+}
+
+body.light-theme #sidebar .fa-robot {
+  color: #2563eb !important; /* Blue for models */
+}
+
+body.light-theme #sidebar .fa-save {
+  color: #059669 !important; /* Green for save */
+}
+
+body.light-theme #sidebar .fa-question-circle {
+  color: #0891b2 !important; /* Cyan for help */
+}
+
+body.light-theme #sidebar .fa-wand-magic-sparkles {
+  color: #be185d !important; /* Pink for magic/prompts */
+}
+
+body.light-theme #sidebar .fa-info-circle {
+  color: #2563eb !important; /* Blue for info */
+}
+
+body.light-theme #sidebar .fa-undo {
+  color: #d97706 !important; /* Amber for reset */
+}
+
+body.light-theme #sidebar .fa-comments {
+  color: #2563eb !important; /* Blue for chat history */
+}
+
+/* Dark theme sidebar icon colors - preserve individual colors */
+body:not(.light-theme) #sidebar .fa-plus-circle {
+  color: #10b981 !important; /* Green for new chat */
+}
+
+body:not(.light-theme) #sidebar .fa-cog {
+  color: #3b82f6 !important; /* Blue for settings */
+}
+
+body:not(.light-theme) #sidebar .fa-chevron-down,
+body:not(.light-theme) #sidebar .fa-caret-down,
+body:not(.light-theme) #sidebar .fa-caret-up {
+  color: #64748b !important; /* Gray for arrows */
+}
+
+body:not(.light-theme) #sidebar .fa-exchange-alt {
+  color: #a855f7 !important; /* Purple for switch model */
+}
+
+body:not(.light-theme) #sidebar .fa-file-import {
+  color: #06b6d4 !important; /* Cyan for import */
+}
+
+body:not(.light-theme) #sidebar .fa-file-export {
+  color: #f59e0b !important; /* Amber for export */
+}
+
+body:not(.light-theme) #sidebar .fa-robot {
+  color: #3b82f6 !important; /* Blue for models */
+}
+
+body:not(.light-theme) #sidebar .fa-save {
+  color: #10b981 !important; /* Green for save */
+}
+
+body:not(.light-theme) #sidebar .fa-question-circle {
+  color: #06b6d4 !important; /* Cyan for help */
+}
+
+body:not(.light-theme) #sidebar .fa-wand-magic-sparkles {
+  color: #ec4899 !important; /* Pink for magic/prompts */
+}
+
+body:not(.light-theme) #sidebar .fa-info-circle {
+  color: #3b82f6 !important; /* Blue for info */
+}
+
+body:not(.light-theme) #sidebar .fa-undo {
+  color: #f59e0b !important; /* Amber for reset */
+}
+
+body:not(.light-theme) #sidebar .fa-comments {
+  color: #3b82f6 !important; /* Blue for chat history */
+}
+
+/* Button icons inside professional buttons */
+body.light-theme .professional-button i {
+  color: inherit !important; /* Inherit from button's color scheme */
+}
+
+/* Ensure proper contrast for text in inputs and textareas */
+body.light-theme input,
+body.light-theme textarea {
+  color: #1e293b !important;
+}
+
+body.light-theme input.text-gray-100,
+body.light-theme textarea.text-gray-100 {
+  color: #1e293b !important;
+}
+
+/* Settings Action Buttons - New styling to bypass conflicts */
+.settings-action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 220px;
+  margin: 0 auto 1rem auto;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.025em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg,
+      rgba(15, 23, 42, 0.9) 0%,
+      rgba(30, 41, 59, 0.85) 25%,
+      rgba(51, 65, 85, 0.8) 50%,
+      rgba(30, 41, 59, 0.85) 75%,
+      rgba(15, 23, 42, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.settings-action-button:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.18),
+    0 6px 20px rgba(0, 0, 0, 0.12),
+    0 3px 10px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.settings-action-button:active {
+  transform: translateY(0);
+}
+
+.settings-action-button i {
+  font-size: 0.875rem;
+}
+
+/* Clear Chat Button - Red Theme */
+#clear-chat.settings-action-button {
+  border-color: rgba(220, 38, 38, 0.6);
+  color: #fca5a5;
+}
+
+#clear-chat.settings-action-button:hover {
+  border-color: rgba(220, 38, 38, 0.8);
+  box-shadow:
+    0 12px 40px rgba(220, 38, 38, 0.25),
+    0 6px 20px rgba(185, 28, 28, 0.15),
+    0 3px 10px rgba(153, 27, 27, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Reset App Button - Dark Red Theme */
+#reset-app.settings-action-button {
+  border-color: rgba(153, 27, 27, 0.6);
+  color: #f87171;
+  margin-bottom: 0;
+}
+
+#reset-app.settings-action-button:hover {
+  border-color: rgba(153, 27, 27, 0.8);
+  box-shadow:
+    0 12px 40px rgba(153, 27, 27, 0.25),
+    0 6px 20px rgba(127, 29, 29, 0.15),
+    0 3px 10px rgba(105, 30, 30, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Light Theme Variants */
+body.light-theme .settings-action-button {
+  background: linear-gradient(135deg,
+      rgba(248, 250, 252, 0.95) 0%,
+      rgba(241, 245, 249, 0.9) 25%,
+      rgba(226, 232, 240, 0.85) 50%,
+      rgba(241, 245, 249, 0.9) 75%,
+      rgba(248, 250, 252, 0.95) 100%);
+  box-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.15),
+    0 4px 16px rgba(30, 41, 59, 0.1),
+    0 2px 8px rgba(51, 65, 85, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme .settings-action-button:hover {
+  box-shadow:
+    0 12px 40px rgba(15, 23, 42, 0.2),
+    0 6px 20px rgba(30, 41, 59, 0.15),
+    0 3px 10px rgba(51, 65, 85, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme #clear-chat.settings-action-button {
+  border-color: rgba(220, 38, 38, 0.7);
+  color: #dc2626;
+}
+
+body.light-theme #clear-chat.settings-action-button:hover {
+  border-color: rgba(220, 38, 38, 0.9);
+  box-shadow:
+    0 12px 40px rgba(220, 38, 38, 0.3),
+    0 6px 20px rgba(185, 28, 28, 0.2),
+    0 3px 10px rgba(153, 27, 27, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme #reset-app.settings-action-button {
+  border-color: rgba(153, 27, 27, 0.7);
+  color: #b91c1c;
+}
+
+body.light-theme #reset-app.settings-action-button:hover {
+  border-color: rgba(153, 27, 27, 0.9);
+  box-shadow:
+    0 12px 40px rgba(153, 27, 27, 0.3),
+    0 6px 20px rgba(127, 29, 29, 0.2),
+    0 3px 10px rgba(105, 30, 30, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Colored menu items for Legacy, Terms, and Privacy buttons */
+#legacy-access-btn.menu-item {
+  border: none !important;
+  position: relative;
+  overflow: hidden;
+}
+
+#legacy-access-btn.menu-item:hover {
+  transform: translateX(4px);
+}
+
+#legacy-access-btn.menu-item i {
+  color: #f59e0b !important;
+}
+
+#legacy-access-btn.menu-item:hover i {
+  color: #d97706 !important;
+  transform: scale(1.1);
+}
+
+#terms-service-btn.menu-item {
+  border: none !important;
+  position: relative;
+  overflow: hidden;
+}
+
+#terms-service-btn.menu-item:hover {
+  transform: translateX(4px);
+}
+
+#terms-service-btn.menu-item i {
+  color: #22c55e !important;
+}
+
+#terms-service-btn.menu-item:hover i {
+  color: #10b981 !important;
+  transform: scale(1.1);
+}
+
+#privacy-policy-btn.menu-item {
+  border: none !important;
+  position: relative;
+  overflow: hidden;
+}
+
+#privacy-policy-btn.menu-item:hover {
+  transform: translateX(4px);
+}
+
+#privacy-policy-btn.menu-item i {
+  color: #6366f1 !important;
+}
+
+#privacy-policy-btn.menu-item:hover i {
+  color: #3b82f6 !important;
+  transform: scale(1.1);
+}
